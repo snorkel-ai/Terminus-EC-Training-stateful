@@ -1,32 +1,37 @@
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import Sidebar from './components/Sidebar';
+import Content from './components/Content';
+import { trainingSections } from './data/trainingData';
 
 function App() {
+  const [activeSection, setActiveSection] = useState('overview');
+
+  const currentSection = trainingSections.find(section => section.id === activeSection);
+
   return (
-    <div className="landing-page">
-      <header className="header">
-        <nav className="nav">
-          <div className="logo">Terminus EC</div>
-          <ul className="nav-links">
-            <li><a href="#home">Home</a></li>
-          </ul>
-        </nav>
+    <div className="app">
+      <header className="app-header">
+        <div className="logo">Terminus EC Training</div>
       </header>
+      
+      <div className="app-layout">
+        <Sidebar 
+          sections={trainingSections} 
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+        />
+        
+        <main className="app-main">
+          <Content section={currentSection} />
+        </main>
+      </div>
 
-      <main className="main-content">
-        <section className="hero">
-          <h1 className="hero-title">Welcome to Terminus EC Training</h1>
-          <p className="hero-subtitle">
-            A modern platform for learning and development
-          </p>
-          <button className="cta-button">Get Started</button>
-        </section>
-      </main>
-
-      <footer className="footer">
+      <footer className="app-footer">
         <p>&copy; 2025 Terminus EC Training. All rights reserved.</p>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
