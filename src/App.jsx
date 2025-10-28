@@ -8,8 +8,6 @@ function App() {
           <div className="logo">Terminus EC</div>
           <ul className="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
       </header>
@@ -21,21 +19,6 @@ function App() {
             A modern platform for learning and development
           </p>
           <button className="cta-button">Get Started</button>
-        </section>
-
-        <section className="features">
-          <div className="feature-card">
-            <h3>Easy to Use</h3>
-            <p>Intuitive interface designed for seamless navigation</p>
-          </div>
-          <div className="feature-card">
-            <h3>Comprehensive</h3>
-            <p>Everything you need in one place</p>
-          </div>
-          <div className="feature-card">
-            <h3>Reliable</h3>
-            <p>Built with modern technology for stability</p>
-          </div>
         </section>
       </main>
 
