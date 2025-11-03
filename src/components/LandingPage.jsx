@@ -45,13 +45,6 @@ function LandingPage({ onNavigate }) {
             it as part of your submissions. Each submission undergoes independent review by another qualified 
             coding expert with experience in the corresponding practice area to ensure accuracy and completeness.
           </p>
-
-          <h3>Resources</h3>
-          <ul>
-            <li>Terminal-Bench site: <a href="https://www.tbench.ai/" target="_blank" rel="noopener noreferrer">https://www.tbench.ai/</a></li>
-            <li>While this project is NOT affiliated with the official Terminal-Bench project, this is a valuable resource given their similarities</li>
-            <li>Tickets for non-project-specific questions (i.e., payments): Expert Support Form</li>
-          </ul>
         </section>
 
         <section className="resources-section">
