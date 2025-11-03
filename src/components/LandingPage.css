@@ -97,7 +97,8 @@
   background-color: #ffffff;
   color: #1e293b;
   padding: 1.5rem 2rem;
-  min-width: 200px;
+  min-width: 300px;
+  max-width: 350px;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
   cursor: pointer;
@@ -105,8 +106,9 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
+  align-items: flex-start;
+  gap: 0.5rem;
+  text-align: left;
 }
 
 .resource-button:hover {
@@ -115,14 +117,16 @@
   box-shadow: 0 8px 16px rgba(37, 99, 235, 0.15);
 }
 
-.button-icon {
-  font-size: 2.5rem;
-}
-
 .button-text {
   font-size: 1.125rem;
   font-weight: 600;
   color: #1e293b;
+}
+
+.button-description {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.5;
 }
 
 /* Guidelines Grid */
