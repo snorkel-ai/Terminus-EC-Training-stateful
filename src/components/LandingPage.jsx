@@ -78,11 +78,6 @@ function LandingPage({ onNavigate }) {
               <h3>Rate Schedule</h3>
               <p>View compensation information</p>
             </button>
-            <button className="guideline-card" onClick={() => onNavigate('review')}>
-              <div className="card-icon">👀</div>
-              <h3>Review Guidelines</h3>
-              <p>Learn about the review process</p>
-            </button>
           </div>
         </section>
       </main>
