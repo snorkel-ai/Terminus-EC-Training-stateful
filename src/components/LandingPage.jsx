@@ -22,7 +22,7 @@ function LandingPage({ onNavigate }) {
           <div className="resource-buttons">
             <button className="resource-button" onClick={() => onNavigate('videos')}>
               <span className="button-icon">🎥</span>
-              <span className="button-text">Task Walkthrough Training</span>
+              <span className="button-text">Task Walkthrough Videos</span>
             </button>
             <button className="resource-button" onClick={() => onNavigate('workbook')}>
               <span className="button-icon">📝</span>

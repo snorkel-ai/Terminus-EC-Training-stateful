@@ -26,11 +26,11 @@ function Videos({ onNavigate }) {
         <button className="back-button" onClick={() => onNavigate('home')}>
           ← Back to Home
         </button>
-        <div className="videos-logo">Task Walkthrough Training</div>
+        <div className="videos-logo">Task Walkthrough Videos</div>
       </header>
       
       <main className="videos-content">
-        <h1 className="videos-title">Task Walkthrough Training</h1>
+        <h1 className="videos-title">Task Walkthrough Videos</h1>
         <p className="videos-subtitle">
           Watch these step-by-step videos to learn how to create and submit tasks
         </p>
