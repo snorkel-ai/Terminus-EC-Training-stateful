@@ -64,8 +64,15 @@
   font-size: 3rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 0;
+  margin-bottom: 1rem;
   line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin-top: 0;
+  line-height: 1.6;
 }
 
 /* Overview Section */

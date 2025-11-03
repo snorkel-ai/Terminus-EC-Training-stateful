@@ -5,7 +5,7 @@ function LandingPage({ onNavigate }) {
     <div className="landing-page">
       <header className="header">
         <nav className="nav">
-          <div className="logo">Terminus EC</div>
+          <div className="logo">Terminus Training Hub</div>
           <ul className="nav-links">
             <li><a href="#home">Home</a></li>
           </ul>
@@ -14,7 +14,8 @@ function LandingPage({ onNavigate }) {
 
       <main className="main-content">
         <section className="hero">
-          <h1 className="hero-title">Welcome to Terminus EC Training</h1>
+          <h1 className="hero-title">Terminus Training Hub</h1>
+          <p className="hero-subtitle">Slack for all project-related questions: <strong>#ec-terminus-submission</strong></p>
         </section>
 
         <section className="overview-section">
@@ -50,7 +51,6 @@ function LandingPage({ onNavigate }) {
 
           <h3>Resources</h3>
           <ul>
-            <li>Slack for all project-related questions: <strong>#ec-terminus-submission</strong></li>
             <li>Terminal-Bench site: <a href="https://www.tbench.ai/" target="_blank" rel="noopener noreferrer">https://www.tbench.ai/</a></li>
             <li>While this project is NOT affiliated with the official Terminal-Bench project, this is a valuable resource given their similarities</li>
             <li>Tickets for non-project-specific questions (i.e., payments): Expert Support Form</li>
