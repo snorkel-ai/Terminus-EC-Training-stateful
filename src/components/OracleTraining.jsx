@@ -12,11 +12,7 @@ function OracleTraining({ onNavigate }) {
       
       <main className="videos-content">
         <h1 className="videos-title">Oracle Training</h1>
-        <p className="videos-subtitle">
-          Learn about creating and working with oracle solutions
-        </p>
-        
-        <div className="video-overview">
+        <div className="videos-subtitle">
           <p><strong>This video covers:</strong></p>
           <ol>
             <li>What the Oracle Agent is</li>
