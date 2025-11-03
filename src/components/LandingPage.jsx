@@ -62,6 +62,15 @@ function LandingPage({ onNavigate }) {
               <span className="button-text">Oracle Training</span>
               <span className="button-description">Covers how to run the Oracle Agent and debug any issues</span>
             </button>
+            <a 
+              href="/Terminus-EC-Training/Terminus%20EC%20Onboarding.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="resource-button"
+            >
+              <span className="button-text">Onboarding Slides</span>
+              <span className="button-description">View the onboarding presentation slides</span>
+            </a>
           </div>
         </section>
 
