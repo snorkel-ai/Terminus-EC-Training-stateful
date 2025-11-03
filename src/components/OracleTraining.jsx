@@ -1,4 +1,5 @@
 import './Videos.css';
+import './Workbook.css';
 
 function OracleTraining({ onNavigate }) {
   return (
@@ -12,17 +13,28 @@ function OracleTraining({ onNavigate }) {
       
       <main className="videos-content">
         <h1 className="videos-title">Oracle Training</h1>
-        <div className="videos-subtitle">
-          <p><strong>This video covers:</strong></p>
-          <ol>
-            <li>What the Oracle Agent is</li>
-            <li>How to run it</li>
-            <li>How to debug its output</li>
-            <li>How to submit a debugged task</li>
-          </ol>
+        <div className="workbook-intro">
+          <p>
+            This page covers what the Oracle Agent is, how to run it, how to debug its output, 
+            and how to submit a debugged task. Use the practice workbook to iterate on your task 
+            and watch the video tutorial for a step-by-step walkthrough.
+          </p>
         </div>
         
-        <div className="videos-grid">
+        <div className="workbook-resources">
+          <div className="download-card">
+            <div className="download-icon">📓</div>
+            <h3>Oracle Agent Training Notebook</h3>
+            <p>Download the Jupyter notebook for hands-on practice with the Oracle Agent</p>
+            <a 
+              href="/Terminus-EC-Training/oracle_agent_training.ipynb" 
+              download="oracle_agent_training.ipynb"
+              className="download-button"
+            >
+              Download Notebook
+            </a>
+          </div>
+          
           <div className="video-card">
             <h3 className="video-card-title">Oracle Training Tutorial</h3>
             <div className="video-wrapper">
