@@ -68,7 +68,7 @@ function LandingPage({ onNavigate }) {
               rel="noopener noreferrer"
               className="resource-button"
             >
-              <span className="button-text">Onboarding Slides</span>
+              <span className="button-text">Onboarding Slides (PDF)</span>
               <span className="button-description">View the onboarding presentation slides</span>
             </a>
           </div>
