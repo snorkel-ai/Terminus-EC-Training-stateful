@@ -41,7 +41,7 @@
 /* Content */
 .workbook-content {
   flex: 1;
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 3rem 2rem;
   width: 100%;
@@ -55,18 +55,25 @@
   text-align: center;
 }
 
-.workbook-subtitle {
-  font-size: 1.125rem;
-  color: #64748b;
+.workbook-intro {
+  max-width: 900px;
+  margin: 0 auto 3rem;
   text-align: center;
-  margin-bottom: 3rem;
 }
 
-/* Download Section */
-.workbook-download-section {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
+.workbook-intro p {
+  font-size: 1.125rem;
+  color: #475569;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Resources Section - Side by Side */
+.workbook-resources {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 .download-card {
@@ -75,8 +82,9 @@
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
-  max-width: 600px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .download-icon {
@@ -96,6 +104,7 @@
   color: #64748b;
   margin-bottom: 1.5rem;
   line-height: 1.6;
+  flex-grow: 1;
 }
 
 .download-button {
@@ -109,6 +118,7 @@
   border-radius: 8px;
   transition: all 0.3s;
   box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+  margin-top: auto;
 }
 
 .download-button:hover {
@@ -117,20 +127,14 @@
   box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
 }
 
-/* Video Section */
-.workbook-video-section {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
 .video-card {
   background-color: #ffffff;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .video-card-title {
@@ -148,6 +152,7 @@
   overflow: hidden;
   border-radius: 8px;
   background-color: #000;
+  width: 100%;
 }
 
 .video-iframe {
@@ -169,12 +174,18 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .workbook-resources {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .workbook-title {
     font-size: 2rem;
   }
 
-  .workbook-subtitle {
+  .workbook-intro p {
     font-size: 1rem;
   }
 
@@ -184,6 +195,10 @@
 
   .video-card-title {
     font-size: 1.125rem;
+  }
+
+  .download-card {
+    padding: 1.5rem;
   }
 }
 

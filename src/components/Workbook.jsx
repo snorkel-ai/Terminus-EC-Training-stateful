@@ -12,11 +12,16 @@ function Workbook({ onNavigate }) {
       
       <main className="workbook-content">
         <h1 className="workbook-title">CI Feedback Training</h1>
-        <p className="workbook-subtitle">
-          Learn how to work with CI feedback and improve your submissions
-        </p>
+        <div className="workbook-intro">
+          <p>
+            CI checks are programmatic evaluations of task correctness and completeness. 
+            You need to iterate on your task until all checks pass. This page provides a 
+            practice workbook where you can do so, along with a video explaining the solution 
+            and walking through how to iterate on CI feedback.
+          </p>
+        </div>
         
-        <div className="workbook-download-section">
+        <div className="workbook-resources">
           <div className="download-card">
             <div className="download-icon">📓</div>
             <h3>CI Feedback Training Notebook</h3>
@@ -29,9 +34,7 @@ function Workbook({ onNavigate }) {
               Download Notebook
             </a>
           </div>
-        </div>
-        
-        <div className="workbook-video-section">
+          
           <div className="video-card">
             <h3 className="video-card-title">CI Feedback Training Tutorial</h3>
             <div className="video-wrapper">
