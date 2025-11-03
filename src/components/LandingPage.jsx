@@ -17,6 +17,46 @@ function LandingPage({ onNavigate }) {
           <h1 className="hero-title">Welcome to Terminus EC Training</h1>
         </section>
 
+        <section className="overview-section">
+          <h2>Terminus Overview</h2>
+          <p className="version-info">Version 1.0 (Last updated: Oct 23, 2025)</p>
+          
+          <h3>Project Goal</h3>
+          <p>
+            This project aims to develop a high-quality dataset in the style of Terminal-Bench. 
+            Terminal-Bench is a suite of multi-step agentic tasks executed in a Command-Line Interface (CLI) 
+            environment, designed to benchmark the performance of models. You will design these tasks and 
+            include the necessary components to be compatible with the Terminus framework.
+          </p>
+
+          <h3>Your Role as a Coding Expert</h3>
+          <p>
+            Your role is to develop a task, solution, and associated tests to verify the solution. These 
+            should be quite difficult, targeting an accuracy of below 80% for GPT-5 or Sonnet 4.5.
+          </p>
+          
+          <p><strong>Task Difficulty Classifications:</strong></p>
+          <ul>
+            <li><strong>Hard</strong> - accuracy &lt; 40% for GPT-5 or Sonnet 4.5</li>
+            <li><strong>Medium</strong> - accuracy &lt; 60% for either GPT-5 or Sonnet 4.5</li>
+            <li><strong>Easy</strong> - accuracy &lt; 80% for either GPT-5 or Sonnet 4.5</li>
+          </ul>
+
+          <p>
+            You will create the task locally, validate that it meets all project criteria, and then package 
+            it as part of your submissions. Each submission undergoes independent review by another qualified 
+            coding expert with experience in the corresponding practice area to ensure accuracy and completeness.
+          </p>
+
+          <h3>Resources</h3>
+          <ul>
+            <li>Slack for all project-related questions: <strong>#ec-terminus-submission</strong></li>
+            <li>Terminal-Bench site: <a href="https://www.tbench.ai/" target="_blank" rel="noopener noreferrer">https://www.tbench.ai/</a></li>
+            <li>While this project is NOT affiliated with the official Terminal-Bench project, this is a valuable resource given their similarities</li>
+            <li>Tickets for non-project-specific questions (i.e., payments): Expert Support Form</li>
+          </ul>
+        </section>
+
         <section className="resources-section">
           <h2 className="section-title">Training Resources</h2>
           <div className="resource-buttons">
@@ -38,11 +78,6 @@ function LandingPage({ onNavigate }) {
         <section className="guidelines-section">
           <h2 className="section-title">EC Guidelines</h2>
           <div className="guidelines-grid">
-            <button className="guideline-card" onClick={() => onNavigate('overview')}>
-              <div className="card-icon">📋</div>
-              <h3>Project Overview</h3>
-              <p>Learn about the project goals and your role</p>
-            </button>
             <button className="guideline-card" onClick={() => onNavigate('components')}>
               <div className="card-icon">🧩</div>
               <h3>Task Components</h3>

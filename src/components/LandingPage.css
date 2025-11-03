@@ -68,6 +68,64 @@
   line-height: 1.2;
 }
 
+/* Overview Section */
+.overview-section {
+  max-width: 900px;
+  margin: 3rem auto 2rem;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.overview-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.overview-section .version-info {
+  color: #64748b;
+  font-size: 0.938rem;
+  margin-bottom: 2rem;
+}
+
+.overview-section h3 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.overview-section p {
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.overview-section ul {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+  color: #475569;
+}
+
+.overview-section li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.overview-section a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.overview-section a:hover {
+  text-decoration: underline;
+}
+
 /* Sections */
 .resources-section {
   margin-top: 2rem;
@@ -194,6 +252,19 @@
 
   .hero-subtitle {
     font-size: 1rem;
+  }
+
+  .overview-section {
+    padding: 1.5rem;
+    margin: 2rem auto 1.5rem;
+  }
+
+  .overview-section h2 {
+    font-size: 1.75rem;
+  }
+
+  .overview-section h3 {
+    font-size: 1.25rem;
   }
 }
 
