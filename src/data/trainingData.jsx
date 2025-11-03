@@ -434,8 +434,8 @@ export const trainingSections = [
           environment correctness, and tagging. Disagreements are adjudicated by Snorkel's in-house experts.
         </p>
 
-        <h3>CI and Evals</h3>
-        <p>The following automated checks are run on all submissions:</p>
+        <h3>LLMAJ Checks</h3>
+        <p>The following automated checks evaluate task quality and correctness:</p>
 
         <table>
           <thead>
@@ -466,6 +466,28 @@ export const trainingSections = [
               <td>If agent produces structured data, is exact schema described?</td>
             </tr>
             <tr>
+              <td><code>hardcoded_solution</code></td>
+              <td>Solution should demonstrate command sequence, not just output answer</td>
+            </tr>
+            <tr>
+              <td><code>file_reference_mentioned</code></td>
+              <td>If agent needs to produce a file, is filename mentioned in task.yaml?</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>CI Checks</h3>
+        <p>The following automated checks validate technical requirements:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Check Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
               <td><code>pinned_dependencies</code></td>
               <td>Are external dependencies pinned to ensure reproducibility?</td>
             </tr>
@@ -480,14 +502,6 @@ export const trainingSections = [
             <tr>
               <td><code>test_deps_in_image</code></td>
               <td>Test dependencies should be installed in run-tests.sh</td>
-            </tr>
-            <tr>
-              <td><code>hardcoded_solution</code></td>
-              <td>Solution should demonstrate command sequence, not just output answer</td>
-            </tr>
-            <tr>
-              <td><code>file_reference_mentioned</code></td>
-              <td>If agent needs to produce a file, is filename mentioned in task.yaml?</td>
             </tr>
             <tr>
               <td><code>check_canary</code></td>
