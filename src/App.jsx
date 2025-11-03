@@ -4,6 +4,7 @@ import LandingPage from './components/LandingPage';
 import GuidelineSection from './components/GuidelineSection';
 import Videos from './components/Videos';
 import Workbook from './components/Workbook';
+import OracleTraining from './components/OracleTraining';
 import { trainingSections } from './data/trainingData';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       {guidelineSection && <GuidelineSection section={guidelineSection} onNavigate={handleNavigate} />}
       {currentView === 'videos' && <Videos onNavigate={handleNavigate} />}
       {currentView === 'workbook' && <Workbook onNavigate={handleNavigate} />}
+      {currentView === 'oracle' && <OracleTraining onNavigate={handleNavigate} />}
     </div>
   );
 }

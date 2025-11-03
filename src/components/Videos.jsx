@@ -18,10 +18,6 @@ function Videos({ onNavigate }) {
       id: 'a00541ff2787464c84bf4601415ee624',
       title: '4. Creating tests for your task',
     },
-    {
-      id: '72b70216a5314068823bc6ed0350e672',
-      title: '5. Additional Tutorial',
-    },
   ];
 
   return (
@@ -30,13 +26,13 @@ function Videos({ onNavigate }) {
         <button className="back-button" onClick={() => onNavigate('home')}>
           ← Back to Home
         </button>
-        <div className="videos-logo">Tutorial Videos</div>
+        <div className="videos-logo">Task Walkthrough Training</div>
       </header>
       
       <main className="videos-content">
-        <h1 className="videos-title">Tutorial Videos</h1>
+        <h1 className="videos-title">Task Walkthrough Training</h1>
         <p className="videos-subtitle">
-          Watch these comprehensive training videos to learn about the Terminus EC project
+          Watch these step-by-step videos to learn how to create and submit tasks
         </p>
         
         <div className="videos-grid">

@@ -18,15 +18,19 @@ function LandingPage({ onNavigate }) {
         </section>
 
         <section className="resources-section">
-          <h2 className="section-title">Resources</h2>
+          <h2 className="section-title">Training Resources</h2>
           <div className="resource-buttons">
             <button className="resource-button" onClick={() => onNavigate('videos')}>
               <span className="button-icon">🎥</span>
-              <span className="button-text">Tutorial Videos</span>
+              <span className="button-text">Task Walkthrough Training</span>
             </button>
             <button className="resource-button" onClick={() => onNavigate('workbook')}>
               <span className="button-icon">📝</span>
-              <span className="button-text">Practice Workbook</span>
+              <span className="button-text">CI Feedback Training</span>
+            </button>
+            <button className="resource-button" onClick={() => onNavigate('oracle')}>
+              <span className="button-icon">🎯</span>
+              <span className="button-text">Oracle Training</span>
             </button>
           </div>
         </section>
