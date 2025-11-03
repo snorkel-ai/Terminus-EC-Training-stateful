@@ -98,7 +98,6 @@
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
-  justify-items: center;
 }
 
 .video-card:hover {
