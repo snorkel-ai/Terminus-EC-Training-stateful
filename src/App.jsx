@@ -7,6 +7,8 @@ import Workbook from './components/Workbook';
 import OracleTraining from './components/OracleTraining';
 import OnboardingMaterials from './components/OnboardingMaterials';
 import FeedbackSlides from './components/FeedbackSlides';
+import FAQ from './components/FAQ';
+import Glossary from './components/Glossary';
 import { trainingSections } from './data/trainingData';
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
       {currentView === 'oracle' && <OracleTraining onNavigate={handleNavigate} />}
       {currentView === 'onboarding' && <OnboardingMaterials onNavigate={handleNavigate} />}
       {currentView === 'feedback' && <FeedbackSlides onNavigate={handleNavigate} />}
+      {currentView === 'faq' && <FAQ onNavigate={handleNavigate} />}
+      {currentView === 'glossary' && <Glossary onNavigate={handleNavigate} />}
     </div>
   );
 }

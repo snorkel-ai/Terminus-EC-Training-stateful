@@ -70,6 +70,14 @@ function LandingPage({ onNavigate }) {
               <span className="button-text">Feedback Slides</span>
               <span className="button-description">View feedback presentation slides with common issues and best practices</span>
             </button>
+            <button className="resource-button" onClick={() => onNavigate('faq')}>
+              <span className="button-text">FAQ</span>
+              <span className="button-description">Frequently asked questions about the project</span>
+            </button>
+            <button className="resource-button" onClick={() => onNavigate('glossary')}>
+              <span className="button-text">Glossary</span>
+              <span className="button-description">Definitions and explanations of key terms</span>
+            </button>
           </div>
         </section>
 
