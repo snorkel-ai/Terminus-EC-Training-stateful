@@ -1,4 +1,5 @@
 import './LandingPage.css';
+import './Content.css';
 
 function LandingPage({ onNavigate }) {
   return (
@@ -34,11 +35,32 @@ function LandingPage({ onNavigate }) {
           </p>
           
           <p><strong>Task Difficulty Classifications:</strong></p>
-          <ul>
-            <li><strong>Hard</strong> - accuracy &lt; 40% for GPT-5 or Sonnet 4.5</li>
-            <li><strong>Medium</strong> - accuracy &lt; 60% for either GPT-5 or Sonnet 4.5</li>
-            <li><strong>Easy</strong> - accuracy &lt; 80% for either GPT-5 or Sonnet 4.5</li>
-          </ul>
+          <table>
+            <thead>
+              <tr>
+                <th>Difficulty Level</th>
+                <th>Accuracy Threshold</th>
+                <th>Models</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hard</strong></td>
+                <td>&lt; 40%</td>
+                <td>GPT-5 or Sonnet 4.5</td>
+              </tr>
+              <tr>
+                <td><strong>Medium</strong></td>
+                <td>&lt; 60%</td>
+                <td>Either GPT-5 or Sonnet 4.5</td>
+              </tr>
+              <tr>
+                <td><strong>Easy</strong></td>
+                <td>&lt; 80%</td>
+                <td>Either GPT-5 or Sonnet 4.5</td>
+              </tr>
+            </tbody>
+          </table>
 
           <p>
             You will create the task locally, validate that it meets all project criteria, and then package 
