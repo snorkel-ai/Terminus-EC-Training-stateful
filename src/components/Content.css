@@ -145,3 +145,27 @@ tr:last-child td {
   }
 }
 
+/* Glossary Grid Styles */
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.glossary-grid .info-box {
+  margin: 0;
+}
+
+@media (max-width: 1000px) {
+  .glossary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .glossary-grid {
+    gap: 1rem;
+  }
+}
+
