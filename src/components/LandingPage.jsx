@@ -100,6 +100,10 @@ function LandingPage({ onNavigate }) {
               <span className="button-text">Glossary</span>
               <span className="button-description">Definitions and explanations of key terms</span>
             </button>
+            <button className="resource-button" onClick={() => onNavigate('local-testing')}>
+              <span className="button-text">Local Testing Info</span>
+              <span className="button-description">Instructions for testing tasks locally with real agents</span>
+            </button>
           </div>
         </section>
 

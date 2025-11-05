@@ -9,6 +9,7 @@ import OnboardingMaterials from './components/OnboardingMaterials';
 import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
+import LocalTestingInfo from './components/LocalTestingInfo';
 import { trainingSections } from './data/trainingData';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       {currentView === 'feedback' && <FeedbackSlides onNavigate={handleNavigate} />}
       {currentView === 'faq' && <FAQ onNavigate={handleNavigate} />}
       {currentView === 'glossary' && <Glossary onNavigate={handleNavigate} />}
+      {currentView === 'local-testing' && <LocalTestingInfo onNavigate={handleNavigate} />}
     </div>
   );
 }
