@@ -1,71 +1,17 @@
-.guideline-section-page {
+.guideline-page {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #f8fafc;
+  min-height: calc(100vh - 65px);
+  background: #f7fafc;
 }
 
-/* Header */
-.guideline-section-header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 2rem;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.section-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2563eb;
-}
-
-.back-button {
-  background: none;
-  border: none;
-  color: #2563eb;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.back-button:hover {
-  background-color: #eff6ff;
-}
-
-/* Main Content */
-.guideline-section-main {
+.guideline-content-wrapper {
   flex: 1;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 3rem 2rem;
-  width: 100%;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  overflow-y: auto;
 }
 
-/* Footer */
-.guideline-section-footer {
-  background-color: #ffffff;
+.section-actions {
+  padding: 24px;
   text-align: center;
-  padding: 1.5rem;
-  color: #64748b;
+  background: white;
   border-top: 1px solid #e2e8f0;
 }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .guideline-section-main {
-    padding: 2rem 1.5rem;
-    margin: 1rem;
-  }
-}
-

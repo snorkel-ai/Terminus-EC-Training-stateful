@@ -1,11 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 import './Workbook.css';
 
-function OnboardingMaterials({ onNavigate }) {
+function OnboardingMaterials() {
+  const navigate = useNavigate();
+
   return (
     <div className="videos-page">
       <header className="videos-header">
-        <button className="back-button" onClick={() => onNavigate('home')}>
+        <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
         <div className="videos-logo">Onboarding Materials</div>
@@ -55,6 +59,10 @@ function OnboardingMaterials({ onNavigate }) {
             </div>
           </div>
         </div>
+
+        <div className="workbook-actions">
+          <CompletionToggle itemId="resource-onboarding" />
+        </div>
       </main>
 
       <footer className="videos-footer">
@@ -65,4 +73,3 @@ function OnboardingMaterials({ onNavigate }) {
 }
 
 export default OnboardingMaterials;
-

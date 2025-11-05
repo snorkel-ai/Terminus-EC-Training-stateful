@@ -1,11 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 import './Workbook.css';
 
-function FeedbackSlides({ onNavigate }) {
+function FeedbackSlides() {
+  const navigate = useNavigate();
+
   return (
     <div className="videos-page">
       <header className="videos-header">
-        <button className="back-button" onClick={() => onNavigate('home')}>
+        <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
         <div className="videos-logo">Feedback Slides</div>
@@ -48,6 +52,10 @@ function FeedbackSlides({ onNavigate }) {
             </a>
           </div>
         </div>
+
+        <div className="workbook-actions">
+          <CompletionToggle itemId="resource-feedback" />
+        </div>
       </main>
 
       <footer className="videos-footer">
@@ -58,4 +66,3 @@ function FeedbackSlides({ onNavigate }) {
 }
 
 export default FeedbackSlides;
-

@@ -1,0 +1,92 @@
+.section-stats {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+}
+
+.section-stats-header {
+  margin-bottom: 24px;
+}
+
+.section-stats-header h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  color: #2d3748;
+}
+
+.section-stats-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #718096;
+}
+
+.chart-container {
+  margin: 24px 0;
+}
+
+.custom-tooltip {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-title {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 14px;
+}
+
+.tooltip-value {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: #667eea;
+  font-size: 16px;
+}
+
+.tooltip-detail {
+  margin: 0;
+  font-size: 13px;
+  color: #718096;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #4a5568;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .section-stats {
+    padding: 16px;
+  }
+
+  .chart-container {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .legend {
+    gap: 12px;
+  }
+}
+

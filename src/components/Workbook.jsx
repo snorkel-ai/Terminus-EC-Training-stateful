@@ -1,10 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+import CompletionToggle from './Progress/CompletionToggle';
 import './Workbook.css';
 
-function Workbook({ onNavigate }) {
+function Workbook() {
+  const navigate = useNavigate();
+  
   return (
     <div className="workbook-page">
       <header className="workbook-header">
-        <button className="back-button" onClick={() => onNavigate('home')}>
+        <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
         <div className="workbook-logo">CI Feedback Training</div>
@@ -173,6 +177,10 @@ function Workbook({ onNavigate }) {
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div className="workbook-actions">
+          <CompletionToggle itemId="resource-workbook" />
         </div>
       </main>
 

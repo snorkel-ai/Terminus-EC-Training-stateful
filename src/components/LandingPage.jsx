@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 
-function LandingPage({ onNavigate }) {
+function LandingPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="landing-page">
       <header className="header">
@@ -50,31 +53,31 @@ function LandingPage({ onNavigate }) {
         <section className="resources-section">
           <h2 className="section-title">Training Resources</h2>
           <div className="resource-buttons">
-            <button className="resource-button" onClick={() => onNavigate('videos')}>
+            <button className="resource-button" onClick={() => navigate('/videos')}>
               <span className="button-text">Task Walkthrough Videos</span>
               <span className="button-description">Walks through the process of creating a task, running it, and creating a solution and tests</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('workbook')}>
+            <button className="resource-button" onClick={() => navigate('/workbook')}>
               <span className="button-text">CI Feedback Training</span>
               <span className="button-description">Covers how to effectively utilize feedback from CI checks to iterate on submissions</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('oracle')}>
+            <button className="resource-button" onClick={() => navigate('/oracle')}>
               <span className="button-text">Oracle Training</span>
               <span className="button-description">Covers how to run the Oracle Agent and debug any issues</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('onboarding')}>
+            <button className="resource-button" onClick={() => navigate('/onboarding')}>
               <span className="button-text">Onboarding Materials</span>
               <span className="button-description">Access the onboarding presentation slides and video</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('feedback')}>
+            <button className="resource-button" onClick={() => navigate('/feedback')}>
               <span className="button-text">Feedback Slides</span>
               <span className="button-description">View feedback presentation slides with common issues and best practices</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('faq')}>
+            <button className="resource-button" onClick={() => navigate('/faq')}>
               <span className="button-text">FAQ</span>
               <span className="button-description">Frequently asked questions about the project</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('glossary')}>
+            <button className="resource-button" onClick={() => navigate('/glossary')}>
               <span className="button-text">Glossary</span>
               <span className="button-description">Definitions and explanations of key terms</span>
             </button>
@@ -84,32 +87,32 @@ function LandingPage({ onNavigate }) {
         <section className="guidelines-section">
           <h2 className="section-title">EC Guidelines</h2>
           <div className="guidelines-grid">
-            <button className="guideline-card" onClick={() => onNavigate('components')}>
+            <button className="guideline-card" onClick={() => navigate('/guideline-components')}>
               <div className="card-icon">🧩</div>
               <h3>Task Components</h3>
               <p>Understand submission requirements</p>
             </button>
-            <button className="guideline-card" onClick={() => onNavigate('taxonomy')}>
+            <button className="guideline-card" onClick={() => navigate('/guideline-taxonomy')}>
               <div className="card-icon">🏷️</div>
               <h3>Task Type Taxonomy</h3>
               <p>Explore task categories and types</p>
             </button>
-            <button className="guideline-card" onClick={() => onNavigate('workflow')}>
+            <button className="guideline-card" onClick={() => navigate('/guideline-workflow')}>
               <div className="card-icon">⚙️</div>
               <h3>Setup + Workflow</h3>
               <p>Get started with the development process</p>
             </button>
-            <button className="guideline-card" onClick={() => onNavigate('requirements')}>
+            <button className="guideline-card" onClick={() => navigate('/guideline-requirements')}>
               <div className="card-icon">✅</div>
               <h3>Task Requirements</h3>
               <p>Review design requirements and checklist</p>
             </button>
-            <button className="guideline-card" onClick={() => onNavigate('examples')}>
+            <button className="guideline-card" onClick={() => navigate('/guideline-examples')}>
               <div className="card-icon">💡</div>
               <h3>Example Tasks</h3>
               <p>View sample tasks and implementations</p>
             </button>
-            <button className="guideline-card" onClick={() => onNavigate('rates')}>
+            <button className="guideline-card" onClick={() => navigate('/guideline-rates')}>
               <div className="card-icon">💰</div>
               <h3>Rate Schedule</h3>
               <p>View compensation information</p>

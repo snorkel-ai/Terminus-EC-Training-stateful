@@ -1,63 +1,87 @@
 .sidebar {
   width: 280px;
-  height: calc(100vh - 64px); /* Full height minus header */
-  position: fixed;
-  left: 0;
-  top: 64px; /* Height of header */
-  background-color: #f8fafc;
+  background: white;
   border-right: 1px solid #e2e8f0;
+  padding: 20px;
   overflow-y: auto;
-  z-index: 100;
+  flex-shrink: 0;
 }
 
 .sidebar-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
-  background-color: #ffffff;
+  margin-bottom: 20px;
 }
 
-.sidebar-header h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0;
+.home-button {
+  width: 100%;
+  padding: 12px 16px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.home-button:hover {
+  background: #5568d3;
+}
+
+.sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 16px 0 8px;
+  padding: 0 16px;
 }
 
 .sidebar-nav {
-  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .sidebar-item {
   width: 100%;
-  padding: 0.75rem 1.5rem;
-  text-align: left;
-  border: none;
+  padding: 12px 16px;
   background: none;
-  color: #64748b;
-  font-size: 0.938rem;
-  font-weight: 500;
+  border: none;
+  text-align: left;
   cursor: pointer;
+  color: #4a5568;
   transition: all 0.2s;
-  border-left: 3px solid transparent;
+  font-size: 14px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sidebar-item:hover {
-  background-color: #f1f5f9;
-  color: #1e293b;
+  background: #f7fafc;
+  color: #2d3748;
 }
 
 .sidebar-item.active {
-  background-color: #eff6ff;
-  color: #2563eb;
-  border-left-color: #2563eb;
+  background: #edf2f7;
+  color: #2d3748;
   font-weight: 600;
+}
+
+.sidebar-checkmark {
+  color: #48bb78;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
+    display: none;
   }
 }
-

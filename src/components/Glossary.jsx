@@ -1,11 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 import './Content.css';
 
-function Glossary({ onNavigate }) {
+function Glossary() {
+  const navigate = useNavigate();
+
   return (
     <div className="videos-page">
       <header className="videos-header">
-        <button className="back-button" onClick={() => onNavigate('home')}>
+        <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
         <div className="videos-logo">Glossary</div>
@@ -23,6 +27,10 @@ function Glossary({ onNavigate }) {
             </p>
           </div>
         </div>
+
+        <div className="workbook-actions">
+          <CompletionToggle itemId="resource-glossary" />
+        </div>
       </main>
 
       <footer className="videos-footer">
@@ -33,4 +41,3 @@ function Glossary({ onNavigate }) {
 }
 
 export default Glossary;
-

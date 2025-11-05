@@ -1,0 +1,71 @@
+.completion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.completion-toggle:hover:not(:disabled) {
+  border-color: #cbd5e0;
+  background: #f7fafc;
+  transform: translateY(-1px);
+}
+
+.completion-toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.completion-toggle.completed {
+  background: #f0fff4;
+  border-color: #48bb78;
+  color: #22543d;
+}
+
+.completion-toggle.completed:hover:not(:disabled) {
+  background: #e6f9e9;
+  border-color: #38a169;
+}
+
+.completion-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  transition: all 0.2s;
+}
+
+.completion-toggle.completed .completion-checkbox {
+  background: #48bb78;
+  border-color: #48bb78;
+}
+
+.completion-checkmark {
+  width: 16px;
+  height: 16px;
+  color: white;
+}
+
+.completion-label {
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .completion-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
