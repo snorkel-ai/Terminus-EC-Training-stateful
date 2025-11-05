@@ -25,7 +25,7 @@ function OnboardingMaterials({ onNavigate }) {
             <h3>Onboarding Slides</h3>
             <p>Download or view the onboarding presentation slides</p>
             <a 
-              href="/Terminus-EC-Training/Terminus%20EC%20Onboarding.pdf" 
+              href="/Terminus-EC-Training/Onboarding%20Edited.pdf" 
               target="_blank"
               rel="noopener noreferrer"
               className="download-button"
@@ -49,7 +49,7 @@ function OnboardingMaterials({ onNavigate }) {
                   objectFit: 'contain'
                 }}
               >
-                <source src="/Terminus-EC-Training/video1251502681.mp4" type="video/mp4" />
+                <source src="/Terminus-EC-Training/onboarding_edited.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
