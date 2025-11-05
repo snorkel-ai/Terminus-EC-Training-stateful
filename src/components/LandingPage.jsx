@@ -39,25 +39,17 @@ function LandingPage({ onNavigate }) {
             <thead>
               <tr>
                 <th>Difficulty Level</th>
-                <th>Accuracy Threshold</th>
-                <th>Models</th>
+                <th>Hard</th>
+                <th>Medium</th>
+                <th>Easy</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>Hard</strong></td>
+                <td><strong>Accuracy Threshold</strong></td>
                 <td>&lt; 40%</td>
-                <td>GPT-5 or Sonnet 4.5</td>
-              </tr>
-              <tr>
-                <td><strong>Medium</strong></td>
                 <td>&lt; 60%</td>
-                <td>Either GPT-5 or Sonnet 4.5</td>
-              </tr>
-              <tr>
-                <td><strong>Easy</strong></td>
                 <td>&lt; 80%</td>
-                <td>Either GPT-5 or Sonnet 4.5</td>
               </tr>
             </tbody>
           </table>
