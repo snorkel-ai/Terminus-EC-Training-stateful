@@ -4,10 +4,13 @@ import { useAuth } from '../../contexts/AuthContext';
 import './UserMenu.css';
 
 function UserMenu() {
-  const { profile, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+  
+  // Check admin status from session metadata (Supabase pattern)
+  const isAdmin = user?.user_metadata?.is_admin || false;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -58,7 +61,7 @@ function UserMenu() {
 
       {isOpen && (
         <div className="user-menu-dropdown">
-          {profile.is_admin && (
+          {isAdmin && (
             <button
               className="user-menu-item"
               onClick={() => {

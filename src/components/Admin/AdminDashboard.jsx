@@ -8,21 +8,24 @@ import SectionStats from './SectionStats';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
-  const { profile } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [sections, setSections] = useState([]);
+  
+  // Check admin from session metadata (Supabase pattern)
+  const isAdmin = user?.user_metadata?.is_admin || false;
 
   useEffect(() => {
-    if (!profile?.is_admin) {
+    if (!isAdmin) {
       navigate('/');
       return;
     }
 
     fetchDashboardData();
-  }, [profile, navigate]);
+  }, [isAdmin, navigate]);
 
   const fetchDashboardData = async () => {
     try {
@@ -30,7 +33,7 @@ function AdminDashboard() {
 
       // Fetch all users with their stats
       const { data: usersData, error: usersError } = await supabase
-        .from('v_user_stats')
+        .from('v_admin_user_stats')  // Changed to new admin view
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -79,7 +82,7 @@ function AdminDashboard() {
     }
   };
 
-  if (!profile?.is_admin) {
+  if (!isAdmin) {
     return null;
   }
 

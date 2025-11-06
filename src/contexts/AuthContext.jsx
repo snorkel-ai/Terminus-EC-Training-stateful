@@ -53,10 +53,7 @@ export const AuthProvider = ({ children }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-          console.log('Upserting user profile...');
-          await upsertUserProfile(session.user);
-        }
+        // Trigger handles profile creation automatically - just fetch it
         console.log('Fetching user profile after auth change...');
         await fetchUserProfile(session.user.id);
       } else {
@@ -71,17 +68,36 @@ export const AuthProvider = ({ children }) => {
   const fetchUserProfile = async (userId) => {
     try {
       console.log('Fetching user profile for:', userId);
-      const { data, error } = await supabase
-        .from('users')
+      console.log('About to query profiles table...');
+      
+      const queryStart = Date.now();
+      const result = await supabase
+        .from('profiles')  // Changed from 'users' to 'profiles'
         .select('*')
         .eq('id', userId)
         .single();
+      
+      const queryTime = Date.now() - queryStart;
+      console.log(`Query completed in ${queryTime}ms`);
+      console.log('Query result:', result);
+
+      const { data, error } = result;
 
       if (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Error fetching profile:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        
+        // If profile doesn't exist, create it (fallback)
+        if (error.code === 'PGRST116') {
+          console.log('Profile not found - this should not happen with trigger');
+        }
         throw error;
       }
-      console.log('Profile fetched:', data);
+      console.log('Profile fetched successfully:', data);
       setProfile(data);
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
@@ -93,60 +109,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const upsertUserProfile = async (user) => {
-    try {
-      console.log('Upserting user:', user.email);
-      console.log('User data:', {
-        id: user.id,
-        email: user.email,
-        username: user.user_metadata?.user_name || user.user_metadata?.preferred_username,
-        avatar: user.user_metadata?.avatar_url
-      });
-      
-      // Try the upsert with detailed logging
-      const userRecord = {
-        id: user.id,
-        email: user.email,
-        github_username: user.user_metadata?.user_name || user.user_metadata?.preferred_username,
-        github_avatar_url: user.user_metadata?.avatar_url,
-        last_active: new Date().toISOString(),
-      };
-
-      console.log('Attempting upsert with record:', userRecord);
-      console.log('Starting upsert at:', new Date().toISOString());
-      
-      // Check if we can even make a simple query first
-      const { count, error: countError } = await supabase
-        .from('users')
-        .select('*', { count: 'exact', head: true });
-      
-      console.log('Pre-check count query result:', { count, countError });
-      
-      const { data, error, status, statusText } = await supabase
-        .from('users')
-        .upsert(userRecord, {
-          onConflict: 'id'
-        })
-        .select();  // Add .select() to return the inserted/updated record
-
-      console.log('Upsert completed at:', new Date().toISOString());
-      console.log('Upsert response:', { data, error, status, statusText });
-
-      if (error) {
-        console.error('Upsert error details:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
-        throw error;
-      }
-      console.log('User upserted successfully');
-    } catch (error) {
-      console.error('Error upserting user profile:', error);
-      // Don't block login even if upsert fails
-    }
-  };
+  // Removed upsertUserProfile - the database trigger handles profile creation automatically
 
   const signInWithGitHub = async () => {
     try {
