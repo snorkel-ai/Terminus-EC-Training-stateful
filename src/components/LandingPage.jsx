@@ -20,6 +20,7 @@ function LandingPage({ onNavigate }) {
         </section>
 
         <section className="overview-section">
+          <h2 className="section-title">Project Overview</h2>
           <p>
             This project aims to develop a high-quality dataset in the style of Terminal-Bench. 
             Terminal-Bench is a suite of multi-step agentic tasks executed in a Command-Line Interface (CLI) 
@@ -27,7 +28,6 @@ function LandingPage({ onNavigate }) {
             should be quite difficult, targeting an accuracy of below 80% for GPT-5 or Sonnet 4.5.
           </p>
           
-          <p><strong>Task Difficulty Classifications:</strong></p>
           <table>
             <thead>
               <tr>
