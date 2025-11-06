@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Supabase Backend</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1e1e1e; color: #fff; }
+    .test { margin: 20px 0; padding: 15px; background: #2d2d2d; border-radius: 5px; }
+    .success { border-left: 4px solid #48bb78; }
+    .error { border-left: 4px solid #f56565; }
+    .pending { border-left: 4px solid #ed8936; }
+    h1 { color: #667eea; }
+    pre { background: #1a1a1a; padding: 10px; border-radius: 3px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Supabase Backend Connection Test</h1>
+  <div id="results"></div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const supabaseUrl = 'https://ntmiycfydldoremofrbf.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50bWl5Y2Z5ZGxkb3JlbW9mcmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIzMDUxNDcsImV4cCI6MjA3Nzg4MTE0N30.LvdzPQaM55tQ9t5yZt60K-lYNaKLRyTNtBQ92Mw5Kpc';
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const results = document.getElementById('results');
+
+    function addResult(title, status, message, data = null) {
+      const div = document.createElement('div');
+      div.className = `test ${status}`;
+      div.innerHTML = `
+        <h3>${title}</h3>
+        <p>${message}</p>
+        ${data ? `<pre>${JSON.stringify(data, null, 2)}</pre>` : ''}
+      `;
+      results.appendChild(div);
+    }
+
+    async function runTests() {
+      // Test 1: Check current auth session
+      addResult('Test 1', 'pending', 'Checking auth session...');
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        addResult('Test 1: Auth Session', 'error', 'Failed to get session', sessionError);
+      } else if (session) {
+        addResult('Test 1: Auth Session', 'success', `Authenticated as: ${session.user.email}`, {
+          user_id: session.user.id,
+          email: session.user.email
+        });
+      } else {
+        addResult('Test 1: Auth Session', 'pending', 'Not authenticated - please sign in');
+      }
+
+      // Test 2: Try to SELECT from users table
+      addResult('Test 2', 'pending', 'Testing SELECT from users table...');
+      const startSelect = Date.now();
+      const { data: selectData, error: selectError } = await supabase
+        .from('users')
+        .select('*')
+        .limit(5);
+      const selectTime = Date.now() - startSelect;
+
+      if (selectError) {
+        addResult('Test 2: SELECT Query', 'error', `Failed (${selectTime}ms)`, selectError);
+      } else {
+        addResult('Test 2: SELECT Query', 'success', `Success (${selectTime}ms) - Found ${selectData.length} users`, selectData);
+      }
+
+      // Test 3: Try to SELECT from progress_items (should always work)
+      addResult('Test 3', 'pending', 'Testing SELECT from progress_items...');
+      const startItems = Date.now();
+      const { data: itemsData, error: itemsError } = await supabase
+        .from('progress_items')
+        .select('*')
+        .limit(5);
+      const itemsTime = Date.now() - startItems;
+
+      if (itemsError) {
+        addResult('Test 3: Progress Items', 'error', `Failed (${itemsTime}ms)`, itemsError);
+      } else {
+        addResult('Test 3: Progress Items', 'success', `Success (${itemsTime}ms) - Found ${itemsData.length} items`, itemsData);
+      }
+
+      // Test 4: Try INSERT (only if authenticated)
+      if (session) {
+        addResult('Test 4', 'pending', 'Testing INSERT to users table...');
+        const startInsert = Date.now();
+        
+        const insertRecord = {
+          id: session.user.id,
+          email: session.user.email,
+          github_username: session.user.user_metadata?.user_name || 'testuser',
+          github_avatar_url: session.user.user_metadata?.avatar_url || 'https://example.com/avatar.jpg',
+          last_active: new Date().toISOString(),
+        };
+
+        const { data: insertData, error: insertError } = await supabase
+          .from('users')
+          .upsert(insertRecord, { onConflict: 'id' })
+          .select();
+        
+        const insertTime = Date.now() - startInsert;
+
+        if (insertError) {
+          addResult('Test 4: UPSERT to users', 'error', `Failed (${insertTime}ms)`, insertError);
+        } else {
+          addResult('Test 4: UPSERT to users', 'success', `Success (${insertTime}ms)`, insertData);
+        }
+      }
+
+      addResult('Tests Complete', 'success', 'All tests finished. Check results above.');
+    }
+
+    runTests().catch(err => {
+      addResult('Fatal Error', 'error', err.message, err);
+    });
+  </script>
+</body>
+</html>
+

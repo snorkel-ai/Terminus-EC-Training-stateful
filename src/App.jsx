@@ -28,7 +28,7 @@ function App() {
             path="/*" 
             element={
               <ProtectedRoute>
-                <div className="app">
+    <div className="app">
                   <Header />
                   <Routes>
                     <Route path="/" element={<LandingPage />} />
@@ -52,7 +52,7 @@ function App() {
                     
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
-                </div>
+    </div>
               </ProtectedRoute>
             } 
           />
