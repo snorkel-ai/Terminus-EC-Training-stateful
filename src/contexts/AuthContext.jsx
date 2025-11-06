@@ -17,32 +17,28 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Failsafe timeout - if loading takes more than 10 seconds, something is wrong
-    const timeout = setTimeout(() => {
-      console.warn('Loading timeout - forcing loading to false');
-      setLoading(false);
-    }, 10000);
-
     // Check active session
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
         console.error('Error getting session:', error);
+        setUser(null);
+        setProfile(null);
         setLoading(false);
-        clearTimeout(timeout);
         return;
       }
       
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchUserProfile(session.user.id).finally(() => clearTimeout(timeout));
+        fetchUserProfile(session.user.id);
       } else {
+        setProfile(null);
         setLoading(false);
-        clearTimeout(timeout);
       }
     }).catch(error => {
       console.error('Unexpected error getting session:', error);
+      setUser(null);
+      setProfile(null);
       setLoading(false);
-      clearTimeout(timeout);
     });
 
     // Listen for auth changes
@@ -68,43 +64,62 @@ export const AuthProvider = ({ children }) => {
   const fetchUserProfile = async (userId) => {
     try {
       console.log('Fetching user profile for:', userId);
-      console.log('About to query profiles table...');
       
-      const queryStart = Date.now();
-      const result = await supabase
-        .from('profiles')  // Changed from 'users' to 'profiles'
+      // Set timeout for profile fetch
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
+      );
+
+      const fetchPromise = supabase
+        .from('profiles')
         .select('*')
         .eq('id', userId)
         .single();
-      
-      const queryTime = Date.now() - queryStart;
-      console.log(`Query completed in ${queryTime}ms`);
-      console.log('Query result:', result);
 
-      const { data, error } = result;
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
 
       if (error) {
-        console.error('Error fetching profile:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
+        console.error('Error fetching profile:', error);
         
-        // If profile doesn't exist, create it (fallback)
-        if (error.code === 'PGRST116') {
-          console.log('Profile not found - this should not happen with trigger');
+        // If profile doesn't exist, create it as fallback (shouldn't happen with trigger)
+        if (error.code === 'PGRST116' || error.message?.includes('timeout')) {
+          console.log('Creating profile manually as fallback...');
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({
+              id: userId,
+              email: user?.email,
+              github_username: user?.user_metadata?.user_name,
+              github_avatar_url: user?.user_metadata?.avatar_url,
+            });
+          
+          if (!insertError) {
+            // Retry fetch after creating profile
+            const { data: retryData } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', userId)
+              .single();
+            setProfile(retryData);
+            setLoading(false);
+            return;
+          }
         }
+        
+        // Auth failed - sign user out for security
+        console.error('Critical: Could not fetch/create profile - signing out');
+        await signOut();
         throw error;
       }
+      
       console.log('Profile fetched successfully:', data);
       setProfile(data);
     } catch (error) {
-      console.error('Error in fetchUserProfile:', error);
-      // Even if profile fetch fails, user is still authenticated
+      console.error('Fatal error in fetchUserProfile:', error);
+      // Critical error - sign user out to prevent unauthorized access
+      setUser(null);
       setProfile(null);
     } finally {
-      console.log('Setting loading to false');
       setLoading(false);
     }
   };
