@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Debug LocalStorage</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1e1e1e; color: #fff; }
+    pre { background: #2d2d2d; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>LocalStorage Inspector</h1>
+  <button onclick="showStorage()">Show All Storage</button>
+  <button onclick="clearSupabaseStorage()">Clear Supabase Storage Only</button>
+  <button onclick="clearAll()">Clear All Storage</button>
+  
+  <h2>Current Storage:</h2>
+  <pre id="output">Click "Show All Storage" to inspect</pre>
+
+  <script>
+    function showStorage() {
+      const storage = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        try {
+          storage[key] = JSON.parse(value);
+        } catch {
+          storage[key] = value;
+        }
+      }
+      document.getElementById('output').textContent = JSON.stringify(storage, null, 2);
+    }
+
+    function clearSupabaseStorage() {
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.includes('supabase') || key.includes('sb-')) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+      alert(`Cleared ${keysToRemove.length} Supabase keys`);
+      showStorage();
+    }
+
+    function clearAll() {
+      localStorage.clear();
+      sessionStorage.clear();
+      alert('All storage cleared');
+      showStorage();
+    }
+
+    // Auto-show on load
+    showStorage();
+  </script>
+</body>
+</html>
+

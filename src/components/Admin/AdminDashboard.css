@@ -58,6 +58,42 @@
   }
 }
 
+/* Admin Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.admin-tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.admin-tab:hover {
+  color: #1f2937;
+  background: #f9fafb;
+}
+
+.admin-tab.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+  font-weight: 600;
+}
+
+.admin-content {
+  margin-top: 1rem;
+}
+
 @media (max-width: 640px) {
   .admin-dashboard {
     padding: 16px;
@@ -67,6 +103,14 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+  }
+  
+  .admin-tabs {
+    overflow-x: auto;
+  }
+  
+  .admin-tab {
+    white-space: nowrap;
   }
 }
 

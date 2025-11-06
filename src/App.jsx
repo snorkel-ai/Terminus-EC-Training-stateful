@@ -15,6 +15,8 @@ import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
 import AdminDashboard from './components/Admin/AdminDashboard';
+import TasksView from './components/Tasks/TasksView';
+import MySelectedTasks from './components/Tasks/MySelectedTasks';
 import { trainingSections } from './data/trainingData';
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
                   <Header />
                   <Routes>
                     <Route path="/" element={<LandingPage />} />
+                    <Route path="/tasks" element={<TasksView />} />
+                    <Route path="/my-tasks" element={<MySelectedTasks />} />
                     <Route path="/videos" element={<Videos />} />
                     <Route path="/workbook" element={<Workbook />} />
                     <Route path="/oracle" element={<OracleTraining />} />

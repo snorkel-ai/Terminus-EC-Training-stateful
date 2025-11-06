@@ -19,6 +19,9 @@
 
 .header-left {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .header-title {
@@ -26,6 +29,35 @@
   font-size: 20px;
   font-weight: 600;
   color: #2d3748;
+}
+
+.header-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header-tab {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.header-tab:hover {
+  color: #2563eb;
+  background: #f3f4f6;
+  border-radius: 4px 4px 0 0;
+}
+
+.header-tab.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+  font-weight: 600;
 }
 
 .header-right {

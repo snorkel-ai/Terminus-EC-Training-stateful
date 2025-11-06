@@ -5,11 +5,13 @@ import { supabase } from '../../lib/supabase';
 import OverviewStats from './OverviewStats';
 import UserStatsTable from './UserStatsTable';
 import SectionStats from './SectionStats';
+import TaskPriorities from './TaskPriorities';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
@@ -107,11 +109,38 @@ function AdminDashboard() {
         </button>
       </div>
 
-      {stats && <OverviewStats stats={stats} />}
+      <div className="admin-tabs">
+        <button
+          className={`admin-tab ${activeTab === 'overview' ? 'active' : ''}`}
+          onClick={() => setActiveTab('overview')}
+        >
+          Overview
+        </button>
+        <button
+          className={`admin-tab ${activeTab === 'users' ? 'active' : ''}`}
+          onClick={() => setActiveTab('users')}
+        >
+          User Progress
+        </button>
+        <button
+          className={`admin-tab ${activeTab === 'sections' ? 'active' : ''}`}
+          onClick={() => setActiveTab('sections')}
+        >
+          Section Stats
+        </button>
+        <button
+          className={`admin-tab ${activeTab === 'priorities' ? 'active' : ''}`}
+          onClick={() => setActiveTab('priorities')}
+        >
+          Task Priorities
+        </button>
+      </div>
 
-      <div className="admin-sections">
-        <UserStatsTable users={users} />
-        <SectionStats sections={sections} />
+      <div className="admin-content">
+        {activeTab === 'overview' && stats && <OverviewStats stats={stats} />}
+        {activeTab === 'users' && <UserStatsTable users={users} />}
+        {activeTab === 'sections' && <SectionStats sections={sections} />}
+        {activeTab === 'priorities' && <TaskPriorities />}
       </div>
     </div>
   );
