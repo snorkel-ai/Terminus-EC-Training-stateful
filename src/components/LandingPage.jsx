@@ -9,16 +9,17 @@ function LandingPage({ onNavigate }) {
           <div className="logo">Terminus Training Hub</div>
           <ul className="nav-links">
             <li><a href="#home">Home</a></li>
+            <li><button onClick={() => onNavigate('glossary')} style={{ background: 'none', border: 'none', color: '#4b5563', textDecoration: 'none', fontWeight: 500, cursor: 'pointer', fontSize: '1rem', fontFamily: 'inherit' }}>Glossary</button></li>
+            <li><button onClick={() => onNavigate('faq')} style={{ background: 'none', border: 'none', color: '#4b5563', textDecoration: 'none', fontWeight: 500, cursor: 'pointer', fontSize: '1rem', fontFamily: 'inherit' }}>FAQ</button></li>
           </ul>
         </nav>
       </header>
 
-      <main className="main-content">
-        <section className="hero">
-          <h1 className="hero-title">Terminus Training Hub</h1>
-          <p className="hero-subtitle">Slack for all project-related questions: <strong>#ec-terminus-submission</strong></p>
-        </section>
+      <div className="announcement-banner">
+        <p className="announcement-text">IMPORTANT: PLEASE DO NOT DELETE REVIEWER COMMENTS ON YOUR PR</p>
+      </div>
 
+      <main className="main-content">
         <section className="overview-section">
           <h2 className="section-title">Project Overview</h2>
           <p>
@@ -52,14 +53,51 @@ function LandingPage({ onNavigate }) {
             it as part of your submissions. Each submission undergoes independent review by another qualified 
             coding expert with experience in the corresponding practice area to ensure accuracy and completeness.
           </p>
+          
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <p className="hero-subtitle">Slack for all project-related questions: <strong>#ec-terminus-submission</strong></p>
+            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <a 
+                href="https://docs.google.com/spreadsheets/d/1TQdHPhEb8PrtSOH1PC71120jhBuXQVQWVugqgz3IbY0/edit?gid=364067552#gid=364067552&range=A30" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="overview-link"
+              >
+                📋 Task Idea Sheet
+              </a>
+              <a 
+                href="https://github.com/snorkel-ai/snorkel-tb-tasks" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="overview-link"
+              >
+                🔗 GitHub Repo
+              </a>
+            </div>
+          </div>
         </section>
 
-        <section className="resources-section">
-          <h2 className="section-title">Training Resources</h2>
-          <p style={{ textAlign: 'left', width: '100%', margin: '0 auto 2rem', padding: '0 2rem', color: '#475569', lineHeight: '1.6' }}>
-            <strong>We recommend completing the training resources in the following order:</strong><br />
-            Begin with the onboarding materials to get oriented with the project, then proceed through the task walkthrough videos to understand the development process. Next, complete the OracleAgent training to learn how to validate your solutions, followed by the CI Feedback training to learn how to iterate on submissions. Finally, review the local testing information to set up agent testing. Additionally, you may find the feedback session slides helpful for understanding common mistakes and best practices to avoid.
-          </p>
+        <div style={{ borderTop: '2px solid #e2e8f0', marginTop: '3rem', paddingTop: '2rem' }}>
+          <section className="resources-section">
+            <h2 className="section-title">Training Resources</h2>
+          <div style={{ textAlign: 'center', width: '100%', marginBottom: '2rem' }}>
+            <div style={{ textAlign: 'left', display: 'inline-block', color: '#475569', lineHeight: '1.6' }}>
+              <strong>We recommend completing the training resources in the following order:</strong>
+              <ol style={{ marginTop: '1rem', paddingLeft: '1.5rem' }}>
+                <li>Begin with the onboarding materials to get oriented with the project</li>
+                <li>Proceed through the task walkthrough videos to understand the development process</li>
+                <li>Complete the OracleAgent training to learn how to validate your solutions</li>
+                <li>Complete the CI Feedback training to learn how to iterate on submissions</li>
+                <li>Review the local testing information to set up agent testing</li>
+              </ol>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', width: '100%', marginBottom: '2rem' }}>
+            <p style={{ margin: '0', textAlign: 'center', display: 'inline-block' }}>
+              Additionally, you may find the Office Hours Videos and Slides and Common Errors pages<br />
+              helpful for understanding common mistakes and best practices to avoid.
+            </p>
+          </div>
           <div className="resource-buttons">
             <button className="resource-button" onClick={() => onNavigate('onboarding')}>
               <span className="button-text">Onboarding Video and Slides</span>
@@ -82,27 +120,19 @@ function LandingPage({ onNavigate }) {
               <span className="button-description">Instructions for testing tasks locally with real agents</span>
             </button>
             <button className="resource-button" onClick={() => onNavigate('feedback')}>
-              <span className="button-text">Feedback Slides</span>
-              <span className="button-description">View feedback presentation slides with common issues and best practices</span>
+              <span className="button-text">Office Hours Videos and Slides</span>
+              <span className="button-description">View Office Hours videos and feedback presentation slides with common issues and best practices</span>
+            </button>
+            <button className="resource-button" onClick={() => onNavigate('common-errors')}>
+              <span className="button-text">Common Errors</span>
+              <span className="button-description">Learn about common mistakes and how to avoid them</span>
             </button>
           </div>
-          
-          <div style={{ marginTop: '3rem', paddingTop: '3rem', borderTop: '2px solid #e2e8f0' }}>
-            <div className="resource-buttons">
-              <button className="resource-button" onClick={() => onNavigate('glossary')}>
-                <span className="button-text">Glossary</span>
-                <span className="button-description">Definitions and explanations of key terms</span>
-              </button>
-              <button className="resource-button" onClick={() => onNavigate('faq')}>
-                <span className="button-text">FAQ</span>
-                <span className="button-description">Frequently asked questions about the project</span>
-              </button>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="guidelines-section">
-          <h2 className="section-title">EC Guidelines</h2>
+          <div style={{ borderTop: '2px solid #e2e8f0', marginTop: '3rem', paddingTop: '2rem' }}>
+            <section className="guidelines-section">
+              <h2 className="section-title">Project Guidelines</h2>
           <div className="guidelines-grid">
             <button className="guideline-card" onClick={() => onNavigate('components')}>
               <div className="card-icon">🧩</div>
@@ -130,7 +160,9 @@ function LandingPage({ onNavigate }) {
               <p>View sample tasks and implementations</p>
             </button>
           </div>
-        </section>
+            </section>
+          </div>
+        </div>
       </main>
 
       <footer className="footer">

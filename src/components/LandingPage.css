@@ -45,6 +45,32 @@
   color: #2563eb;
 }
 
+.nav-links button {
+  transition: color 0.3s;
+}
+
+.nav-links button:hover {
+  color: #2563eb;
+}
+
+/* Announcement Banner */
+.announcement-banner {
+  background-color: #dc2626;
+  color: #ffffff;
+  padding: 1rem 2rem;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-text {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 /* Main Content */
 .main-content {
   flex: 1;
@@ -57,7 +83,7 @@
 /* Hero Section */
 .hero {
   text-align: center;
-  padding: 2rem 0 1rem 0;
+  padding: 1rem 0 1rem 0;
 }
 
 .hero-title {
@@ -68,17 +94,28 @@
   line-height: 1.2;
 }
 
+.slack-banner {
+  display: inline-block;
+  background-color: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  margin: 0 auto;
+}
+
 .hero-subtitle {
   font-size: 1.125rem;
   color: #64748b;
-  margin-top: 0;
+  margin: 0;
   line-height: 1.6;
 }
 
 /* Overview Section */
 .overview-section {
   max-width: 900px;
-  margin: 3rem auto 2rem;
+  margin: 0.5rem auto 2rem;
   padding: 2rem;
   background-color: #ffffff;
   border-radius: 12px;
@@ -122,6 +159,24 @@
 
 .overview-section a:hover {
   text-decoration: underline;
+}
+
+.overview-link {
+  display: inline-block;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #2563eb;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.overview-link:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 /* Sections */
@@ -260,6 +315,14 @@
 
   .overview-section h3 {
     font-size: 1.25rem;
+  }
+
+  .announcement-banner {
+    padding: 0.75rem 1rem;
+  }
+
+  .announcement-text {
+    font-size: 0.875rem;
   }
 }
 
