@@ -25,7 +25,7 @@ function OnboardingMaterials({ onNavigate }) {
             <h3>Onboarding Slides</h3>
             <p>Download or view the onboarding presentation slides</p>
             <a 
-              href="/Terminus-EC-Training/Onboarding%20Edited.pdf" 
+              href="/Terminus-EC-Training/Terminus%20EC%20Onboarding.pdf" 
               target="_blank"
               rel="noopener noreferrer"
               className="download-button"
