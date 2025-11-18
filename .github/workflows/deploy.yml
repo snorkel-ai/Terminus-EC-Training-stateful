@@ -23,6 +23,12 @@ jobs:
         with:
           lfs: true
       
+      - name: Setup Git LFS
+        run: git lfs install
+      
+      - name: Pull LFS files
+        run: git lfs pull
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
