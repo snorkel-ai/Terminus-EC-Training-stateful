@@ -10,6 +10,7 @@ import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
 import LocalTestingInfo from './components/LocalTestingInfo';
+import EnvironmentSetup from './components/EnvironmentSetup';
 import { trainingSections } from './data/trainingData';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       {currentView === 'workbook' && <Workbook onNavigate={handleNavigate} />}
       {currentView === 'oracle' && <OracleTraining onNavigate={handleNavigate} />}
       {currentView === 'onboarding' && <OnboardingMaterials onNavigate={handleNavigate} />}
+      {currentView === 'environment-setup' && <EnvironmentSetup onNavigate={handleNavigate} />}
       {currentView === 'feedback' && <FeedbackSlides onNavigate={handleNavigate} />}
       {currentView === 'faq' && <FAQ onNavigate={handleNavigate} />}
       {currentView === 'glossary' && <Glossary onNavigate={handleNavigate} />}

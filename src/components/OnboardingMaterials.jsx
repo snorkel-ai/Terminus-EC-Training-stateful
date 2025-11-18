@@ -49,7 +49,7 @@ function OnboardingMaterials({ onNavigate }) {
                   objectFit: 'contain'
                 }}
               >
-                <source src="/Terminus-EC-Training/Onboarding_11-5-25.mp4" type="video/mp4" />
+                <source src="/Terminus-EC-Training/Onboarding_11-14-2025.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>

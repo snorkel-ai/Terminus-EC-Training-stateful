@@ -85,6 +85,7 @@ function LandingPage({ onNavigate }) {
               <strong>We recommend completing the training resources in the following order:</strong>
               <ol style={{ marginTop: '1rem', paddingLeft: '1.5rem' }}>
                 <li>Begin with the onboarding materials to get oriented with the project</li>
+                <li>Set up your development environment</li>
                 <li>Proceed through the task walkthrough videos to understand the development process</li>
                 <li>Complete the OracleAgent training to learn how to validate your solutions</li>
                 <li>Complete the CI Feedback training to learn how to iterate on submissions</li>
@@ -102,6 +103,10 @@ function LandingPage({ onNavigate }) {
             <button className="resource-button" onClick={() => onNavigate('onboarding')}>
               <span className="button-text">Onboarding Video and Slides</span>
               <span className="button-description">Access the onboarding presentation slides and video</span>
+            </button>
+            <button className="resource-button" onClick={() => onNavigate('environment-setup')}>
+              <span className="button-text">Environment Setup</span>
+              <span className="button-description">Set up your development environment for the project</span>
             </button>
             <button className="resource-button" onClick={() => onNavigate('videos')}>
               <span className="button-text">Task Walkthrough Videos</span>
