@@ -39,6 +39,7 @@ function OnboardingMaterials({ onNavigate }) {
             <div className="video-wrapper">
               <video
                 controls
+                preload="metadata"
                 className="video-iframe"
                 style={{ 
                   position: 'absolute',
