@@ -16,8 +16,9 @@ function LandingPage({ onNavigate }) {
       </header>
 
       <div className="announcement-banner">
-        <p className="announcement-text">Please do not reach out to reviewers directly. Reviews will be performed ASAP and messaging them will not increase the speed at which your submission is reviewed.</p>
+        <p className="announcement-text">PLEASE DO NOT REACH OUT TO REVIEWERS DIRECTLY.<br />Reviews will be performed ASAP and messaging them will not increase the speed at which your submission is reviewed.</p>
       </div>
+
 
       <main className="main-content">
         <section className="overview-section">
