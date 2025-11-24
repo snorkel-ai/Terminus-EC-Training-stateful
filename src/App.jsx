@@ -20,6 +20,11 @@ import LocalTestingInfo from './components/LocalTestingInfo';
 import EnvironmentSetup from './components/EnvironmentSetup';
 import { trainingSections } from './data/trainingData';
 
+// Import backend components
+import AdminDashboard from './components/Admin/AdminDashboard';
+import TasksView from './components/Tasks/TasksView';
+import MySelectedTasks from './components/Tasks/MySelectedTasks';
+
 function App() {
   return (
     <AuthProvider>
@@ -44,6 +49,11 @@ function App() {
                   <Route path="/environment-setup" element={<EnvironmentSetup />} />
                   <Route path="/local-testing" element={<LocalTestingInfo />} />
                   <Route path="/feedback" element={<FeedbackSlides />} />
+                  
+                  {/* Backend feature routes */}
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/tasks" element={<TasksView />} />
+                  <Route path="/my-tasks" element={<MySelectedTasks />} />
                   
                   {/* Dynamic guideline routes */}
                   {trainingSections.map(section => (
