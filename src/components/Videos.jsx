@@ -1,29 +1,24 @@
 import { useNavigate } from 'react-router-dom';
-import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 
 function Videos() {
   const navigate = useNavigate();
-
+  
   const videos = [
     {
-      id: 'video-creating-task',
-      loomId: '92c2e195ac1c4b1e9b1177668dfcb81a',
+      id: '92c2e195ac1c4b1e9b1177668dfcb81a',
       title: '1. Creating a Task',
     },
     {
-      id: 'video-running-task',
-      loomId: '22449b76123d41e6abff0efb39d0b960',
+      id: '22449b76123d41e6abff0efb39d0b960',
       title: '2. Running your task',
     },
     {
-      id: 'video-solution',
-      loomId: '140f2cf8f16d404abf5cbd7dcc66b7cb',
+      id: '140f2cf8f16d404abf5cbd7dcc66b7cb',
       title: '3. Creating a solution.sh',
     },
     {
-      id: 'video-tests',
-      loomId: 'a00541ff2787464c84bf4601415ee624',
+      id: 'a00541ff2787464c84bf4601415ee624',
       title: '4. Creating tests for your task',
     },
   ];
@@ -44,20 +39,17 @@ function Videos() {
         </p>
         
         <div className="videos-grid">
-          {videos.map((video) => (
+          {videos.map((video, index) => (
             <div key={video.id} className="video-card">
               <h3 className="video-card-title">{video.title}</h3>
               <div className="video-wrapper">
                 <iframe
-                  src={`https://www.loom.com/embed/${video.loomId}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
+                  src={`https://www.loom.com/embed/${video.id}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
                   frameBorder="0"
                   allowFullScreen
                   className="video-iframe"
                   title={video.title}
                 ></iframe>
-              </div>
-              <div className="video-actions">
-                <CompletionToggle itemId={video.id} label="Mark as watched" />
               </div>
             </div>
           ))}

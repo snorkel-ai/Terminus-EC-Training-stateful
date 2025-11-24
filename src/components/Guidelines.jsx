@@ -15,7 +15,7 @@ function Guidelines({ onNavigate }) {
         <button className="back-button" onClick={() => onNavigate('home')}>
           ← Back to Home
         </button>
-        <div className="guidelines-logo">EC Guidelines</div>
+        <div className="guidelines-logo">Project Guidelines</div>
       </header>
       
       <div className="guidelines-layout">

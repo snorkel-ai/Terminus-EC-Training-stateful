@@ -1,22 +1,21 @@
 import { useNavigate } from 'react-router-dom';
-import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 import './Workbook.css';
 
 function OracleTraining() {
   const navigate = useNavigate();
-
+  
   return (
     <div className="videos-page">
       <header className="videos-header">
         <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
-        <div className="videos-logo">Oracle Training</div>
+        <div className="videos-logo">OracleAgent Video and Notebook</div>
       </header>
       
       <main className="videos-content">
-        <h1 className="videos-title">Oracle Training</h1>
+        <h1 className="videos-title">OracleAgent Video and Notebook</h1>
         <div className="workbook-intro">
           <p>
             This page covers what the Oracle Agent is, how to run it, how to debug its output, 
@@ -52,10 +51,6 @@ function OracleTraining() {
             </div>
           </div>
         </div>
-
-        <div className="workbook-actions">
-          <CompletionToggle itemId="resource-oracle" />
-        </div>
       </main>
 
       <footer className="videos-footer">
@@ -66,3 +61,4 @@ function OracleTraining() {
 }
 
 export default OracleTraining;
+

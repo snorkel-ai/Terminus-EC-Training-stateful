@@ -1,22 +1,21 @@
 import { useNavigate } from 'react-router-dom';
-import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 import './Workbook.css';
 
 function OnboardingMaterials() {
   const navigate = useNavigate();
-
+  
   return (
     <div className="videos-page">
       <header className="videos-header">
         <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
-        <div className="videos-logo">Onboarding Materials</div>
+        <div className="videos-logo">Onboarding Video and Slides</div>
       </header>
       
       <main className="videos-content">
-        <h1 className="videos-title">Onboarding Materials</h1>
+        <h1 className="videos-title">Onboarding Video and Slides</h1>
         <div className="workbook-intro">
           <p>
             Access the onboarding presentation slides and watch the onboarding video to get started with the Terminus EC project.
@@ -43,6 +42,7 @@ function OnboardingMaterials() {
             <div className="video-wrapper">
               <video
                 controls
+                preload="metadata"
                 className="video-iframe"
                 style={{ 
                   position: 'absolute',
@@ -52,16 +52,16 @@ function OnboardingMaterials() {
                   height: '100%',
                   objectFit: 'contain'
                 }}
+                onError={(e) => {
+                  console.error('Video load error:', e);
+                  console.error('Video src:', e.target.currentSrc);
+                }}
               >
-                <source src="/Terminus-EC-Training/video1251502681.mp4" type="video/mp4" />
+                <source src="/Terminus-EC-Training/Onboarding_11-14-2025.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
           </div>
-        </div>
-
-        <div className="workbook-actions">
-          <CompletionToggle itemId="resource-onboarding" />
         </div>
       </main>
 
@@ -73,3 +73,4 @@ function OnboardingMaterials() {
 }
 
 export default OnboardingMaterials;
+
