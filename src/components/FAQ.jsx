@@ -1,10 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import './Videos.css';
 
-function FAQ({ onNavigate }) {
+function FAQ() {
+  const navigate = useNavigate();
+  
   return (
     <div className="videos-page">
       <header className="videos-header">
-        <button className="back-button" onClick={() => onNavigate('home')}>
+        <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
         <div className="videos-logo">FAQ</div>

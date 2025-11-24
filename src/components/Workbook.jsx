@@ -1,10 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import './Workbook.css';
 
-function Workbook({ onNavigate }) {
+function Workbook() {
+  const navigate = useNavigate();
+  
   return (
     <div className="workbook-page">
       <header className="workbook-header">
-        <button className="back-button" onClick={() => onNavigate('home')}>
+        <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
         <div className="workbook-logo">CI Feedback Video and Notebook</div>

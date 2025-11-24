@@ -1,11 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import './Videos.css';
 import './Content.css';
 
-function EnvironmentSetup({ onNavigate }) {
+function EnvironmentSetup() {
+  const navigate = useNavigate();
+  
   return (
     <div className="videos-page">
       <header className="videos-header">
-        <button className="back-button" onClick={() => onNavigate('home')}>
+        <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
         <div className="videos-logo">Environment Setup</div>

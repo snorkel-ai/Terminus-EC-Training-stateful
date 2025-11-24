@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import Login from './components/Auth/Login';
+import Header from './components/Layout/Header';
+
+// Import all upstream components
 import LandingPage from './components/LandingPage';
 import GuidelineSection from './components/GuidelineSection';
 import Videos from './components/Videos';
@@ -14,29 +20,46 @@ import EnvironmentSetup from './components/EnvironmentSetup';
 import { trainingSections } from './data/trainingData';
 
 function App() {
-  const [currentView, setCurrentView] = useState('home');
-
-  const handleNavigate = (view) => {
-    setCurrentView(view);
-  };
-
-  // Check if currentView is a guideline section
-  const guidelineSection = trainingSections.find(section => section.id === currentView);
-
   return (
-    <div className="app">
-      {currentView === 'home' && <LandingPage onNavigate={handleNavigate} />}
-      {guidelineSection && <GuidelineSection section={guidelineSection} onNavigate={handleNavigate} />}
-      {currentView === 'videos' && <Videos onNavigate={handleNavigate} />}
-      {currentView === 'workbook' && <Workbook onNavigate={handleNavigate} />}
-      {currentView === 'oracle' && <OracleTraining onNavigate={handleNavigate} />}
-      {currentView === 'onboarding' && <OnboardingMaterials onNavigate={handleNavigate} />}
-      {currentView === 'environment-setup' && <EnvironmentSetup onNavigate={handleNavigate} />}
-      {currentView === 'feedback' && <FeedbackSlides onNavigate={handleNavigate} />}
-      {currentView === 'faq' && <FAQ onNavigate={handleNavigate} />}
-      {currentView === 'glossary' && <Glossary onNavigate={handleNavigate} />}
-      {currentView === 'local-testing' && <LocalTestingInfo onNavigate={handleNavigate} />}
-    </div>
+    <AuthProvider>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        
+        <Route 
+          path="/*" 
+          element={
+            <ProtectedRoute>
+              <div className="app">
+                <Header />
+                <Routes>
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/glossary" element={<Glossary />} />
+                  <Route path="/videos" element={<Videos />} />
+                  <Route path="/workbook" element={<Workbook />} />
+                  <Route path="/oracle" element={<OracleTraining />} />
+                  <Route path="/onboarding" element={<OnboardingMaterials />} />
+                  <Route path="/environment-setup" element={<EnvironmentSetup />} />
+                  <Route path="/local-testing" element={<LocalTestingInfo />} />
+                  <Route path="/feedback" element={<FeedbackSlides />} />
+                  
+                  {/* Dynamic guideline routes */}
+                  {trainingSections.map(section => (
+                    <Route 
+                      key={section.id} 
+                      path={`/${section.id}`} 
+                      element={<GuidelineSection section={section} />} 
+                    />
+                  ))}
+                  
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </div>
+            </ProtectedRoute>
+          } 
+        />
+      </Routes>
+    </AuthProvider>
   );
 }
 
