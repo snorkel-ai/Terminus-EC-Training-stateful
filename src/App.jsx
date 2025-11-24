@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import { AuthProvider } from './contexts/AuthContext';
+import { ProgressProvider } from './contexts/ProgressContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Login from './components/Auth/Login';
 import Header from './components/Layout/Header';
@@ -22,7 +23,8 @@ import { trainingSections } from './data/trainingData';
 function App() {
   return (
     <AuthProvider>
-      <Routes>
+      <ProgressProvider>
+        <Routes>
         <Route path="/login" element={<Login />} />
         
         <Route 
@@ -58,7 +60,8 @@ function App() {
             </ProtectedRoute>
           } 
         />
-      </Routes>
+        </Routes>
+      </ProgressProvider>
     </AuthProvider>
   );
 }
