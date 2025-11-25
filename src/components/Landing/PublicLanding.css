@@ -356,6 +356,11 @@
 .research-icon svg {
   width: 32px;
   height: 32px;
+  transition: transform 0.3s ease;
+}
+
+.research-card:hover .research-icon svg {
+  transform: scale(1.1);
 }
 
 .research-content {
@@ -420,76 +425,135 @@
     font-size: 1.1rem;
   }
 }
-/* How It Works */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 4rem;
-  margin-top: 2rem;
+/* How It Works - Vertical Timeline */
+.timeline-container {
   position: relative;
+  max-width: 1000px;
+  margin: 4rem auto 0;
+  padding: 2rem 0;
 }
 
-.step-card {
-  background: #ffffff; /* Pure white background */
-  color: #1d1d1f; /* Dark text */
-  padding: 2.5rem;
-  border-radius: 0; /* Sharp corners */
-  border: 1px solid #e0e0e0;
-  box-shadow: none;
-  text-align: left;
-  transition: all 0.3s ease;
+/* The central vertical line */
+.timeline-container::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #e0e0e0 10%, #e0e0e0 90%, transparent);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -1px;
+}
+
+.timeline-step {
+  padding: 10px 40px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  background-color: inherit;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+/* Left side */
+.timeline-step:nth-child(odd) {
+  left: 0;
+}
+
+/* Right side */
+.timeline-step:nth-child(even) {
+  left: 50%;
+}
+
+/* The dots on the timeline */
+.timeline-step::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  right: -6px; /* Half of width (12px) to center on the line */
+  background-color: #fff;
+  border: 2px solid #0071e3;
+  top: 28px; /* Adjusted for vertical alignment */
+  border-radius: 50%;
   z-index: 1;
+  box-sizing: border-box; /* Ensure border is included in width */
+  transition: background-color 0.3s ease;
 }
 
-.step-card:hover {
+.timeline-step:hover::after {
+  background-color: #0071e3;
+}
+
+/* Fix dot for right side */
+.timeline-step:nth-child(even)::after {
+  left: -6px; /* Half of width (12px) to center on the line */
+  right: auto;
+}
+
+/* Content box */
+.timeline-content {
+  padding: 2rem;
+  background-color: white;
+  border-radius: 0; /* Square corners */
+  border: 1px solid #e0e0e0;
+  position: relative;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.timeline-step:hover .timeline-content {
   transform: translateY(-5px);
-  border-color: #0071e3; /* Blue accent on hover */
+  border-color: #0071e3;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-.step-number {
+.timeline-content .step-number {
   font-family: 'JetBrains Mono', monospace;
   font-size: 1.25rem;
   font-weight: 700;
   color: #0071e3; /* Blue accent */
   opacity: 1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid #e0e0e0;
   width: 100%;
   display: block;
 }
 
-.step-card h3 {
+.timeline-content h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #1d1d1f;
-  position: relative;
   font-weight: 600;
 }
 
-.step-card p {
+.timeline-content p {
   color: #515154;
   line-height: 1.6;
   font-size: 0.95rem;
 }
 
-/* Arrows between steps */
-@media (min-width: 1000px) {
-  .step-card:not(:last-child)::after {
-    content: '→';
-    position: absolute;
-    right: -2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    font-weight: 300;
-    color: #1d1d1f;
-    opacity: 0.3;
+/* Responsive Timeline */
+@media (max-width: 768px) {
+  .timeline-container::after {
+    left: 31px;
+  }
+  
+  .timeline-step {
+    width: 100%;
+    padding-left: 70px;
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+  
+  .timeline-step:nth-child(odd),
+  .timeline-step:nth-child(even) {
+    left: 0;
+  }
+  
+  .timeline-step:nth-child(odd)::after, 
+  .timeline-step:nth-child(even)::after {
+    left: 25px; /* 31px (line center) - 6px (half dot width) */
+    right: auto;
   }
 }
 

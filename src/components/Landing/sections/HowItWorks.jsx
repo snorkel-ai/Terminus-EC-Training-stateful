@@ -6,42 +6,44 @@ const HowItWorks = () => {
   const steps = [
     {
       number: '01',
-      title: 'Pick a Task',
-      description: 'Browse our queue of real-world engineering problems. Choose tasks that match your expertise - from debugging to feature implementation.',
+      title: 'Pick or Define a Task',
+      description: 'Browse our queue of real-world engineering problems. Choose tasks that match your expertise, from debugging to feature implementation.',
       hasLink: true
     },
     {
       number: '02',
-      title: 'Solve & Submit',
-      description: 'Work in your own environment. Use standard tools to code your solution, then push for instant automated verification.'
+      title: 'Build & Submit',
+      description: 'Work in your own IDE, preferred environment. Use standard tools to code your solution, then push for automated- and human verification.'
     },
     {
       number: '03',
       title: 'Get Paid',
-      description: 'Once your solution passes verification, you get paid immediately. Build your reputation and unlock higher-tier tasks.'
+      description: 'Once your solution passes verification, you get paid immediately. Build your reputation and keep building tasks.'
     }
   ];
 
   return (
     <section id="how-it-works" className="landing-section">
       <h2 className="section-title">How does TerminalBench work?</h2>
-      <div className="steps-grid">
+      <div className="timeline-container">
         {steps.map((step, index) => (
-          <div key={index} className="step-card">
-            <span className="step-number">{step.number}</span>
-            <h3>{step.title}</h3>
-            <p>{step.description}</p>
-            {step.hasLink && (
-              <a 
-                className="learn-more-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowTaskModal(true);
-                }}
-              >
-                Learn more about our tasks →
-              </a>
-            )}
+          <div key={index} className="timeline-step">
+            <div className="timeline-content">
+              <span className="step-number">{step.number}</span>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+              {step.hasLink && (
+                <a 
+                  className="learn-more-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowTaskModal(true);
+                  }}
+                >
+                  Learn more about our tasks →
+                </a>
+              )}
+            </div>
           </div>
         ))}
       </div>

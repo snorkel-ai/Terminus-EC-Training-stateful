@@ -12,7 +12,7 @@ const WhatIsTerminalBench = () => {
           TerminalBench originated as a joint project between Stanford University and the Laude Institute, and has quickly become a leading benchmark for evaluating AI coding agents in command-line environments. Since launch, it has earned over 1,000 GitHub stars and attracted contributions from developers worldwide, with Snorkel AI among the top external contributors.
         </p>
         <p className="highlight-text">
-          You get paid for high-quality engineering work — and your contributions directly improve the future of agentic AI systems.
+          You get paid for high-quality engineering work, and your contributions directly improve the future of agentic development.
         </p>
         
         <div className="research-card-wrapper">
@@ -25,15 +25,15 @@ const WhatIsTerminalBench = () => {
           >
             <div className="research-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
               </svg>
             </div>
             <div className="research-content">
               <span className="research-label">Deep Dive</span>
-              <span className="research-question">Want to understand the research behind TerminalBench?</span>
+              <span className="research-question">Terminal-Bench 2.0: Raising the bar for AI agent evaluation</span>
               <span className="research-cta">
-                Read the Snorkel AI deep dive 
+                Read the Snorkel's contribution to Terminal-Bench 2.0 
                 <svg className="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>

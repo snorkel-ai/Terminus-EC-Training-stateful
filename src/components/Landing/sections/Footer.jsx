@@ -6,51 +6,86 @@ const Footer = () => {
 
   return (
     <footer style={{ 
-      backgroundColor: 'var(--bg-secondary)', 
-      padding: '4rem 2rem', 
-      marginTop: '4rem',
-      borderTop: '1px solid var(--border-color)'
+      backgroundColor: '#ffffff', 
+      padding: '6rem 2rem 4rem', 
+      marginTop: '0',
+      borderTop: '1px solid #f0f0f0',
+      color: '#1d1d1f'
     }}>
       <div style={{ 
         maxWidth: '1200px', 
-        margin: '0 auto', 
-        display: 'flex', 
+        margin: '0 auto',
+        display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-        gap: '2rem'
+        gap: '4rem'
       }}>
-        <div>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Real work. Real payouts. Real impact.</h3>
-          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-            The only thing missing is your expertise.
-          </p>
-          <button 
-            onClick={() => navigate('/login')}
-            className="cta-button cta-primary"
-          >
-            Apply to Join
-          </button>
-        </div>
-        
+        {/* Top Section: 2 Columns */}
         <div style={{ 
           display: 'flex', 
-          gap: '2rem', 
-          color: 'var(--text-secondary)',
-          fontSize: '0.9rem'
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '2rem'
         }}>
-          <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms</a>
-          <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy</a>
-          <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Discord</a>
+          {/* Left Column: Hero Text */}
+          <div style={{ maxWidth: '600px' }}>
+            <h3 style={{ 
+              fontSize: '2.5rem', 
+              fontWeight: '700', 
+              marginBottom: '2rem',
+              lineHeight: '1.1',
+              color: '#1d1d1f'
+            }}>
+              Real work. Real payouts. Real impact.
+            </h3>
+            <p style={{ 
+              fontSize: '1.25rem', 
+              color: '#86868b', 
+              maxWidth: '480px'
+            }}>
+              The only thing missing is your expertise.
+            </p>
+          </div>
+
+          {/* Right Column: Apply Button */}
+          <div>
+            <button 
+              onClick={() => navigate('/login')}
+              className="cta-button cta-primary"
+              style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}
+            >
+              Join
+            </button>
+          </div>
         </div>
         
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
-          &copy; {new Date().getFullYear()} TerminalBench. All rights reserved.
-        </p>
+        {/* Bottom Section: Links */}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          borderTop: '1px solid #f0f0f0',
+          paddingTop: '2rem',
+          gap: '1.5rem'
+        }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: '2rem', 
+            color: '#424245',
+            fontSize: '0.9rem',
+            flexWrap: 'wrap'
+          }}>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Discord</a>
+          </div>
+          
+          <p style={{ color: '#86868b', fontSize: '0.8rem' }}>
+            &copy; {new Date().getFullYear()} TerminalBench. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   );
 };
 
 export default Footer;
-
