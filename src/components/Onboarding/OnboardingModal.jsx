@@ -329,79 +329,44 @@ const OnboardingModal = () => {
     {
       content: (
         <div className="onboarding-step-content">
-          <h2 className="onboarding-title" style={{ fontSize: '42px' }}>Get Equipped</h2>
+          <h2 className="onboarding-title" style={{ fontSize: '42px' }}>
+            <span role="img" aria-label="celebration" style={{ color: '#FFD700' }}>🎉</span> You’re all set.
+          </h2>
           <p className="onboarding-description">
-            Before you start, familiarize yourself with our tools and standards.
+            You’re now part of a global community pushing the boundaries of agentic AI. Let’s get you plugged-in and ready to make an impact.
           </p>
 
-          <div className="resources-layout">
-            <div className="video-preview-list">
-              <h4>Training Materials</h4>
-              
-              <div className="video-preview-item" onClick={() => window.open('/portal/videos', '_blank')}>
-                <div className="play-icon">▶</div>
-                <div className="video-info">
-                  <h4>Task Creation Walkthroughs</h4>
-                  <span>Full video guides on creating tasks</span>
-                </div>
-              </div>
+          <h3 className="onboarding-section-title" style={{ marginTop: '40px', marginBottom: '24px' }}>
+            What’s next?
+          </h3>
 
-              <div className="video-preview-item" onClick={() => window.open('/portal/feedback', '_blank')}>
-                <div className="play-icon">📊</div>
-                <div className="video-info">
-                  <h4>Understanding Feedback</h4>
-                  <span>How to read automated evaluations</span>
-                </div>
+          <div className="next-steps-list" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <div className="next-step-card" style={{ cursor: 'default', maxWidth: '480px', textAlign: 'center', alignItems: 'center' }}>
+              <div className="next-step-icon" style={{ overflow: 'hidden', padding: '0', backgroundColor: 'transparent', width: '64px', height: '64px', marginBottom: '16px' }}>
+                <img 
+                  src="https://previews.us-east-1.widencdn.net/preview/48045879/assets/asset-view/9338f8ce-2eed-41d7-b222-350e8ea9f361/thumbnail/eyJ3IjoyMDQ4LCJoIjoyMDQ4LCJzY29wZSI6ImFwcCJ9?sig.ver=1&sig.keyId=us-east-1.20240821&sig.expires=1764147600&sig=b0BL6AAL_wOE_TAW1nc7Heuj-4dCNyi1sg3tYbev1Yw" 
+                  alt="Slack" 
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </div>
-
-              <div className="video-preview-item" onClick={() => window.open('/portal/oracle', '_blank')}>
-                <div className="play-icon">🔮</div>
-                <div className="video-info">
-                  <h4>Debugging Your Oracle</h4>
-                  <span>Troubleshooting your reference solutions</span>
-                </div>
+              <div className="next-step-content" style={{ marginBottom: '24px' }}>
+                <h4 className="next-step-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Join the Community</h4>
+                <span className="next-step-subtitle" style={{ fontSize: '16px' }}>
+                  Connect with other TerminalBench contributors, Snorkelers, get help with tasks, and stay updated on the latest announcements.
+                </span>
               </div>
-
-              <div className="video-preview-item" onClick={() => window.open('/portal/onboarding', '_blank')}>
-                <div className="play-icon">📑</div>
-                <div className="video-info">
-                  <h4>Onboarding Slides</h4>
-                  <span>Key concepts and presentations</span>
-                </div>
-              </div>
-              
-              <div style={{ marginTop: '16px', opacity: 0.7, fontSize: '14px', fontStyle: 'italic', textAlign: 'center' }}>
-                 ...and much more to come
-              </div>
-            </div>
-
-            <div className="docs-card">
-              <h4 style={{ marginBottom: '20px' }}>Quick Reference</h4>
-              <a href="/guidelines" target="_blank" className="docs-link">
-                Guidelines & Standards <span>→</span>
-              </a>
-              <a href="/faq" target="_blank" className="docs-link">
-                Common Questions <span>→</span>
-              </a>
-              <a href="/glossary" target="_blank" className="docs-link">
-                Glossary <span>→</span>
-              </a>
+              <button 
+                className="btn-primary"
+                style={{ width: '100%', fontSize: '16px', padding: '12px 24px' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open('https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203', '_blank');
+                }}
+              >
+                Join Slack Channel
+              </button>
             </div>
           </div>
-        </div>
-      )
-    },
-    // Step 3: Ready
-    {
-      content: (
-        <div className="onboarding-step-content" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-          <div style={{ fontSize: '64px', marginBottom: '32px' }}>🚀</div>
-          <h2 className="onboarding-title" style={{ fontSize: '48px', textAlign: 'center' }}>
-            Ready to Launch?
-          </h2>
-          <p className="onboarding-description" style={{ margin: '0 auto 40px', textAlign: 'center' }}>
-            You're now part of the team. Let's start building the future of AI evaluation.
-          </p>
         </div>
       )
     }
@@ -450,7 +415,7 @@ const OnboardingModal = () => {
                 onClick={handleComplete}
                 disabled={isClosing}
               >
-                {isClosing ? 'Setting up...' : "Let's Get Started"}
+                {isClosing ? 'Setting up...' : "Start Building"}
               </button>
             )}
           </div>
