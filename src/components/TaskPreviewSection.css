@@ -70,15 +70,16 @@
 
 .task-preview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* Slightly wider for readability */
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 1.5rem;
   margin-bottom: 4rem;
-  min-height: 450px; /* Prevent layout shift during shuffle */
+  min-height: 450px;
+  perspective: 1000px; /* Enable 3D perspective */
 }
 
 @media (min-width: 1024px) {
   .task-preview-grid {
-    grid-template-columns: repeat(3, 1fr); /* Force 3 columns on large screens */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -88,24 +89,24 @@
   border-radius: 12px;
   padding: 0;
   text-align: left;
-  transition: all 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 220px;
-  overflow: hidden;
   cursor: pointer;
   position: relative;
-  opacity: 0; /* Start hidden for animation */
-  animation-fill-mode: forwards; /* Stay visible after animation */
+  
+  /* 3D flip transitions */
+  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  transform-origin: center;
+  opacity: 1;
 }
 
-.task-preview-card.enter {
-  animation: slideUpFadeIn 0.4s ease-out forwards;
-}
-
-.task-preview-card.exit {
-  animation: slideDownFadeOut 0.3s ease-in forwards;
+.task-preview-card.shuffling {
+  transform: rotateY(90deg) scale(0.95); /* Rotate and slight scale down */
+  opacity: 0; /* Fade out while flipping */
+  pointer-events: none; /* Disable clicks while flipping */
 }
 
 .task-preview-card.skeleton {
@@ -113,7 +114,6 @@
   animation: pulse 1.5s infinite;
   border: none;
   min-height: 220px;
-  opacity: 1;
 }
 
 .task-preview-card:hover {
@@ -121,6 +121,20 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
   border-color: #d1d5db;
   z-index: 1;
+}
+
+/* Prevent hover effect from interfering with shuffle animation */
+.task-preview-card.shuffling:hover {
+  transform: rotateY(90deg) scale(0.95);
+  box-shadow: none;
+}
+
+.task-preview-card-inner {
+  /* Ensure content doesn't flicker during flip */
+  backface-visibility: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .task-preview-card-header {
@@ -174,11 +188,11 @@
   margin-bottom: 0;
   line-height: 1.6;
   flex-grow: 1;
-  /* Clamp text to 4 lines */
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  line-clamp: 4;
 }
 
 .task-preview-footer {
@@ -208,36 +222,8 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUpFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideDownFadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(10px);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulse {

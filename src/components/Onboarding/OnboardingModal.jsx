@@ -139,7 +139,7 @@ const OnboardingModal = () => {
             We’re really glad you’re here.
           </p>
           <p className="onboarding-subtitle">
-            Join the initiative to push the boundaries of AI capabilities through complex coding challenges.
+            Join the initiative to push the boundaries of agentic coding through coding challenges.
           </p>
         </div>
       )
@@ -150,7 +150,7 @@ const OnboardingModal = () => {
         <div className="onboarding-step-content">
           <h2 className="onboarding-title" style={{ fontSize: '42px' }}>Our Mission</h2>
           <p className="onboarding-description">
-            We’re building the definitive benchmark for AI coding agents — and your work directly shapes how AI learns to solve real engineering problems. Every task you create helps advance the frontier of agentic development.
+            We’re building the definitive benchmark for AI coding agents, and your work directly shapes how AI learns to solve real engineering problems. Every task you create helps advance the frontier of agentic development.
           </p>
           
           <h3 className="onboarding-section-title">
