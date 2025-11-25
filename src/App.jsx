@@ -21,6 +21,7 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import ProfilePage from './components/Profile/ProfilePage';
 import TasksView from './components/Tasks/TasksView';
 import MySelectedTasks from './components/Tasks/MySelectedTasks';
+import TaskDetail from './components/Tasks/TaskDetail';
 import OnboardingModal from './components/Onboarding/OnboardingModal';
 import { trainingSections } from './data/trainingData';
 
@@ -45,6 +46,7 @@ function App() {
                     <Routes>
                       <Route path="/" element={<LandingPage />} />
                       <Route path="/tasks" element={<TasksView />} />
+                      <Route path="/task/:taskId" element={<TaskDetail />} />
                       <Route path="/my-tasks" element={<MySelectedTasks />} />
                       <Route path="/videos" element={<Videos />} />
                       <Route path="/workbook" element={<Workbook />} />

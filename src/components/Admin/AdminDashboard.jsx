@@ -17,8 +17,8 @@ function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [sections, setSections] = useState([]);
   
-  // Check admin from session metadata (Supabase pattern)
-  const isAdmin = user?.user_metadata?.is_admin || false;
+  // Check admin from profile
+  const isAdmin = profile?.is_admin || false;
 
   useEffect(() => {
     if (!isAdmin) {

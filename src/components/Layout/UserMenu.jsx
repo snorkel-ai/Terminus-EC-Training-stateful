@@ -9,8 +9,8 @@ function UserMenu() {
   const menuRef = useRef(null);
   const navigate = useNavigate();
   
-  // Check admin status from session metadata (Supabase pattern)
-  const isAdmin = user?.user_metadata?.is_admin || false;
+  // Check admin status from profile
+  const isAdmin = profile?.is_admin || false;
 
   useEffect(() => {
     const handleClickOutside = (event) => {

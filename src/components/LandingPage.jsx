@@ -1,6 +1,7 @@
 import { useAuth } from '../contexts/AuthContext';
 import slackLogo from '../assets/slack.webp';
 import Checklist from './Landing/Checklist';
+import TaskPreviewSection from './TaskPreviewSection';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -27,6 +28,7 @@ function LandingPage() {
         </section>
 
         <Checklist />
+        <TaskPreviewSection />
       </main>
 
       <footer className="footer">
