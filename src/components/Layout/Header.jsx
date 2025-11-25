@@ -1,5 +1,6 @@
 import { useAuth } from '../../contexts/AuthContext';
 import { useProgress } from '../../contexts/ProgressContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import UserMenu from './UserMenu';
 import './Header.css';
@@ -7,6 +8,7 @@ import './Header.css';
 function Header() {
   const { profile } = useAuth();
   const { getCompletionPercentage, loading } = useProgress();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -14,7 +16,7 @@ function Header() {
 
   const percentage = loading ? 0 : getCompletionPercentage();
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname === `/portal${path === '/' ? '' : path}`;
 
   return (
     <header className="app-header">
@@ -24,19 +26,19 @@ function Header() {
           <nav className="header-tabs">
             <button 
               className={`header-tab ${isActive('/') ? 'active' : ''}`}
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/portal')}
             >
               Home
             </button>
             <button 
               className={`header-tab ${isActive('/tasks') ? 'active' : ''}`}
-              onClick={() => navigate('/tasks')}
+              onClick={() => navigate('/portal/tasks')}
             >
               Tasks
             </button>
             <button 
               className={`header-tab ${isActive('/my-tasks') ? 'active' : ''}`}
-              onClick={() => navigate('/my-tasks')}
+              onClick={() => navigate('/portal/my-tasks')}
             >
               My Selected Tasks
             </button>
@@ -54,6 +56,18 @@ function Header() {
             </div>
           </div>
           
+          <button onClick={toggleTheme} className="theme-toggle" style={{ 
+            background: 'none', 
+            border: 'none', 
+            cursor: 'pointer', 
+            fontSize: '1.2rem',
+            padding: '0.5rem',
+            marginRight: '1rem',
+            color: 'var(--text-primary)'
+          }}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+
           <UserMenu />
         </div>
       </div>

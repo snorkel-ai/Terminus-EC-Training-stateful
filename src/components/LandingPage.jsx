@@ -53,31 +53,31 @@ function LandingPage() {
         <section className="resources-section">
           <h2 className="section-title">Training Resources</h2>
           <div className="resource-buttons">
-            <button className="resource-button" onClick={() => navigate('/videos')}>
+            <button className="resource-button" onClick={() => navigate('/portal/videos')}>
               <span className="button-text">Task Walkthrough Videos</span>
               <span className="button-description">Walks through the process of creating a task, running it, and creating a solution and tests</span>
             </button>
-            <button className="resource-button" onClick={() => navigate('/workbook')}>
+            <button className="resource-button" onClick={() => navigate('/portal/workbook')}>
               <span className="button-text">CI Feedback Training</span>
               <span className="button-description">Covers how to effectively utilize feedback from CI checks to iterate on submissions</span>
             </button>
-            <button className="resource-button" onClick={() => navigate('/oracle')}>
+            <button className="resource-button" onClick={() => navigate('/portal/oracle')}>
               <span className="button-text">Oracle Training</span>
               <span className="button-description">Covers how to run the Oracle Agent and debug any issues</span>
             </button>
-            <button className="resource-button" onClick={() => navigate('/onboarding')}>
+            <button className="resource-button" onClick={() => navigate('/portal/onboarding')}>
               <span className="button-text">Onboarding Materials</span>
               <span className="button-description">Access the onboarding presentation slides and video</span>
             </button>
-            <button className="resource-button" onClick={() => navigate('/feedback')}>
+            <button className="resource-button" onClick={() => navigate('/portal/feedback')}>
               <span className="button-text">Feedback Slides</span>
               <span className="button-description">View feedback presentation slides with common issues and best practices</span>
             </button>
-            <button className="resource-button" onClick={() => navigate('/faq')}>
+            <button className="resource-button" onClick={() => navigate('/portal/faq')}>
               <span className="button-text">FAQ</span>
               <span className="button-description">Frequently asked questions about the project</span>
             </button>
-            <button className="resource-button" onClick={() => navigate('/glossary')}>
+            <button className="resource-button" onClick={() => navigate('/portal/glossary')}>
               <span className="button-text">Glossary</span>
               <span className="button-description">Definitions and explanations of key terms</span>
             </button>
@@ -87,32 +87,32 @@ function LandingPage() {
         <section className="guidelines-section">
           <h2 className="section-title">EC Guidelines</h2>
           <div className="guidelines-grid">
-            <button className="guideline-card" onClick={() => navigate('/guideline-components')}>
+            <button className="guideline-card" onClick={() => navigate('/portal/guideline-components')}>
               <div className="card-icon">🧩</div>
               <h3>Task Components</h3>
               <p>Understand submission requirements</p>
             </button>
-            <button className="guideline-card" onClick={() => navigate('/guideline-taxonomy')}>
+            <button className="guideline-card" onClick={() => navigate('/portal/guideline-taxonomy')}>
               <div className="card-icon">🏷️</div>
               <h3>Task Type Taxonomy</h3>
               <p>Explore task categories and types</p>
             </button>
-            <button className="guideline-card" onClick={() => navigate('/guideline-workflow')}>
+            <button className="guideline-card" onClick={() => navigate('/portal/guideline-workflow')}>
               <div className="card-icon">⚙️</div>
               <h3>Setup + Workflow</h3>
               <p>Get started with the development process</p>
             </button>
-            <button className="guideline-card" onClick={() => navigate('/guideline-requirements')}>
+            <button className="guideline-card" onClick={() => navigate('/portal/guideline-requirements')}>
               <div className="card-icon">✅</div>
               <h3>Task Requirements</h3>
               <p>Review design requirements and checklist</p>
             </button>
-            <button className="guideline-card" onClick={() => navigate('/guideline-examples')}>
+            <button className="guideline-card" onClick={() => navigate('/portal/guideline-examples')}>
               <div className="card-icon">💡</div>
               <h3>Example Tasks</h3>
               <p>View sample tasks and implementations</p>
             </button>
-            <button className="guideline-card" onClick={() => navigate('/guideline-rates')}>
+            <button className="guideline-card" onClick={() => navigate('/portal/guideline-rates')}>
               <div className="card-icon">💰</div>
               <h3>Rate Schedule</h3>
               <p>View compensation information</p>

@@ -1,6 +1,6 @@
 .app-header {
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
   padding: 16px 24px;
   position: sticky;
   top: 0;
@@ -28,7 +28,7 @@
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--text-primary);
 }
 
 .header-tabs {
@@ -41,7 +41,7 @@
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -49,14 +49,14 @@
 }
 
 .header-tab:hover {
-  color: #2563eb;
-  background: #f3f4f6;
+  color: var(--accent);
+  background: var(--bg-secondary);
   border-radius: 4px 4px 0 0;
 }
 
 .header-tab.active {
-  color: #2563eb;
-  border-bottom-color: #2563eb;
+  color: var(--accent);
+  border-bottom-color: var(--accent);
   font-weight: 600;
 }
 
@@ -76,20 +76,20 @@
 .header-progress-text {
   font-size: 13px;
   font-weight: 600;
-  color: #4a5568;
+  color: var(--text-secondary);
   text-align: right;
 }
 
 .header-progress-bar {
   height: 6px;
-  background: #e2e8f0;
+  background: var(--border-color);
   border-radius: 3px;
   overflow: hidden;
 }
 
 .header-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, var(--accent) 0%, #764ba2 100%);
   border-radius: 3px;
   transition: width 0.3s ease;
 }
@@ -107,4 +107,3 @@
     display: none;
   }
 }
-

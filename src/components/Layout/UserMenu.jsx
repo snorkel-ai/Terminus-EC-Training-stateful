@@ -65,7 +65,7 @@ function UserMenu() {
             <button
               className="user-menu-item"
               onClick={() => {
-                navigate('/admin');
+                navigate('/portal/admin');
                 setIsOpen(false);
               }}
             >

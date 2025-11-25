@@ -1,3 +1,5 @@
+@import './styles/theme.css';
+
 * {
   margin: 0;
   padding: 0;
@@ -11,9 +13,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: #1e293b;
-  background-color: #ffffff;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,6 +23,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 #root {
