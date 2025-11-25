@@ -1,0 +1,348 @@
+.checklist-container {
+  max-width: 800px;
+  margin: 2rem auto 3rem;
+  transition: all 0.3s ease;
+  /* Removed border, background, shadow for minimalist look */
+}
+
+.checklist-container.collapsed {
+  margin-bottom: 1.5rem;
+  background: rgba(0, 0, 0, 0.01); /* Extremely subtle fill */
+  border-radius: 12px;
+  padding: 0 1.5rem;
+  /* Even lighter border */
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.checklist-container.collapsed .checklist-header {
+  margin-bottom: 0;
+}
+
+.checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 1rem;
+}
+
+.checklist-header:hover {
+  opacity: 0.8;
+}
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.checklist-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.progress-summary {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.checklist-content-wrapper {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.1); /* Very subtle divider */
+  background: transparent;
+  transition: opacity 0.2s;
+  gap: 1.5rem;
+}
+
+/* Override global .checklist-item::before from Content.css */
+.checklist-container .checklist-item::before {
+  content: none;
+}
+
+.checklist-item:last-child {
+  border-bottom: none;
+}
+
+
+.checklist-item.completed {
+  opacity: 0.6; /* Fade out completed items slightly */
+}
+
+.checklist-item.completed:hover {
+  opacity: 0.8;
+}
+
+.checklist-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  font-size: 12px;
+  background: transparent;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.checklist-item.completed .checklist-checkbox {
+  background: var(--accent); /* or keep it minimalist with just a check and border? */
+  border-color: var(--accent);
+  color: white;
+}
+
+.checklist-item.completed .checklist-checkbox::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+.checklist-text {
+  flex: 1;
+}
+
+.checklist-label {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.checklist-item.completed .checklist-label {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.checklist-sublabel {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.checklist-action {
+  min-width: 100px;
+  text-align: right;
+}
+
+.checklist-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  /* Removed shadow */
+}
+
+.checklist-btn:hover {
+  border-color: var(--text-primary);
+  background: transparent;
+}
+
+/* Modal Styles - Keeping these largely the same but cleaning up borders/shadows */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Lighter overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--bg-primary); /* Use primary bg */
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.875rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.tags-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  min-height: 48px;
+}
+
+.tags-input input {
+  border: none;
+  background: transparent;
+  padding: 0.25rem;
+  flex: 1;
+  min-width: 120px;
+}
+
+.tag {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.tag button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.tag button:hover {
+  color: var(--text-primary);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.btn-primary {
+  background: var(--text-primary); /* Black button */
+  color: var(--bg-primary); /* White text */
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-secondary:hover {
+  color: var(--text-primary);
+}

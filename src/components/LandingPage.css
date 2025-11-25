@@ -56,180 +56,83 @@
   width: 100%;
 }
 
-/* Hero Section */
-.hero {
+/* Welcome Strip */
+.welcome-strip {
   text-align: center;
-  padding: 2rem 0 1rem 0;
+  padding: 5rem 0 2rem 0;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.hero-title {
-  font-size: 3rem;
-  font-weight: 700;
+.welcome-title {
+  font-size: 3.5rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 1rem;
+  letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
-.hero-subtitle {
-  font-size: 1.125rem;
+.wave {
+  display: inline-block;
+  animation: wave 2.5s infinite;
+  transform-origin: 70% 70%;
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.welcome-subtitle {
+  font-size: 1.5rem;
   color: var(--text-secondary);
-  margin-top: 0;
-  line-height: 1.6;
-}
-
-/* Overview Section */
-.overview-section {
-  max-width: 900px;
-  margin: 3rem auto 2rem;
-  padding: 2rem;
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-}
-
-.overview-section h3 {
-  font-size: 1.375rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-}
-
-.overview-section h3:not(:first-child) {
-  margin-top: 2rem;
-}
-
-.overview-section p {
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 1rem;
-}
-
-.overview-section ul {
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
-  color: var(--text-secondary);
-}
-
-.overview-section li {
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
-}
-
-.overview-section a {
-  color: var(--accent);
-  text-decoration: none;
+  margin: 0 0 0.75rem 0;
   font-weight: 500;
+  line-height: 1.4;
 }
 
-.overview-section a:hover {
-  text-decoration: underline;
-}
-
-/* Sections */
-.resources-section {
-  margin-top: 2rem;
-}
-
-.guidelines-section {
-  margin-top: 3rem;
-}
-
-.section-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-/* Resource Buttons */
-.resource-buttons {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.resource-button {
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  padding: 1.5rem 2rem;
-  min-width: 300px;
-  max-width: 350px;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: var(--card-shadow);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-  text-align: left;
-  text-decoration: none;
-}
-
-.resource-button:hover {
-  border-color: var(--accent);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 113, 227, 0.15);
-}
-
-.button-text {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.button-description {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-/* Guidelines Grid */
-.guidelines-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.guideline-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: var(--card-shadow);
-  text-align: left;
-}
-
-.guideline-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 113, 227, 0.15);
-}
-
-.card-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.guideline-card h3 {
+.welcome-cta {
   font-size: 1.25rem;
+  color: var(--accent);
+  margin: 0 0 2.5rem 0;
   font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
 }
 
-.guideline-card p {
-  font-size: 0.938rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0;
+.slack-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #fff;
+  color: #000;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.slack-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-color: var(--border-color);
+  text-decoration: none;
+  color: #000;
+}
+
+.slack-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 /* Footer */
@@ -248,20 +151,15 @@
     gap: 1rem;
   }
 
-  .hero-title {
-    font-size: 2rem;
+  .welcome-title {
+    font-size: 2.5rem;
   }
 
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .overview-section {
-    padding: 1.5rem;
-    margin: 2rem auto 1.5rem;
-  }
-
-  .overview-section h3 {
+  .welcome-subtitle {
     font-size: 1.25rem;
+  }
+
+  .welcome-cta {
+    font-size: 1.125rem;
   }
 }

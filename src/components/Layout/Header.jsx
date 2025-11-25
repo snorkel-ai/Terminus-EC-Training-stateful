@@ -62,22 +62,61 @@ function Header() {
               Home
             </Link>
             <Link 
-              to="/portal/onboarding" 
-              className={`header-nav-item ${isActive('/onboarding') ? 'active' : ''}`}
-            >
-              Onboarding
-            </Link>
-            <Link 
               to="/portal/overview" 
               className={`header-nav-item ${isActive('/overview') ? 'active' : ''}`}
             >
-              Documentation
+              Our mission
             </Link>
             <Link 
               to="/portal/tasks" 
               className={`header-nav-item ${isActive('/tasks') ? 'active' : ''}`}
             >
-              Tasks gallery
+              Task gallery
+            </Link>
+            <div className="nav-dropdown-container">
+              <button className={`header-nav-item dropdown-trigger ${isActive('/onboarding') ? 'active' : ''}`}>
+                Resources
+                <svg className="dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <div className="nav-dropdown-menu">
+                <Link to="/portal/onboarding" className="dropdown-item">
+                  Onboarding
+                </Link>
+                <Link to="/portal/videos" className="dropdown-item">
+                  Videos
+                </Link>
+                <Link to="/portal/workbook" className="dropdown-item">
+                  Workbook
+                </Link>
+                <Link to="/portal/oracle" className="dropdown-item">
+                  Oracle Training
+                </Link>
+                <Link to="/portal/feedback" className="dropdown-item">
+                  Feedback Slides
+                </Link>
+                <Link to="/portal/glossary" className="dropdown-item">
+                  Glossary
+                </Link>
+              </div>
+            </div>
+
+            <div className="nav-divider"></div>
+
+            <a 
+              href="https://snorkel.ai" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="header-nav-item"
+            >
+              Submitter portal
+            </a>
+            <Link 
+              to="/portal/faq" 
+              className={`header-nav-item ${isActive('/faq') ? 'active' : ''}`}
+            >
+              Help
             </Link>
           </nav>
 

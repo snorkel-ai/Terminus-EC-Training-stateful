@@ -96,6 +96,9 @@
   transition: color 0.2s;
   text-decoration: none;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .header-nav-item:hover {
@@ -104,7 +107,16 @@
 
 .header-nav-item.active {
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 500; /* Changed from 600 to 500 (regular/medium) */
+}
+
+/* Vertical Divider */
+.nav-divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border-color);
+  margin: 0 0.25rem;
+  opacity: 0.6;
 }
 
 .header-right {
@@ -129,6 +141,81 @@
 
 .theme-toggle:hover {
   background-color: var(--bg-secondary);
+}
+
+/* Dropdown Styles */
+.nav-dropdown-container {
+  position: relative;
+  padding-bottom: 10px; /* Invisible bridge to menu */
+  margin-bottom: -10px; /* Compensate for padding */
+}
+
+.dropdown-trigger {
+  /* Inherits header-nav-item styles */
+}
+
+.dropdown-arrow {
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown-container:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--bg-primary);
+  /* Removed border as requested */
+  border: none;
+  border-radius: 12px;
+  padding: 6px;
+  min-width: 160px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0,0,0,0.04);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+/* Dark mode shadow adjust */
+@media (prefers-color-scheme: dark) {
+  .nav-dropdown-menu {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+}
+
+[data-theme="dark"] .nav-dropdown-menu {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.nav-dropdown-container:hover .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(5px);
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 768px) {

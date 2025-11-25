@@ -140,6 +140,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateProfile = async (updates) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      setProfile(prev => ({ ...prev, ...updates }));
+      return { error: null };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return { error };
+    }
+  };
+
   const value = {
     user,
     profile,
@@ -149,6 +166,7 @@ export const AuthProvider = ({ children }) => {
     signUpWithEmail,
     signOut,
     completeOnboarding,
+    updateProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
