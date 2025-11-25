@@ -20,6 +20,7 @@ import Glossary from './components/Glossary';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import TasksView from './components/Tasks/TasksView';
 import MySelectedTasks from './components/Tasks/MySelectedTasks';
+import OnboardingModal from './components/Onboarding/OnboardingModal';
 import { trainingSections } from './data/trainingData';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <div className="app">
+                    <OnboardingModal />
                     <Header />
                     <Routes>
                       <Route path="/" element={<LandingPage />} />

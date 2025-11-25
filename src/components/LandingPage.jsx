@@ -6,15 +6,6 @@ function LandingPage() {
 
   return (
     <div className="landing-page">
-      <header className="header">
-        <nav className="nav">
-          <div className="logo">Terminus Training Hub</div>
-          <ul className="nav-links">
-            <li><a href="#home">Home</a></li>
-          </ul>
-        </nav>
-      </header>
-
       <main className="main-content">
         <section className="hero">
           <h1 className="hero-title">Terminus Training Hub</h1>
@@ -129,4 +120,3 @@ function LandingPage() {
 }
 
 export default LandingPage;
-

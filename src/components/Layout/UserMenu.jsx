@@ -33,7 +33,7 @@ function UserMenu() {
   return (
     <div className="user-menu" ref={menuRef}>
       <button 
-        className="user-menu-button"
+        className={`user-menu-button ${isOpen ? 'active' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         {profile.github_avatar_url ? (
@@ -93,4 +93,3 @@ function UserMenu() {
 }
 
 export default UserMenu;
-

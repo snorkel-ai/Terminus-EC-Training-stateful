@@ -1,11 +1,18 @@
 .app-header {
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
-  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* Removed border-bottom */
+  padding: 12px 24px; /* Slightly reduced padding */
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03); /* Softer shadow for floating effect */
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .app-header {
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .header-content {
@@ -18,80 +25,110 @@
 }
 
 .header-left {
-  flex: 1;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  align-items: center;
 }
 
-.header-title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
+/* Logo Styles adapted from PublicHeader */
+.logo-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tbench-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--text-primary);
 }
 
-.header-tabs {
-  display: flex;
-  gap: 0.5rem;
+.tbench-logo svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5px;
 }
 
-.header-tab {
-  padding: 0.5rem 1rem;
+.logo-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.snorkel-logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
+[data-theme="dark"] .snorkel-logo-img {
+  filter: brightness(0) invert(1);
+}
+
+.logo-separator {
+  color: var(--text-secondary);
+  font-weight: 300;
+  font-size: 1.1rem;
+  opacity: 0.6;
+  margin: 0 0.25rem;
+}
+
+/* Navigation */
+.header-nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-right: 1rem; /* Add some space between nav and user menu */
+}
+
+.header-nav-item {
+  padding: 0;
   background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
   color: var(--text-secondary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: color 0.2s;
+  text-decoration: none;
+  position: relative;
 }
 
-.header-tab:hover {
-  color: var(--accent);
-  background: var(--bg-secondary);
-  border-radius: 4px 4px 0 0;
+.header-nav-item:hover {
+  color: var(--text-primary);
 }
 
-.header-tab.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+.header-nav-item.active {
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
-.header-progress {
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  color: var(--text-primary);
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 120px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
 }
 
-.header-progress-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-align: right;
-}
-
-.header-progress-bar {
-  height: 6px;
-  background: var(--border-color);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.header-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent) 0%, #764ba2 100%);
-  border-radius: 3px;
-  transition: width 0.3s ease;
+.theme-toggle:hover {
+  background-color: var(--bg-secondary);
 }
 
 @media (max-width: 768px) {
@@ -99,11 +136,11 @@
     padding: 12px 16px;
   }
 
-  .header-title {
-    font-size: 18px;
+  .logo-text, .logo-separator, .snorkel-logo-img {
+    /* Maybe hide full lockup on very small screens or adjust */
   }
-
-  .header-progress {
-    display: none;
+  
+  .header-nav {
+    display: none; /* Consider a mobile menu if needed, for now standard hiding or overflow */
   }
 }

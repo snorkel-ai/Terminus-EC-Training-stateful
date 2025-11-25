@@ -118,6 +118,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const completeOnboarding = async () => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ onboarding_completed: true })
+        .eq('id', user.id);
+
+      if (error) throw error;
+      
+      // Update local state
+      setProfile(prev => ({ ...prev, onboarding_completed: true }));
+    } catch (error) {
+      console.error('Error completing onboarding:', error);
+      throw error;
+    }
+  };
+
   const value = {
     user,
     profile,
@@ -126,6 +143,7 @@ export const AuthProvider = ({ children }) => {
     signInWithEmail,
     signUpWithEmail,
     signOut,
+    completeOnboarding,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
