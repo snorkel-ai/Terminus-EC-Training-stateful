@@ -7,7 +7,7 @@ const HowItWorks = () => {
     {
       number: '01',
       title: 'Pick or Define a Task',
-      description: 'Browse our queue of real-world engineering problems. Choose tasks that match your expertise, from debugging to feature implementation.',
+      description: 'Browse our queue of real-world engineering problems or create a task that matches your expertise, from debugging to feature implementation.',
       hasLink: true
     },
     {
@@ -18,7 +18,7 @@ const HowItWorks = () => {
     {
       number: '03',
       title: 'Get Paid',
-      description: 'Once your solution passes verification, you get paid immediately. Build your reputation and keep building tasks.'
+      description: 'Once your solution gets accepted, you get paid. Build your reputation and keep building tasks.'
     }
   ];
 

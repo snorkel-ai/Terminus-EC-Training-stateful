@@ -467,7 +467,7 @@ const Tasks = () => {
 
   return (
     <section className="landing-section full-width tasks-section">
-      <h2 className="section-title">Real Engineering Tasks</h2>
+      <h2 className="section-title">Examples of Real Engineering Problems</h2>
       <div className="tasks-container">
         <div className="tasks-grid-fade">
           {/* Duplicate tasks for infinite scroll effect */}
