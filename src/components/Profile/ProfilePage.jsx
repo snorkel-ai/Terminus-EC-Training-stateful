@@ -26,6 +26,7 @@ const ProfilePage = () => {
     last_name: '',
     bio: '',
     linkedin_url: '',
+    github_username: '',
     website_url: '',
     specialties: []
   });
@@ -50,6 +51,7 @@ const ProfilePage = () => {
         last_name: profile.last_name || '',
         bio: profile.bio || '',
         linkedin_url: profile.linkedin_url || '',
+        github_username: profile.github_username || '',
         website_url: profile.website_url || '',
         specialties: profile.specialties || []
       });
@@ -250,15 +252,27 @@ const ProfilePage = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Portfolio / Website</label>
+                    <label>GitHub Username</label>
                     <input
-                      type="url"
-                      name="website_url"
-                      value={formData.website_url}
+                      type="text"
+                      name="github_username"
+                      value={formData.github_username}
                       onChange={handleChange}
-                      placeholder="https://..."
+                      placeholder="username"
+                      disabled={user?.app_metadata?.provider === 'github'}
                     />
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Portfolio / Website</label>
+                  <input
+                    type="url"
+                    name="website_url"
+                    value={formData.website_url}
+                    onChange={handleChange}
+                    placeholder="https://..."
+                  />
                 </div>
 
                 <div className="form-group">
