@@ -49,7 +49,7 @@ const PublicHeader = () => {
         </div>
         
         <nav className="public-nav">
-          <button onClick={() => scrollToSection('how-it-works')} className="nav-item">
+          <button onClick={() => scrollToSection('what-is-terminalbench')} className="nav-item">
             What is TerminalBench?
           </button>
           <button onClick={() => scrollToSection('benefits')} className="nav-item">

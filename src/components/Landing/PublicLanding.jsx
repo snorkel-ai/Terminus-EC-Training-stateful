@@ -1,6 +1,7 @@
 import React from 'react';
 import PublicHeader from './PublicHeader';
 import Hero from './sections/Hero';
+import WhatIsTerminalBench from './sections/WhatIsTerminalBench';
 import HowItWorks from './sections/HowItWorks';
 import Tasks from './sections/Tasks';
 import Benefits from './sections/Benefits';
@@ -12,6 +13,7 @@ const PublicLanding = () => {
     <div className="public-landing">
       <PublicHeader />
       <Hero />
+      <WhatIsTerminalBench />
       <HowItWorks />
       <Tasks />
       <Benefits />

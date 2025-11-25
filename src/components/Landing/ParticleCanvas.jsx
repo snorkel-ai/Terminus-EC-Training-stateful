@@ -31,7 +31,7 @@ const ParticleCanvas = () => {
     const mouse = {
       x: null,
       y: null,
-      radius: 150
+      radius: 100
     };
 
     class Particle {
@@ -91,7 +91,7 @@ const ParticleCanvas = () => {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (forceRadius - distance) / forceRadius; 
-            const maxSpeed = 0.8 * this.z; // Adjusted to 0.8 (gentle reaction)
+            const maxSpeed = 0.3 * this.z; 
             
             this.vx -= forceDirectionX * force * maxSpeed;
             this.vy -= forceDirectionY * force * maxSpeed;

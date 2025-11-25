@@ -71,8 +71,9 @@ const Hero = () => {
     navigate('/login'); // Will need to update this to support signup flow
   };
 
-  const handleLearnMore = () => {
-    const element = document.getElementById('how-it-works');
+  const handleWhatIsClick = (e) => {
+    e.preventDefault();
+    const element = document.getElementById('what-is-terminalbench');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -102,9 +103,9 @@ const Hero = () => {
               <path d="M12 5l7 7-7 7" />
             </svg>
           </button>
-          <button onClick={handleLearnMore} className="cta-button cta-secondary">
-            Learn more about TerminalBench
-          </button>
+          <a href="#what-is-terminalbench" onClick={handleWhatIsClick} className="cta-link">
+            What is TerminalBench?
+          </a>
         </div>
 
         <div className="trusted-by">

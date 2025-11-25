@@ -24,7 +24,7 @@ const HowItWorks = () => {
 
   return (
     <section id="how-it-works" className="landing-section">
-      <h2 className="section-title">How It Works</h2>
+      <h2 className="section-title">How does TerminalBench work?</h2>
       <div className="steps-grid">
         {steps.map((step, index) => (
           <div key={index} className="step-card">
