@@ -5,6 +5,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import AuthPage from './components/Auth/AuthPage';
+import Login from './components/Auth/Login';
 import PublicLanding from './components/Landing/PublicLanding';
 import Header from './components/Layout/Header';
 import LandingPage from './components/LandingPage'; // This is now the Portal Dashboard
@@ -29,7 +30,7 @@ function App() {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<PublicLanding />} />
-            <Route path="/login" element={<AuthPage />} />
+            <Route path="/login" element={<Login />} />
             
             {/* Protected Portal Routes */}
             <Route 
