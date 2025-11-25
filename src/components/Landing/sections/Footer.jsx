@@ -21,7 +21,10 @@ const Footer = () => {
         gap: '2rem'
       }}>
         <div>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Ready to start?</h3>
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Real work. Real payouts. Real impact.</h3>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+            The only thing missing is your expertise.
+          </p>
           <button 
             onClick={() => navigate('/login')}
             className="cta-button cta-primary"

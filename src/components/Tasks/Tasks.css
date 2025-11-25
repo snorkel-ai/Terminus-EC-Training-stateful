@@ -431,7 +431,6 @@
 
 .tasks-loading p,
 .tasks-error p {
-  font-size: 1rem;
   color: #6b7280;
 }
 
@@ -466,7 +465,6 @@
 }
 
 .empty-state p {
-  font-size: 1rem;
   color: #6b7280;
   margin-bottom: 1.5rem;
 }

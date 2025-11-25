@@ -55,7 +55,7 @@
 
 .logo-text {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.03em;
 }
@@ -91,7 +91,7 @@
 .nav-item {
   background: none;
   border: none;
-  font-size: 1rem;
+  font-size: 14px;
   color: var(--text-secondary);
   font-weight: 500;
   cursor: pointer;
@@ -123,7 +123,7 @@
     gap: 1rem;
   }
   
-  .nav-item {
+  /* .nav-item {
     font-size: 0.9rem;
-  }
+  } */
 }

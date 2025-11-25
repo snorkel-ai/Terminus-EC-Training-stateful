@@ -38,7 +38,7 @@ const ParticleCanvas = () => {
       constructor(x, y, directionX, directionY, size, color, symbol) {
         this.x = x;
         this.y = y;
-        this.z = Math.random() * 2 + 0.5; // Depth factor
+        this.z = Math.random() * 3 + 0.3; // Extended depth range (0.3 to 3.3)
         
         this.baseSize = size;
         this.size = size * this.z; // Font size scales with depth
@@ -91,7 +91,7 @@ const ParticleCanvas = () => {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (forceRadius - distance) / forceRadius; 
-            const maxSpeed = 2 * this.z; // Adjusted to 2 (moderate reaction)
+            const maxSpeed = 0.8 * this.z; // Adjusted to 0.8 (gentle reaction)
             
             this.vx -= forceDirectionX * force * maxSpeed;
             this.vy -= forceDirectionY * force * maxSpeed;
