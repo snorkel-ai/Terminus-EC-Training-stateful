@@ -118,17 +118,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const completeOnboarding = async () => {
+  const completeOnboarding = async (specialties = []) => {
     try {
+      const updates = { onboarding_completed: true };
+      if (specialties && specialties.length > 0) {
+        updates.specialties = specialties;
+      }
+
       const { error } = await supabase
         .from('profiles')
-        .update({ onboarding_completed: true })
+        .update(updates)
         .eq('id', user.id);
 
       if (error) throw error;
       
       // Update local state
-      setProfile(prev => ({ ...prev, onboarding_completed: true }));
+      setProfile(prev => ({ ...prev, ...updates }));
     } catch (error) {
       console.error('Error completing onboarding:', error);
       throw error;
