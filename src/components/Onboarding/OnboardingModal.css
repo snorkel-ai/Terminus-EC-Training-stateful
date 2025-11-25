@@ -110,6 +110,14 @@
   margin-bottom: 16px;
 }
 
+.onboarding-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 40px 0;
+  width: 100%;
+  opacity: 0.5;
+}
+
 /* Step 2: Purpose Grid */
 .purpose-grid {
   display: grid;
@@ -177,7 +185,7 @@
 }
 
 .disciplines-marquee-track:hover {
-  animation-play-state: paused;
+  /* animation-play-state: paused; */
 }
 
 .discipline-pill {

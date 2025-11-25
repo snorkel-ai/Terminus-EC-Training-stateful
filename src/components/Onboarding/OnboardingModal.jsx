@@ -13,6 +13,13 @@ const ALL_SPECIALTIES = [
   "Robotics", "Quantum Computing", "IoT", "Edge Computing"
 ];
 
+const SUCCESS_MESSAGES = [
+  "Absolute unit of talent. That’ll do 😎",
+  "Stack loaded. You’re dangerous now.🥷",
+  "Okay wow — you came prepared.💪",
+  "Skill cannon fully armed. 🔥"
+];
+
 const OnboardingModal = () => {
   const { profile, completeOnboarding } = useAuth();
   const navigate = useNavigate();
@@ -21,6 +28,7 @@ const OnboardingModal = () => {
   const [specialties, setSpecialties] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [limitMessage, setLimitMessage] = useState(SUCCESS_MESSAGES[0]);
 
   // If profile isn't loaded or onboarding is already complete, don't render
   if (!profile || profile.onboarding_completed) return null;
@@ -43,9 +51,15 @@ const OnboardingModal = () => {
     if (specialties.length >= 10) return; // Limit to 10
     
     if (specialty && !specialties.includes(specialty)) {
-      setSpecialties([...specialties, specialty]);
+      const newSpecialties = [...specialties, specialty];
+      setSpecialties(newSpecialties);
       setInputValue('');
       setSuggestions([]);
+      
+      // Rotate message if we just hit the limit
+      if (newSpecialties.length === 10) {
+        setLimitMessage(SUCCESS_MESSAGES[Math.floor(Math.random() * SUCCESS_MESSAGES.length)]);
+      }
     }
   };
 
@@ -270,7 +284,7 @@ const OnboardingModal = () => {
                 fontWeight: 500,
                 animation: 'fadeIn 0.3s ease'
               }}>
-                We see you, rockstar! 🎸 That's plenty of expertise for now.
+                {limitMessage}
               </p>
             )}
             
@@ -322,20 +336,42 @@ const OnboardingModal = () => {
 
           <div className="resources-layout">
             <div className="video-preview-list">
-              <h4>Essential Watch List</h4>
-              <div className="video-preview-item" onClick={() => window.open('/videos', '_blank')}>
+              <h4>Training Materials</h4>
+              
+              <div className="video-preview-item" onClick={() => window.open('/portal/videos', '_blank')}>
                 <div className="play-icon">▶</div>
                 <div className="video-info">
-                  <h4>Creating a Task</h4>
-                  <span>The fundamentals of task design</span>
+                  <h4>Task Creation Walkthroughs</h4>
+                  <span>Full video guides on creating tasks</span>
                 </div>
               </div>
-              <div className="video-preview-item" onClick={() => window.open('/videos', '_blank')}>
-                <div className="play-icon">▶</div>
+
+              <div className="video-preview-item" onClick={() => window.open('/portal/feedback', '_blank')}>
+                <div className="play-icon">📊</div>
                 <div className="video-info">
-                  <h4>Running your task</h4>
-                  <span>Testing and verification flow</span>
+                  <h4>Understanding Feedback</h4>
+                  <span>How to read automated evaluations</span>
                 </div>
+              </div>
+
+              <div className="video-preview-item" onClick={() => window.open('/portal/oracle', '_blank')}>
+                <div className="play-icon">🔮</div>
+                <div className="video-info">
+                  <h4>Debugging Your Oracle</h4>
+                  <span>Troubleshooting your reference solutions</span>
+                </div>
+              </div>
+
+              <div className="video-preview-item" onClick={() => window.open('/portal/onboarding', '_blank')}>
+                <div className="play-icon">📑</div>
+                <div className="video-info">
+                  <h4>Onboarding Slides</h4>
+                  <span>Key concepts and presentations</span>
+                </div>
+              </div>
+              
+              <div style={{ marginTop: '16px', opacity: 0.7, fontSize: '14px', fontStyle: 'italic', textAlign: 'center' }}>
+                 ...and much more to come
               </div>
             </div>
 
