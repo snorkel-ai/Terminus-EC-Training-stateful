@@ -50,7 +50,6 @@ const Checklist = () => {
       sublabel: '(Required to get paid)',
       isCompleted: profile?.payments_setup,
       action: async () => {
-        // Placeholder for payment setup - maybe link to an external system or just a confirmation
         const confirmed = window.confirm("Have you set up your payment details in HireArt?");
         if (confirmed) {
           await updateProfile({ payments_setup: true });
@@ -67,9 +66,6 @@ const Checklist = () => {
       isCompleted: profile?.dev_env_setup,
       action: async () => {
         navigate('/portal/guideline-workflow');
-        // We don't auto-complete this one, maybe user has to mark it done manually?
-        // Or we show a "Mark as Done" button in the row if they visited?
-        // For now, let's toggle it.
         const confirmed = window.confirm("Have you completed the environment setup?");
         if (confirmed) {
            await updateProfile({ dev_env_setup: true });
@@ -81,43 +77,64 @@ const Checklist = () => {
 
   const completedCount = items.filter(i => i.isCompleted).length;
   const remainingCount = items.length - completedCount;
-  const progressText = remainingCount === 0 
-    ? 'All completed' 
-    : `${remainingCount} step${remainingCount === 1 ? '' : 's'} remaining`;
-
+  
   if (completedCount === items.length) {
-    return null;
+     return null;
   }
+
+  const titleText = `You have ${remainingCount} task${remainingCount === 1 ? '' : 's'} outstanding before you can get started`;
 
   return (
     <div className={`checklist-container ${!isExpanded ? 'collapsed' : ''}`}>
       <div className="checklist-header" onClick={() => setIsExpanded(!isExpanded)}>
-        <div className="header-left">
-          <h3>Onboarding Checklist</h3>
-          <div className="progress-summary">
-             {progressText}
-          </div>
+        <div className="checklist-icon">
+          {/* Clipboard/Checklist Icon similar to the Book icon style */}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            <path d="M9 14l2 2 4-4"></path>
+          </svg>
         </div>
-        <div className="header-right">
-           <button className="toggle-btn">
-             {isExpanded ? 'Hide' : 'Show'}
-           </button>
+        
+        <div className="checklist-header-content">
+          <span className="checklist-label-small">GET STARTED</span>
+          <h3 className="checklist-title">{titleText}</h3>
+        </div>
+
+        <div className="checklist-header-action">
+          <svg 
+            className={`chevron-icon ${isExpanded ? 'expanded' : ''}`} 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </div>
       </div>
       
       {isExpanded && (
         <div className="checklist-content-wrapper">
             <div className="checklist-items">
-                {items.map((item) => (
-                <div key={item.id} className={`checklist-item ${item.isCompleted ? 'completed' : ''}`}>
+                {items.map((item, index) => (
+                <div 
+                  key={item.id} 
+                  className={`checklist-item ${item.isCompleted ? 'completed' : ''}`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
                     <div className="checklist-checkbox"></div>
                     <div className="checklist-text">
                     <div className="checklist-label">{item.label}</div>
                     {item.sublabel && <div className="checklist-sublabel">{item.sublabel}</div>}
                     </div>
-                    <div className="checklist-action">
+                    <div className="checklist-item-action">
                     {!item.isCompleted && !item.disabled && (
-                        <button className="checklist-btn" onClick={item.action}>
+                        <button className="checklist-btn" onClick={(e) => { e.stopPropagation(); item.action(); }}>
                         {item.cta}
                         </button>
                     )}
@@ -132,4 +149,3 @@ const Checklist = () => {
 };
 
 export default Checklist;
-
