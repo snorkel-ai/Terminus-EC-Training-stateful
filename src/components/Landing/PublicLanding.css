@@ -409,11 +409,102 @@
 
 .benefit-item {
   text-align: center;
+  padding: 2rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  background: transparent;
 }
 
-.benefit-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+.benefit-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transform: translateY(-5px);
+}
+
+.benefit-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: #0071e3; /* Blue accent to match other elements */
+  height: 80px;
+}
+
+.benefit-icon-svg {
+  width: 64px;
+  height: 64px;
+  transition: all 0.3s ease;
+}
+
+.benefit-item:hover .benefit-icon-svg {
+  transform: scale(1.1);
+}
+
+/* Specific Icon Animations */
+@keyframes pulse-fill {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+
+.benefit-item:hover .impact-fill {
+  animation: pulse-fill 1.5s infinite ease-in-out;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 0.3; transform: scale(1.0); }
+}
+
+.benefit-item:hover .pay-fill {
+  transform-origin: center;
+  animation: sparkle 2s infinite ease-in-out;
+}
+
+.pay-diamond {
+  transition: stroke 0.3s;
+}
+
+.benefit-item:hover .pay-diamond {
+  stroke: var(--accent);
+}
+
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.brain-pulse {
+  transform-origin: center;
+  animation: pulse-scale 2s infinite ease-in-out;
+}
+
+.benefit-item:hover .brain-connect {
+  opacity: 1;
+  stroke-dasharray: 10;
+  animation: dash 1s linear infinite;
+}
+
+.brain-connect {
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.flex-orbit {
+  transform-origin: center;
+}
+
+.benefit-item:hover .flex-orbit {
+  animation: orbit 8s linear infinite;
 }
 
 /* Animations */
