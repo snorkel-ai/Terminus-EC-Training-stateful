@@ -6,7 +6,6 @@ import './Checklist.css';
 const Checklist = () => {
   const { profile, updateProfile } = useAuth();
   const navigate = useNavigate();
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   
   const [isExpanded, setIsExpanded] = useState(true);
   
@@ -29,9 +28,9 @@ const Checklist = () => {
     {
       id: 'profile',
       label: 'Set up your profile',
-      sublabel: '(Add bio, skills, GitHub, LinkedIn)',
+      sublabel: '(Add bio, skills, socials, etc.)',
       isCompleted: isProfileSetup,
-      action: () => setIsProfileModalOpen(true),
+      action: () => navigate('/portal/profile'),
       cta: 'Update Profile'
     },
     {
@@ -86,7 +85,7 @@ const Checklist = () => {
     ? 'All completed' 
     : `${remainingCount} step${remainingCount === 1 ? '' : 's'} remaining`;
 
-  if (completedCount === items.length && !isExpanded) {
+  if (completedCount === items.length) {
     return null;
   }
 
@@ -128,120 +127,6 @@ const Checklist = () => {
             </div>
         </div>
       )}
-
-      {/* Simple Profile Modal */}
-      {isProfileModalOpen && (
-        <ProfileModal 
-          profile={profile} 
-          updateProfile={updateProfile} 
-          onClose={() => setIsProfileModalOpen(false)} 
-        />
-      )}
-    </div>
-  );
-};
-
-const ProfileModal = ({ profile, updateProfile, onClose }) => {
-  const [formData, setFormData] = useState({
-    bio: profile?.bio || '',
-    linkedin_url: profile?.linkedin_url || '',
-    github_username: profile?.github_username || '',
-    specialties: profile?.specialties || []
-  });
-  const [loading, setLoading] = useState(false);
-  const [specialtyInput, setSpecialtyInput] = useState('');
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSpecialtyAdd = (e) => {
-    if (e.key === 'Enter' && specialtyInput.trim()) {
-      e.preventDefault();
-      if (!formData.specialties.includes(specialtyInput.trim())) {
-        setFormData(prev => ({
-          ...prev,
-          specialties: [...prev.specialties, specialtyInput.trim()]
-        }));
-      }
-      setSpecialtyInput('');
-    }
-  };
-
-  const removeSpecialty = (s) => {
-    setFormData(prev => ({
-        ...prev,
-        specialties: prev.specialties.filter(item => item !== s)
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    await updateProfile(formData);
-    setLoading(false);
-    onClose();
-  };
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <h3>Update Profile</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Bio</label>
-            <textarea 
-              name="bio" 
-              value={formData.bio} 
-              onChange={handleChange} 
-              placeholder="Tell us about yourself..."
-            />
-          </div>
-          <div className="form-group">
-            <label>LinkedIn URL</label>
-            <input 
-              type="url" 
-              name="linkedin_url" 
-              value={formData.linkedin_url} 
-              onChange={handleChange}
-              placeholder="https://linkedin.com/in/..."
-            />
-          </div>
-          <div className="form-group">
-            <label>GitHub Username</label>
-            <input 
-              type="text" 
-              name="github_username" 
-              value={formData.github_username} 
-              onChange={handleChange}
-              disabled // Usually comes from auth
-            />
-          </div>
-          <div className="form-group">
-            <label>Skills (Press Enter to add)</label>
-            <div className="tags-input">
-                {formData.specialties.map(s => (
-                    <span key={s} className="tag">
-                        {s} <button type="button" onClick={() => removeSpecialty(s)}>×</button>
-                    </span>
-                ))}
-                <input 
-                    type="text" 
-                    value={specialtyInput}
-                    onChange={e => setSpecialtyInput(e.target.value)}
-                    onKeyDown={handleSpecialtyAdd}
-                    placeholder="Add a skill..."
-                />
-            </div>
-          </div>
-          <div className="modal-actions">
-            <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
-            <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Saving...' : 'Save Profile'}
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
   );
 };

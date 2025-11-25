@@ -18,6 +18,7 @@ import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
 import AdminDashboard from './components/Admin/AdminDashboard';
+import ProfilePage from './components/Profile/ProfilePage';
 import TasksView from './components/Tasks/TasksView';
 import MySelectedTasks from './components/Tasks/MySelectedTasks';
 import OnboardingModal from './components/Onboarding/OnboardingModal';
@@ -52,6 +53,7 @@ function App() {
                       <Route path="/feedback" element={<FeedbackSlides />} />
                       <Route path="/faq" element={<FAQ />} />
                       <Route path="/glossary" element={<Glossary />} />
+                      <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/admin" element={<AdminDashboard />} />
                       
                       {/* Dynamic routes for guideline sections */}
