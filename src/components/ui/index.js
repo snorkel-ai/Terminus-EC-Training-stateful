@@ -16,6 +16,8 @@ export { Alert } from './Alert';
 export { Tabs, Tab } from './Tabs';
 export { StepIndicator } from './StepIndicator';
 export { Divider, LogoSeparator } from './Divider';
+export { Logo } from './Logo';
+export { Navbar, NavLink } from './Navbar';
 
 // Display
 export { Avatar } from './Avatar';

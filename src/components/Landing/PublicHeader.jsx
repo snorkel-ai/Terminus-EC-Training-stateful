@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
+import { Logo, Navbar, NavLink } from '../ui';
 import './PublicHeader.css';
 
 const PublicHeader = () => {
@@ -17,48 +18,23 @@ const PublicHeader = () => {
   return (
     <header className="public-header">
       <div className="public-header-content">
-        <div className="public-logo-lockup" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          {/* Tbench Logo Part */}
-          <div className="tbench-logo">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              className="lucide lucide-terminal"
-            >
-              <polyline points="4 17 10 11 4 5"></polyline>
-              <line x1="12" x2="20" y1="19" y2="19"></line>
-            </svg>
-            <span className="logo-text font-mono">terminal-bench</span>
-          </div>
-
-          <span className="logo-separator">×</span>
-          
-          {/* Snorkel Logo Part */}
-          <img 
-            src="https://s46486.pcdn.co/wp-content/uploads/2023/05/snorkel_logo_header-1.svg" 
-            alt="Snorkel" 
-            className="snorkel-logo-img"
-          />
-        </div>
+        <Logo onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
         
-        <nav className="public-nav">
-          <button onClick={() => scrollToSection('what-is-terminalbench')} className="nav-item">
+        <Navbar className="public-nav">
+          <NavLink as="button" onClick={() => scrollToSection('what-is-terminalbench')}>
             What is TerminalBench?
-          </button>
-          <button onClick={() => scrollToSection('benefits')} className="nav-item">
+          </NavLink>
+          <NavLink as="button" onClick={() => scrollToSection('benefits')}>
             Why join
-          </button>
-          <button onClick={() => navigate('/login')} className="nav-item login-btn">
+          </NavLink>
+          <NavLink 
+            as="button" 
+            onClick={() => navigate('/login')} 
+            variant="button"
+          >
             Login
-          </button>
-        </nav>
+          </NavLink>
+        </Navbar>
       </div>
     </header>
   );
