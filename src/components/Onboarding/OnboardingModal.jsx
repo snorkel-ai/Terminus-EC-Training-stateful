@@ -28,7 +28,7 @@ const OnboardingModal = () => {
   const [specialties, setSpecialties] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [limitMessage, setLimitMessage] = useState(SUCCESS_MESSAGES[0]);
+  const [limitMessage, setLimitMessage] = useState(() => SUCCESS_MESSAGES[Math.floor(Math.random() * SUCCESS_MESSAGES.length)]);
 
   // If profile isn't loaded or onboarding is already complete, don't render
   if (!profile || profile.onboarding_completed) return null;
@@ -58,7 +58,11 @@ const OnboardingModal = () => {
       
       // Rotate message if we just hit the limit
       if (newSpecialties.length === 10) {
-        setLimitMessage(SUCCESS_MESSAGES[Math.floor(Math.random() * SUCCESS_MESSAGES.length)]);
+        let newMessage;
+        do {
+          newMessage = SUCCESS_MESSAGES[Math.floor(Math.random() * SUCCESS_MESSAGES.length)];
+        } while (newMessage === limitMessage && SUCCESS_MESSAGES.length > 1);
+        setLimitMessage(newMessage);
       }
     }
   };
