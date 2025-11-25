@@ -468,6 +468,9 @@ const Tasks = () => {
   return (
     <section className="landing-section full-width tasks-section">
       <h2 className="section-title">Examples of Real Engineering Problems</h2>
+      <p className="section-subtitle">
+        Think you can beat the models? Prove it and get paid.
+      </p>
       <div className="tasks-container">
         <div className="tasks-grid-fade">
           {/* Duplicate tasks for infinite scroll effect */}

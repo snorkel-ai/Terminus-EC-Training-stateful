@@ -34,16 +34,21 @@ const Footer = () => {
               fontWeight: '700', 
               marginBottom: '2rem',
               lineHeight: '1.1',
-              color: '#1d1d1f'
+              color: '#1d1d1f',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem'
             }}>
-              Real work. Real payouts. Real impact.
+              <span>Real work.</span>
+              <span>Real payouts.</span>
+              <span>Real impact.</span>
             </h3>
             <p style={{ 
               fontSize: '1.25rem', 
               color: '#86868b', 
               maxWidth: '480px'
             }}>
-              The only thing missing is your expertise.
+              The only thing missing is <b>your expertise</b>.
             </p>
           </div>
 
@@ -54,7 +59,7 @@ const Footer = () => {
               className="cta-button cta-primary"
               style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}
             >
-              Join
+              Join TerminalBench
             </button>
           </div>
         </div>
@@ -76,11 +81,10 @@ const Footer = () => {
           }}>
             <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms</a>
             <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy</a>
-            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Discord</a>
           </div>
           
           <p style={{ color: '#86868b', fontSize: '0.8rem' }}>
-            &copy; {new Date().getFullYear()} TerminalBench. All rights reserved.
+            &copy; {new Date().getFullYear()} TerminalBench x Snorkel AI. All rights reserved.
           </p>
         </div>
       </div>
