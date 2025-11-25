@@ -78,6 +78,39 @@ function LandingPage({ onNavigate }) {
           </div>
         </section>
 
+        <section style={{ maxWidth: '900px', margin: '3rem auto', padding: '2rem', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderRadius: '12px', boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem' }}>Task Skeleton Download</h2>
+          <p style={{ fontSize: '1.125rem', color: '#ffffff', marginBottom: '1.5rem', opacity: 0.95 }}>
+            Download the template task structure to get started quickly with your submission
+          </p>
+          <a 
+            href="/Terminus-EC-Training/template-task.zip" 
+            download="template-task.zip"
+            style={{
+              display: 'inline-block',
+              backgroundColor: '#ffffff',
+              color: '#667eea',
+              padding: '0.875rem 2rem',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '1.125rem',
+              transition: 'all 0.3s',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.2)';
+            }}
+          >
+            📥 Download Task Skeleton
+          </a>
+        </section>
+
         <div style={{ borderTop: '2px solid #e2e8f0', marginTop: '3rem', paddingTop: '2rem' }}>
           <section className="resources-section">
             <h2 className="section-title">Training Resources</h2>
