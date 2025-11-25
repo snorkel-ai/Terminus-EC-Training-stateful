@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { Button, StepIndicator } from '../ui';
 import './OnboardingModal.css';
 
 const ALL_SPECIALTIES = [
@@ -359,16 +360,17 @@ const OnboardingModal = () => {
                   Connect with other TerminalBench contributors, Snorkelers, get help with tasks, and stay updated on the latest announcements.
                 </span>
               </div>
-              <button 
-                className="btn-primary"
-                style={{ width: '100%', fontSize: '16px', padding: '12px 24px' }}
+              <Button 
+                variant="primary"
+                size="lg"
+                style={{ width: '100%' }}
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open('https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203', '_blank');
                 }}
               >
                 Join Slack Channel
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -381,9 +383,9 @@ const OnboardingModal = () => {
       <div className="onboarding-modal-content">
         {/* Skip button - Top Right */}
         {step === 0 && (
-          <button className="btn-skip-top" onClick={handleComplete}>
+          <Button variant="ghost" size="sm" className="btn-skip-top" onClick={handleComplete}>
             Skip Onboarding
-          </button>
+          </Button>
         )}
 
         {/* Dynamic Step Content */}
@@ -393,34 +395,28 @@ const OnboardingModal = () => {
 
         {/* Navigation Footer */}
         <div className="onboarding-nav">
-          <div className="step-indicators">
-            {steps.map((_, index) => (
-              <div 
-                key={index} 
-                className={`step-dot ${index === step ? 'active' : ''} ${index < step ? 'completed' : ''}`}
-              />
-            ))}
-          </div>
+          <StepIndicator steps={steps.length} currentStep={step} />
 
           <div className="nav-buttons">
             {step > 0 && (
-              <button className="btn-secondary" onClick={handleBack}>
+              <Button variant="secondary" onClick={handleBack}>
                 Back
-              </button>
+              </Button>
             )}
             
             {step < steps.length - 1 ? (
-              <button className="btn-primary" onClick={handleNext}>
+              <Button variant="primary" size="lg" onClick={handleNext}>
                 {step === 0 ? 'Start Onboarding' : 'Next Step'}
-              </button>
+              </Button>
             ) : (
-              <button 
-                className="btn-primary" 
+              <Button 
+                variant="primary"
+                size="lg"
                 onClick={handleComplete}
-                disabled={isClosing}
+                loading={isClosing}
               >
-                {isClosing ? 'Setting up...' : "Start Building"}
-              </button>
+                Start Building
+              </Button>
             )}
           </div>
         </div>

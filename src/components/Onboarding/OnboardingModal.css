@@ -181,9 +181,7 @@
   animation-direction: reverse;
 }
 
-.disciplines-marquee-track:hover {
-  /* animation-play-state: paused; */
-}
+/* Hover pause disabled for now: .disciplines-marquee-track:hover { animation-play-state: paused; } */
 
 .discipline-pill {
   background-color: var(--bg-secondary);
@@ -310,28 +308,7 @@
   border-top: 1px solid var(--border-color);
 }
 
-.step-indicators {
-  display: flex;
-  gap: 12px;
-}
-
-.step-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--border-color);
-  transition: all 0.3s ease;
-}
-
-.step-dot.active {
-  width: 24px;
-  background-color: var(--accent);
-  border-radius: 4px;
-}
-
-.step-dot.completed {
-  background-color: var(--accent);
-}
+/* Step indicator styles now use shared UI component - see src/components/ui/StepIndicator */
 
 .nav-buttons {
   display: flex;
@@ -339,60 +316,12 @@
   align-items: center;
 }
 
-.btn-secondary {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 12px 24px;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.btn-secondary:hover {
-  color: var(--text-primary);
-  background: var(--bg-secondary);
-}
-
+/* Position override for skip button - uses Button component */
 .btn-skip-top {
   position: absolute;
-  top: 60px; /* Align with padding top */
-  right: 60px; /* Align with padding right */
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 14px;
-  cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 20px;
-  transition: all 0.2s ease;
+  top: 60px;
+  right: 60px;
   z-index: 10;
-}
-
-.btn-skip-top:hover {
-  color: var(--text-primary);
-  background-color: var(--bg-secondary);
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: white;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 14px 32px;
-  border-radius: 30px;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
 }
 
 /* Animations */

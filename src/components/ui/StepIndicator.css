@@ -1,0 +1,42 @@
+/* StepIndicator Component - Shared UI Library */
+
+.ui-step-indicators {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.ui-step-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.ui-step-dot:not(:disabled) {
+  cursor: pointer;
+}
+
+.ui-step-dot:not(:disabled):hover {
+  background-color: var(--text-secondary);
+}
+
+.ui-step-dot.active {
+  width: 24px;
+  background-color: var(--accent);
+  border-radius: 4px;
+}
+
+.ui-step-dot.completed {
+  background-color: var(--accent);
+}
+
+.ui-step-dot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+

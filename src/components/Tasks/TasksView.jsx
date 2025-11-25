@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useTasks } from '../../hooks/useTasks';
+import { Button, LoadingState } from '../ui';
 import TaskFilters from './TaskFilters';
 import TaskTile from './TaskTile';
 import './Tasks.css';
@@ -69,8 +70,7 @@ function TasksView() {
           <p>Browse and select tasks to work on</p>
         </div>
         <div className="tasks-loading">
-          <div className="spinner"></div>
-          <p>Loading tasks...</p>
+          <LoadingState size="lg" message="Loading tasks..." />
         </div>
       </div>
     );
@@ -85,7 +85,7 @@ function TasksView() {
         </div>
         <div className="tasks-error">
           <p>Error loading tasks: {error}</p>
-          <button onClick={() => window.location.reload()}>Retry</button>
+          <Button variant="primary" onClick={() => window.location.reload()}>Retry</Button>
         </div>
       </div>
     );
@@ -121,9 +121,9 @@ function TasksView() {
         {filteredTasks.length === 0 ? (
           <div className="tasks-empty">
             <p>No tasks match your current filters.</p>
-            <button onClick={() => handleFilterChange({ category: '', subcategory: '', subsubcategory: '', search: '' })}>
+            <Button variant="secondary" onClick={() => handleFilterChange({ category: '', subcategory: '', subsubcategory: '', search: '' })}>
               Clear Filters
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="tasks-grid">

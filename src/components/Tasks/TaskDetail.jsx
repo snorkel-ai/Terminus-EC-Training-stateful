@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
+import { Button, Badge, LoadingState } from '../ui';
 import './TaskDetail.css';
 
 const TaskDetail = () => {
@@ -93,8 +94,7 @@ const TaskDetail = () => {
   if (loading) {
     return (
       <div className="task-detail-loading">
-        <div className="spinner"></div>
-        <p>Loading task details...</p>
+        <LoadingState size="lg" message="Loading task details..." />
       </div>
     );
   }
@@ -104,16 +104,16 @@ const TaskDetail = () => {
       <div className="task-detail-error">
         <h2>Task not found</h2>
         <p>{error || "The requested task could not be loaded."}</p>
-        <button onClick={() => navigate('/portal/tasks')}>Back to Gallery</button>
+        <Button variant="secondary" onClick={() => navigate('/portal/tasks')}>Back to Gallery</Button>
       </div>
     );
   }
 
   return (
     <div className="task-detail-page">
-      <button className="back-btn" onClick={() => navigate(-1)}>
+      <Button variant="ghost" size="sm" className="back-btn" onClick={() => navigate(-1)}>
         ← Back
-      </button>
+      </Button>
 
       <div className="task-detail-card">
         <div className="task-detail-header">
@@ -125,12 +125,12 @@ const TaskDetail = () => {
           
           <div className="task-meta-badges">
             {task.difficulty && (
-              <span className={`meta-badge difficulty ${task.difficulty}`}>
+              <Badge variant={task.difficulty} size="lg">
                 {task.difficulty.toUpperCase()}
-              </span>
+              </Badge>
             )}
             {task.tags && task.tags.map(tag => (
-              <span key={tag} className="meta-badge tag">{tag}</span>
+              <Badge key={tag} variant="tag" size="lg">{tag}</Badge>
             ))}
           </div>
         </div>
@@ -146,17 +146,19 @@ const TaskDetail = () => {
 
         <div className="task-detail-actions">
           {isClaimed ? (
-            <button className="claim-btn claimed" disabled>
+            <Button variant="primary" size="lg" disabled className="claim-btn claimed">
               ✓ Task Claimed
-            </button>
+            </Button>
           ) : (
-            <button 
-              className="claim-btn" 
+            <Button 
+              variant="primary"
+              size="lg"
+              className="claim-btn"
               onClick={handleClaimTask}
-              disabled={claiming}
+              loading={claiming}
             >
-              {claiming ? 'Claiming...' : 'Claim This Task'}
-            </button>
+              Claim This Task
+            </Button>
           )}
         </div>
       </div>

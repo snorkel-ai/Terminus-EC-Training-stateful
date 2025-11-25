@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button, Badge } from '../ui';
 import './Tasks.css';
 
 function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions = true }) {
@@ -56,13 +57,13 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
       <div className="task-tile-header">
         <div className="task-badges">
           {task.is_highlighted && (
-            <span className="task-badge priority">⭐ Priority</span>
+            <Badge variant="primary" size="sm">⭐ Priority</Badge>
           )}
-          <span className="task-badge category">{task.category}</span>
+          <Badge variant="category" size="sm">{task.category}</Badge>
           {task.difficulty && (
-            <span className={`task-badge difficulty difficulty-${task.difficulty}`}>
+            <Badge variant={task.difficulty} size="sm">
               {task.difficulty}
-            </span>
+            </Badge>
           )}
         </div>
       </div>
@@ -88,21 +89,23 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
       {showActions && (
         <div className="task-actions">
           {isMine ? (
-            <button 
-              className="task-button unselect"
+            <Button 
+              variant="secondary"
+              size="sm"
               onClick={handleUnselect}
-              disabled={loading}
+              loading={loading}
             >
-              {loading ? 'Unselecting...' : 'Unselect Task'}
-            </button>
+              Unselect Task
+            </Button>
           ) : (
-            <button 
-              className="task-button select"
+            <Button 
+              variant="primary"
+              size="sm"
               onClick={handleSelect}
-              disabled={loading}
+              loading={loading}
             >
-              {loading ? 'Selecting...' : 'Select Task'}
-            </button>
+              Select Task
+            </Button>
           )}
         </div>
       )}

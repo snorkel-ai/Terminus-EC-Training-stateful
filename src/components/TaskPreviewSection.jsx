@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { Button, Badge } from './ui';
 import './TaskPreviewSection.css';
 
 const TaskPreviewSection = () => {
@@ -76,7 +77,8 @@ const TaskPreviewSection = () => {
       </div>
 
       <div className="task-controls">
-        <button 
+        <Button 
+          variant="secondary"
           className={`shuffle-btn ${isShuffling ? 'shuffling' : ''}`} 
           onClick={() => shuffleTasks(tasks, true)}
           disabled={isShuffling || loading}
@@ -86,7 +88,7 @@ const TaskPreviewSection = () => {
             <path d="M2 6h1.4c1.3 0 2.5.6 3.3 1.7l14.2 12.6c.8 1.1 2 1.7 3.3 1.7H22"/>
           </svg>
           Shuffle Tasks
-        </button>
+        </Button>
       </div>
 
       <div className="task-preview-grid">
@@ -106,7 +108,7 @@ const TaskPreviewSection = () => {
             >
               <div className="task-preview-card-inner">
                 <div className="task-preview-card-header">
-                  <span className="category-badge">{task.category}</span>
+                  <Badge variant="category">{task.category}</Badge>
                 </div>
                 
                 <div className="task-preview-divider"></div>
@@ -122,12 +124,13 @@ const TaskPreviewSection = () => {
       </div>
 
       <div className="task-preview-footer">
-        <button 
-          className="browse-gallery-btn"
+        <Button 
+          variant="primary"
+          size="lg"
           onClick={() => navigate('/portal/tasks')}
         >
           Browse Task Gallery →
-        </button>
+        </Button>
       </div>
     </section>
   );

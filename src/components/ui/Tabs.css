@@ -1,0 +1,39 @@
+/* Tabs Component - Shared UI Library */
+
+.ui-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 24px;
+}
+
+.ui-tab {
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ui-tab:hover {
+  color: var(--text-primary);
+}
+
+.ui-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: var(--font-semibold);
+}
+
+.ui-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+

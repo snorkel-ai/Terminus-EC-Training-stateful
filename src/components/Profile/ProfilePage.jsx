@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMySelectedTasks } from '../../hooks/useTasks';
+import { Button } from '../ui';
 import './ProfilePage.css';
 import { FaGithub, FaLinkedin, FaSlack, FaEnvelope, FaCheck } from 'react-icons/fa';
 
@@ -331,9 +332,9 @@ const ProfilePage = () => {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <button type="submit" className="btn-primary" disabled={isSaving}>
-                    {isSaving ? 'Saving...' : 'Save Changes'}
-                  </button>
+                  <Button type="submit" variant="primary" loading={isSaving}>
+                    Save Changes
+                  </Button>
                 </div>
               </form>
             </section>
@@ -354,9 +355,9 @@ const ProfilePage = () => {
                     <p>Delete Account</p>
                     <small>Permanently remove your account and all associated data.</small>
                   </div>
-                  <button onClick={handleDeleteAccount} className="btn-danger">
+                  <Button variant="danger" onClick={handleDeleteAccount}>
                     Delete Account
-                  </button>
+                  </Button>
                 </div>
               )}
             </section>

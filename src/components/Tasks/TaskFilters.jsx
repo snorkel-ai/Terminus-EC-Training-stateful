@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { Button, SearchInput } from '../ui';
 import './Tasks.css';
 
 function TaskFilters({ filters, onFilterChange, tasks }) {
@@ -101,9 +102,9 @@ function TaskFilters({ filters, onFilterChange, tasks }) {
         </select>
 
         {hasActiveFilters && (
-          <button className="filter-clear" onClick={clearFilters}>
+          <Button variant="ghost" size="sm" onClick={clearFilters}>
             Clear Filters
-          </button>
+          </Button>
         )}
       </div>
     </div>

@@ -294,37 +294,7 @@
   background: transparent !important;
 }
 
-/* Buttons */
-.btn-primary {
-  background: var(--text-primary);
-  color: var(--bg-primary);
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-}
-
-.btn-danger {
-  background: transparent;
-  color: #ff4444;
-  border: 1px solid #ff4444;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-danger:hover {
-  background: #ff4444;
-  color: white;
-}
+/* Button styles now use shared UI components - see src/components/ui/Button */
 
 /* Stats Grid */
 .stats-grid {

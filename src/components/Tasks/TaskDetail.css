@@ -59,24 +59,7 @@
   gap: 0.75rem;
 }
 
-.meta-badge {
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.meta-badge.difficulty {
-  text-transform: uppercase;
-  font-weight: 700;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-}
-
-.meta-badge.tag {
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-}
+/* Badge styles now use shared UI components - see src/components/ui/Badge */
 
 .task-detail-body {
   margin-bottom: 3rem;

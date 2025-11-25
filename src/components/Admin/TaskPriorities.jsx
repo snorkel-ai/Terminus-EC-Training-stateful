@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { Button } from '../ui';
 import './TaskPriorities.css';
 
 function TaskPriorities() {
@@ -221,9 +222,9 @@ function TaskPriorities() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary" disabled={saving || !selectedCategory}>
-              {saving ? 'Adding...' : 'Add Priority'}
-            </button>
+            <Button type="submit" variant="primary" loading={saving} disabled={!selectedCategory}>
+              Add Priority
+            </Button>
           </form>
         </div>
 
@@ -262,12 +263,13 @@ function TaskPriorities() {
                       </td>
                       <td>{priority.tag_label}</td>
                       <td>
-                        <button
-                          className="btn-delete"
+                        <Button
+                          variant="danger"
+                          size="sm"
                           onClick={() => handleDeletePriority(priority.id)}
                         >
                           Remove
-                        </button>
+                        </Button>
                       </td>
                     </tr>
                   ))}
