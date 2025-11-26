@@ -157,61 +157,6 @@
   margin: 0;
 }
 
-
-/* Step 2: Disciplines Marquee */
-.disciplines-marquee-container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  margin-top: 40px;
-  /* Mask edges for smooth fade in/out */
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.disciplines-marquee-track {
-  display: flex;
-  gap: 16px;
-  width: max-content;
-  animation: marquee 60s linear infinite;
-  margin-bottom: 16px;
-}
-
-.disciplines-marquee-track.reverse {
-  animation-direction: reverse;
-}
-
-/* Hover pause disabled for now: .disciplines-marquee-track:hover { animation-play-state: paused; } */
-
-.discipline-pill {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 100px;
-  padding: 8px 20px;
-  font-size: 14px;
-  color: var(--text-primary);
-  font-weight: 500;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  cursor: default;
-}
-
-.discipline-pill:hover {
-  background-color: var(--accent);
-  color: white;
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
 /* Step 3: Resources */
 .resources-layout {
   display: grid;

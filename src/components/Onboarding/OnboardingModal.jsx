@@ -2,84 +2,17 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button, StepIndicator } from '../ui';
+import slackLogo from '../../assets/slack.webp';
 import './OnboardingModal.css';
-
-const ALL_SPECIALTIES = [
-  "Machine Learning", "Data Science", "Cyber Security", "Full Stack Web", 
-  "System Design", "Cloud Infrastructure", "Algorithms", "Database Optimization",
-  "Mobile Development", "Distributed Systems", "Frontend Architecture", "Backend Development",
-  "Reverse Engineering", "Penetration Testing", "NLP", "Computer Vision",
-  "Embedded Systems", "Blockchain", "Game Development", "AR/VR",
-  "Operating Systems", "Compilers", "Cryptography", "Bioinformatics",
-  "Robotics", "Quantum Computing", "IoT", "Edge Computing"
-];
-
-const SUCCESS_MESSAGES = [
-  "Absolute unit of talent. That’ll do 😎",
-  "Stack loaded. You’re dangerous now.🥷",
-  "Okay wow — you came prepared.💪",
-  "Skill cannon fully armed. 🔥"
-];
 
 const OnboardingModal = () => {
   const { profile, completeOnboarding } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
-  const [specialties, setSpecialties] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [limitMessage, setLimitMessage] = useState(() => SUCCESS_MESSAGES[Math.floor(Math.random() * SUCCESS_MESSAGES.length)]);
 
   // If profile isn't loaded or onboarding is already complete, don't render
   if (!profile || profile.onboarding_completed) return null;
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-    if (value.length > 0) {
-      const filtered = ALL_SPECIALTIES.filter(s => 
-        s.toLowerCase().includes(value.toLowerCase()) && 
-        !specialties.includes(s)
-      );
-      setSuggestions(filtered);
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  const addSpecialty = (specialty) => {
-    if (specialties.length >= 10) return; // Limit to 10
-    
-    if (specialty && !specialties.includes(specialty)) {
-      const newSpecialties = [...specialties, specialty];
-      setSpecialties(newSpecialties);
-      setInputValue('');
-      setSuggestions([]);
-      
-      // Rotate message if we just hit the limit
-      if (newSpecialties.length === 10) {
-        let newMessage;
-        do {
-          newMessage = SUCCESS_MESSAGES[Math.floor(Math.random() * SUCCESS_MESSAGES.length)];
-        } while (newMessage === limitMessage && SUCCESS_MESSAGES.length > 1);
-        setLimitMessage(newMessage);
-      }
-    }
-  };
-
-  const removeSpecialty = (specialty) => {
-    setSpecialties(specialties.filter(s => s !== specialty));
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (inputValue.trim()) {
-        addSpecialty(inputValue.trim());
-      }
-    }
-  };
 
   const handleNext = () => {
     setStep(prev => prev + 1);
@@ -92,7 +25,7 @@ const OnboardingModal = () => {
   const handleComplete = async () => {
     setIsClosing(true);
     try {
-      await completeOnboarding(specialties);
+      await completeOnboarding();
     } catch (error) {
       console.error('Failed to complete onboarding:', error);
       setIsClosing(false);
@@ -144,7 +77,7 @@ const OnboardingModal = () => {
             We’re really glad you’re here.
           </p>
           <p className="onboarding-subtitle">
-            Join the initiative to push the boundaries of agentic coding through coding challenges.
+            You've made the right choice to join the community of experts pushing the boundaries of agentic coding through coding challenges.
           </p>
         </div>
       )
@@ -153,184 +86,32 @@ const OnboardingModal = () => {
     {
       content: (
         <div className="onboarding-step-content">
-          <h2 className="onboarding-title" style={{ fontSize: '42px' }}>Our Mission</h2>
+          <h2 className="onboarding-title" style={{ fontSize: '42px' }}>Outsmart the machines.</h2>
           <p className="onboarding-description">
-            We’re building the definitive benchmark for AI coding agents, and your work directly shapes how AI learns to solve real engineering problems. Every task you create helps advance the frontier of agentic development.
+          Help push AI to its limits by creating real engineering challenges that today’s best models still fail. 
+          Every accepted task advances agentic development, and earns you a payout.
           </p>
           
           <h3 className="onboarding-section-title">
-            What you’ll contribute to:
+            Your goals:
           </h3>
 
           <div className="purpose-grid">
             <div className="purpose-card">
               <span className="purpose-icon">🔨</span>
-              <h3>Create Tasks</h3>
-              <p>Design challenges that require real reasoning and multi-step execution.</p>
+              <h3>Build problems that stump frontier agents.</h3>
+              <p>Real reasoning. Multi-step execution. No toy problems..</p>
             </div>
             <div className="purpose-card">
-              <span className="purpose-icon">🤖</span>
-              <h3>Push the Models</h3>
-              <p>Craft scenarios that expose model weaknesses and drive progress.</p>
+              <span className="purpose-icon">💰</span>
+              <h3>Earn payouts</h3>
+              <p>Get paid for every task that gets accepted.</p>
             </div>
           </div>
         </div>
       )
     },
-    // Step 2: Your Expertise
-    {
-      content: (
-        <div className="onboarding-step-content">
-          <h2 className="onboarding-title" style={{ fontSize: '42px' }}>Your expertise is gold</h2>
-          <p className="onboarding-description">
-          TerminalBench spans a wide range of real engineering domains, from distributed systems and debugging nightmares to security exploits and ML infrastructure. Whether you’re deep in compilers or building production-scale architectures, there’s space here for your expertise to meaningfully shape the future of agentic AI.
-          </p>
-          <p className="onboarding-description" style={{ fontSize: '16px', marginTop: '-20px', opacity: 0.8 }}>
-            <strong>Have a challenge worth solving?</strong> You can also propose tasks and contribute to the growing benchmark that pushes today’s best models to their limits.
-          </p>
-          
-          <h3 className="onboarding-section-title" style={{ marginBottom: '16px', marginTop: '24px' }}>
-            Explore challenges in specialized fields including:
-          </h3>
-
-          <div className="disciplines-marquee-container">
-            <div className="disciplines-marquee-track">
-              {[
-                "Machine Learning", "Data Science", "Cyber Security", "Full Stack Web", 
-                "System Design", "Cloud Infrastructure", "Algorithms", "Database Optimization",
-                "Mobile Development", "Distributed Systems", "Frontend Architecture", "Backend Development"
-              ].map((item, i) => (
-                 <div key={`d1-${i}`} className="discipline-pill">{item}</div>
-              ))}
-              {[
-                "Machine Learning", "Data Science", "Cyber Security", "Full Stack Web", 
-                "System Design", "Cloud Infrastructure", "Algorithms", "Database Optimization",
-                "Mobile Development", "Distributed Systems", "Frontend Architecture", "Backend Development"
-              ].map((item, i) => (
-                 <div key={`d2-${i}`} className="discipline-pill">{item}</div>
-              ))}
-            </div>
-            
-            <div className="disciplines-marquee-track reverse">
-              {[
-                "Reverse Engineering", "Penetration Testing", "NLP", "Computer Vision",
-                "Embedded Systems", "Blockchain", "Game Development", "AR/VR",
-                "Operating Systems", "Compilers", "Cryptography", "Bioinformatics",
-                "Robotics", "Quantum Computing", "IoT", "Edge Computing"
-              ].map((item, i) => (
-                 <div key={`d3-${i}`} className="discipline-pill">{item}</div>
-              ))}
-              {[
-                "Reverse Engineering", "Penetration Testing", "NLP", "Computer Vision",
-                "Embedded Systems", "Blockchain", "Game Development", "AR/VR",
-                "Operating Systems", "Compilers", "Cryptography", "Bioinformatics",
-                "Robotics", "Quantum Computing", "IoT", "Edge Computing"
-              ].map((item, i) => (
-                 <div key={`d4-${i}`} className="discipline-pill">{item}</div>
-              ))}
-            </div>
-          </div>
-
-          <div className="onboarding-divider"></div>
-
-          <h3 className="onboarding-section-title" style={{ marginBottom: '16px', marginTop: '24px' }}>
-            Tell us what you’re best at
-          </h3>
-
-          <div className="specialties-input-container" style={{ marginBottom: '32px', position: 'relative' }}>
-            <div className="specialties-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
-              {specialties.map((specialty, index) => (
-                <span key={index} className="specialty-tag" style={{
-                  backgroundColor: 'var(--accent)',
-                  color: 'white',
-                  padding: '6px 12px',
-                  borderRadius: '20px',
-                  fontSize: '14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}>
-                  {specialty}
-                  <button 
-                    onClick={() => removeSpecialty(specialty)}
-                    style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: 0, fontSize: '16px', display: 'flex', alignItems: 'center' }}
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-            
-            <input 
-              type="text" 
-              className="specialties-input"
-              placeholder={specialties.length >= 10 ? "Limit reached (10 items)" : "Type to search or add your own..."}
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              disabled={specialties.length >= 10}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                borderRadius: '8px',
-                border: '1px solid var(--border-color)',
-                backgroundColor: specialties.length >= 10 ? 'var(--bg-secondary)' : 'var(--bg-secondary)',
-                color: 'var(--text-primary)',
-                fontSize: '16px',
-                opacity: specialties.length >= 10 ? 0.7 : 1,
-                cursor: specialties.length >= 10 ? 'not-allowed' : 'text'
-              }}
-            />
-            {specialties.length >= 10 && (
-              <p style={{
-                marginTop: '8px',
-                fontSize: '14px',
-                color: 'var(--text-secondary)',
-                fontWeight: 500,
-                animation: 'fadeIn 0.3s ease'
-              }}>
-                {limitMessage}
-              </p>
-            )}
-            
-            {suggestions.length > 0 && (
-              <div className="specialties-suggestions" style={{
-                position: 'absolute',
-                top: '100%',
-                left: 0,
-                right: 0,
-                backgroundColor: 'var(--bg-secondary)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '8px',
-                marginTop: '4px',
-                maxHeight: '200px',
-                overflowY: 'auto',
-                zIndex: 10,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
-              }}>
-                {suggestions.map((suggestion, index) => (
-                  <div 
-                    key={index}
-                    onClick={() => addSpecialty(suggestion)}
-                    style={{
-                      padding: '10px 16px',
-                      cursor: 'pointer',
-                      borderBottom: index < suggestions.length - 1 ? '1px solid var(--border-color)' : 'none',
-                      transition: 'background-color 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--bg-primary)'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                  >
-                    {suggestion}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )
-    },
-    // Step 3: Resources
+    // Step 2: Resources
     {
       content: (
         <div className="onboarding-step-content">
@@ -349,7 +130,7 @@ const OnboardingModal = () => {
             <div className="next-step-card" style={{ cursor: 'default', maxWidth: '480px', textAlign: 'center', alignItems: 'center' }}>
               <div className="next-step-icon" style={{ overflow: 'hidden', padding: '0', backgroundColor: 'transparent', width: '64px', height: '64px', marginBottom: '16px' }}>
                 <img 
-                  src="https://previews.us-east-1.widencdn.net/preview/48045879/assets/asset-view/9338f8ce-2eed-41d7-b222-350e8ea9f361/thumbnail/eyJ3IjoyMDQ4LCJoIjoyMDQ4LCJzY29wZSI6ImFwcCJ9?sig.ver=1&sig.keyId=us-east-1.20240821&sig.expires=1764147600&sig=b0BL6AAL_wOE_TAW1nc7Heuj-4dCNyi1sg3tYbev1Yw" 
+                  src={slackLogo}
                   alt="Slack" 
                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />

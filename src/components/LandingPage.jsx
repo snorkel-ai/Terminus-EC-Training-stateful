@@ -1,6 +1,5 @@
 import { useAuth } from '../contexts/AuthContext';
 import slackLogo from '../assets/slack.webp';
-import Checklist from './Landing/Checklist';
 import TaskPreviewSection from './TaskPreviewSection';
 import './LandingPage.css';
 
@@ -18,7 +17,6 @@ function LandingPage() {
           <p className="welcome-cta">Ready for your next challenge?</p>
         </section>
 
-        <Checklist />
         <TaskPreviewSection />
       </main>
 

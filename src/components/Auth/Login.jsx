@@ -135,7 +135,7 @@ function Login() {
 
                 <div className="regular-login-section">
                   <button className="text-button" onClick={() => setShowEmailLogin(true)}>
-                    Regular login?
+                    I don't have a GitHub account
                   </button>
                 </div>
               </>

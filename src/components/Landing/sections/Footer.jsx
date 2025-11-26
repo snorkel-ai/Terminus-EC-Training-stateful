@@ -59,7 +59,7 @@ const Footer = () => {
               className="cta-button cta-primary"
               style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}
             >
-              Join TerminalBench
+              Login to my portal
             </button>
           </div>
         </div>

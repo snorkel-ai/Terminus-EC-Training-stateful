@@ -24,9 +24,6 @@ const PublicHeader = () => {
           <NavLink as="button" onClick={() => scrollToSection('what-is-terminalbench')}>
             What is TerminalBench?
           </NavLink>
-          <NavLink as="button" onClick={() => scrollToSection('benefits')}>
-            Why join
-          </NavLink>
           <NavLink 
             as="button" 
             onClick={() => navigate('/login')} 
