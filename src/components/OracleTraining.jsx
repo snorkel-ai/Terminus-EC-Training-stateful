@@ -12,17 +12,21 @@ function OracleTraining() {
         <button className="back-button" onClick={() => navigate('/')}>
           ← Back to Home
         </button>
-        <div className="videos-logo">Oracle Training</div>
+        <div className="videos-logo">OracleAgent Video and Notebook</div>
       </header>
       
       <main className="videos-content">
-        <h1 className="videos-title">Oracle Training</h1>
+        <h1 className="videos-title">OracleAgent Video and Notebook</h1>
         <div className="workbook-intro">
           <p>
             This page covers what the Oracle Agent is, how to run it, how to debug its output, 
             and how to submit a debugged task. Use the practice workbook to iterate on your task 
             and watch the video tutorial for a step-by-step walkthrough.
           </p>
+          <div className="info-box" style={{ marginTop: '1.5rem' }}>
+            <strong>Prerequisite:</strong> You need to clone the Terminal-Bench repository to use the <code>tb</code> commands. 
+            Clone it from <a href="https://github.com/laude-institute/terminal-bench" target="_blank" rel="noopener noreferrer">https://github.com/laude-institute/terminal-bench</a>
+          </div>
         </div>
         
         <div className="workbook-resources">

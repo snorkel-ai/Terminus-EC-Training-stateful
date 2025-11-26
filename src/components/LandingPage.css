@@ -47,6 +47,32 @@
   color: var(--accent);
 }
 
+.nav-links button {
+  transition: color 0.3s;
+}
+
+.nav-links button:hover {
+  color: #2563eb;
+}
+
+/* Announcement Banner */
+.announcement-banner {
+  background-color: #ffeb3b;
+  color: #1e293b;
+  padding: 1rem 2rem;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-text {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 /* Main Content */
 .main-content {
   flex: 1;
@@ -161,5 +187,13 @@
 
   .welcome-cta {
     font-size: 1.125rem;
+  }
+
+  .announcement-banner {
+    padding: 0.75rem 1rem;
+  }
+
+  .announcement-text {
+    font-size: 0.875rem;
   }
 }

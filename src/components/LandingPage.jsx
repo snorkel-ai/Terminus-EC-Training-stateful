@@ -3,6 +3,7 @@ import slackLogo from '../assets/slack.webp';
 import Checklist from './Landing/Checklist';
 import TaskPreviewSection from './TaskPreviewSection';
 import './LandingPage.css';
+import './Content.css';
 
 function LandingPage() {
   const { user, profile } = useAuth();
