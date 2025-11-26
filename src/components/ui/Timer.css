@@ -1,0 +1,64 @@
+/* Timer Component - Shared UI Library */
+
+/* Standard Timer (stacked layout) */
+.ui-timer {
+  text-align: center;
+}
+
+.ui-timer-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.ui-timer-value {
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.1em;
+}
+
+/* Sizes */
+.ui-timer-sm .ui-timer-value {
+  font-size: 1.5rem;
+}
+
+.ui-timer-md .ui-timer-value {
+  font-size: 2rem;
+}
+
+.ui-timer-lg .ui-timer-value {
+  font-size: 2.5rem;
+}
+
+/* Variants */
+.ui-timer-boxed {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+/* Compact Timer (inline layout) */
+.ui-timer-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.ui-timer-compact-label {
+  color: #4b5563;
+}
+
+.ui-timer-compact-value {
+  font-family: 'Monaco', 'Consolas', monospace;
+  color: var(--text-primary);
+}
+

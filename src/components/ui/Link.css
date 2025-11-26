@@ -1,0 +1,21 @@
+/* External Link Component - Shared UI Library */
+
+.ui-external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.ui-external-link:hover {
+  opacity: 0.8;
+}
+
+.ui-external-link-icon {
+  flex-shrink: 0;
+}
+

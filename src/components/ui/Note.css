@@ -1,0 +1,66 @@
+/* Note/Banner Component - Shared UI Library */
+
+.ui-note {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.ui-note-squared {
+  border-radius: 0;
+}
+
+/* Header with icon and title */
+.ui-note-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.ui-note-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ui-note-title {
+  line-height: 1.3;
+}
+
+/* Content */
+.ui-note-content {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.ui-note-content-indented {
+  margin-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Variants */
+.ui-note-default {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.ui-note-muted {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.ui-note-accent {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.ui-note-accent .ui-note-header {
+  color: #1e40af;
+}
+

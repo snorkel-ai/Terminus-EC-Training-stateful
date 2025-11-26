@@ -129,7 +129,7 @@ function Header() {
             </div>
 
             <div className="nav-dropdown-container" ref={quickLinksMenuRef}>
-              <NavLink 
+            <NavLink 
                 as="button"
                 className="dropdown-trigger"
                 onClick={() => setIsQuickLinksOpen(!isQuickLinksOpen)}
@@ -148,13 +148,13 @@ function Header() {
               </NavLink>
               <div className={`nav-dropdown-menu ${isQuickLinksOpen ? 'open' : ''}`}>
                 <a 
-                  href="https://snorkel.ai" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+              href="https://snorkel.ai" 
+              target="_blank" 
+              rel="noopener noreferrer"
                   className="dropdown-item"
                   onClick={() => setIsQuickLinksOpen(false)}
-                >
-                  Submitter portal
+            >
+              Submitter portal
                 </a>
                 <a 
                   href="https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203" 

@@ -97,7 +97,7 @@ const TaskPreviewSection = () => {
                 )}
                 <div className="task-preview-card-header">
                   <div className="header-badges">
-                    <Badge variant="category">{task.category}</Badge>
+                  <Badge variant="category">{task.category}</Badge>
                   </div>
                 </div>
                 
@@ -105,7 +105,7 @@ const TaskPreviewSection = () => {
                 
                 <div className="task-preview-body">
                   <div className="task-header-row">
-                    <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
+                  <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
                   </div>
                   <p>{task.description}</p>
                   

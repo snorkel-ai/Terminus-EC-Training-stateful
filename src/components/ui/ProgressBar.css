@@ -1,0 +1,62 @@
+/* ProgressBar Component - Shared UI Library */
+
+.ui-progress-wrapper {
+  width: 100%;
+}
+
+.ui-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.35rem;
+}
+
+.ui-progress-bar {
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* Sizes */
+.ui-progress-sm {
+  height: 4px;
+}
+
+.ui-progress-md {
+  height: 6px;
+}
+
+.ui-progress-lg {
+  height: 8px;
+}
+
+/* Fill */
+.ui-progress-fill {
+  height: 100%;
+  transition: width 1s linear;
+  border-radius: inherit;
+}
+
+/* Variants */
+.ui-progress-default {
+  background: var(--accent);
+}
+
+.ui-progress-success {
+  background: #10b981;
+}
+
+.ui-progress-warning {
+  background: #f59e0b;
+}
+
+.ui-progress-danger {
+  background: #ef4444;
+}
+
+.ui-progress-info {
+  background: #3b82f6;
+}
+

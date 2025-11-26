@@ -14,7 +14,7 @@ function LandingPage() {
       <main className="main-content">
         <section className="welcome-strip">
           <h1 className="welcome-title">Hello, {displayName} <span className="wave">👋</span></h1>
-          <p className="welcome-subtitle">The community advancing agentic development.</p>
+          <p className="welcome-subtitle">Welcome to the community advancing agentic development.</p>
           <p className="welcome-cta">Ready for your next challenge?</p>
         </section>
 

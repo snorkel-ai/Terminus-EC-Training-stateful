@@ -163,13 +163,11 @@
 }
 
 .task-tile.selected {
-  border-color: #f59e0b;
   background: #fffbeb;
 }
 
 .task-tile.mine {
-  border-color: #10b981;
-  background: #f0fdf4;
+  background: #fff;
 }
 
 .task-tile.highlighted {
