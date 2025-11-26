@@ -19,6 +19,11 @@ function LocalTestingInfo({ onNavigate }) {
             Running agents locally allows you to iterate on your tasks more effectively compared to needing to submit your PR before receiving test results. By testing locally, you can quickly identify issues, refine your task design, and validate solutions before submitting. You'll receive your API key from Snorkel via email, which you'll need to set up your environment for local testing.
           </p>
           
+          <div className="info-box" style={{ marginBottom: '2rem' }}>
+            <strong>Prerequisite:</strong> You need to clone the Terminal-Bench repository to use the <code>tb</code> commands. 
+            Clone it from <a href="https://github.com/laude-institute/terminal-bench" target="_blank" rel="noopener noreferrer">https://github.com/laude-institute/terminal-bench</a>
+          </div>
+          
           <h2>Test SOTA agent performance on your task</h2>
           
           <ol>

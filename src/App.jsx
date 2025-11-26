@@ -11,6 +11,7 @@ import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
 import LocalTestingInfo from './components/LocalTestingInfo';
 import EnvironmentSetup from './components/EnvironmentSetup';
+import ExpertPlatformWalkthrough from './components/ExpertPlatformWalkthrough';
 import { trainingSections } from './data/trainingData';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
       {currentView === 'faq' && <FAQ onNavigate={handleNavigate} />}
       {currentView === 'glossary' && <Glossary onNavigate={handleNavigate} />}
       {currentView === 'local-testing' && <LocalTestingInfo onNavigate={handleNavigate} />}
+      {currentView === 'expert-platform-walkthrough' && <ExpertPlatformWalkthrough onNavigate={handleNavigate} />}
     </div>
   );
 }

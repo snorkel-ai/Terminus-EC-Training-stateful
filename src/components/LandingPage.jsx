@@ -119,17 +119,18 @@ function LandingPage({ onNavigate }) {
               <strong>We recommend completing the training resources in the following order:</strong>
               <ol style={{ marginTop: '1rem', paddingLeft: '1.5rem' }}>
                 <li>Begin with the onboarding materials to get oriented with the project</li>
-                <li>Set up your development environment</li>
+                <li>Review the Setup + Workflow guide to understand the development process</li>
                 <li>Proceed through the task walkthrough videos to understand the development process</li>
                 <li>Complete the OracleAgent training to learn how to validate your solutions</li>
                 <li>Complete the CI Feedback training to learn how to iterate on submissions</li>
                 <li>Review the local testing information to set up agent testing</li>
+                <li>Follow the Expert Platform Submission Walkthrough to submit your task</li>
               </ol>
             </div>
           </div>
           <div style={{ textAlign: 'center', width: '100%', marginBottom: '2rem' }}>
             <p style={{ margin: '0', textAlign: 'center', display: 'inline-block' }}>
-              Additionally, you may find the Office Hours Videos and Slides and Common Errors pages<br />
+              Additionally, you may find the Office Hours Videos and Slides<br />
               helpful for understanding common mistakes and best practices to avoid.
             </p>
           </div>
@@ -138,10 +139,14 @@ function LandingPage({ onNavigate }) {
               <span className="button-text">Onboarding Video and Slides</span>
               <span className="button-description">Access the onboarding presentation slides and video</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('environment-setup')}>
+            <button className="resource-button" onClick={() => onNavigate('workflow')}>
+              <span className="button-text">Setup + Workflow</span>
+              <span className="button-description">Get started with the development process and task creation workflow</span>
+            </button>
+            {/* <button className="resource-button" onClick={() => onNavigate('environment-setup')}>
               <span className="button-text">Environment Setup</span>
               <span className="button-description">Set up your development environment for the project</span>
-            </button>
+            </button> */}
             <button className="resource-button" onClick={() => onNavigate('videos')}>
               <span className="button-text">Task Walkthrough Videos</span>
               <span className="button-description">Walks through the process of creating a task, running it, and creating a solution and tests</span>
@@ -158,14 +163,18 @@ function LandingPage({ onNavigate }) {
               <span className="button-text">Local Testing Info</span>
               <span className="button-description">Instructions for testing tasks locally with real agents</span>
             </button>
+            <button className="resource-button" onClick={() => onNavigate('expert-platform-walkthrough')}>
+              <span className="button-text">Expert Platform Submission Walkthrough</span>
+              <span className="button-description">Step-by-step guide for submitting tasks on the Snorkel Expert Platform</span>
+            </button>
             <button className="resource-button" onClick={() => onNavigate('feedback')}>
               <span className="button-text">Office Hours Videos and Slides</span>
               <span className="button-description">View Office Hours videos and feedback presentation slides with common issues and best practices</span>
             </button>
-            <button className="resource-button" onClick={() => onNavigate('common-errors')}>
+            {/* <button className="resource-button" onClick={() => onNavigate('common-errors')}>
               <span className="button-text">Common Errors</span>
               <span className="button-description">Learn about common mistakes and how to avoid them</span>
-            </button>
+            </button> */}
           </div>
           </section>
 

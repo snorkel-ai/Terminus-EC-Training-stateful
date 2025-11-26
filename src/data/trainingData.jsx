@@ -215,80 +215,65 @@ export const trainingSections = [
           Our project, while not a direct contribution to Terminal-Bench, will mimic the style closely.
         </div>
 
-        <h3>Submissions Workflow</h3>
-        <p>Submissions will be created through a private GitHub repository: <code>https://github.com/snorkel-ai/snorkel-tb-tasks</code></p>
-        
-        <p>Once you receive access to this repository, please do the following:</p>
+        <h3>High-Level Tasking Workflow</h3>
+        <p>
+          Tasking will be performed through the terminus-project project on the Snorkel Expert Platform.
+          Once you are granted access, you should:
+        </p>
         <ol>
-          <li>Clone the repository</li>
-          <li>Create a task in your local environment under <code>tasks</code> directory</li>
-          <li>Ensure the oracle solution passes and minimum criteria for difficulty are met</li>
-          <li>Push a branch (e.g. <code>username/&lt;task-id&gt;</code>)</li>
-          <li>Create a pull request against the repository and make sure the title starts with <strong>Task:</strong></li>
-          <li>Iterate on that branch until all CI/Evals pass</li>
+          <li>Clone the open-source Terminal-Bench repo to give you access to the <code>tb</code> commands used for running the agents and programmatic checks locally</li>
+          <li>Go to the training site and download the task file skeleton</li>
+          <li>Rename the task folder to match your intended task name</li>
+          <li>Create your task instruction, an Oracle solution that passes, and Python tests</li>
+          <li>Iterate on your submission until all CI/Evals pass</li>
+          <li>Create a ZIP file for your task folder</li>
+          <li>Submit your ZIP file on the Platform</li>
         </ol>
 
         <p className="info-box">
-          <strong>Estimated Time:</strong> The submission task is expected to require around 2-5 hours to complete.
+          <strong>Estimated Time:</strong> We expect submission tasks to take 2-5 hours based on task difficulty.
         </p>
 
         <h3>Initial Setup (one-time)</h3>
         <ol>
-          <li>Install uv
-            <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
-          </li>
-          <li>Clone the repository
-            <pre><code>git clone https://github.com/snorkel-ai/snorkel-tb-tasks.git</code></pre>
-          </li>
-          <li>Navigate to the created local directory
-            <pre><code>cd snorkel-tb-tasks</code></pre>
+          <li>Clone the Terminal-Bench repository
+            <pre><code>git clone https://github.com/laude-institute/terminal-bench.git</code></pre>
+            <p>This gives you access to the <code>tb</code> commands used for running agents and programmatic checks locally.</p>
           </li>
         </ol>
 
-        <h3>Creating the File Structure for a New Task</h3>
+        <h3>Completing a Task</h3>
         <ol>
-          <li>Run the task creation wizard
-            <pre><code>uv run stb tasks create</code></pre>
-          </li>
-          <li>[Optional] Enter 'y' to receive an overview of Terminal-Bench, or 'n' to skip</li>
-          <li>Follow the steps given in the terminal to:
-            <ul>
-              <li>Provide a unique name for your task</li>
-              <li>Provide the task description/what the task is</li>
-              <li>Indicate whether interactive commands are required (most cases: no)</li>
-              <li>Please skip entering your name and email (we will track this through the app)</li>
-              <li>Enter a category for your task corresponding to one in the Taxonomy</li>
-              <li>Enter 3-6 tags for your task (separated by spaces)</li>
-              <li>Provide an easy/medium/hard rating based on how long it would take an expert to solve</li>
-              <li>Provide a completion time estimate for an expert engineer</li>
-              <li>Provide a completion time estimate for a junior engineer</li>
-            </ul>
-          </li>
-        </ol>
-
-        <p>
-          This will create a new folder in your <code>snorkel-tb-tasks/tasks</code> directory, with a name 
-          corresponding to the unique name provided. The contents contain all the necessary files needed for 
-          task submission (unless you need to add additional data files).
-        </p>
-
-        <h3>Completing a Task After Creation</h3>
-        <ol>
-          <li>Edit the created Dockerfile to set up your task environment
+          <li>Go to the Terminus EC Training Hub and download the ZIP file of the task skeleton</li>
+          <li>Extract and rename your task folder as desired</li>
+          <li>Edit the created Dockerfile using a text editor to set up your task environment
             <ul>
               <li>Add any dependencies of the task, such as additional required packages</li>
-              <li>If you require a multi-container environment or other custom configuration, see the documentation for customizing your docker-compose.yaml</li>
+              <li>If you require a multi-container environment or other custom configuration, see the documentation for more information on how to customize your docker-compose.yaml</li>
             </ul>
           </li>
-          <li>Enter your task container in interactive mode
+          <li>Docker Troubleshooting:
+            <ul>
+              <li>Ensure you have a recent installation of Docker Desktop</li>
+              <li>On MacOS, enable the option in Advanced Settings: "Allow the default Docker socket to be used (requires password)."</li>
+              <li>Try the following:
+                <pre><code>sudo dscl . create /Groups/docker
+sudo dseditgroup -o edit -a $USER -t user docker</code></pre>
+              </li>
+            </ul>
+          </li>
+          <li>Enter your task container in interactive mode:
             <pre><code>tb tasks interact -t &lt;task-name&gt;</code></pre>
           </li>
-          <li>While interacting with your task container, test your solution idea to make sure it works as expected</li>
-          <li>Once solution is verified, record it and exit the container</li>
-          <li>Modify the solution file (solution.sh) with the verified commands
+          <li>While interacting with your task container, test your solution idea to make sure that it works as expected
+            <ul>
+              <li>Once solution is verified, record it and exit the container</li>
+            </ul>
+          </li>
+          <li>Modify the solution file (solution.sh) with the verified commands from the previous step
             <ul>
               <li>This file will be used by the OracleAgent to ensure the task is solvable</li>
-              <li>If you need to run commands that are not possible with a bash script (e.g. vim), use a solution.yaml file</li>
+              <li>If you need to run commands that are not possible to run with a bash script (e.g. vim), use a solution.yaml file to configure interactive commands</li>
             </ul>
           </li>
           <li>Update the tests/test_outputs.py file to verify task completion
@@ -297,12 +282,44 @@ export const trainingSections = [
               <li>If tests require any file dependencies, place them in the tests/ directory</li>
             </ul>
           </li>
-          <li>Test your task solution passes and meets all requirements
+          <li>Test your task solution passes and meets all the requirements specified in the tests:
             <pre><code>tb run --agent oracle --task-id &lt;task-name&gt;</code></pre>
+            <p>Note that you will need to clone the Terminal-Bench repo in order to run these tb commands.</p>
           </li>
-          <li>Push a branch (e.g. my-task-1) to the repository</li>
-          <li>Create a PR to submit your task</li>
+          <li>Test your task solution with real agent
+            <ul>
+              <li>Receive API key from Snorkel via email</li>
+              <li>Update environment variables:
+                <pre><code>export OPENAI_API_KEY=&lt;Portkey API key&gt;
+export OPENAI_BASE_URL=https://api.portkey.ai/v1</code></pre>
+              </li>
+              <li>Two models are available currently - GPT-5 and Claude Sonnet 4.5:
+                <pre><code># GPT-5
+tb run --agent terminus-2 --model openai/@openai-tbench/gpt-5 --task-id &lt;task_id&gt;
+
+# Claude Sonnet 4.5
+tb run --agent terminus-2 --model openai/@anthropic-tbench/claude-sonnet-4-5-20250929 --task-id &lt;task_id&gt;</code></pre>
+              </li>
+            </ul>
+          </li>
+          <li>Run CI/LLMaJ locally on your task
+            <ul>
+              <li>Two models are available currently - GPT-5 and Claude Sonnet 4.5:
+                <pre><code># GPT-5
+tb tasks check &lt;task_id&gt; --model openai/@openai/gpt-5
+
+# Claude Sonnet 4.5
+tb tasks check &lt;task_id&gt; --model openai/@anthropic-tbench/claude-sonnet-4-5-20250929</code></pre>
+              </li>
+            </ul>
+          </li>
+          <li>Create a ZIP file of your task folder</li>
+          <li>Submit your task on the Snorkel Expert Platform in the terminus-project project</li>
         </ol>
+
+        <div className="info-box">
+          <strong>Next Steps:</strong> After completing your task locally, follow the <a href="#" onClick={(e) => { e.preventDefault(); window.location.hash = 'expert-platform-walkthrough'; }}>Expert Platform Submission Walkthrough</a> to submit your task on the platform.
+        </div>
       </>
     ),
   },
