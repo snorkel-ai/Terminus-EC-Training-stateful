@@ -22,8 +22,22 @@ function OnboardingMaterials({ onNavigate }) {
         <div className="workbook-resources">
           <div className="download-card">
             <div className="download-icon">📄</div>
-            <h3>Onboarding Slides</h3>
-            <p>Download or view the onboarding presentation slides</p>
+            <h3>Snorkel Platform Onboarding Slides</h3>
+            <p>Download or view the Snorkel Platform onboarding presentation slides</p>
+            <a 
+              href="/Terminus-EC-Training/Terminus%20EC%20Onboarding%20-%20Platform.pdf" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="download-button"
+            >
+              View/Download PDF
+            </a>
+          </div>
+          
+          <div className="download-card">
+            <div className="download-icon">📄</div>
+            <h3>GitHub Onboarding Slides (OUTDATED)</h3>
+            <p>Download or view the GitHub onboarding presentation slides (outdated)</p>
             <a 
               href="/Terminus-EC-Training/Terminus%20EC%20Onboarding.pdf" 
               target="_blank"
