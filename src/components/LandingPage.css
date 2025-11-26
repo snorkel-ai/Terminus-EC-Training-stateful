@@ -65,10 +65,10 @@
 }
 
 .welcome-title {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -91,17 +91,17 @@
 }
 
 .welcome-subtitle {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--text-secondary);
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 0.5rem 0;
   font-weight: 500;
   line-height: 1.4;
 }
 
 .welcome-cta {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: var(--accent);
-  margin: 0 0 2.5rem 0;
+  margin: 0 0 2rem 0;
   font-weight: 600;
 }
 

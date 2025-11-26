@@ -33,32 +33,6 @@
   margin-bottom: 3rem;
 }
 
-.shuffle-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.shuffle-btn:hover:not(:disabled) {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border-color: var(--text-secondary);
-}
-
-.shuffle-btn:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
 .shuffle-btn.shuffling svg {
   animation: spin 0.5s linear infinite;
 }
@@ -123,10 +97,15 @@
   z-index: 1;
 }
 
-/* Prevent hover effect from interfering with shuffle animation */
-.task-preview-card.shuffling:hover {
-  transform: rotateY(90deg) scale(0.95);
-  box-shadow: none;
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Use design system corner badge with custom radius for preview cards */
+.task-preview-card .ui-corner-badge {
+  --corner-badge-radius: 12px; /* Match card's 12px border-radius */
 }
 
 .task-preview-card-inner {
@@ -144,22 +123,6 @@
   padding: 1.25rem 1.5rem;
 }
 
-.category-badge {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.35rem 1rem;
-  border-radius: 9999px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border: 1px solid #e5e7eb;
-  color: #6b7280;
-  background: #ffffff;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .task-preview-divider {
   height: 1px;
   background-color: #e5e7eb;
@@ -173,10 +136,18 @@
   flex-grow: 1;
 }
 
+.task-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
 .task-preview-card h3 {
   font-size: 1.125rem;
   color: #111827;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.4;
@@ -185,14 +156,55 @@
 .task-preview-card p {
   font-size: 0.95rem;
   color: #4b5563;
-  margin-bottom: 0;
+  margin-bottom: 1.5rem;
   line-height: 1.6;
   flex-grow: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  line-clamp: 4;
+  line-clamp: 3;
+}
+
+.task-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.learn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.learn-link:hover {
+  color: var(--accent-hover);
+  text-decoration: none;
+}
+
+.learn-link:hover .learn-text {
+  text-decoration: underline;
+}
+
+.learn-arrow {
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.learn-link:hover .learn-arrow {
+  transform: translateX(4px);
+  text-decoration: none;
+  display: inline-block;
 }
 
 .task-preview-footer {

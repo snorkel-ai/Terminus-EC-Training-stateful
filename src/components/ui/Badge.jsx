@@ -21,5 +21,17 @@ export function Badge({
   );
 }
 
+export function CornerBadge({ 
+  className = '',
+  children, 
+  ...props 
+}) {
+  return (
+    <div className={`ui-corner-badge ${className}`} {...props}>
+      {children}
+    </div>
+  );
+}
+
 export default Badge;
 

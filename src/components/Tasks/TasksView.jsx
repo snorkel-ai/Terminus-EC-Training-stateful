@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
 import { useTasks } from '../../hooks/useTasks';
-import { Button, LoadingState } from '../ui';
+import { Button, LoadingState, Modal, Badge } from '../ui';
 import TaskFilters from './TaskFilters';
 import TaskTile from './TaskTile';
+import { TaskClaimSuccess } from './TaskClaimSuccess';
 import './Tasks.css';
 
 function TasksView() {
@@ -13,6 +14,9 @@ function TasksView() {
     subsubcategory: '',
     search: ''
   });
+  const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [showClaimSuccess, setShowClaimSuccess] = useState(false);
 
   // Filter tasks based on current filters
   const filteredTasks = useMemo(() => {
@@ -60,6 +64,31 @@ function TasksView() {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
+  };
+
+  const handleViewDetails = (task) => {
+    setSelectedTaskForModal(task);
+    setShowClaimSuccess(false);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTaskForModal(null);
+    setShowClaimSuccess(false);
+  };
+
+  const handleSelectFromModal = async () => {
+    if (!selectedTaskForModal || isSelecting) return;
+    
+    setIsSelecting(true);
+    try {
+      await selectTask(selectedTaskForModal.id);
+      setShowClaimSuccess(true);
+    } catch (error) {
+      console.error('Error selecting task:', error);
+      // Error is handled by useTasks usually, but we could show an alert here
+    } finally {
+      setIsSelecting(false);
+    }
   };
 
   if (loading) {
@@ -133,7 +162,7 @@ function TasksView() {
                 task={task}
                 isSelected={task.is_selected}
                 isMine={false}
-                onSelect={selectTask}
+                onSelect={() => handleViewDetails(task)}
                 onUnselect={() => {}}
                 showActions={true}
               />
@@ -141,6 +170,64 @@ function TasksView() {
           </div>
         )}
       </div>
+
+      {/* Task Detail Modal */}
+      <Modal
+        isOpen={!!selectedTaskForModal}
+        onClose={handleCloseModal}
+        size="lg"
+        className="task-detail-modal"
+      >
+        {selectedTaskForModal && (
+          showClaimSuccess ? (
+            <TaskClaimSuccess task={selectedTaskForModal} onClose={handleCloseModal} />
+          ) : (
+            <>
+              <div className="task-detail-modal-header">
+                <div className="modal-badges">
+                  {selectedTaskForModal.is_highlighted && (
+                    <Badge variant="priority" size="sm">Priority</Badge>
+                  )}
+                  <Badge variant="category" size="sm">{selectedTaskForModal.category}</Badge>
+                  {selectedTaskForModal.difficulty && (
+                    <Badge variant={selectedTaskForModal.difficulty.toLowerCase()} size="sm">
+                      {selectedTaskForModal.difficulty}
+                    </Badge>
+                  )}
+                </div>
+                <h2>{selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory || 'Engineering Task'}</h2>
+              </div>
+              
+              <div className="task-detail-modal-body">
+                <p>{selectedTaskForModal.description}</p>
+                {/* Add more details if available in the task object */}
+              </div>
+
+              <div className="task-detail-modal-footer">
+                {(selectedTaskForModal.is_special || selectedTaskForModal.priority_tag) && (
+                  <div style={{ marginRight: 'auto' }}>
+                    <Badge variant="accent">Double Pay</Badge>
+                  </div>
+                )}
+                <Button 
+                  variant="secondary" 
+                  onClick={handleCloseModal}
+                  disabled={isSelecting}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  variant="primary" 
+                  onClick={handleSelectFromModal}
+                  loading={isSelecting}
+                >
+                  Select Task
+                </Button>
+              </div>
+            </>
+          )
+        )}
+      </Modal>
     </div>
   );
 }

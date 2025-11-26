@@ -14,17 +14,8 @@ function LandingPage() {
       <main className="main-content">
         <section className="welcome-strip">
           <h1 className="welcome-title">Hello, {displayName} <span className="wave">👋</span></h1>
-          <p className="welcome-subtitle">Welcome to the community advancing agentic development.</p>
-          <p className="welcome-cta">Let's get you ready to take on your next challenge</p>
-          <a 
-            href="https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="slack-button"
-          >
-            <img src={slackLogo} alt="Slack" className="slack-icon" />
-            Open our Slack community
-          </a>
+          <p className="welcome-subtitle">The community advancing agentic development.</p>
+          <p className="welcome-cta">Ready for your next challenge?</p>
         </section>
 
         <Checklist />

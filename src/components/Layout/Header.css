@@ -81,7 +81,8 @@
   transition: transform 0.2s ease;
 }
 
-.nav-dropdown-container:hover .dropdown-arrow {
+.nav-dropdown-container:hover .dropdown-arrow,
+.dropdown-arrow.open {
   transform: rotate(180deg);
 }
 
@@ -114,7 +115,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
 }
 
-.nav-dropdown-container:hover .nav-dropdown-menu {
+.nav-dropdown-menu.open {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(5px);

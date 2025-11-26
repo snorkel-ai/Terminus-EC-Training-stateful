@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Button, Badge } from './ui';
+import { Button, Badge, CornerBadge } from './ui';
 import './TaskPreviewSection.css';
 
 const TaskPreviewSection = () => {
@@ -76,21 +76,6 @@ const TaskPreviewSection = () => {
         <p>Here are some tasks you can pick from (or just explore what's possible)</p>
       </div>
 
-      <div className="task-controls">
-        <Button 
-          variant="secondary"
-          className={`shuffle-btn ${isShuffling ? 'shuffling' : ''}`} 
-          onClick={() => shuffleTasks(tasks, true)}
-          disabled={isShuffling || loading}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l14.2-12.6c.8-1.1 2-1.7 3.3-1.7H22"/>
-            <path d="M2 6h1.4c1.3 0 2.5.6 3.3 1.7l14.2 12.6c.8 1.1 2 1.7 3.3 1.7H22"/>
-          </svg>
-          Shuffle Tasks
-        </Button>
-      </div>
-
       <div className="task-preview-grid">
         {loading ? (
           // Loading skeletons
@@ -107,15 +92,37 @@ const TaskPreviewSection = () => {
               onClick={() => handleTaskClick(task.id)}
             >
               <div className="task-preview-card-inner">
+                {task.is_special && (
+                  <CornerBadge>2x</CornerBadge>
+                )}
                 <div className="task-preview-card-header">
-                  <Badge variant="category">{task.category}</Badge>
+                  <div className="header-badges">
+                    <Badge variant="category">{task.category}</Badge>
+                  </div>
                 </div>
                 
                 <div className="task-preview-divider"></div>
                 
                 <div className="task-preview-body">
-                  <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
+                  <div className="task-header-row">
+                    <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
+                  </div>
                   <p>{task.description}</p>
+                  
+                  <div className="task-card-footer">
+                    <Badge variant={task.difficulty?.toLowerCase() || 'medium'} size="sm">
+                      {task.difficulty || 'Medium'}
+                    </Badge>
+                    <button 
+                      className="learn-link"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTaskClick(task.id);
+                      }}
+                    >
+                      <span className="learn-text">Learn more</span> <span className="learn-arrow">→</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

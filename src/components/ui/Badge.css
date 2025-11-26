@@ -107,3 +107,40 @@
   font-weight: 700;
 }
 
+/* Accent / Multiplier badge (Blue) */
+.ui-badge-accent {
+  background: #3b82f6;
+  color: #fff;
+  border: 1px solid #3b82f6;
+  font-weight: 700;
+}
+
+/* Priority badge (Blue, same as accent but semantic) */
+.ui-badge-priority {
+  background: #3b82f6;
+  color: #fff;
+  border: 1px solid #3b82f6;
+  font-weight: 700;
+}
+
+/* Corner Badge - positioned absolutely in top-right of parent */
+.ui-corner-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #3b82f6;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 4px 12px;
+  border-radius: 0 var(--corner-badge-radius, 8px) 0 8px;
+  box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  transition: box-shadow 0.2s ease;
+}
+
+.ui-corner-badge:hover,
+*:hover > .ui-corner-badge {
+  box-shadow: -2px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
