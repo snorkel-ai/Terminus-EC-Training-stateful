@@ -31,7 +31,7 @@
 .ui-card-minimal {
   background: transparent;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-lg, 12px);
   box-shadow: none;
 }
 
