@@ -35,7 +35,33 @@ function OnboardingMaterials({ onNavigate }) {
           </div>
           
           <div className="video-card">
-            <h3 className="video-card-title">Onboarding Video</h3>
+            <h3 className="video-card-title">Snorkel Platform Onboarding</h3>
+            <div className="video-wrapper">
+              <video
+                controls
+                preload="metadata"
+                className="video-iframe"
+                style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+                onError={(e) => {
+                  console.error('Video load error:', e);
+                  console.error('Video src:', e.target.currentSrc);
+                }}
+              >
+                <source src="/Terminus-EC-Training/platform_onboarding_11-25-2025.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+          
+          <div className="video-card">
+            <h3 className="video-card-title">GitHub Onboarding (OUTDATED)</h3>
             <div className="video-wrapper">
               <video
                 controls
