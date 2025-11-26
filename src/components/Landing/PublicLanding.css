@@ -3,7 +3,7 @@
   min-height: 100vh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   position: relative;
   overflow-x: hidden;
 }
@@ -17,7 +17,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 0 2rem;
+  padding: 0 2rem 6rem; /* Added bottom padding to lift content up */
   z-index: 1;
   overflow: hidden;
 }
@@ -36,11 +36,9 @@
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 1.5rem;
+  padding-bottom: 0.2em; /* Prevent descender clipping */
   letter-spacing: -0.02em;
-  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
   /* Enhanced 3D shadow */
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
   position: relative;
