@@ -20,7 +20,7 @@ export { StepIndicator } from './StepIndicator';
 export { Divider, LogoSeparator } from './Divider';
 export { Logo } from './Logo';
 export { Navbar, NavLink } from './Navbar';
-export { ExternalLink } from './Link';
+export { ExternalLink, ActionLink } from './Link';
 
 // Display
 export { Avatar } from './Avatar';

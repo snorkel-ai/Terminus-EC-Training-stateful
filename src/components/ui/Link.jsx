@@ -35,6 +35,17 @@ export function ExternalLink({
   );
 }
 
+export function ActionLink({ 
+  children,
+  className = '',
+  ...props 
+}) {
+  return (
+    <span className={`ui-action-link ${className}`} {...props}>
+      <span className="ui-action-link-text">{children}</span>
+      <span className="ui-action-link-arrow">→</span>
+    </span>
+  );
+}
+
 export default ExternalLink;
-
-

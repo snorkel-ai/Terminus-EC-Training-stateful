@@ -28,6 +28,19 @@
   box-shadow: none;
 }
 
+.ui-card-minimal {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: none;
+}
+
+.ui-card-minimal.ui-card-hoverable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-color: var(--border-color);
+}
+
 /* Padding */
 .ui-card-padding-none {
   padding: 0;

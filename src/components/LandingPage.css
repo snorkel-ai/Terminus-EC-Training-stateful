@@ -20,7 +20,7 @@
 .welcome-strip {
   padding: 8rem 0 5rem 0; /* Lots of air above */
   margin-bottom: 2rem;
-  border-bottom: none; /* No divider lines */
+  border-bottom: none;
 }
 
 .welcome-title {
@@ -76,7 +76,7 @@
 
 /* Get Started Section */
 .get-started-section {
-  margin-bottom: 8rem; /* More space between sections */
+  margin-bottom: 8rem;
 }
 
 .resources-grid {
@@ -85,27 +85,12 @@
   gap: 2rem;
 }
 
-/* Card Overrides */
+/* Resource Card - Layout only (styles from ui-card-minimal) */
 .resource-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   height: 100%;
-  
-  /* Minimalistic Overrides */
-  background-color: transparent !important;
-  border: 1px solid var(--border-color) !important; /* Small gray border at rest */
-  box-shadow: none !important;
-  padding: 1rem !important;
-  transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
-  border-radius: 0 !important; /* Square corners */
-}
-
-.resource-card:hover {
-  transform: translateY(-4px);
-  opacity: 1;
-  border-color: var(--border-color) !important; 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important; /* Shadow on hover */
 }
 
 .resource-icon-wrapper {
@@ -117,7 +102,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: none;
 }
 
 .resource-icon {
@@ -145,29 +129,6 @@
 
 .resource-action {
   margin-top: auto;
-}
-
-.resource-link {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--accent);
-  transition: color 0.2s ease;
-}
-
-.resource-link-arrow {
-  display: inline-block;
-  margin-left: 0.5rem;
-  transition: transform 0.2s ease;
-}
-
-.resource-card:hover .resource-link-arrow {
-  transform: translateX(4px);
-}
-
-.resource-card:hover .resource-link {
-  color: var(--accent-hover);
 }
 
 /* Inspiration Section - Overrides for TaskPreviewSection */
@@ -213,19 +174,13 @@
   text-align: left;
 }
 
-/* Task cards should retain their own style in TaskPreviewSection.css unless explicitly overridden.
-   Removing previous overrides that forced transparency. */
-.landing-page .task-preview-divider {
-  display: none; /* No divider lines */
-}
-
 /* Footer */
 .footer {
   background-color: transparent;
   text-align: center;
   padding: 3rem 2rem;
   color: var(--text-secondary);
-  border-top: none; /* No divider */
+  border-top: none;
   margin-top: auto;
   opacity: 0.6;
 }

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiBook, FiVideo, FiHelpCircle, FiRefreshCw } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import TaskPreviewSection from './TaskPreviewSection';
-import { Card } from './ui';
+import { Card, ActionLink } from './ui';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -28,17 +28,10 @@ function LandingPage() {
     },
     { 
       icon: FiRefreshCw, 
-    label: 'Task Iteration Workbook', 
-    description: 'Learn how to read and debug the feedback given by TerminalBench.',
-    path: '/portal/workbook',
-    linkText: 'Open workbook'
-  },
-    { 
-      icon: FiHelpCircle, 
-      label: 'FAQ', 
-      description: 'Common questions answered about the project.',
-      path: '/portal/faq',
-      linkText: 'Find answers'
+      label: 'Task Iteration Workbook', 
+      description: 'Learn how to read and debug the feedback given by TerminalBench.',
+      path: '/portal/workbook',
+      linkText: 'Open workbook'
     },
   ];
 
@@ -60,7 +53,8 @@ function LandingPage() {
               return (
                 <Card 
                   key={index} 
-                  variant="flat"
+                  variant="minimal"
+                  padding="lg"
                   hoverable
                   className="resource-card"
                   onClick={() => navigate(resource.path)}
@@ -73,10 +67,7 @@ function LandingPage() {
                     <p className="resource-description">{resource.description}</p>
                   </div>
                   <div className="resource-action">
-                    <span className="resource-link">
-                      {resource.linkText}
-                      <span className="resource-link-arrow">→</span>
-                    </span>
+                    <ActionLink>{resource.linkText}</ActionLink>
                   </div>
                 </Card>
               );
