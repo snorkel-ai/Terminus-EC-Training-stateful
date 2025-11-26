@@ -6,71 +6,30 @@
   color: var(--text-primary);
 }
 
-/* Header & Navigation */
-.header {
-  background-color: var(--bg-primary);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 0;
-}
-
-.nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: var(--accent);
-}
-
 /* Main Content */
 .main-content {
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 0 2rem 6rem 2rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* Welcome Strip */
 .welcome-strip {
-  text-align: center;
-  padding: 5rem 0 2rem 0;
-  max-width: 900px;
-  margin: 0 auto;
+  padding: 8rem 0 5rem 0; /* Lots of air above */
+  margin-bottom: 2rem;
+  border-bottom: none; /* No divider lines */
 }
 
 .welcome-title {
-  font-size: 3rem;
+  font-size: var(--font-4xl, 2.5rem);
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 0.75rem;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .wave {
@@ -93,73 +52,219 @@
 .welcome-subtitle {
   font-size: 1.25rem;
   color: var(--text-secondary);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.75rem 0;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.5;
+  max-width: 600px;
 }
 
 .welcome-cta {
   font-size: 1.125rem;
   color: var(--accent);
-  margin: 0 0 2rem 0;
+  margin: 0;
   font-weight: 600;
 }
 
-.slack-button {
-  display: inline-flex;
+/* Section Headers */
+.section-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+/* Get Started Section */
+.get-started-section {
+  margin-bottom: 8rem; /* More space between sections */
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+/* Card Overrides */
+.resource-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  
+  /* Minimalistic Overrides */
+  background-color: transparent !important;
+  border: 1px solid var(--border-color) !important; /* Small gray border at rest */
+  box-shadow: none !important;
+  padding: 1rem !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+  border-radius: 0 !important; /* Square corners */
+}
+
+.resource-card:hover {
+  transform: translateY(-4px);
+  opacity: 1;
+  border-color: var(--border-color) !important; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important; /* Shadow on hover */
+}
+
+.resource-icon-wrapper {
+  background-color: var(--bg-secondary);
+  padding: 0.75rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background-color: #fff;
-  color: #000;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  border: 1px solid var(--border-color);
-  text-decoration: none;
+  justify-content: center;
+  box-shadow: none;
+}
+
+.resource-icon {
+  font-size: 1.5rem;
+}
+
+.resource-content {
+  flex: 1;
+  margin-bottom: 1.5rem;
+}
+
+.resource-title {
+  font-size: 1.1rem;
   font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
 }
 
-.slack-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  border-color: var(--border-color);
-  text-decoration: none;
-  color: #000;
+.resource-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
 }
 
-.slack-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
+.resource-action {
+  width: 100%;
+  margin-top: auto;
+}
+
+.resource-button {
+  width: 100%;
+  justify-content: center;
+  border-radius: 8px !important; /* Rounded corners for button inside square card */
+}
+
+/* Remove old arrow styles */
+.resource-arrow {
+  display: none;
+}
+
+/* Inspiration Section - Overrides for TaskPreviewSection */
+.inspiration-section {
+  margin-bottom: 6rem;
+}
+
+.landing-page .task-preview-section {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  text-align: left;
+  animation: none;
+}
+
+.landing-page .task-preview-header {
+  text-align: left;
+  margin-bottom: 2.5rem;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.landing-page .task-preview-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.landing-page .task-preview-header p {
+  margin: 0;
+  text-align: left;
+  max-width: 100%;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.landing-page .task-controls {
+  justify-content: flex-start;
+}
+
+.landing-page .task-preview-footer {
+  text-align: left;
+}
+
+/* Clean up Task Cards within Landing Page */
+.landing-page .task-preview-card {
+  background: transparent !important;
+  border: 1px solid transparent !important; /* Start transparent */
+  box-shadow: none !important;
+  padding: 0 !important; /* Let inner content handle spacing if needed, or keep default */
+}
+
+.landing-page .task-preview-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-color) !important; /* Subtle stroke on hover */
+}
+
+.landing-page .task-preview-divider {
+  display: none; /* No divider lines */
+}
+
+.landing-page .task-preview-card-header {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.landing-page .task-preview-body {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 1rem;
 }
 
 /* Footer */
 .footer {
-  background-color: var(--bg-secondary);
+  background-color: transparent;
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
   color: var(--text-secondary);
-  border-top: 1px solid var(--border-color);
+  border-top: none; /* No divider */
+  margin-top: auto;
+  opacity: 0.6;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .nav {
-    flex-direction: column;
-    gap: 1rem;
+  .welcome-strip {
+    padding: 4rem 0 3rem 0;
   }
 
   .welcome-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .welcome-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
-  .welcome-cta {
-    font-size: 1.125rem;
+  .resources-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .main-content {
+    padding: 0 1.5rem 4rem 1.5rem;
+  }
+  
+  .get-started-section {
+    margin-bottom: 5rem;
   }
 }
