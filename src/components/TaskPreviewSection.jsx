@@ -72,8 +72,8 @@ const TaskPreviewSection = () => {
   return (
     <section className="task-preview-section">
       <div className="task-preview-header">
-        <h2>These are just a few of the 1000+ tasks that await you...</h2>
-        <p>Here are some tasks you can pick from (or just explore what's possible)</p>
+        <h2>Get Inspired</h2>
+        <p>Here are some of the 1000+ tasks you can pick from (or just explore what's possible)</p>
       </div>
 
       <div className="task-preview-grid">

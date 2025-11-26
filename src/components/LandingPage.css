@@ -144,19 +144,30 @@
 }
 
 .resource-action {
-  width: 100%;
   margin-top: auto;
 }
 
-.resource-button {
-  width: 100%;
-  justify-content: center;
-  border-radius: 8px !important; /* Rounded corners for button inside square card */
+.resource-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent);
+  transition: color 0.2s ease;
 }
 
-/* Remove old arrow styles */
-.resource-arrow {
-  display: none;
+.resource-link-arrow {
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.resource-card:hover .resource-link-arrow {
+  transform: translateX(4px);
+}
+
+.resource-card:hover .resource-link {
+  color: var(--accent-hover);
 }
 
 /* Inspiration Section - Overrides for TaskPreviewSection */
@@ -202,32 +213,10 @@
   text-align: left;
 }
 
-/* Clean up Task Cards within Landing Page */
-.landing-page .task-preview-card {
-  background: transparent !important;
-  border: 1px solid transparent !important; /* Start transparent */
-  box-shadow: none !important;
-  padding: 0 !important; /* Let inner content handle spacing if needed, or keep default */
-}
-
-.landing-page .task-preview-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-color) !important; /* Subtle stroke on hover */
-}
-
+/* Task cards should retain their own style in TaskPreviewSection.css unless explicitly overridden.
+   Removing previous overrides that forced transparency. */
 .landing-page .task-preview-divider {
   display: none; /* No divider lines */
-}
-
-.landing-page .task-preview-card-header {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.landing-page .task-preview-body {
-  padding-left: 0;
-  padding-right: 0;
-  padding-bottom: 1rem;
 }
 
 /* Footer */

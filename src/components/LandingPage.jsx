@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { FiBook, FiVideo, FiHelpCircle, FiFileText } from 'react-icons/fi';
+import { FiBook, FiVideo, FiHelpCircle, FiRefreshCw } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import TaskPreviewSection from './TaskPreviewSection';
-import { Card, Button } from './ui';
+import { Card } from './ui';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -15,23 +15,30 @@ function LandingPage() {
     { 
       icon: FiBook, 
       label: 'Getting started guide', 
-      description: 'Essential guides to get you started',
+      description: 'Essential guides to setup your environment and get you working on your first task.',
       path: '/portal/onboarding',
-      buttonText: 'Read guide'
+      linkText: 'Read guide'
     },
     { 
       icon: FiVideo, 
       label: 'Walkthrough videos', 
-      description: 'Step-by-step visual tutorials',
+      description: 'Step-by-step videos showing you the process from idea to accepted task.',
       path: '/portal/videos',
-      buttonText: 'Watch videos'
+      linkText: 'Watch videos'
     },
+    { 
+      icon: FiRefreshCw, 
+    label: 'Task Iteration Workbook', 
+    description: 'Learn how to read and debug the feedback given by TerminalBench.',
+    path: '/portal/workbook',
+    linkText: 'Open workbook'
+  },
     { 
       icon: FiHelpCircle, 
       label: 'FAQ', 
-      description: 'Common questions answered',
+      description: 'Common questions answered about the project.',
       path: '/portal/faq',
-      buttonText: 'Find answers'
+      linkText: 'Find answers'
     },
   ];
 
@@ -66,17 +73,10 @@ function LandingPage() {
                     <p className="resource-description">{resource.description}</p>
                   </div>
                   <div className="resource-action">
-                    <Button 
-                      variant="secondary" 
-                      size="sm"
-                      className="resource-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(resource.path);
-                      }}
-                    >
-                      {resource.buttonText}
-                    </Button>
+                    <span className="resource-link">
+                      {resource.linkText}
+                      <span className="resource-link-arrow">→</span>
+                    </span>
                   </div>
                 </Card>
               );
