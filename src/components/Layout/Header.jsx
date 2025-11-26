@@ -88,21 +88,21 @@ function Header() {
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  Onboarding
+                  Onboarding videos
                 </Link>
                 <Link 
                   to="/portal/videos" 
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  Videos
+                  Walkthrough videos
                 </Link>
                 <Link 
                   to="/portal/workbook" 
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  Workbook
+                  CI Feedback
                 </Link>
                 <Link 
                   to="/portal/oracle" 
