@@ -1,0 +1,403 @@
+.onboarding-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+}
+
+.onboarding-modal-content {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 960px; /* Wider for a more expansive feel */
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 60px;
+  position: relative;
+  animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.onboarding-step-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: fadeSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.onboarding-step-content {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: left;
+}
+
+/* Logos in Header */
+.onboarding-logos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 96px;
+  opacity: 0.9;
+}
+
+.tbench-logo-onboarding {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  font-family: 'SF Mono', Menlo, Monaco, Consolas, monospace;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.logo-separator {
+  color: var(--text-secondary);
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.snorkel-logo-onboarding {
+  height: 24px;
+  width: auto;
+  filter: grayscale(1) opacity(0.8);
+}
+
+/* Typography */
+.onboarding-title {
+  font-size: 56px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.onboarding-subtitle {
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  font-weight: 400;
+  max-width: 600px;
+}
+
+.onboarding-description {
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 40px;
+  max-width: 700px;
+}
+
+.onboarding-section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.onboarding-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 40px 0;
+  width: 100%;
+  opacity: 0.5;
+}
+
+/* Step 2: Purpose Grid */
+.purpose-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.purpose-card {
+  padding: 32px;
+  background-color: var(--bg-secondary);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.purpose-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  background-color: var(--bg-primary);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+}
+
+.purpose-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.purpose-card h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.purpose-card p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Step 3: Resources */
+.resources-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.video-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.video-preview-item {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.video-preview-item:hover {
+  background: var(--bg-primary);
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.play-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-right: 20px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.video-info h4 {
+  font-size: 18px;
+  margin: 0 0 4px 0;
+  color: var(--text-primary);
+}
+
+.video-info span {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.docs-card {
+  padding: 32px;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.docs-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.docs-link:last-child {
+  border-bottom: none;
+}
+
+.docs-link:hover {
+  color: var(--accent);
+}
+
+/* Navigation Footer */
+.onboarding-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Step indicator styles now use shared UI component - see src/components/ui/StepIndicator */
+
+.nav-buttons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Position override for skip button - uses Button component */
+.btn-skip-top {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  z-index: 10;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInText {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeSlideIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .onboarding-modal-content {
+    padding: 32px;
+    width: 95%;
+    height: 90vh;
+  }
+
+  .onboarding-title {
+    font-size: 36px;
+  }
+  
+  .purpose-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .next-steps-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Next Steps List */
+.next-steps-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.next-step-card {
+  cursor: default;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  height: 100%;
+}
+
+.next-step-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.next-step-icon {
+  font-size: 32px;
+  background: transparent;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+.next-step-content {
+  flex: 1;
+  width: 100%;
+}
+
+.next-step-title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.next-step-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: block;
+  line-height: 1.5;
+}
+
+.next-step-card .btn-secondary {
+  width: 100%;
+  margin-top: auto;
+  text-align: center;
+  justify-content: center;
+}
+
+.next-step-arrow {
+  display: none;
+}
+
+.next-step-number {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}

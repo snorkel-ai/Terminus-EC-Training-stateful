@@ -1,11 +1,18 @@
 .app-header {
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* Removed border-bottom */
+  padding: 12px 24px; /* Slightly reduced padding */
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03); /* Softer shadow for floating effect */
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .app-header {
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .header-content {
@@ -15,83 +22,124 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  flex-wrap: nowrap;
 }
 
 .header-left {
-  flex: 1;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  align-items: center;
 }
 
-.header-title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #2d3748;
-}
+/* Navigation */
+/* Navigation styles moved to src/components/ui/Navbar.css */
 
-.header-tabs {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.header-tab {
-  padding: 0.5rem 1rem;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: #6b7280;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.header-tab:hover {
-  color: #2563eb;
-  background: #f3f4f6;
-  border-radius: 4px 4px 0 0;
-}
-
-.header-tab.active {
-  color: #2563eb;
-  border-bottom-color: #2563eb;
-  font-weight: 600;
+/* Vertical Divider */
+.nav-divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border-color);
+  margin: 0 0.25rem;
+  opacity: 0.6;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
-.header-progress {
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  color: var(--text-primary);
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 120px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
 }
 
-.header-progress-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: #4a5568;
-  text-align: right;
+.theme-toggle:hover {
+  background-color: var(--bg-secondary);
 }
 
-.header-progress-bar {
-  height: 6px;
-  background: #e2e8f0;
-  border-radius: 3px;
-  overflow: hidden;
+/* Dropdown Styles */
+.nav-dropdown-container {
+  position: relative;
+  padding-bottom: 10px; /* Invisible bridge to menu */
+  margin-bottom: -10px; /* Compensate for padding */
 }
 
-.header-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  border-radius: 3px;
-  transition: width 0.3s ease;
+.dropdown-trigger {
+  /* Inherits header-nav-item styles */
+}
+
+.dropdown-arrow {
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown-container:hover .dropdown-arrow,
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--bg-primary);
+  /* Removed border as requested */
+  border: none;
+  border-radius: 12px;
+  padding: 6px;
+  min-width: 160px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0,0,0,0.04);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+/* Dark mode shadow adjust */
+@media (prefers-color-scheme: dark) {
+  .nav-dropdown-menu {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+}
+
+[data-theme="dark"] .nav-dropdown-menu {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.nav-dropdown-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(5px);
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -99,12 +147,11 @@
     padding: 12px 16px;
   }
 
-  .header-title {
-    font-size: 18px;
+  .logo-text, .logo-separator, .snorkel-logo-img {
+    /* Maybe hide full lockup on very small screens or adjust */
   }
-
-  .header-progress {
-    display: none;
+  
+  .header-nav {
+    display: none; /* Consider a mobile menu if needed, for now standard hiding or overflow */
   }
 }
-

@@ -1,0 +1,59 @@
+/* External Link Component - Shared UI Library */
+
+.ui-external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.ui-external-link:hover {
+  opacity: 0.8;
+}
+
+.ui-external-link-icon {
+  flex-shrink: 0;
+}
+
+/* Action Link - Text link with animated arrow */
+
+.ui-action-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.ui-action-link-text {
+  transition: color 0.2s ease;
+}
+
+.ui-action-link-arrow {
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.ui-action-link:hover {
+  color: var(--accent-hover);
+}
+
+.ui-action-link:hover .ui-action-link-arrow {
+  transform: translateX(4px);
+}
+
+/* When inside a hoverable card, animate on card hover */
+.ui-card-hoverable:hover .ui-action-link-arrow {
+  transform: translateX(4px);
+}
+
+.ui-card-hoverable:hover .ui-action-link {
+  color: var(--accent-hover);
+}

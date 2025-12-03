@@ -1,0 +1,38 @@
+/* EmptyState Component - Shared UI Library */
+
+.ui-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  min-height: 200px;
+}
+
+.ui-empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+  opacity: 0.8;
+}
+
+.ui-empty-state-title {
+  font-size: var(--font-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.ui-empty-state-description {
+  font-size: var(--font-base);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-6) 0;
+  max-width: 400px;
+  line-height: var(--leading-relaxed);
+}
+
+.ui-empty-state-action {
+  margin-top: var(--space-2);
+}
+
+

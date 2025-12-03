@@ -1,0 +1,46 @@
+.public-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--bg-primary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  border-bottom: none;
+  z-index: 1000;
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+/* Glass effect overrides */
+[data-theme="dark"] .public-header {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .public-header {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.public-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Nav Styles */
+/* Navigation styles moved to src/components/ui/Navbar.css */
+
+@media (max-width: 768px) {
+  .public-nav {
+    gap: 1rem;
+  }
+  
+  /* .nav-item {
+    font-size: 0.9rem;
+  } */
+}

@@ -1,12 +1,20 @@
 import { useState } from 'react';
+import { Button, Badge, CornerBadge, ProgressBar, CodeBlock, TimerCompact, Note, ExternalLink } from '../ui';
+import { useTaskTimer } from '../../hooks/useTaskTimer';
 import './Tasks.css';
+
+const SUBMITTER_PORTAL_URL = 'https://submitter.terminus.com'; // External platform URL
 
 function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions = true }) {
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const { timeLeft, formatTime, progress } = useTaskTimer(task.selected_at);
+  
+  // Check if user has already made their first commit
+  const hasCommitted = !!task.first_commit_at;
 
-  const handleSelect = async () => {
-    if (loading || isSelected) return;
+  const handleSelect = async (e) => {
+    e?.stopPropagation();
+    if (loading) return;
     setLoading(true);
     try {
       await onSelect(task.id);
@@ -17,7 +25,8 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
     }
   };
 
-  const handleUnselect = async () => {
+  const handleUnselect = async (e) => {
+    e?.stopPropagation();
     if (loading) return;
     setLoading(true);
     try {
@@ -29,41 +38,24 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
     }
   };
 
-  const toggleExpanded = () => {
-    setExpanded(!expanded);
-  };
-
-  // Show more text by default (300 chars), full text when expanded
+  // Show more text by default (300 chars)
   const PREVIEW_LENGTH = 300;
-  const needsTruncation = task.description?.length > PREVIEW_LENGTH;
-  const displayedDesc = expanded || !needsTruncation
-    ? task.description
-    : task.description?.substring(0, PREVIEW_LENGTH) + '...';
+  const shouldTruncate = !isMine && task.description?.length > PREVIEW_LENGTH;
+  const displayedDesc = shouldTruncate
+    ? task.description?.substring(0, PREVIEW_LENGTH) + '...'
+    : task.description;
 
   return (
-    <div className={`task-tile ${isSelected ? 'selected' : ''} ${isMine ? 'mine' : ''} ${expanded ? 'expanded' : ''} ${task.is_highlighted ? 'highlighted' : ''}`}>
-      {task.priority_tag && (
-        <div className="priority-tag-wrapper">
-          <div className="priority-tag">
-            {task.priority_tag}
-          </div>
-          {task.tag_label && (
-            <div className="priority-tooltip">{task.tag_label}</div>
-          )}
-        </div>
+    <div className={`task-tile ${isSelected ? 'selected' : ''} ${isMine ? 'mine' : ''} ${task.is_highlighted ? 'highlighted' : ''} ${hasCommitted ? 'committed' : ''}`}>
+      {(task.is_special || task.priority_tag) && (
+        <CornerBadge>2x</CornerBadge>
       )}
-      
       <div className="task-tile-header">
         <div className="task-badges">
           {task.is_highlighted && (
-            <span className="task-badge priority">⭐ Priority</span>
+            <Badge variant="priority" size="sm">Priority</Badge>
           )}
-          <span className="task-badge category">{task.category}</span>
-          {task.difficulty && (
-            <span className={`task-badge difficulty difficulty-${task.difficulty}`}>
-              {task.difficulty}
-            </span>
-          )}
+          <Badge variant="category" size="sm">{task.category}</Badge>
         </div>
       </div>
 
@@ -72,40 +64,79 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
       )}
 
       <div 
-        className={`task-description ${needsTruncation ? 'clickable' : ''}`}
-        onClick={needsTruncation ? toggleExpanded : undefined}
-        role={needsTruncation ? 'button' : undefined}
-        tabIndex={needsTruncation ? 0 : undefined}
+        className={`task-description ${shouldTruncate ? 'clickable' : ''}`}
+        onClick={shouldTruncate ? handleSelect : undefined}
+        role={shouldTruncate ? 'button' : undefined}
+        tabIndex={shouldTruncate ? 0 : undefined}
       >
         {displayedDesc}
-        {needsTruncation && (
+        {shouldTruncate && (
           <span className="expand-indicator">
-            {expanded ? ' Show less' : ' Read more'}
+            Read more
           </span>
         )}
       </div>
 
-      {showActions && (
-        <div className="task-actions">
-          {isMine ? (
-            <button 
-              className="task-button unselect"
-              onClick={handleUnselect}
-              disabled={loading}
-            >
-              {loading ? 'Unselecting...' : 'Unselect Task'}
-            </button>
-          ) : (
-            <button 
-              className="task-button select"
-              onClick={handleSelect}
-              disabled={loading}
-            >
-              {loading ? 'Selecting...' : 'Select Task'}
-            </button>
-          )}
+      {isMine && !hasCommitted && (
+        <div className="task-active-status" style={{ marginBottom: '1rem' }}>
+          <div style={{ marginBottom: '0.75rem' }}>
+            <TimerCompact time={formatTime(timeLeft)} label="Time Remaining" />
+            <div style={{ marginTop: '0.35rem' }}>
+              <ProgressBar 
+                progress={progress} 
+                variant={progress < 20 ? 'danger' : 'success'} 
+                size="sm" 
+              />
+            </div>
+          </div>
+          <CodeBlock>terminus task start {task.id}</CodeBlock>
         </div>
       )}
+
+      {isMine && hasCommitted && (
+        <div className="task-committed-status" style={{ marginBottom: '1rem' }}>
+          <Note icon="check" title="First commit received!" squared>
+            <p style={{ marginBottom: '0.75rem' }}>Continue working on your task.</p>
+            <ExternalLink href={SUBMITTER_PORTAL_URL}>
+              Open Submitter Portal
+            </ExternalLink>
+          </Note>
+        </div>
+      )}
+
+      <div className="task-footer">
+        {task.difficulty && (
+          <div className="task-difficulty">
+            <Badge variant={task.difficulty.toLowerCase()} size="sm">
+              {task.difficulty}
+            </Badge>
+          </div>
+        )}
+
+        {showActions && (
+          <div className="task-actions">
+            {isMine ? (
+              <Button 
+                variant="danger"
+                size="sm"
+                onClick={handleUnselect}
+                loading={loading}
+              >
+                Abandon Task
+              </Button>
+            ) : (
+              <Button 
+                variant="secondary"
+                size="sm"
+                onClick={handleSelect}
+                loading={loading}
+              >
+                View Details
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

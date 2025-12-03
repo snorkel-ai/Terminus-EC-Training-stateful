@@ -1,0 +1,112 @@
+/* Card Component - Shared UI Library */
+
+.ui-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+/* Variants */
+.ui-card-default {
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+
+.ui-card-elevated {
+  border: none;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+.ui-card-bordered {
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+}
+
+.ui-card-flat {
+  background: var(--bg-secondary);
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.ui-card-minimal {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: none;
+}
+
+.ui-card-minimal.ui-card-hoverable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-color: var(--border-color);
+}
+
+/* Padding */
+.ui-card-padding-none {
+  padding: 0;
+}
+
+.ui-card-padding-sm {
+  padding: 1rem;
+}
+
+.ui-card-padding-md {
+  padding: 1.5rem;
+}
+
+.ui-card-padding-lg {
+  padding: 2rem;
+}
+
+.ui-card-padding-xl {
+  padding: 3rem;
+}
+
+/* Hoverable */
+.ui-card-hoverable {
+  cursor: pointer;
+}
+
+.ui-card-hoverable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent);
+}
+
+/* Card Parts */
+.ui-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ui-card-body {
+  padding: 1.5rem;
+}
+
+.ui-card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Nested padding adjustments - parts keep their default padding even with ui-card-padding-none */
+
+.ui-card-padding-sm .ui-card-header,
+.ui-card-padding-sm .ui-card-footer {
+  padding: 0.75rem 1rem;
+}
+
+.ui-card-padding-sm .ui-card-body {
+  padding: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ui-card-padding-lg {
+    padding: 1.5rem;
+  }
+  
+  .ui-card-padding-xl {
+    padding: 1.5rem;
+  }
+}
+

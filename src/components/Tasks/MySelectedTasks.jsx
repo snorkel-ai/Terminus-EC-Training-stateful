@@ -1,4 +1,5 @@
 import { useMySelectedTasks } from '../../hooks/useTasks';
+import { Button, LoadingState } from '../ui';
 import TaskTile from './TaskTile';
 import './Tasks.css';
 
@@ -13,8 +14,7 @@ function MySelectedTasks() {
           <p>Tasks you have claimed</p>
         </div>
         <div className="tasks-loading">
-          <div className="spinner"></div>
-          <p>Loading your selected tasks...</p>
+          <LoadingState size="lg" message="Loading your selected tasks..." />
         </div>
       </div>
     );
@@ -29,7 +29,7 @@ function MySelectedTasks() {
         </div>
         <div className="tasks-error">
           <p>Error loading your tasks: {error}</p>
-          <button onClick={() => window.location.reload()}>Retry</button>
+          <Button variant="primary" onClick={() => window.location.reload()}>Retry</Button>
         </div>
       </div>
     );
@@ -47,9 +47,9 @@ function MySelectedTasks() {
           <div className="empty-state">
             <h2>No tasks selected yet</h2>
             <p>Browse the task library and select tasks to work on.</p>
-            <a href="/tasks" className="button-primary">
+            <Button variant="primary" onClick={() => window.location.href = '/tasks'}>
               Browse Tasks
-            </a>
+            </Button>
           </div>
         </div>
       ) : (

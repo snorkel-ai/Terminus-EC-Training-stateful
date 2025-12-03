@@ -101,13 +101,6 @@
   margin-bottom: 0.75rem;
 }
 
-.checklist-item::before {
-  content: "✓";
-  color: #2563eb;
-  font-weight: bold;
-  margin-right: 0.75rem;
-  flex-shrink: 0;
-}
 
 table {
   width: 100%;

@@ -1,0 +1,56 @@
+/* CodeBlock Component - Shared UI Library */
+
+.ui-code-block {
+  background: #1f2937;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: 'Monaco', 'Consolas', monospace;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ui-code-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.ui-code-copy-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.ui-code-copy-btn:hover {
+  color: #ffffff;
+}
+
+.ui-code-copy-btn.copied {
+  color: #10b981;
+}
+
+/* Command Box variant - same as CodeBlock but semantic */
+.ui-command-box {
+  /* Inherits from .ui-code-block */
+}
+
+/* Larger variant for modals/prominent display */
+.ui-code-block.lg {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+

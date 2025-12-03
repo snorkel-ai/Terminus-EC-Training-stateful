@@ -1,0 +1,39 @@
+---
+alwaysApply: true
+---
+# Design System Guidelines
+
+## Shared UI Components
+
+Before creating custom UI elements, use components from `src/components/ui/`:
+
+| Component | Import | Use For |
+|-----------|--------|---------|
+| `Button` | `{ Button }` | All clickable actions (variants: primary, secondary, danger, ghost) |
+| `Tabs, Tab` | `{ Tabs, Tab }` | Tab navigation between views |
+| `Alert` | `{ Alert }` | Error, success, warning, info messages |
+| `Badge` | `{ Badge }` | Tags, labels, status indicators, categories |
+| `Card` | `{ Card }` | Content containers |
+| `Modal` | `{ Modal }` | Dialog overlays |
+| `Input, TextArea, SearchInput` | `{ Input }` | Form fields |
+| `Spinner, LoadingState` | `{ LoadingState }` | Loading states |
+| `EmptyState` | `{ EmptyState }` | Empty list placeholders |
+| `Avatar` | `{ Avatar }` | User profile images |
+| `Divider, LogoSeparator` | `{ Divider }` | Visual separators |
+| `StepIndicator` | `{ StepIndicator }` | Multi-step progress dots |
+
+## Theme Variables
+
+Use CSS variables from `src/styles/theme.css` instead of hardcoded values:
+
+- **Colors**: `--bg-primary`, `--text-primary`, `--accent`, `--color-success`, `--color-error`
+- **Typography**: `--font-sm`, `--font-lg`, `--font-2xl`, `--font-bold`, `--leading-tight`
+- **Spacing**: `--space-2`, `--space-4`, `--space-8`
+- **Borders**: `--radius-md`, `--radius-lg`, `--border-color`
+
+## Rules
+
+1. **Check existing components first** before writing custom buttons, alerts, badges, etc.
+2. **Use theme variables** for colors, font sizes, spacing, and border radius
+3. **Ask before creating new UI components** - it may already exist or should be added to the library
+4. **Import from '../ui'** not individual component files

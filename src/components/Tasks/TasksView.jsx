@@ -1,17 +1,24 @@
 import { useState, useMemo } from 'react';
-import { useTasks } from '../../hooks/useTasks';
+import { useTasks, useMySelectedTasks } from '../../hooks/useTasks';
+import { Button, LoadingState, Modal, Badge, Tabs, Tab } from '../ui';
 import TaskFilters from './TaskFilters';
 import TaskTile from './TaskTile';
+import { TaskClaimSuccess } from './TaskClaimSuccess';
 import './Tasks.css';
 
 function TasksView() {
   const { tasks, loading, error, selectTask } = useTasks();
+  const { selectedTasks: myTasks, loading: myTasksLoading, unselectTask } = useMySelectedTasks();
+  const [activeTab, setActiveTab] = useState('all');
   const [filters, setFilters] = useState({
     category: '',
     subcategory: '',
     subsubcategory: '',
     search: ''
   });
+  const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [showClaimSuccess, setShowClaimSuccess] = useState(false);
 
   // Filter tasks based on current filters
   const filteredTasks = useMemo(() => {
@@ -61,6 +68,49 @@ function TasksView() {
     setFilters(newFilters);
   };
 
+  const handleViewDetails = (task) => {
+    setSelectedTaskForModal(task);
+    setShowClaimSuccess(false);
+  };
+
+  const handleViewMyTask = (task) => {
+    setSelectedTaskForModal(task);
+    setShowClaimSuccess(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTaskForModal(null);
+    setShowClaimSuccess(false);
+  };
+
+  const handleSelectFromModal = async () => {
+    if (!selectedTaskForModal || isSelecting) return;
+    
+    setIsSelecting(true);
+    try {
+      await selectTask(selectedTaskForModal.id);
+      setShowClaimSuccess(true);
+    } catch (error) {
+      console.error('Error selecting task:', error);
+      // Error is handled by useTasks usually, but we could show an alert here
+    } finally {
+      setIsSelecting(false);
+    }
+  };
+
+  const handleReleaseFromModal = async () => {
+    if (!selectedTaskForModal) return;
+    
+    if (window.confirm('Are you sure you want to release this task?')) {
+      try {
+        await unselectTask(selectedTaskForModal.id);
+        handleCloseModal();
+      } catch (error) {
+        console.error('Error releasing task:', error);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="tasks-view">
@@ -69,8 +119,7 @@ function TasksView() {
           <p>Browse and select tasks to work on</p>
         </div>
         <div className="tasks-loading">
-          <div className="spinner"></div>
-          <p>Loading tasks...</p>
+          <LoadingState size="lg" message="Loading tasks..." />
         </div>
       </div>
     );
@@ -85,7 +134,7 @@ function TasksView() {
         </div>
         <div className="tasks-error">
           <p>Error loading tasks: {error}</p>
-          <button onClick={() => window.location.reload()}>Retry</button>
+          <Button variant="primary" onClick={() => window.location.reload()}>Retry</Button>
         </div>
       </div>
     );
@@ -107,40 +156,151 @@ function TasksView() {
         </div>
       </div>
 
-      <TaskFilters 
-        filters={filters} 
-        onFilterChange={handleFilterChange}
-        tasks={tasks}
-      />
-
-      <div className="tasks-results">
-        <p className="results-count">
-          Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
-        </p>
-
-        {filteredTasks.length === 0 ? (
-          <div className="tasks-empty">
-            <p>No tasks match your current filters.</p>
-            <button onClick={() => handleFilterChange({ category: '', subcategory: '', subsubcategory: '', search: '' })}>
-              Clear Filters
-            </button>
-          </div>
-        ) : (
-          <div className="tasks-grid">
-            {filteredTasks.map(task => (
-              <TaskTile
-                key={task.id}
-                task={task}
-                isSelected={task.is_selected}
-                isMine={false}
-                onSelect={selectTask}
-                onUnselect={() => {}}
-                showActions={true}
-              />
-            ))}
-          </div>
-        )}
+      <div className="tasks-tabs-container" style={{ marginBottom: '2rem' }}>
+        <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tab value="all">All Tasks</Tab>
+          <Tab value="mine">
+            My Tasks
+            {myTasks.length > 0 && (
+              <Badge variant="primary" size="sm" style={{ marginLeft: '0.5rem' }}>{myTasks.length}</Badge>
+            )}
+          </Tab>
+        </Tabs>
       </div>
+
+      {activeTab === 'all' ? (
+        <>
+          <TaskFilters 
+            filters={filters} 
+            onFilterChange={handleFilterChange}
+            tasks={tasks}
+          />
+
+          <div className="tasks-results">
+            <p className="results-count">
+              Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
+            </p>
+
+            {filteredTasks.length === 0 ? (
+              <div className="tasks-empty">
+                <p>No tasks match your current filters.</p>
+                <Button variant="secondary" onClick={() => handleFilterChange({ category: '', subcategory: '', subsubcategory: '', search: '' })}>
+                  Clear Filters
+                </Button>
+              </div>
+            ) : (
+              <div className="tasks-grid">
+                {filteredTasks.map(task => (
+                  <TaskTile
+                    key={task.id}
+                    task={task}
+                    isSelected={task.is_selected}
+                    isMine={false}
+                    onSelect={() => handleViewDetails(task)}
+                    onUnselect={() => {}}
+                    showActions={true}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="tasks-results">
+          {myTasksLoading ? (
+            <div className="tasks-loading">
+              <LoadingState message="Loading your tasks..." />
+            </div>
+          ) : myTasks.length === 0 ? (
+            <div className="tasks-empty">
+              <p>You haven't claimed any tasks yet.</p>
+              <Button variant="primary" onClick={() => setActiveTab('all')}>
+                Browse Tasks
+              </Button>
+            </div>
+          ) : (
+            <div className="tasks-grid">
+              {myTasks.map(task => (
+                <TaskTile
+                  key={task.id}
+                  task={task}
+                  isSelected={true}
+                  isMine={true}
+                  onSelect={() => handleViewMyTask(task)}
+                  onUnselect={async () => {
+                    if (window.confirm('Are you sure you want to release this task?')) {
+                      await unselectTask(task.id);
+                    }
+                  }}
+                  showActions={true}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Task Detail Modal */}
+      <Modal
+        isOpen={!!selectedTaskForModal}
+        onClose={handleCloseModal}
+        size="lg"
+        className="task-detail-modal"
+      >
+        {selectedTaskForModal && (
+          showClaimSuccess ? (
+            <TaskClaimSuccess 
+              task={selectedTaskForModal} 
+              onClose={handleCloseModal} 
+              onRelease={handleReleaseFromModal}
+            />
+          ) : (
+            <>
+              <div className="task-detail-modal-header">
+                <div className="modal-badges">
+                  {selectedTaskForModal.is_highlighted && (
+                    <Badge variant="priority" size="sm">Priority</Badge>
+                  )}
+                  <Badge variant="category" size="sm">{selectedTaskForModal.category}</Badge>
+                  {selectedTaskForModal.difficulty && (
+                    <Badge variant={selectedTaskForModal.difficulty.toLowerCase()} size="sm">
+                      {selectedTaskForModal.difficulty}
+                    </Badge>
+                  )}
+                </div>
+                <h2>{selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory || 'Engineering Task'}</h2>
+              </div>
+              
+              <div className="task-detail-modal-body">
+                <p>{selectedTaskForModal.description}</p>
+                {/* Add more details if available in the task object */}
+              </div>
+
+              <div className="task-detail-modal-footer">
+                {(selectedTaskForModal.is_special || selectedTaskForModal.priority_tag) && (
+                  <div style={{ marginRight: 'auto' }}>
+                    <Badge variant="accent">Double Pay</Badge>
+                  </div>
+                )}
+                <Button 
+                  variant="secondary" 
+                  onClick={handleCloseModal}
+                  disabled={isSelecting}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  variant="primary" 
+                  onClick={handleSelectFromModal}
+                  loading={isSelecting}
+                >
+                  Select Task
+                </Button>
+              </div>
+            </>
+          )
+        )}
+      </Modal>
     </div>
   );
 }

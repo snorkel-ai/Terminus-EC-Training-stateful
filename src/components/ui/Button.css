@@ -1,0 +1,116 @@
+/* Button Component - Shared UI Library */
+
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.ui-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Sizes */
+.ui-btn-sm {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.ui-btn-md {
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.ui-btn-lg {
+  padding: 14px 32px;
+  font-size: 16px;
+  border-radius: 30px;
+}
+
+/* Primary Variant */
+.ui-btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+.ui-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+}
+
+.ui-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Secondary Variant */
+.ui-btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.ui-btn-secondary:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+/* Danger Variant */
+.ui-btn-danger {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.ui-btn-danger:hover:not(:disabled) {
+  background: #ef4444;
+  color: white;
+}
+
+/* Ghost Variant */
+.ui-btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.ui-btn-ghost:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+/* Loading State */
+.ui-btn-loading {
+  pointer-events: none;
+}
+
+.ui-btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: ui-btn-spin 0.6s linear infinite;
+  position: absolute;
+}
+
+.ui-btn-content-hidden {
+  visibility: hidden;
+}
+
+@keyframes ui-btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+

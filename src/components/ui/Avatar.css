@@ -1,0 +1,58 @@
+/* Avatar Component - Shared UI Library */
+
+.ui-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Sizes */
+.ui-avatar-xs {
+  width: 24px;
+  height: 24px;
+  font-size: var(--font-xs);
+}
+
+.ui-avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: var(--font-sm);
+}
+
+.ui-avatar-md {
+  width: 40px;
+  height: 40px;
+  font-size: var(--font-base);
+}
+
+.ui-avatar-lg {
+  width: 56px;
+  height: 56px;
+  font-size: var(--font-lg);
+}
+
+.ui-avatar-xl {
+  width: 80px;
+  height: 80px;
+  font-size: var(--font-xl);
+}
+
+.ui-avatar-2xl {
+  width: 120px;
+  height: 120px;
+  font-size: var(--font-2xl);
+}
+
+/* Fallback (initials) */
+.ui-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  color: white;
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+

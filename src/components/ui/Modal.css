@@ -1,0 +1,149 @@
+/* Modal Component - Shared UI Library */
+
+.ui-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: ui-modal-fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+  padding: 1rem;
+}
+
+.ui-modal-content {
+  background-color: var(--card-bg);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: ui-modal-scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  max-height: 90vh;
+}
+
+/* Sizes */
+.ui-modal-sm {
+  max-width: 420px;
+  padding: 2rem;
+}
+
+.ui-modal-md {
+  max-width: 600px;
+  padding: 2.5rem;
+}
+
+.ui-modal-lg {
+  max-width: 960px;
+  padding: 3rem;
+  min-height: 400px;
+}
+
+.ui-modal-xl {
+  max-width: 1200px;
+  padding: 3.5rem;
+  min-height: 500px;
+}
+
+.ui-modal-full {
+  max-width: 95vw;
+  min-height: 90vh;
+  padding: 3rem;
+}
+
+/* Close Button */
+.ui-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.ui-modal-close:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.ui-modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Modal Parts */
+.ui-modal-header {
+  margin-bottom: 1.5rem;
+}
+
+.ui-modal-header h1,
+.ui-modal-header h2 {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.ui-modal-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.ui-modal-footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* Animations */
+@keyframes ui-modal-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ui-modal-scaleUp {
+  from { 
+    transform: scale(0.95); 
+    opacity: 0; 
+  }
+  to { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ui-modal-content {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .ui-modal-lg,
+  .ui-modal-xl {
+    padding: 1.5rem;
+    min-height: auto;
+  }
+  
+  .ui-modal-close {
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+

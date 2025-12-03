@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
+import { Button, LoadingState } from '../ui';
 import OverviewStats from './OverviewStats';
 import UserStatsTable from './UserStatsTable';
 import SectionStats from './SectionStats';
@@ -17,8 +18,8 @@ function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [sections, setSections] = useState([]);
   
-  // Check admin from session metadata (Supabase pattern)
-  const isAdmin = user?.user_metadata?.is_admin || false;
+  // Check admin from profile
+  const isAdmin = profile?.is_admin || false;
 
   useEffect(() => {
     if (!isAdmin) {
@@ -91,8 +92,7 @@ function AdminDashboard() {
   if (loading) {
     return (
       <div className="admin-loading">
-        <div className="loading-spinner"></div>
-        <p>Loading dashboard...</p>
+        <LoadingState size="lg" message="Loading dashboard..." />
       </div>
     );
   }
@@ -104,9 +104,9 @@ function AdminDashboard() {
           <h1>Admin Dashboard</h1>
           <p>Monitor EC progress and engagement</p>
         </div>
-        <button className="back-button" onClick={() => navigate('/')}>
+        <Button variant="ghost" onClick={() => navigate('/')}>
           ← Back to Home
-        </button>
+        </Button>
       </div>
 
       <div className="admin-tabs">

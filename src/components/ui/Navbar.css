@@ -1,0 +1,55 @@
+.ui-navbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ui-nav-link {
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.ui-nav-link:hover {
+  color: var(--text-primary);
+}
+
+.ui-nav-link.active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Button Variant (for Login/CTA) */
+.ui-nav-link.variant-button {
+  color: var(--text-primary);
+  font-weight: 600;
+  background-color: var(--bg-secondary);
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+}
+
+.ui-nav-link.variant-button:hover {
+  background-color: var(--border-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .ui-navbar {
+    gap: 1rem;
+  }
+}
+
+

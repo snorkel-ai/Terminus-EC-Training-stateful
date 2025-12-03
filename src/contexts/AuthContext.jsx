@@ -66,12 +66,43 @@ export const AuthProvider = ({ children }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: `${window.location.origin}/Terminus-EC-Training-stateful/`,
+          redirectTo: `${window.location.origin}/portal`,
         },
       });
       if (error) throw error;
     } catch (error) {
       console.error('Error signing in with GitHub:', error);
+      throw error;
+    }
+  };
+
+  const signInWithEmail = async (email, password) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error signing in with email:', error);
+      throw error;
+    }
+  };
+
+  const signUpWithEmail = async (email, password) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/portal`,
+        },
+      });
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error signing up with email:', error);
       throw error;
     }
   };
@@ -87,14 +118,56 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const completeOnboarding = async (specialties = []) => {
+    try {
+      const updates = { onboarding_completed: true };
+      if (specialties && specialties.length > 0) {
+        updates.specialties = specialties;
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', user.id);
+
+      if (error) throw error;
+      
+      // Update local state
+      setProfile(prev => ({ ...prev, ...updates }));
+    } catch (error) {
+      console.error('Error completing onboarding:', error);
+      throw error;
+    }
+  };
+
+  const updateProfile = async (updates) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      setProfile(prev => ({ ...prev, ...updates }));
+      return { error: null };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return { error };
+    }
+  };
+
   const value = {
     user,
     profile,
     loading,
     signInWithGitHub,
+    signInWithEmail,
+    signUpWithEmail,
     signOut,
+    completeOnboarding,
+    updateProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-

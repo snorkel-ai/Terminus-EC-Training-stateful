@@ -1,0 +1,40 @@
+.ui-logo-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ui-tbench-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.ui-tbench-logo svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5px;
+}
+
+.ui-logo-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.ui-snorkel-logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
+[data-theme="dark"] .ui-snorkel-logo-img {
+  filter: brightness(0) invert(1);
+}
+
+
