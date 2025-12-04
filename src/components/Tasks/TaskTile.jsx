@@ -94,6 +94,7 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
       <div className="task-tile-separator"></div>
 
       <div className="task-tile-body">
+        <span className="task-goal-label">Goal</span>
         <div className="task-description line-clamp-6" title={task.description}>
           {displayedDesc}
         </div>

@@ -208,7 +208,15 @@
   padding: 0;
 }
 
-/* Removed task-subcategory styles as it's moved to header */
+/* Goal label above description */
+.task-goal-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
 
 .task-description {
   font-size: var(--font-sm);
