@@ -331,8 +331,8 @@ function TaskFiltersModal({
       // Exclude already selected tasks
       if (task.is_selected) return false;
       
-      // Priority filter
-      if (filters.priorityOnly && !task.is_priority) return false;
+      // Priority filter (is_highlighted comes from joining with task_priorities table)
+      if (filters.priorityOnly && !task.is_highlighted) return false;
       
       // Difficulty range filter (0 = undefined/any, 1 = easy, 2 = medium, 3 = hard)
       const taskDiffIndex = DIFFICULTY_LEVELS.indexOf(task.difficulty);
@@ -485,10 +485,7 @@ function TaskFiltersModal({
             Clear all
           </Button>
           <Button variant="primary" onClick={onClose}>
-            {activeFilterCount > 0 
-              ? <>Show <AnimatedCount value={filteredCount} /> {filteredCount === 1 ? 'Result' : 'Results'}</>
-              : 'Show Results'
-            }
+            Show <AnimatedCount value={filteredCount} /> {filteredCount === 1 ? 'Result' : 'Results'}
           </Button>
         </div>
       </div>
