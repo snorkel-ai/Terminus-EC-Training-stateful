@@ -6,6 +6,7 @@ export { Button } from './Button';
 export { Card, CardHeader, CardBody, CardFooter } from './Card';
 export { Input, TextArea, SearchInput } from './Input';
 export { Badge, CornerBadge } from './Badge';
+export { Checkbox } from './Checkbox';
 
 // Feedback
 export { Modal, ModalHeader, ModalBody, ModalFooter } from './Modal';
