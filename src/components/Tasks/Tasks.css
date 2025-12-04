@@ -8,19 +8,26 @@
 /* Header */
 .tasks-header {
   margin-bottom: var(--space-6);
-  text-align: center;
+  margin-top: var(--space-12); /* Added more top margin to move text down */
+  text-align: left;
 }
 
 .tasks-header h1 {
-  font-size: var(--font-2xl);
-  font-weight: 700;
-  margin-bottom: var(--space-2);
+  font-size: var(--font-4xl, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
   color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .tasks-header p {
-  font-size: var(--font-lg);
+  font-size: 1.25rem;
   color: var(--text-secondary);
+  margin: 0 0 0.75rem 0;
+  font-weight: 500;
+  line-height: 1.5;
+  max-width: 600px;
 }
 
 .tasks-stats {

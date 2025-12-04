@@ -1,21 +1,19 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTasks, useMySelectedTasks } from '../../hooks/useTasks';
 import { useTaskSearch } from '../../hooks/useTaskSearch';
-import { useTaskRecommendations } from '../../hooks/useTaskRecommendations';
-import { Button, LoadingState, Modal, Badge, Tabs, Tab } from '../ui';
+import { Button, LoadingState, Modal, Badge } from '../ui';
 import TaskSearchHeader from './TaskSearchHeader';
 import TaskFiltersModal from './TaskFiltersModal';
-import TaskRecommendations from './TaskRecommendations';
-import TaskTile from './TaskTile';
 import TaskCategorySection from './TaskCategorySection';
 import { TaskClaimSuccess } from './TaskClaimSuccess';
 import './Tasks.css';
 import './TasksViewLayout.css';
 
 function TasksView() {
+  const navigate = useNavigate();
   const { tasks, loading, error, selectTask } = useTasks();
-  const { selectedTasks: myTasks, loading: myTasksLoading, unselectTask } = useMySelectedTasks();
-  const [activeTab, setActiveTab] = useState('all');
+  const { selectedTasks: myTasks, unselectTask } = useMySelectedTasks();
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
@@ -40,7 +38,7 @@ function TasksView() {
   // Scroll to top when filters change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [filters, searchQuery, activeTab]);
+  }, [filters, searchQuery]);
 
   // Group filtered tasks by category for "grouped" view
   const groupedTasks = useMemo(() => {
@@ -61,21 +59,9 @@ function TasksView() {
   const totalAvailable = tasks.filter(t => !t.is_selected).length;
   const totalClaimed = tasks.filter(t => t.is_selected).length;
 
-  // Use the recommendations hook
-  const {
-    sections: recommendationSections,
-    getRandomTask,
-    hasRecommendations
-  } = useTaskRecommendations(tasks, myTasks);
-
   const handleViewDetails = (task) => {
     setSelectedTaskForModal(task);
     setShowClaimSuccess(false);
-  };
-
-  const handleViewMyTask = (task) => {
-    setSelectedTaskForModal(task);
-    setShowClaimSuccess(true);
   };
 
   const handleCloseModal = () => {
@@ -159,164 +145,95 @@ function TasksView() {
       <div className="tasks-header">
         <h1>Task Inspiration</h1>
         <p>Browse from {tasks.length} terminal-bench style task prompts</p>
-        <div className="tasks-stats">
-          <span className="stat">
-            <strong>{totalAvailable}</strong> available
-          </span>
-          <span className="stat-separator">•</span>
-          <span className="stat">
-            <strong>{totalClaimed}</strong> claimed
-          </span>
-        </div>
       </div>
 
-      {/* Tabs */}
-      <div className="tasks-tabs-container">
-        <Tabs value={activeTab} onChange={setActiveTab}>
-          <Tab value="all">All Tasks</Tab>
-          <Tab value="mine">
-            My Tasks
-            {myTasks.length > 0 && (
-              <Badge variant="primary" size="sm" style={{ marginLeft: '0.5rem' }}>{myTasks.length}</Badge>
-            )}
-          </Tab>
-        </Tabs>
-      </div>
+      <div className="gallery-container">
+        {/* Search Header (Airbnb style) */}
+        <TaskSearchHeader
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          suggestions={suggestions}
+          recentSearches={recentSearches}
+          handleSuggestionSelect={handleSuggestionSelect}
+          clearSearch={clearSearch}
+          filters={filters}
+          setFilters={setFilters}
+          onOpenFilters={() => setFiltersModalOpen(true)}
+        />
 
-      {activeTab === 'all' ? (
-        <div className="gallery-container">
-          {/* Search Header (Airbnb style) */}
-          <TaskSearchHeader
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            suggestions={suggestions}
-            recentSearches={recentSearches}
-            handleSuggestionSelect={handleSuggestionSelect}
-            clearSearch={clearSearch}
-            filters={filters}
-            setFilters={setFilters}
-            onOpenFilters={() => setFiltersModalOpen(true)}
-          />
-
-          <div className="gallery-content">
-            {/* Results Header */}
-            <div className="tasks-results-header">
-              <p className="results-count">
-                {hasActiveFilters ? (
-                  <>Showing {filteredTasks.length} results</>
-                ) : (
-                  <>{filteredTasks.length} tasks available</>
-                )}
-              </p>
+        <div className="gallery-content">
+          {/* Results Header */}
+          <div className="tasks-results-header">
+            <p className="results-count">
               {hasActiveFilters && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => {
-                    clearSearch();
-                    setFilters({
-                      categories: [],
-                      subcategories: [],
-                      difficulties: [],
-                      priorityOnly: false,
-                      search: ''
-                    });
-                  }}
-                >
-                  Clear all filters
-                </Button>
+                <>Showing {filteredTasks.length} results</>
               )}
-            </div>
-
-            {/* Grouped Sections */}
-            {filteredTasks.length === 0 ? (
-              <div className="tasks-empty">
-                <div className="empty-icon">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
-                  </svg>
-                </div>
-                <h3>No tasks found</h3>
-                <p>Try adjusting your search or filters to find what you're looking for.</p>
-                <Button 
-                  variant="secondary" 
-                  onClick={() => {
-                    clearSearch();
-                    setFilters({
-                      categories: [],
-                      subcategories: [],
-                      difficulties: [],
-                      priorityOnly: false,
-                      search: ''
-                    });
-                  }}
-                >
-                  Clear All Filters
-                </Button>
-              </div>
-            ) : (
-              <div className="tasks-grouped-layout">
-                {groupedTasks.map(([category, tasks]) => (
-                  <TaskCategorySection
-                    key={category}
-                    title={category}
-                    tasks={tasks}
-                    onTaskSelect={handleViewDetails}
-                    onTaskUnselect={() => {}}
-                    onExplore={handleExplore}
-                    searchQuery={searchQuery}
-                    showAll={filters.categories?.includes(category)}
-                  />
-                ))}
-              </div>
+            </p>
+            {hasActiveFilters && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => {
+                  clearSearch();
+                  setFilters({
+                    categories: [],
+                    subcategories: [],
+                    difficulties: [],
+                    priorityOnly: false,
+                    search: ''
+                  });
+                }}
+              >
+                Clear all filters
+              </Button>
             )}
           </div>
-        </div>
-      ) : (
-        /* My Tasks Tab */
-        <div className="tasks-results my-tasks-section">
-          {myTasksLoading ? (
-            <div className="tasks-loading">
-              <LoadingState message="Loading your tasks..." />
-            </div>
-          ) : myTasks.length === 0 ? (
+
+          {/* Grouped Sections */}
+          {filteredTasks.length === 0 ? (
             <div className="tasks-empty">
               <div className="empty-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="12" y1="18" x2="12" y2="12" />
-                  <line x1="9" y1="15" x2="15" y2="15" />
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
                 </svg>
               </div>
-              <h3>No tasks claimed yet</h3>
-              <p>Browse the task library and claim tasks you'd like to work on.</p>
-              <Button variant="primary" onClick={() => setActiveTab('all')}>
-                Browse Tasks
+              <h3>No tasks found</h3>
+              <p>Try adjusting your search or filters to find what you're looking for.</p>
+              <Button 
+                variant="secondary" 
+                onClick={() => {
+                  clearSearch();
+                  setFilters({
+                    categories: [],
+                    subcategories: [],
+                    difficulties: [],
+                    priorityOnly: false,
+                    search: ''
+                  });
+                }}
+              >
+                Clear All Filters
               </Button>
             </div>
           ) : (
-            <div className="tasks-grid gallery-grid">
-              {myTasks.map(task => (
-                <TaskTile
-                  key={task.id}
-                  task={task}
-                  isSelected={true}
-                  isMine={true}
-                  onSelect={() => handleViewMyTask(task)}
-                  onUnselect={async () => {
-                    if (window.confirm('Are you sure you want to release this task?')) {
-                      await unselectTask(task.id);
-                    }
-                  }}
-                  showActions={true}
+            <div className="tasks-grouped-layout">
+              {groupedTasks.map(([category, tasks]) => (
+                <TaskCategorySection
+                  key={category}
+                  title={category}
+                  tasks={tasks}
+                  onTaskSelect={handleViewDetails}
+                  onTaskUnselect={() => {}}
+                  onExplore={handleExplore}
+                  searchQuery={searchQuery}
+                  showAll={filters.categories?.includes(category)}
                 />
               ))}
             </div>
           )}
         </div>
-      )}
+      </div>
 
       {/* Filters Modal */}
       <TaskFiltersModal
@@ -342,7 +259,7 @@ function TasksView() {
               onRelease={handleReleaseFromModal}
               onGoToMyTasks={() => {
                 handleCloseModal();
-                setActiveTab('mine');
+                navigate('/portal/my-tasks');
               }}
             />
           ) : (

@@ -36,6 +36,16 @@
   border-radius: 12px;
 }
 
+.explore-all-btn {
+  margin-left: var(--space-2);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.explore-all-btn:hover {
+  background: var(--bg-secondary);
+}
+
 .collapse-btn {
   background: none;
   border: none;
@@ -63,11 +73,56 @@
   gap: var(--space-2);
 }
 
-.tasks-grid-row {
+.scroll-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scroll-btn:hover {
+  border-color: var(--text-primary);
+  background: var(--bg-secondary);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Grid Layout for "Show All" */
+.tasks-grid-row.show-all {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--space-4);
   width: 100%;
+}
+
+/* Carousel Layout for Default View */
+.tasks-carousel {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-bottom: var(--space-4); /* Space for scrollbar or shadow */
+  scroll-behavior: smooth;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  margin: 0 -4px; /* Negative margin to accommodate hover shadows */
+  padding: 4px; /* padding to accommodate hover shadows */
+}
+
+.tasks-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  flex: 0 0 350px; /* Fixed width for carousel items */
+  min-width: 300px;
+  max-width: 400px;
 }
 
 .grid-item {
@@ -75,25 +130,6 @@
 }
 
 /* Responsive Breakpoints */
-@media (max-width: 1400px) {
-  .tasks-grid-row {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .grid-item:nth-child(5) {
-    display: none;
-  }
-}
-
-@media (max-width: 1100px) {
-  .tasks-grid-row {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .grid-item:nth-child(4),
-  .grid-item:nth-child(5) {
-    display: none;
-  }
-}
-
 @media (max-width: 768px) {
   .tasks-grid-row {
     display: flex;
@@ -104,17 +140,22 @@
     grid-template-columns: none;
   }
   
-  .grid-item {
+  .carousel-item, .grid-item {
     flex: 0 0 280px;
     scroll-snap-align: start;
     display: block !important; /* Show all items on mobile scroll */
   }
   
+  .section-controls {
+    display: none; /* Hide manual scroll buttons on mobile */
+  }
+  
   /* Hide scrollbar for cleaner look */
-  .tasks-grid-row::-webkit-scrollbar {
+  .tasks-grid-row::-webkit-scrollbar,
+  .tasks-carousel::-webkit-scrollbar {
     display: none;
   }
-  .tasks-grid-row {
+  .tasks-grid-row, .tasks-carousel {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }

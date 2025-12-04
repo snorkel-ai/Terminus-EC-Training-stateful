@@ -3,29 +3,29 @@
   align-items: center;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 40px;
-  padding: 0; /* Padding handled by sections */
-  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-  margin: var(--space-8) auto var(--space-10);
-  max-width: 1000px;
-  height: 66px;
+  border-radius: 100px; /* Increased radius for bigger pill */
+  padding: 0;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08); /* Deeper shadow */
+  margin: var(--space-8) auto var(--space-12);
+  max-width: 1000px; /* Wider */
+  height: 80px; /* Taller/Bigger */
   position: relative;
   transition: box-shadow 0.2s ease;
 }
 
 .task-search-header:hover {
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
 
 .header-section {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 var(--space-6);
+  padding: 0 var(--space-8); /* More horizontal padding */
   height: 100%;
   position: relative;
   cursor: pointer;
-  border-radius: 40px;
+  border-radius: 100px;
 }
 
 .header-section:hover {
@@ -33,8 +33,8 @@
 }
 
 .header-section.search-section {
-  flex: 1.5; 
-  padding-left: var(--space-8);
+  flex: 2;
+  padding-left: var(--space-10); /* More left padding */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,17 +48,16 @@
 
 .header-section.search-section .section-label {
   margin-left: 0;
-  padding-left: 0; 
+  padding-left: 0;
 }
 
 /* Override TaskSearchBar styles when embedded */
 .task-search-header .task-search-bar.embedded .search-input-wrapper {
     padding: 0;
-    min-height: 24px;
+    min-height: 28px;
     align-items: center;
 }
 
-/* Hide the search icon in the embedded bar to align text with "Where" label */
 .task-search-header .task-search-bar.embedded .search-icon {
     display: none;
 }
@@ -67,9 +66,10 @@
     font-weight: 500;
     color: var(--text-primary);
     padding: 0;
-    height: 24px;
-    line-height: 24px;
-    margin-left: 0; 
+    height: 28px;
+    line-height: 28px;
+    font-size: var(--font-base); /* Larger font */
+    margin-left: 0;
 }
 
 .task-search-header .task-search-bar.embedded .search-input::placeholder {
@@ -79,8 +79,8 @@
 
 .header-section.difficulty-section {
   flex: 1;
-  min-width: 140px;
-  padding-left: var(--space-6);
+  min-width: 160px; /* Wider */
+  padding-left: var(--space-8);
 }
 
 .header-section.difficulty-section:hover {
@@ -107,9 +107,9 @@
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  padding: 0 var(--space-2) 0 var(--space-6);
+  padding: 0 var(--space-3) 0 var(--space-8);
   margin: 0;
-  border-radius: 0 40px 40px 0;
+  border-radius: 0 100px 100px 0;
   transition: background 0.2s ease;
   cursor: pointer;
 }
@@ -126,8 +126,8 @@
 }
 
 .filter-icon-wrapper {
-  width: 48px;
-  height: 48px;
+  width: 56px; /* Bigger icon circle */
+  height: 56px;
   background: var(--accent);
   border-radius: 50%;
   display: flex;
@@ -139,27 +139,33 @@
   margin-left: var(--space-4);
 }
 
+.filter-icon-wrapper svg {
+  width: 20px; /* Bigger icon */
+  height: 20px;
+}
+
 .filter-button-container:hover .filter-icon-wrapper {
     background: var(--accent-hover);
 }
 
 .header-divider {
   width: 1px;
-  height: 32px;
+  height: 40px; /* Taller divider */
   background: var(--border-color);
   flex-shrink: 0;
 }
 
 .section-label {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--font-xs);
+  font-weight: 700; /* Bolder label */
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   padding-left: var(--space-1);
+  letter-spacing: 0.5px;
 }
 
 .section-value {
-  font-size: 14px;
+  font-size: var(--font-base); /* Larger text */
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -169,7 +175,7 @@
 
 .section-value.active {
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Difficulty Dropdown */
@@ -183,26 +189,27 @@
 
 .difficulty-dropdown {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 16px);
   left: 0;
-  min-width: 200px;
+  min-width: 240px;
   background: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  padding: var(--space-2);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  padding: var(--space-3);
   z-index: 100;
   border: 1px solid var(--border-color);
 }
 
 .difficulty-option {
   padding: var(--space-3) var(--space-4);
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--text-primary);
+  margin-bottom: 2px;
 }
 
 .difficulty-option:hover {
@@ -211,7 +218,7 @@
 
 .difficulty-option.selected {
   background: var(--bg-secondary);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .fixed-overlay {
@@ -228,7 +235,7 @@
     .task-search-header {
         flex-direction: column;
         height: auto;
-        border-radius: 24px;
+        border-radius: 32px;
         padding: var(--space-2);
         gap: var(--space-2);
     }
@@ -241,17 +248,17 @@
     
     .header-section {
         width: 100%;
-        height: 60px;
-        padding: var(--space-2) var(--space-4);
-        border-radius: 16px;
+        height: 72px;
+        padding: var(--space-2) var(--space-6);
+        border-radius: 24px;
     }
 
     .header-section.search-section {
-        padding-left: var(--space-4);
+        padding-left: var(--space-6);
     }
 
     .header-section.filter-section {
-        padding-right: var(--space-4);
+        padding-right: var(--space-6);
         justify-content: space-between;
     }
     
@@ -260,7 +267,8 @@
       justify-content: space-between;
       margin-right: 0;
       padding-right: 0;
-      border-radius: 16px; /* Reset pill border radius for mobile block */
+      border-radius: 24px; /* Reset pill border radius for mobile block */
+      padding-left: 0;
     }
     
     .filter-text-group {
