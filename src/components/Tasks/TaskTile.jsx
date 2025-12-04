@@ -1,16 +1,22 @@
-import { useState } from 'react';
-import { Button, Badge, CornerBadge, ProgressBar, CodeBlock, TimerCompact, Note, ExternalLink } from '../ui';
-import { useTaskTimer } from '../../hooks/useTaskTimer';
+import { useState, useMemo } from 'react';
+import { Button, Badge, CornerBadge } from '../ui';
 import './Tasks.css';
 
-const SUBMITTER_PORTAL_URL = 'https://submitter.terminus.com'; // External platform URL
-
-function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions = true }) {
-  const [loading, setLoading] = useState(false);
-  const { timeLeft, formatTime, progress } = useTaskTimer(task.selected_at);
+// Helper to highlight search matches in text
+function highlightMatches(text, query) {
+  if (!query || !text) return text;
   
-  // Check if user has already made their first commit
-  const hasCommitted = !!task.first_commit_at;
+  const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+  
+  return parts.map((part, i) => 
+    part.toLowerCase() === query.toLowerCase() 
+      ? <mark key={i} className="search-highlight">{part}</mark>
+      : part
+  );
+}
+
+function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions = true, searchQuery = '' }) {
+  const [loading, setLoading] = useState(false);
 
   const handleSelect = async (e) => {
     e?.stopPropagation();
@@ -41,12 +47,18 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
   // Show more text by default (300 chars)
   const PREVIEW_LENGTH = 300;
   const shouldTruncate = !isMine && task.description?.length > PREVIEW_LENGTH;
-  const displayedDesc = shouldTruncate
+  const rawDesc = shouldTruncate
     ? task.description?.substring(0, PREVIEW_LENGTH) + '...'
     : task.description;
+  
+  // Apply search highlighting
+  const displayedDesc = useMemo(() => {
+    if (!searchQuery || !rawDesc) return rawDesc;
+    return highlightMatches(rawDesc, searchQuery);
+  }, [rawDesc, searchQuery]);
 
   return (
-    <div className={`task-tile ${isSelected ? 'selected' : ''} ${isMine ? 'mine' : ''} ${task.is_highlighted ? 'highlighted' : ''} ${hasCommitted ? 'committed' : ''}`}>
+    <div className={`task-tile ${isSelected ? 'selected' : ''} ${isMine ? 'mine' : ''} ${task.is_highlighted ? 'highlighted' : ''}`}>
       {(task.is_special || task.priority_tag) && (
         <CornerBadge>2x</CornerBadge>
       )}
@@ -60,7 +72,9 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
       </div>
 
       {task.subcategory && (
-        <div className="task-subcategory">{task.subcategory}</div>
+        <div className="task-subcategory">
+          {searchQuery ? highlightMatches(task.subcategory, searchQuery) : task.subcategory}
+        </div>
       )}
 
       <div 
@@ -76,33 +90,6 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
           </span>
         )}
       </div>
-
-      {isMine && !hasCommitted && (
-        <div className="task-active-status" style={{ marginBottom: '1rem' }}>
-          <div style={{ marginBottom: '0.75rem' }}>
-            <TimerCompact time={formatTime(timeLeft)} label="Time Remaining" />
-            <div style={{ marginTop: '0.35rem' }}>
-              <ProgressBar 
-                progress={progress} 
-                variant={progress < 20 ? 'danger' : 'success'} 
-                size="sm" 
-              />
-            </div>
-          </div>
-          <CodeBlock>terminus task start {task.id}</CodeBlock>
-        </div>
-      )}
-
-      {isMine && hasCommitted && (
-        <div className="task-committed-status" style={{ marginBottom: '1rem' }}>
-          <Note icon="check" title="First commit received!" squared>
-            <p style={{ marginBottom: '0.75rem' }}>Continue working on your task.</p>
-            <ExternalLink href={SUBMITTER_PORTAL_URL}>
-              Open Submitter Portal
-            </ExternalLink>
-          </Note>
-        </div>
-      )}
 
       <div className="task-footer">
         {task.difficulty && (

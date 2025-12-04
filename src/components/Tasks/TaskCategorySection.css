@@ -1,0 +1,121 @@
+.task-category-section {
+  margin-bottom: var(--space-8);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.section-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.section-title-group h3 {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.section-count {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.collapse-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.collapse-btn.collapsed {
+  transform: rotate(-90deg);
+}
+
+.section-controls {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.tasks-grid-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.grid-item {
+  min-width: 0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1400px) {
+  .tasks-grid-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .grid-item:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .tasks-grid-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid-item:nth-child(4),
+  .grid-item:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .tasks-grid-row {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: var(--space-4);
+    gap: var(--space-4);
+    scroll-snap-type: x mandatory;
+    grid-template-columns: none;
+  }
+  
+  .grid-item {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    display: block !important; /* Show all items on mobile scroll */
+  }
+  
+  /* Hide scrollbar for cleaner look */
+  .tasks-grid-row::-webkit-scrollbar {
+    display: none;
+  }
+  .tasks-grid-row {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

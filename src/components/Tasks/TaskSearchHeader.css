@@ -1,0 +1,208 @@
+.task-search-header {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 40px;
+  padding: 0; /* Padding handled by sections */
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  margin: 0 auto var(--space-8);
+  max-width: 850px;
+  height: 66px;
+  position: relative;
+  transition: box-shadow 0.2s ease;
+}
+
+.task-search-header:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.header-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 var(--space-6);
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+  border-radius: 40px;
+}
+
+.header-section:hover {
+  background: var(--bg-secondary);
+}
+
+.header-section.search-section {
+  flex: 1.5;
+  padding-left: var(--space-8);
+}
+
+.header-section.search-section:hover {
+  background: transparent; /* Search input handles its own hover/focus state inside */
+}
+
+/* Override TaskSearchBar styles when embedded */
+.task-search-header .task-search-bar.embedded .search-input-wrapper {
+    padding: 0;
+}
+.task-search-header .task-search-bar.embedded .search-input {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+.task-search-header .task-search-bar.embedded .search-input::placeholder {
+    font-weight: 400;
+}
+
+.header-section.difficulty-section {
+  flex: 1;
+  min-width: 140px;
+}
+
+.header-section.filter-section {
+  flex: 0.8;
+  padding-right: var(--space-2); /* Space for the round button */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-trigger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding-left: var(--space-2);
+    flex: 1;
+}
+
+.header-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--border-color);
+  flex-shrink: 0;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  padding-left: var(--space-1);
+}
+
+.section-value {
+  font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: var(--space-1);
+}
+
+.section-value.active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Filter Icon Circle */
+.filter-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-left: var(--space-2);
+  transition: transform 0.2s ease;
+}
+
+.filter-icon-wrapper:hover {
+    transform: scale(1.05);
+}
+
+/* Difficulty Dropdown */
+.difficulty-trigger {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.difficulty-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  min-width: 200px;
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: var(--space-2);
+  z-index: 100;
+  border: 1px solid var(--border-color);
+}
+
+.difficulty-option {
+  padding: var(--space-3) var(--space-4);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.difficulty-option:hover {
+  background: var(--bg-secondary);
+}
+
+.difficulty-option.selected {
+  background: var(--bg-secondary);
+  font-weight: 500;
+}
+
+.fixed-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .task-search-header {
+        flex-direction: column;
+        height: auto;
+        border-radius: 24px;
+        padding: var(--space-2);
+        gap: var(--space-2);
+    }
+    
+    .header-divider {
+        width: 100%;
+        height: 1px;
+        display: none; /* Hide dividers on mobile */
+    }
+    
+    .header-section {
+        width: 100%;
+        height: 60px;
+        padding: var(--space-2) var(--space-4);
+        border-radius: 16px;
+    }
+
+    .header-section.search-section {
+        padding-left: var(--space-4);
+    }
+
+    .header-section.filter-section {
+        padding-right: var(--space-4);
+    }
+}
+

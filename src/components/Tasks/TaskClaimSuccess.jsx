@@ -1,100 +1,64 @@
-import { Button, CodeBlock } from '../ui';
-import { useTaskTimer } from '../../hooks/useTaskTimer';
+import { useEffect, useRef } from 'react';
+import { Button } from '../ui';
 import './TaskClaimSuccess.css';
 
-const SUBMITTER_PORTAL_URL = 'https://submitter.terminus.com'; // External platform URL
+export function TaskClaimSuccess({ task, onClose, onRelease, onGoToMyTasks }) {
+  const containerRef = useRef(null);
 
-export function TaskClaimSuccess({ task, onClose, onRelease }) {
-  const { timeLeft, formatTime } = useTaskTimer(task.selected_at);
-  const hasCommitted = !!task.first_commit_at;
+  // Generate confetti on mount
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  const cliCommand = `terminus task start ${task.id}`;
+    // Create confetti pieces
+    const colors = ['#fbbf24', '#34d399', '#60a5fa', '#f472b6', '#a78bfa', '#fb923c'];
+    const confettiCount = 50;
 
-  // Show committed state view
-  if (hasCommitted) {
-    return (
-      <div className="task-claim-success">
-        <h2 style={{ marginBottom: '0.5rem' }}>Task In Progress</h2>
-        <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>Continue working on your task and submit when ready.</p>
+    for (let i = 0; i < confettiCount; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti-piece';
+      confetti.style.setProperty('--x', `${Math.random() * 100 - 50}vw`);
+      confetti.style.setProperty('--rotation', `${Math.random() * 720 - 360}deg`);
+      confetti.style.left = `${Math.random() * 100}%`;
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+      confetti.style.animationDuration = `${1 + Math.random() * 1}s`;
+      container.appendChild(confetti);
+    }
 
-        <a 
-          href={SUBMITTER_PORTAL_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="submitter-portal-btn"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.5rem',
-            padding: '0.875rem 1.5rem',
-            background: 'var(--accent)',
-            color: 'white',
-            borderRadius: '8px',
-            fontWeight: 600,
-            textDecoration: 'none',
-            marginBottom: '1.5rem'
-          }}
-        >
-          Open Submitter Portal
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-        </a>
+    // Cleanup confetti after animation
+    const timeout = setTimeout(() => {
+      container.querySelectorAll('.confetti-piece').forEach(el => el.remove());
+    }, 3000);
 
-        <div className="success-actions" style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
-          {onRelease && (
-            <Button 
-              variant="ghost" 
-              onClick={onRelease} 
-              style={{ color: '#dc2626', flex: 1 }}
-            >
-              Abandon task
-            </Button>
-          )}
-          <Button variant="secondary" onClick={onClose} style={{ flex: 1 }}>
-            Close
-          </Button>
-        </div>
-      </div>
-    );
-  }
+    return () => clearTimeout(timeout);
+  }, []);
 
-  // Show pre-commit state (original view with timer)
   return (
-    <div className="task-claim-success">
+    <div className="task-claim-success" ref={containerRef}>
       <div className="success-icon-wrapper">
         <div className="success-icon">✓</div>
       </div>
       
       <h2>Task Claimed!</h2>
-      <p>You have 48 hours to make your first commit before this task is released back to the community.</p>
+      <p>This task has been added to your list.</p>
 
-      <div className="timer-display">
-        <span className="timer-label">Time Remaining</span>
-        <div className="timer-value">{formatTime(timeLeft)}</div>
-      </div>
-
-      <div className="cli-instruction">
-        <p>Run this command in your terminal to start:</p>
-        <CodeBlock className="lg">{cliCommand}</CodeBlock>
-      </div>
-
-      <div className="success-actions" style={{ display: 'flex', flexDirection: 'row', gap: '1rem', marginTop: '2rem' }}>
+      <div className="success-actions-stack">
+        <Button variant="primary" onClick={onClose} style={{ width: '100%' }}>
+          Show Task
+        </Button>
+        <Button variant="secondary" onClick={onGoToMyTasks} style={{ width: '100%' }}>
+          Go to My Tasks
+        </Button>
         {onRelease && (
           <Button 
             variant="ghost" 
             onClick={onRelease} 
-            style={{ color: '#dc2626', flex: 1 }}
+            style={{ color: '#dc2626', width: '100%' }}
           >
             Give task back
           </Button>
         )}
-        <Button variant="primary" onClick={onClose} style={{ flex: 1 }}>
-          Got it, let's go!
-        </Button>
       </div>
     </div>
   );
