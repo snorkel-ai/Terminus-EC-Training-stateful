@@ -1,6 +1,59 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { Button, Checkbox, Modal } from '../ui';
 import './TaskFiltersModal.css';
+
+// Animated counting component
+function AnimatedCount({ value, duration = 300 }) {
+  const [displayValue, setDisplayValue] = useState(value);
+  const animationRef = useRef(null);
+  const startValueRef = useRef(value);
+
+  useEffect(() => {
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+
+    const startValue = startValueRef.current;
+    const endValue = value;
+    const startTime = performance.now();
+    const difference = endValue - startValue;
+
+    // If no change, skip animation
+    if (difference === 0) return;
+
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function (ease-out)
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      
+      const currentValue = Math.round(startValue + difference * easeOut);
+      setDisplayValue(currentValue);
+
+      if (progress < 1) {
+        animationRef.current = requestAnimationFrame(animate);
+      } else {
+        startValueRef.current = endValue;
+      }
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [value, duration]);
+
+  return (
+    <span className="animated-count">
+      {displayValue}
+    </span>
+  );
+}
 
 function TaskFiltersModal({ 
   isOpen,
@@ -362,7 +415,10 @@ function TaskFiltersModal({
             Clear all
           </Button>
           <Button variant="primary" onClick={onClose}>
-            Show {filteredCount} {filteredCount === 1 ? 'Result' : 'Results'}
+            {activeFilterCount > 0 
+              ? <>Show <AnimatedCount value={filteredCount} /> {filteredCount === 1 ? 'Result' : 'Results'}</>
+              : 'Show Results'
+            }
           </Button>
         </div>
       </div>

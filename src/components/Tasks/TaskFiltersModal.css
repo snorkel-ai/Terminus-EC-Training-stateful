@@ -242,6 +242,13 @@
   font-weight: 500;
 }
 
+/* Animated count in button */
+.animated-count {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  min-width: 1.5ch;
+}
+
 .modal-footer {
   display: flex;
   justify-content: space-between;
