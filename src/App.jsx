@@ -14,6 +14,10 @@ import Videos from './components/Videos';
 import Workbook from './components/Workbook';
 import OracleTraining from './components/OracleTraining';
 import OnboardingMaterials from './components/OnboardingMaterials';
+import ExpertPlatformOnboarding from './components/ExpertPlatformOnboarding';
+import GitHubOnboarding from './components/GitHubOnboarding';
+import ExpertPlatformWalkthrough from './components/ExpertPlatformWalkthrough';
+import GitHubSubmissionWalkthrough from './components/GitHubSubmissionWalkthrough';
 import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
@@ -52,6 +56,10 @@ function App() {
                       <Route path="/workbook" element={<Workbook />} />
                       <Route path="/oracle" element={<OracleTraining />} />
                       <Route path="/onboarding" element={<OnboardingMaterials />} />
+                      <Route path="/expert-platform-onboarding" element={<ExpertPlatformOnboarding />} />
+                      <Route path="/github-onboarding" element={<GitHubOnboarding />} />
+                      <Route path="/expert-platform-walkthrough" element={<ExpertPlatformWalkthrough />} />
+                      <Route path="/github-submission-walkthrough" element={<GitHubSubmissionWalkthrough />} />
                       <Route path="/feedback" element={<FeedbackSlides />} />
                       <Route path="/faq" element={<FAQ />} />
                       <Route path="/glossary" element={<Glossary />} />

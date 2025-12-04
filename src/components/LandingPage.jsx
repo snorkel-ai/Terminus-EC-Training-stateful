@@ -14,24 +14,31 @@ function LandingPage() {
   const resources = [
     { 
       icon: FiBook, 
-      label: 'Getting started guide', 
+      label: 'Getting Started - Snorkel Expert Platform', 
       description: 'Essential guides to setup your environment and get you working on your first task.',
-      path: '/portal/onboarding',
+      path: '/portal/expert-platform-onboarding',
+      linkText: 'Read guide'
+    },
+    { 
+      icon: FiBook, 
+      label: 'Getting Started - GitHub Repo', 
+      description: 'Essential guides to setup your environment and get you working on your first task.',
+      path: '/portal/github-onboarding',
       linkText: 'Read guide'
     },
     { 
       icon: FiVideo, 
-      label: 'Walkthrough videos', 
-      description: 'Step-by-step videos showing you the process from idea to accepted task.',
-      path: '/portal/videos',
-      linkText: 'Watch videos'
+      label: 'Expert Platform Submission Walkthrough', 
+      description: 'Step-by-step guide for submitting tasks on the Snorkel Expert Platform.',
+      path: '/portal/expert-platform-walkthrough',
+      linkText: 'View walkthrough'
     },
     { 
-      icon: FiRefreshCw, 
-      label: 'Task Iteration Workbook', 
-      description: 'Learn how to read and debug the feedback given by TerminalBench.',
-      path: '/portal/workbook',
-      linkText: 'Open workbook'
+      icon: FiVideo, 
+      label: 'GitHub Submission Walkthrough', 
+      description: 'Step-by-step guide for submitting tasks via GitHub pull requests.',
+      path: '/portal/github-submission-walkthrough',
+      linkText: 'View walkthrough'
     },
   ];
 
