@@ -67,6 +67,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .ui-search-icon {
@@ -80,6 +81,7 @@
 
 .ui-search-input {
   padding-left: 42px;
+  padding-right: 36px;
 }
 
 .ui-search-input::-webkit-search-cancel-button {
@@ -87,6 +89,24 @@
   appearance: none;
 }
 
+.ui-search-clear {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-
-
+.ui-search-clear:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}

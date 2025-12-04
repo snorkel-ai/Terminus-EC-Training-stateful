@@ -211,10 +211,23 @@ function TaskFiltersModal({
   };
 
   const handleDifficultyChange = (min, max) => {
+    // Convert range to difficulties array for parent component
+    const difficulties = [];
+    // If full range (0-3), leave empty to show all. Otherwise add selected levels.
+    if (min > 0 || max < 3) {
+      for (let i = min; i <= max; i++) {
+        if (i === 0) difficulties.push('unknown');
+        if (i === 1) difficulties.push('easy');
+        if (i === 2) difficulties.push('medium');
+        if (i === 3) difficulties.push('hard');
+      }
+    }
+
     onFilterChange({ 
       ...filters, 
       difficultyMin: min,
-      difficultyMax: max
+      difficultyMax: max,
+      difficulties
     });
   };
 
@@ -313,6 +326,7 @@ function TaskFiltersModal({
     onFilterChange({
       categories: [],
       subcategories: [],
+      difficulties: [],
       difficultyMin: 0,
       difficultyMax: 3,
       priorityOnly: false,
@@ -405,12 +419,15 @@ function TaskFiltersModal({
         <div className="filter-section" style={{ flex: 1, minHeight: 0 }}>
           <h4>Categories</h4>
           <div className="categories-container">
-            <SearchInput
-              placeholder="Search categories..."
-              value={categorySearch}
-              onChange={(e) => setCategorySearch(e.target.value)}
-              className={`category-search-input-wrapper ${categorySearch ? 'has-value' : ''}`}
-            />
+            <div className="search-container">
+              <SearchInput
+                placeholder="Search categories..."
+                value={categorySearch}
+                onChange={(e) => setCategorySearch(e.target.value)}
+                onClear={() => setCategorySearch('')}
+                className="category-search-input"
+              />
+            </div>
             
             <div className="category-tree">
               {Object.keys(displayTree).length === 0 ? (

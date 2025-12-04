@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
+  height: 65vh; /* Fixed height to prevent resizing during search */
   max-height: 80vh;
   overflow: hidden;
 }
@@ -271,40 +272,13 @@
   min-height: 0; /* For flex scrolling */
 }
 
-/* Animated Search Input */
-.category-search-input-wrapper {
-  width: 44px; /* Collapsed width (icon only) */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: transparent;
-  border-color: transparent;
-  cursor: pointer;
-  overflow: hidden;
-  /* Override UI component styles if needed */
-  border-radius: 22px; /* Pill shape when collapsed */
+/* Static Search Input (replacing animated one) */
+.search-container {
+  padding-bottom: var(--space-1);
 }
 
-.category-search-input-wrapper .ui-input {
-  cursor: pointer;
-}
 
-.category-search-input-wrapper:hover {
-  background: var(--bg-secondary);
-}
-
-.category-search-input-wrapper:focus-within,
-.category-search-input-wrapper.has-value {
-  width: 100%;
-  background: var(--bg-primary);
-  border-color: var(--border-color);
-  cursor: text;
-  border-radius: var(--radius-md);
-}
-
-.category-search-input-wrapper:focus-within .ui-input,
-.category-search-input-wrapper.has-value .ui-input {
-  cursor: text;
-  padding-left: 42px; /* Ensure text doesn't overlap icon */
-}
+/* Hover/Focus states now handled by standard UI Input component */
 
 .category-tree {
   overflow-y: auto;
@@ -312,6 +286,12 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  /* Add subtle background for tree area */
+  padding: var(--space-2);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  flex: 1; /* Expand to fill available space */
 }
 
 .tree-node {
@@ -330,7 +310,14 @@
 }
 
 .tree-header:hover {
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* Dark mode adjustment if needed */
+@media (prefers-color-scheme: dark) {
+  .tree-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .tree-label-group {
@@ -379,12 +366,14 @@
 }
 
 .child-node:hover {
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.03);
   color: var(--text-primary);
 }
 
 .child-node.active {
   font-weight: 500;
+  background: var(--bg-secondary);
+  color: var(--accent);
 }
 
 .filter-count {
