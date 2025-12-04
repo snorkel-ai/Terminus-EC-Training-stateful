@@ -8,7 +8,7 @@
 /* Header */
 .tasks-header {
   margin-bottom: var(--space-6);
-  margin-top: var(--space-12); /* Added more top margin to move text down */
+  margin-top: var(--space-16); /* Increased to move title/subtext/searchbar down */
   text-align: left;
 }
 
@@ -142,87 +142,123 @@
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-5) var(--space-4); /* Reduced horizontal padding */
   transition: all 0.2s ease;
-  cursor: default;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   position: relative;
   height: 100%;
+  min-height: 280px;
 }
 
 .task-tile:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   border-color: var(--accent);
+  transform: translateY(-2px);
 }
+
+.task-tile.mine {
+  cursor: default;
+}
+
 
 .task-tile.selected {
   background: var(--bg-secondary);
 }
 
 .task-tile.highlighted {
-  border-color: var(--accent-alpha);
-  box-shadow: 0 2px 8px var(--accent-alpha);
+  /* border-color: var(--accent-alpha); Removed per request */
+  /* box-shadow: 0 2px 8px var(--accent-alpha); Removed per request */
 }
 
 .task-tile-header {
-  margin-bottom: var(--space-3);
-}
-
-.task-badges {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start; /* Align to top for multiline titles */
+  margin-bottom: var(--space-3);
+  min-height: 24px;
   gap: var(--space-2);
 }
 
-.task-subcategory {
+.task-tile-title {
   font-size: var(--font-sm);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: var(--space-2);
-  line-height: 1.4;
+  line-height: 1.3;
+  /* Truncation */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: left;
+  padding-top: 2px; /* Optical alignment with icons */
 }
 
-.task-description {
+.task-tile-separator {
+  border-bottom: 1px dashed var(--border-color);
+  margin: 0 calc(var(--space-4) * -1) var(--space-4) calc(var(--space-4) * -1);
+  width: calc(100% + var(--space-4) * 2);
+}
+
+.task-tile-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* Removed task-subcategory styles as it's moved to header */
+
+.task-description {
   font-size: var(--font-sm);
   line-height: 1.6;
   color: var(--text-secondary);
   margin-bottom: var(--space-4);
 }
 
-.task-description.clickable {
-  cursor: pointer;
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.task-description.clickable:hover {
-  color: var(--text-primary);
-}
-
-.expand-indicator {
-  color: var(--accent);
-  font-weight: 600;
-  font-size: var(--font-sm);
-  margin-left: var(--space-1);
-  cursor: pointer;
-}
-
-.expand-indicator:hover {
-  text-decoration: underline;
+.line-clamp-6 {
+  display: -webkit-box;
+  -webkit-line-clamp: 6; /* Show double the lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .task-footer {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  /* Only add padding/border if there is content, handled via JS conditioning but CSS ensures spacing */
   padding-top: var(--space-3);
   border-top: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-3);
+  min-height: 40px;
 }
 
-.task-actions {
-  margin-left: auto;
+.double-pay-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.task-actions.full-width {
+  width: 100%;
+}
+
+.task-action-btn {
+  width: 100%;
+  justify-content: center;
 }
 
 /* Loading Sentinel */

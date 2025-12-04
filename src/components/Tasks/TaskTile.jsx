@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Button, Badge, CornerBadge } from '../ui';
+import { Button, Badge } from '../ui';
 import './Tasks.css';
 
 // Helper to highlight search matches in text
@@ -14,6 +14,24 @@ function highlightMatches(text, query) {
       : part
   );
 }
+
+const DifficultyRating = ({ difficulty }) => {
+  const diff = difficulty?.toLowerCase();
+  let count = 0;
+  if (diff === 'hard') count = 3;
+  else if (diff === 'medium') count = 2;
+  else if (diff === 'easy') count = 1;
+  
+  return (
+    <div className="difficulty-rating" title={`Difficulty: ${difficulty}`} style={{ display: 'flex', gap: '2px' }}>
+      {[...Array(3)].map((_, i) => (
+        <span key={i} style={{ opacity: i < count ? 1 : 0.2, fontSize: '1.1em', filter: i < count ? 'none' : 'grayscale(100%)' }}>
+          💪
+        </span>
+      ))}
+    </div>
+  );
+};
 
 function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions = true, searchQuery = '' }) {
   const [loading, setLoading] = useState(false);
@@ -44,86 +62,58 @@ function TaskTile({ task, isSelected, isMine, onSelect, onUnselect, showActions 
     }
   };
 
-  // Show more text by default (300 chars)
-  const PREVIEW_LENGTH = 300;
-  const shouldTruncate = !isMine && task.description?.length > PREVIEW_LENGTH;
-  const rawDesc = shouldTruncate
-    ? task.description?.substring(0, PREVIEW_LENGTH) + '...'
-    : task.description;
-  
-  // Apply search highlighting
+  // Search highlighting
   const displayedDesc = useMemo(() => {
-    if (!searchQuery || !rawDesc) return rawDesc;
-    return highlightMatches(rawDesc, searchQuery);
-  }, [rawDesc, searchQuery]);
+    if (!searchQuery || !task.description) return task.description;
+    return highlightMatches(task.description, searchQuery);
+  }, [task.description, searchQuery]);
 
   return (
-    <div className={`task-tile ${isSelected ? 'selected' : ''} ${isMine ? 'mine' : ''} ${task.is_highlighted ? 'highlighted' : ''}`}>
-      {(task.is_special || task.priority_tag) && (
-        <CornerBadge>2x</CornerBadge>
-      )}
+    <div 
+      className={`task-tile ${isSelected ? 'selected' : ''} ${isMine ? 'mine' : ''} ${task.is_highlighted ? 'highlighted' : ''}`}
+      onClick={!isMine ? handleSelect : undefined}
+      role={!isMine ? "button" : undefined}
+      tabIndex={!isMine ? 0 : undefined}
+    >
+      
       <div className="task-tile-header">
-        <div className="task-badges">
-          {task.is_highlighted && (
-            <Badge variant="priority" size="sm">Priority</Badge>
+        <span className="task-tile-title" title={task.subcategory || task.subsubcategory || 'Task'}>
+          {task.subcategory ? (
+            searchQuery ? highlightMatches(task.subcategory, searchQuery) : task.subcategory
+          ) : (
+             task.subsubcategory || 'Task'
           )}
-          <Badge variant="category" size="sm">{task.category}</Badge>
-        </div>
-      </div>
-
-      {task.subcategory && (
-        <div className="task-subcategory">
-          {searchQuery ? highlightMatches(task.subcategory, searchQuery) : task.subcategory}
-        </div>
-      )}
-
-      <div 
-        className={`task-description ${shouldTruncate ? 'clickable' : ''}`}
-        onClick={shouldTruncate ? handleSelect : undefined}
-        role={shouldTruncate ? 'button' : undefined}
-        tabIndex={shouldTruncate ? 0 : undefined}
-      >
-        {displayedDesc}
-        {shouldTruncate && (
-          <span className="expand-indicator">
-            Read more
-          </span>
-        )}
-      </div>
-
-      <div className="task-footer">
+        </span>
         {task.difficulty && (
           <div className="task-difficulty">
-            <Badge variant={task.difficulty.toLowerCase()} size="sm">
-              {task.difficulty}
-            </Badge>
-          </div>
-        )}
-
-        {showActions && (
-          <div className="task-actions">
-            {isMine ? (
-              <Button 
-                variant="danger"
-                size="sm"
-                onClick={handleUnselect}
-                loading={loading}
-              >
-                Abandon Task
-              </Button>
-            ) : (
-              <Button 
-                variant="secondary"
-                size="sm"
-                onClick={handleSelect}
-                loading={loading}
-              >
-                View Details
-              </Button>
-            )}
+            <DifficultyRating difficulty={task.difficulty} />
           </div>
         )}
       </div>
+
+      <div className="task-tile-separator"></div>
+
+      <div className="task-tile-body">
+        <div className="task-description line-clamp-6" title={task.description}>
+          {displayedDesc}
+        </div>
+      </div>
+
+      {showActions && isMine && (
+        <div className="task-footer">
+          <div className="task-actions full-width">
+            <Button 
+              variant="danger"
+              size="sm"
+              onClick={handleUnselect}
+              loading={loading}
+              className="task-action-btn"
+            >
+              Abandon Task
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

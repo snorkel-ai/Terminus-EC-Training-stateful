@@ -26,10 +26,12 @@ function TaskCategorySection({
     }
   };
 
+  const isPrioritized = tasks.some(t => t.is_special || t.priority_tag);
+
   if (tasks.length === 0) return null;
 
   return (
-    <div className="task-category-section">
+    <div className={`task-category-section ${isPrioritized ? 'prioritized-section' : ''}`}>
       <div className="section-header">
         <div className="section-title-group" onClick={() => setIsCollapsed(!isCollapsed)}>
           <button className={`collapse-btn ${isCollapsed ? 'collapsed' : ''}`}>
@@ -37,10 +39,17 @@ function TaskCategorySection({
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
-          <h3>
-            {title}
-            <span className="section-count">{tasks.length}</span>
-          </h3>
+          <div className="section-title-wrapper">
+            <h3>
+              {title}
+              <span className="section-count">{tasks.length}</span>
+            </h3>
+            {isPrioritized && (
+              <Badge variant="accent" size="sm" className="double-pay-badge">
+                💰💰 Double Pay
+              </Badge>
+            )}
+          </div>
         </div>
         
         {!isCollapsed && !showAll && (

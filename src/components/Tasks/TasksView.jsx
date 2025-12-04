@@ -51,8 +51,16 @@ function TasksView() {
       groups[category].push(task);
     });
     
-    // Sort groups by priority (size for now, or predefined order)
-    return Object.entries(groups).sort((a, b) => b[1].length - a[1].length);
+    // Sort groups: Prioritized categories first, then by number of tasks
+    return Object.entries(groups).sort((a, b) => {
+      const aHasPriority = a[1].some(t => t.is_special || t.priority_tag);
+      const bHasPriority = b[1].some(t => t.is_special || t.priority_tag);
+      
+      if (aHasPriority && !bHasPriority) return -1;
+      if (!aHasPriority && bHasPriority) return 1;
+      
+      return b[1].length - a[1].length;
+    });
   }, [filteredTasks]);
 
   // Count total available and claimed tasks (before filtering)
@@ -143,12 +151,12 @@ function TasksView() {
     <div className="tasks-view tasks-gallery">
       {/* Header */}
       <div className="tasks-header">
-        <h1>Task Inspiration</h1>
-        <p>Browse from {tasks.length} terminal-bench style task prompts</p>
+        <h1>Pick Your Next Challenge.</h1>
+        <p>Real problems frontier models still struggle with. Choose one and start building.</p>
       </div>
 
       <div className="gallery-container">
-        {/* Search Header (Airbnb style) */}
+        {/* Search Header */}
         <TaskSearchHeader
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -166,7 +174,7 @@ function TasksView() {
           <div className="tasks-results-header">
             <p className="results-count">
               {hasActiveFilters && (
-                <>Showing {filteredTasks.length} results</>
+                <>Found {filteredTasks.length} tasks</>
               )}
             </p>
             {hasActiveFilters && (
