@@ -2,6 +2,82 @@ import { useMemo, useState, useEffect, useRef } from 'react';
 import { Button, Checkbox, Modal } from '../ui';
 import './TaskFiltersModal.css';
 
+// Difficulty levels mapping (0 = undefined/any, 1 = easy, 2 = medium, 3 = hard)
+const DIFFICULTY_LEVELS = ['any', 'easy', 'medium', 'hard'];
+
+// Dual Range Slider for difficulty
+function DifficultyRangeSlider({ min, max, onChange }) {
+  const [minVal, setMinVal] = useState(min);
+  const [maxVal, setMaxVal] = useState(max);
+  const rangeRef = useRef(null);
+
+  // Convert to percentage for positioning (0-3 range = 4 steps)
+  const getPercent = (value) => (value / 3) * 100;
+
+  // Update range highlight
+  useEffect(() => {
+    if (rangeRef.current) {
+      const minPercent = getPercent(minVal);
+      const maxPercent = getPercent(maxVal);
+      rangeRef.current.style.left = `${minPercent}%`;
+      rangeRef.current.style.width = `${maxPercent - minPercent}%`;
+    }
+  }, [minVal, maxVal]);
+
+  // Sync with external changes
+  useEffect(() => {
+    setMinVal(min);
+    setMaxVal(max);
+  }, [min, max]);
+
+  const handleMinChange = (e) => {
+    const value = Math.min(Number(e.target.value), maxVal);
+    setMinVal(value);
+    onChange(value, maxVal);
+  };
+
+  const handleMaxChange = (e) => {
+    const value = Math.max(Number(e.target.value), minVal);
+    setMaxVal(value);
+    onChange(minVal, value);
+  };
+
+  return (
+    <div className="difficulty-range-slider">
+      <div className="slider-container">
+        <div className="slider-track" />
+        <div ref={rangeRef} className="slider-range" />
+        
+        <input
+          type="range"
+          min={0}
+          max={3}
+          step={1}
+          value={minVal}
+          onChange={handleMinChange}
+          className="thumb thumb-min"
+        />
+        <input
+          type="range"
+          min={0}
+          max={3}
+          step={1}
+          value={maxVal}
+          onChange={handleMaxChange}
+          className="thumb thumb-max"
+        />
+        
+        <div className="slider-marks">
+          <span className="mark-text">Unknown</span>
+          <span>💪</span>
+          <span>💪💪</span>
+          <span>💪💪💪</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Animated counting component
 function AnimatedCount({ value, duration = 300 }) {
   const [displayValue, setDisplayValue] = useState(value);
@@ -126,12 +202,12 @@ function TaskFiltersModal({
     });
   };
 
-  const handleDifficultyToggle = (diff) => {
-    const current = filters.difficulties || [];
-    const next = current.includes(diff)
-      ? current.filter(d => d !== diff)
-      : [...current, diff];
-    onFilterChange({ ...filters, difficulties: next });
+  const handleDifficultyChange = (min, max) => {
+    onFilterChange({ 
+      ...filters, 
+      difficultyMin: min,
+      difficultyMax: max
+    });
   };
 
   const handleCategoryToggle = (cat) => {
@@ -229,21 +305,28 @@ function TaskFiltersModal({
     onFilterChange({
       categories: [],
       subcategories: [],
-      difficulties: [],
+      difficultyMin: 0,
+      difficultyMax: 3,
       priorityOnly: false,
       search: ''
     });
     setCategorySearch('');
   };
 
+  // Check if difficulty filter is active (not full range)
+  const isDifficultyFiltered = (filters.difficultyMin ?? 0) > 0 || (filters.difficultyMax ?? 3) < 3;
+
   const activeFilterCount = 
     (filters.categories?.length || 0) + 
     (filters.subcategories?.length || 0) + 
-    (filters.difficulties?.length || 0) + 
+    (isDifficultyFiltered ? 1 : 0) + 
     (filters.priorityOnly ? 1 : 0);
 
   // Calculate filtered results count
   const filteredCount = useMemo(() => {
+    const minDiff = filters.difficultyMin ?? 0;
+    const maxDiff = filters.difficultyMax ?? 3;
+    
     return tasks.filter(task => {
       // Exclude already selected tasks
       if (task.is_selected) return false;
@@ -251,10 +334,11 @@ function TaskFiltersModal({
       // Priority filter
       if (filters.priorityOnly && !task.is_priority) return false;
       
-      // Difficulty filter
-      if (filters.difficulties?.length > 0) {
-        if (!filters.difficulties.includes(task.difficulty)) return false;
-      }
+      // Difficulty range filter (0 = undefined/any, 1 = easy, 2 = medium, 3 = hard)
+      const taskDiffIndex = DIFFICULTY_LEVELS.indexOf(task.difficulty);
+      // If task difficulty not found in array, treat as 'any' (0)
+      const normalizedIndex = taskDiffIndex === -1 ? 0 : taskDiffIndex;
+      if (normalizedIndex < minDiff || normalizedIndex > maxDiff) return false;
       
       // Category/Subcategory filter
       if (filters.subcategories?.length > 0) {
@@ -284,9 +368,8 @@ function TaskFiltersModal({
           >
             <div className="priority-info">
               <span className="priority-label">
-                Double Pay Tasks 💰💰
+                Only show Priority tasks
               </span>
-              <span className="priority-sublabel">Show only high-priority items</span>
             </div>
             <div className="toggle-switch" />
           </div>
@@ -294,25 +377,12 @@ function TaskFiltersModal({
 
         {/* Difficulty Section */}
         <div className="filter-section">
-          <h4>Difficulty</h4>
-          <div className="difficulty-list">
-            {['easy', 'medium', 'hard'].map(diff => (
-              <div 
-                key={diff}
-                className={`checkbox-row ${filters.difficulties?.includes(diff) ? 'active' : ''}`}
-                onClick={() => handleDifficultyToggle(diff)}
-              >
-                <div className="checkbox-label-group">
-                  <Checkbox checked={filters.difficulties?.includes(diff)} />
-                  <span style={{ textTransform: 'capitalize' }}>{diff}</span>
-                </div>
-                {/* Use muscle icons */}
-                <span style={{ fontSize: '1rem' }}>
-                  {diff === 'easy' ? '💪' : diff === 'medium' ? '💪💪' : '💪💪💪'}
-                </span>
-              </div>
-            ))}
-          </div>
+          <h4>Estimated Difficulty</h4>
+          <DifficultyRangeSlider
+            min={filters.difficultyMin ?? 0}
+            max={filters.difficultyMax ?? 3}
+            onChange={handleDifficultyChange}
+          />
         </div>
 
         {/* Categories Tree Section */}
