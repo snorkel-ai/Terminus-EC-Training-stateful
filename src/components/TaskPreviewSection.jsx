@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Button, Badge, CornerBadge } from './ui';
+import { Button, Badge, CornerBadge, Card, ActionLink } from './ui';
 import './TaskPreviewSection.css';
 
 const TaskPreviewSection = () => {
@@ -83,10 +83,12 @@ const TaskPreviewSection = () => {
             <div key={i} className="task-preview-card skeleton"></div>
           ))
         ) : (
-          // Use index as key to keep DOM elements stable for content swap animation
           displayTasks.map((task, index) => (
-            <div 
-              key={index} 
+            <Card 
+              key={index}
+              variant="minimal"
+              padding="none"
+              hoverable
               className={`task-preview-card ${isShuffling ? 'shuffling' : ''}`}
               style={{ transitionDelay: `${index * 100}ms` }}
               onClick={() => handleTaskClick(task.id)}
@@ -97,7 +99,7 @@ const TaskPreviewSection = () => {
                 )}
                 <div className="task-preview-card-header">
                   <div className="header-badges">
-                  <Badge variant="category">{task.category}</Badge>
+                    <Badge variant="category">{task.category}</Badge>
                   </div>
                 </div>
                 
@@ -105,7 +107,7 @@ const TaskPreviewSection = () => {
                 
                 <div className="task-preview-body">
                   <div className="task-header-row">
-                  <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
+                    <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
                   </div>
                   <p>{task.description}</p>
                   
@@ -113,19 +115,18 @@ const TaskPreviewSection = () => {
                     <Badge variant={task.difficulty?.toLowerCase() || 'medium'} size="sm">
                       {task.difficulty || 'Medium'}
                     </Badge>
-                    <button 
-                      className="learn-link"
+                    <ActionLink 
                       onClick={(e) => {
                         e.stopPropagation();
                         handleTaskClick(task.id);
                       }}
                     >
-                      <span className="learn-text">Learn more</span> <span className="learn-arrow">→</span>
-                    </button>
+                      Learn more
+                    </ActionLink>
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           ))
         )}
       </div>

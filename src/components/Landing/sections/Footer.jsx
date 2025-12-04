@@ -48,7 +48,7 @@ const Footer = () => {
               color: '#86868b', 
               maxWidth: '480px'
             }}>
-              The only thing missing is <b>your expertise</b>.
+              The thing frontier agents are missing: <b>your expertise</b>.
             </p>
           </div>
 

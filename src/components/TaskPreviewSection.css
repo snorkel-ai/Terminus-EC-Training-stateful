@@ -48,7 +48,7 @@
   gap: 1.5rem;
   margin-bottom: 4rem;
   min-height: 450px;
-  perspective: 1000px; /* Enable 3D perspective */
+  perspective: 1000px;
 }
 
 @media (min-width: 1024px) {
@@ -57,17 +57,13 @@
   }
 }
 
+/* Task Card - Uses ui-card-minimal as base, these are layout/animation overrides */
 .task-preview-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 0;
   text-align: left;
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 220px;
-  cursor: pointer;
   position: relative;
   
   /* 3D flip transitions */
@@ -78,23 +74,16 @@
 }
 
 .task-preview-card.shuffling {
-  transform: rotateY(90deg) scale(0.95); /* Rotate and slight scale down */
-  opacity: 0; /* Fade out while flipping */
-  pointer-events: none; /* Disable clicks while flipping */
+  transform: rotateY(90deg) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .task-preview-card.skeleton {
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   animation: pulse 1.5s infinite;
   border: none;
   min-height: 220px;
-}
-
-.task-preview-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
-  border-color: #d1d5db;
-  z-index: 1;
 }
 
 .header-badges {
@@ -105,11 +94,10 @@
 
 /* Use design system corner badge with custom radius for preview cards */
 .task-preview-card .ui-corner-badge {
-  --corner-badge-radius: 12px; /* Match card's 12px border-radius */
+  --corner-badge-radius: var(--radius-lg, 12px);
 }
 
 .task-preview-card-inner {
-  /* Ensure content doesn't flicker during flip */
   backface-visibility: hidden;
   height: 100%;
   display: flex;
@@ -125,7 +113,7 @@
 
 .task-preview-divider {
   height: 1px;
-  background-color: #e5e7eb;
+  background-color: var(--border-color);
   width: 100%;
 }
 
@@ -146,7 +134,7 @@
 
 .task-preview-card h3 {
   font-size: 1.125rem;
-  color: #111827;
+  color: var(--text-primary);
   margin-bottom: 0;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -155,7 +143,7 @@
 
 .task-preview-card p {
   font-size: 0.95rem;
-  color: #4b5563;
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
   line-height: 1.6;
   flex-grow: 1;
@@ -173,64 +161,8 @@
   align-items: center;
 }
 
-.learn-link {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--accent);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.2s ease;
-}
-
-.learn-link:hover {
-  color: var(--accent-hover);
-  text-decoration: none;
-}
-
-.learn-link:hover .learn-text {
-  text-decoration: underline;
-}
-
-.learn-arrow {
-  transition: transform 0.2s ease;
-  display: inline-block;
-}
-
-.learn-link:hover .learn-arrow {
-  transform: translateX(4px);
-  text-decoration: none;
-  display: inline-block;
-}
-
 .task-preview-footer {
   margin-top: 1rem;
-}
-
-.browse-gallery-btn {
-  background: #0071e3;
-  color: white;
-  border: none;
-  padding: 0.875rem 2rem;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.browse-gallery-btn:hover {
-  background: #0077ed;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes fadeIn {
