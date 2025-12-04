@@ -41,6 +41,73 @@
   font-size: var(--font-sm);
   color: var(--text-primary);
   line-height: var(--leading-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Tooltip styles */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+}
+
+.help-icon {
+  color: var(--text-secondary);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.tooltip-wrapper:hover .help-icon {
+  opacity: 1;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-xs);
+  font-weight: var(--font-normal);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--text-primary);
+}
+
+.tooltip-wrapper:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Right-aligned tooltip for slider marks */
+.tooltip-right {
+  left: 0;
+  transform: translateX(0);
+}
+
+.tooltip-right::after {
+  left: 12px;
+  transform: translateX(0);
 }
 
 /* Toggle Switch CSS */
@@ -126,6 +193,9 @@
 .slider-marks .mark-text {
   font-size: var(--font-xs);
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 /* Thumb styling */
@@ -201,33 +271,39 @@
   min-height: 0; /* For flex scrolling */
 }
 
-.search-input-wrapper {
-  position: relative;
+/* Animated Search Input */
+.category-search-input-wrapper {
+  width: 44px; /* Collapsed width (icon only) */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border-color: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  /* Override UI component styles if needed */
+  border-radius: 22px; /* Pill shape when collapsed */
 }
 
-.search-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-secondary);
-  pointer-events: none;
+.category-search-input-wrapper .ui-input {
+  cursor: pointer;
 }
 
-.category-search-input {
-  width: 100%;
-  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-9);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  font-size: var(--font-sm);
+.category-search-input-wrapper:hover {
   background: var(--bg-secondary);
-  transition: all 0.2s;
 }
 
-.category-search-input:focus {
-  background: var(--card-bg);
-  border-color: var(--accent);
-  outline: none;
+.category-search-input-wrapper:focus-within,
+.category-search-input-wrapper.has-value {
+  width: 100%;
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  cursor: text;
+  border-radius: var(--radius-md);
+}
+
+.category-search-input-wrapper:focus-within .ui-input,
+.category-search-input-wrapper.has-value .ui-input {
+  cursor: text;
+  padding-left: 42px; /* Ensure text doesn't overlap icon */
 }
 
 .category-tree {

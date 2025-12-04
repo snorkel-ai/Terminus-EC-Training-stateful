@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
-import { Button, Checkbox, Modal } from '../ui';
+import { Button, Checkbox, Modal, SearchInput } from '../ui';
 import './TaskFiltersModal.css';
 
 // Difficulty levels mapping (0 = undefined/any, 1 = easy, 2 = medium, 3 = hard)
@@ -68,7 +68,15 @@ function DifficultyRangeSlider({ min, max, onChange }) {
         />
         
         <div className="slider-marks">
-          <span className="mark-text">Unknown</span>
+          <span className="mark-text tooltip-wrapper">
+            Unknown
+            <svg className="help-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <path d="M12 17h.01" />
+            </svg>
+            <span className="tooltip tooltip-right">Tasks that have not been rated for difficulty</span>
+          </span>
           <span>💪</span>
           <span>💪💪</span>
           <span>💪💪💪</span>
@@ -369,6 +377,14 @@ function TaskFiltersModal({
             <div className="priority-info">
               <span className="priority-label">
                 Only show Priority tasks
+                <span className="tooltip-wrapper" onClick={(e) => e.stopPropagation()}>
+                  <svg className="help-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <path d="M12 17h.01" />
+                  </svg>
+                  <span className="tooltip">Tasks prioritized by Snorkel with increased payout</span>
+                </span>
               </span>
             </div>
             <div className="toggle-switch" />
@@ -389,22 +405,20 @@ function TaskFiltersModal({
         <div className="filter-section" style={{ flex: 1, minHeight: 0 }}>
           <h4>Categories</h4>
           <div className="categories-container">
-            <div className="search-input-wrapper">
-              <svg className="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-              <input
-                type="text"
-                className="category-search-input"
-                placeholder="Search categories..."
-                value={categorySearch}
-                onChange={(e) => setCategorySearch(e.target.value)}
-              />
-            </div>
+            <SearchInput
+              placeholder="Search categories..."
+              value={categorySearch}
+              onChange={(e) => setCategorySearch(e.target.value)}
+              className={`category-search-input-wrapper ${categorySearch ? 'has-value' : ''}`}
+            />
             
             <div className="category-tree">
-              {Object.entries(displayTree).map(([cat, data]) => {
+              {Object.keys(displayTree).length === 0 ? (
+                <div className="empty-search-state">
+                  <p>No categories found</p>
+                </div>
+              ) : (
+                Object.entries(displayTree).map(([cat, data]) => {
                 const isExpanded = expandedCategories[cat] || categorySearch.length > 0;
                 
                 // Calculate checkbox state based on subcategory selection
@@ -470,7 +484,8 @@ function TaskFiltersModal({
                     )}
                   </div>
                 );
-              })}
+              })
+              )}
             </div>
           </div>
         </div>
