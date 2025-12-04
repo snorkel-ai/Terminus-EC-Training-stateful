@@ -6,8 +6,8 @@
   border-radius: 40px;
   padding: 0; /* Padding handled by sections */
   box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-  margin: 0 auto var(--space-8);
-  max-width: 850px;
+  margin: var(--space-8) auto var(--space-10);
+  max-width: 1000px;
   height: 66px;
   position: relative;
   transition: box-shadow 0.2s ease;
@@ -33,47 +33,114 @@
 }
 
 .header-section.search-section {
-  flex: 1.5;
+  flex: 1.5; 
   padding-left: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .header-section.search-section:hover {
-  background: transparent; /* Search input handles its own hover/focus state inside */
+  background: var(--bg-secondary);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.header-section.search-section .section-label {
+  margin-left: 0;
+  padding-left: 0; 
 }
 
 /* Override TaskSearchBar styles when embedded */
 .task-search-header .task-search-bar.embedded .search-input-wrapper {
     padding: 0;
+    min-height: 24px;
+    align-items: center;
 }
+
+/* Hide the search icon in the embedded bar to align text with "Where" label */
+.task-search-header .task-search-bar.embedded .search-icon {
+    display: none;
+}
+
 .task-search-header .task-search-bar.embedded .search-input {
     font-weight: 500;
     color: var(--text-primary);
+    padding: 0;
+    height: 24px;
+    line-height: 24px;
+    margin-left: 0; 
 }
+
 .task-search-header .task-search-bar.embedded .search-input::placeholder {
     font-weight: 400;
+    color: var(--text-secondary);
 }
 
 .header-section.difficulty-section {
   flex: 1;
   min-width: 140px;
+  padding-left: var(--space-6);
 }
 
+.header-section.difficulty-section:hover {
+    border-radius: 0;
+}
+
+/* Filter Section inside bar */
 .header-section.filter-section {
-  flex: 0.8;
-  padding-right: var(--space-2); /* Space for the round button */
+  flex: 0.9;
+  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
-.filter-trigger {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding-left: var(--space-2);
-    flex: 1;
+.header-section.filter-section:hover {
+    background: transparent;
+}
+
+.filter-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--space-2) 0 var(--space-6);
+  margin: 0;
+  border-radius: 0 40px 40px 0;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.filter-button-container:hover {
+  background: var(--bg-secondary);
+}
+
+.filter-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.filter-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: transform 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+  margin-left: var(--space-4);
+}
+
+.filter-button-container:hover .filter-icon-wrapper {
+    background: var(--accent-hover);
 }
 
 .header-divider {
@@ -103,24 +170,6 @@
 .section-value.active {
   color: var(--text-primary);
   font-weight: 500;
-}
-
-/* Filter Icon Circle */
-.filter-icon-wrapper {
-  width: 48px;
-  height: 48px;
-  background: var(--accent);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  margin-left: var(--space-2);
-  transition: transform 0.2s ease;
-}
-
-.filter-icon-wrapper:hover {
-    transform: scale(1.05);
 }
 
 /* Difficulty Dropdown */
@@ -203,6 +252,18 @@
 
     .header-section.filter-section {
         padding-right: var(--space-4);
+        justify-content: space-between;
+    }
+    
+    .filter-button-container {
+      width: 100%;
+      justify-content: space-between;
+      margin-right: 0;
+      padding-right: 0;
+      border-radius: 16px; /* Reset pill border radius for mobile block */
+    }
+    
+    .filter-text-group {
+      align-items: flex-start;
     }
 }
-
