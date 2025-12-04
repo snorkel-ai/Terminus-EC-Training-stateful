@@ -6,9 +6,12 @@ import CompletionToggle from './Progress/CompletionToggle';
 function GuidelineSection({ section }) {
   if (!section) return null;
 
+  // Hide sidebar for overview page
+  const isOverview = section.id === 'overview';
+
   return (
     <div className="guideline-page">
-      <Sidebar />
+      {!isOverview && <Sidebar />}
       <div className="guideline-content-wrapper">
         <Content section={section} />
         <div className="section-actions">

@@ -84,25 +84,39 @@ function Header() {
               </NavLink>
               <div className={`nav-dropdown-menu ${isResourcesOpen ? 'open' : ''}`}>
                 <Link 
-                  to="/portal/onboarding" 
+                  to="/portal/expert-platform-onboarding" 
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  Onboarding videos
+                  Expert Platform Onboarding Materials
                 </Link>
                 <Link 
-                  to="/portal/videos" 
+                  to="/portal/github-onboarding" 
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  Walkthrough videos
+                  GitHub Onboarding Materials
+                </Link>
+                <Link 
+                  to="/portal/expert-platform-walkthrough" 
+                  className="dropdown-item"
+                  onClick={() => setIsResourcesOpen(false)}
+                >
+                  Expert Platform Submission Walkthrough
+                </Link>
+                <Link 
+                  to="/portal/github-submission-walkthrough" 
+                  className="dropdown-item"
+                  onClick={() => setIsResourcesOpen(false)}
+                >
+                  GitHub Submission Walkthrough
                 </Link>
                 <Link 
                   to="/portal/workbook" 
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  CI Feedback
+                  CI Feedback Training
                 </Link>
                 <Link 
                   to="/portal/oracle" 
@@ -116,14 +130,35 @@ function Header() {
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  Feedback Slides
+                  Office Hours Recordings/Slides
                 </Link>
                 <Link 
-                  to="/portal/glossary" 
+                  to="/portal/components" 
                   className="dropdown-item"
                   onClick={() => setIsResourcesOpen(false)}
                 >
-                  Glossary
+                  Task Components
+                </Link>
+                <Link 
+                  to="/portal/taxonomy" 
+                  className="dropdown-item"
+                  onClick={() => setIsResourcesOpen(false)}
+                >
+                  Task Type Taxonomy
+                </Link>
+                <Link 
+                  to="/portal/requirements" 
+                  className="dropdown-item"
+                  onClick={() => setIsResourcesOpen(false)}
+                >
+                  Task Requirements
+                </Link>
+                <Link 
+                  to="/portal/examples" 
+                  className="dropdown-item"
+                  onClick={() => setIsResourcesOpen(false)}
+                >
+                  Example Tasks
                 </Link>
               </div>
             </div>
@@ -154,7 +189,7 @@ function Header() {
                   className="dropdown-item"
                   onClick={() => setIsQuickLinksOpen(false)}
             >
-              Submitter portal
+              Snorkel Expert Platform
                 </a>
                 <a 
                   href="https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203" 
@@ -165,6 +200,29 @@ function Header() {
                 >
                   Slack community
                 </a>
+                <a 
+                  href="https://github.com/snorkel-ai/snorkel-tb-tasks" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="dropdown-item"
+                  onClick={() => setIsQuickLinksOpen(false)}
+                >
+                  GitHub Repo
+                </a>
+                <Link 
+                  to="/portal/glossary" 
+                  className="dropdown-item"
+                  onClick={() => setIsQuickLinksOpen(false)}
+                >
+                  Glossary
+                </Link>
+                <Link 
+                  to="/portal/faq" 
+                  className="dropdown-item"
+                  onClick={() => setIsQuickLinksOpen(false)}
+                >
+                  FAQ
+                </Link>
               </div>
             </div>
 
