@@ -1,15 +1,16 @@
 .docs-layout {
   display: flex;
   min-height: calc(100vh - 64px);
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
 }
 
 .docs-main {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-8) var(--space-6);
-  max-width: 900px;
+  padding: var(--space-6);
+  max-width: 1600px;
   margin: 0 auto;
+  width: 100%;
 }
 
 /* Mobile menu button */

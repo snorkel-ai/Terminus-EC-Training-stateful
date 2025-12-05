@@ -39,8 +39,7 @@ function DocsSidebar({ sections, currentSlug, onSearchClick, isOpen, onClose }) 
                       className={`docs-nav-link ${currentSlug === item.slug ? 'docs-nav-link--active' : ''}`}
                       onClick={onClose}
                     >
-                      <span className="docs-nav-icon">{item.icon}</span>
-                      <span className="docs-nav-text">{item.title}</span>
+                      {item.title}
                     </Link>
                   </li>
                 ))}

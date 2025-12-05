@@ -7,7 +7,8 @@ import { docsConfig, getDocContent, getAllDocs } from '../../docs';
 import './DocsLayout.css';
 
 function DocsLayout() {
-  const { slug = 'welcome' } = useParams();
+  const { '*': wildcardSlug } = useParams();
+  const slug = wildcardSlug || 'getting-started/welcome';
   const navigate = useNavigate();
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,7 @@ function DocsLayout() {
     setLoading(true);
     getDocContent(slug)
       .then(setContent)
-      .catch(() => setContent('# Page Not Found\n\nThis documentation page doesn\'t exist yet.\n\n[← Back to Welcome](/portal/docs/welcome)'))
+      .catch(() => setContent('# Page Not Found\n\nThis documentation page doesn\'t exist yet.\n\n[← Back to Welcome](/portal/docs/getting-started/welcome)'))
       .finally(() => setLoading(false));
   }, [slug]);
 

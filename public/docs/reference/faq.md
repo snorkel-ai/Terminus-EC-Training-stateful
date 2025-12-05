@@ -1,0 +1,152 @@
+# Frequently Asked Questions
+
+Common questions about TerminalBench and the task creation process.
+
+---
+
+## Getting Started
+
+### Do I need to attend onboarding to get started?
+
+No, live onboarding is not required. We encourage attending so you can ask questions, but recordings and slides are available on this site. You can start immediately after reviewing the materials.
+
+### I didn't receive an assessment. Do I need to take one?
+
+No, there is currently no assessment for this project. You can start familiarizing yourself with the task format and begin working immediately.
+
+### How do I receive my API keys?
+
+You should receive an email with your API key shortly after joining. If you haven't received it within a day or two, please reach out to Puyun Tafreshi or Alejandro Sanchez on Slack. You only need the OpenAI key—our infrastructure allows you to run Anthropic models using this key.
+
+### Why don't I see anything in the Snorkel Expert Platform?
+
+This project is currently run primarily through GitHub. Therefore, you may not see project-related content on the platform interface. Everything is done through the GitHub repo.
+
+---
+
+## Task Creation
+
+### How do I get served a task?
+
+You are NOT served tasks like in other Snorkel projects. You will ideate and create tasks completely from scratch. See the [Task Creation Wizard](/portal/docs/creating-tasks/task-creation-wizard) guide.
+
+### How do I get an idea for my task?
+
+You can either:
+- Come up with a task from scratch
+- Take an idea from the shared task ideas sheet
+- Use existing ideas as "inspiration" for similar or more complex tasks
+
+### How do I claim an existing task idea?
+
+DM Puyun Tafreshi or Alejandro Sanchez on Slack with the line number of the task you want to claim. Don't request more than 2-3 tasks at once—you'll be capped until you complete some.
+
+### How do I make a hard task?
+
+**Important:** Tasks with > 80% pass rate will NOT be accepted.
+
+Strategies for harder tasks:
+
+1. **Debugging-style tasks** — Figuring out root causes requires reasoning
+2. **Niche knowledge** — Use publicly available but rarely-trained information
+3. **Bespoke rules** — Custom rules buried among common patterns
+4. **Multi-step complexity** — More steps = more chances for failure
+
+See [Difficulty Guidelines](/portal/docs/understanding-tasks/difficulty-guidelines) for details.
+
+---
+
+## Submission & Review
+
+### What are the Office Hours sessions?
+
+Open forums for asking questions—general or task-specific. Not required, but useful for learning from others' questions. Check Slack for the schedule.
+
+### How long does review take?
+
+- Initial review: 1-3 business days
+- Follow-up reviews: 1-2 business days
+- Total: Usually 3-7 days
+
+### What if my task is declined?
+
+You'll receive feedback explaining why. Common reasons include:
+- Too easy (> 80% pass rate)
+- Unclear requirements
+- Similar task exists
+- Missing components
+
+You can often revise and resubmit, or appeal if you disagree.
+
+---
+
+## Technical
+
+### Why do CI checks pass locally but fail in the PR?
+
+Common causes:
+- Different Python version (CI uses specific versions)
+- Missing dependencies
+- Environment differences
+
+Check the CI logs for the specific error.
+
+### How do I test against real agents?
+
+After receiving your API key:
+
+```bash
+export OPENAI_API_KEY=<your-key>
+export OPENAI_BASE_URL=https://api.portkey.ai/v1
+
+# GPT-5
+uv run harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task>
+
+# Claude
+uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task>
+```
+
+### Docker won't start. What do I do?
+
+1. Ensure Docker Desktop is running
+2. On macOS, enable socket access in Settings → Advanced
+3. Try:
+```bash
+sudo dscl . create /Groups/docker
+sudo dseditgroup -o edit -a $USER -t user docker
+```
+
+---
+
+## Payment
+
+### How much do I get paid?
+
+| Difficulty | Payout |
+|------------|--------|
+| Easy | $140 |
+| Medium | $245 |
+| Hard | $350 |
+
+### When do I get paid?
+
+- Billing week: Friday–Thursday (UTC)
+- Payment submitted ~1 week after billing week ends
+- Deposit arrives 1-2 weeks after submission
+
+### How do I track my payment?
+
+- Platform status "Payout Submitted" = Payment on the way
+- If > 1 week after that with no deposit, contact hr@hireart.com
+
+### Do I get paid per submission?
+
+No, you get paid per **accepted** submission. Tasks must pass all automated checks AND peer review.
+
+---
+
+## Still Have Questions?
+
+- **Slack:** `#ec-terminus-submission`
+- **Office Hours:** Check Slack for schedule
+- **Documentation:** Use search (⌘K) to find topics

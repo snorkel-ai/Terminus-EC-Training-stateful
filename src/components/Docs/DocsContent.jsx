@@ -1,8 +1,61 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { Spinner } from '../ui';
+import { VideoEmbed, LoomEmbed } from './VideoEmbed';
+import PdfDownload from './PdfDownload';
 import './DocsContent.css';
+
+// Code block component with copy functionality
+const CodeBlock = ({ inline, className, children }) => {
+  if (inline) {
+    return <code className="docs-inline-code">{children}</code>;
+  }
+  
+  const [copied, setCopied] = useState(false);
+  const language = className?.replace('language-', '') || '';
+  
+  const handleCopy = () => {
+    navigator.clipboard.writeText(String(children).replace(/\n$/, ''));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="docs-code-wrapper">
+      <div className="docs-code-header">
+        <span className="docs-code-lang">{language}</span>
+        <button 
+          className={`docs-code-copy-btn ${copied ? 'copied' : ''}`} 
+          onClick={handleCopy}
+          aria-label="Copy code"
+        >
+          {copied ? (
+            <>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Copied</span>
+            </>
+          ) : (
+            <>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+      <pre className="docs-code-block">
+        <code className={className}>{children}</code>
+      </pre>
+    </div>
+  );
+};
 
 function DocsContent({ content, loading, title, prevDoc, nextDoc }) {
   if (loading) {
@@ -18,7 +71,28 @@ function DocsContent({ content, loading, title, prevDoc, nextDoc }) {
     <article className="docs-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
         components={{
+          // Custom media components
+          // When rehypeRaw processes custom HTML elements, attributes are in node.properties
+          'video-embed': ({ node }) => (
+            <VideoEmbed 
+              src={node?.properties?.src} 
+              title={node?.properties?.title} 
+            />
+          ),
+          'video-loom': ({ node }) => (
+            <LoomEmbed 
+              id={node?.properties?.id} 
+              title={node?.properties?.title} 
+            />
+          ),
+          'pdf-download': ({ node }) => (
+            <PdfDownload 
+              src={node?.properties?.src} 
+              title={node?.properties?.title} 
+            />
+          ),
           // Headings
           h1: ({ children }) => <h1 className="docs-h1">{children}</h1>,
           h2: ({ children }) => <h2 className="docs-h2">{children}</h2>,
@@ -29,20 +103,7 @@ function DocsContent({ content, loading, title, prevDoc, nextDoc }) {
           p: ({ children }) => <p className="docs-p">{children}</p>,
           
           // Code blocks
-          code: ({ inline, className, children }) => {
-            if (inline) {
-              return <code className="docs-inline-code">{children}</code>;
-            }
-            const language = className?.replace('language-', '') || '';
-            return (
-              <div className="docs-code-wrapper">
-                {language && <span className="docs-code-lang">{language}</span>}
-                <pre className="docs-code-block">
-                  <code className={className}>{children}</code>
-                </pre>
-              </div>
-            );
-          },
+          code: CodeBlock,
           
           // Images
           img: ({ src, alt }) => (

@@ -11,11 +11,14 @@ const basename = import.meta.env.BASE_URL
 const params = new URLSearchParams(window.location.search)
 const redirect = params.get('redirect')
 if (redirect) {
+  // Get search params and hash as separate values (they're encoded separately in 404.html)
+  const searchParam = params.get('search') || ''
+  const hashParam = params.get('hash') || ''
   // Remove the redirect param and navigate to the actual path
   // Ensure no double slashes by removing trailing slash from basename if redirect starts with /
   const cleanBase = basename.endsWith('/') ? basename.slice(0, -1) : basename
   const cleanRedirect = redirect.startsWith('/') ? redirect : '/' + redirect
-  window.history.replaceState(null, '', cleanBase + cleanRedirect)
+  window.history.replaceState(null, '', cleanBase + cleanRedirect + searchParam + hashParam)
 }
 
 createRoot(document.getElementById('root')).render(

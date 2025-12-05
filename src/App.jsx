@@ -64,8 +64,17 @@ function App() {
                       <Route path="/feedback" element={<FeedbackSlides />} />
                       <Route path="/faq" element={<FAQ />} />
                       <Route path="/glossary" element={<Glossary />} />
-                      <Route path="/docs" element={<DocsLayout />} />
-                      <Route path="/docs/:slug" element={<DocsLayout />} />
+                      <Route path="/docs/*" element={<DocsLayout />} />
+                      
+                      {/* Redirects from old routes to new docs pages */}
+                      <Route path="/docs-platform-onboarding" element={<Navigate to="/portal/docs/onboarding/platform-onboarding" replace />} />
+                      <Route path="/docs-github-onboarding" element={<Navigate to="/portal/docs/onboarding/github-onboarding" replace />} />
+                      <Route path="/docs-platform-submission" element={<Navigate to="/portal/docs/submitting-tasks/platform-submission" replace />} />
+                      <Route path="/docs-github-submission" element={<Navigate to="/portal/docs/submitting-tasks/github-submission" replace />} />
+                      <Route path="/docs-ci-training" element={<Navigate to="/portal/docs/testing-and-validation/ci-feedback-training" replace />} />
+                      <Route path="/docs-oracle-training" element={<Navigate to="/portal/docs/testing-and-validation/oracle-training" replace />} />
+                      <Route path="/docs-faq" element={<Navigate to="/portal/docs/reference/faq" replace />} />
+                      <Route path="/docs-glossary" element={<Navigate to="/portal/docs/reference/glossary" replace />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/admin" element={<AdminDashboard />} />
                       
