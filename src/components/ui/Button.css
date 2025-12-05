@@ -37,6 +37,14 @@
   border-radius: 30px;
 }
 
+.ui-btn-icon {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
 /* Primary Variant */
 .ui-btn-primary {
   background: var(--accent);
@@ -113,4 +121,3 @@
     transform: rotate(360deg);
   }
 }
-

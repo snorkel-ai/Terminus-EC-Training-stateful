@@ -8,9 +8,12 @@ function TaskCategorySection({
   tasks = [], 
   onTaskSelect, 
   onTaskUnselect,
+  onTaskComplete,
+  onTaskUncomplete,
   onExplore,
   searchQuery,
-  showAll = false
+  showAll = false,
+  isMine = false
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const scrollContainerRef = useRef(null);
@@ -88,9 +91,12 @@ function TaskCategorySection({
                     <TaskTile
                       task={task}
                       isSelected={task.is_selected}
-                      isMine={false}
-                      onSelect={() => onTaskSelect(task)}
-                      onUnselect={() => onTaskUnselect(task)}
+                      isMine={isMine}
+                      isCompleted={!!task.completed_at}
+                      onSelect={() => onTaskSelect?.(task, tasks)}
+                      onUnselect={() => onTaskUnselect?.(task.id)}
+                      onComplete={() => onTaskComplete?.(task.id)}
+                      onUncomplete={() => onTaskUncomplete?.(task.id)}
                       showActions={true}
                       searchQuery={searchQuery}
                     />
@@ -104,9 +110,12 @@ function TaskCategorySection({
                   <TaskTile
                     task={task}
                     isSelected={task.is_selected}
-                    isMine={false}
-                    onSelect={() => onTaskSelect(task)}
-                    onUnselect={() => onTaskUnselect(task)}
+                    isMine={isMine}
+                    isCompleted={!!task.completed_at}
+                    onSelect={() => onTaskSelect?.(task, tasks)}
+                    onUnselect={() => onTaskUnselect?.(task.id)}
+                    onComplete={() => onTaskComplete?.(task.id)}
+                    onUncomplete={() => onTaskUncomplete?.(task.id)}
                     showActions={true}
                     searchQuery={searchQuery}
                   />

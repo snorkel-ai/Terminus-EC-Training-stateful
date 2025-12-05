@@ -29,3 +29,6 @@ export { EmptyState } from './EmptyState';
 export { CodeBlock, CommandBox } from './CodeBlock';
 export { Timer, TimerCompact } from './Timer';
 
+// Task Components
+export { default as TaskCard, DifficultyRating } from './TaskCard';
+

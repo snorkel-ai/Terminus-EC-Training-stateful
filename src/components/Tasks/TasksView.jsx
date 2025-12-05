@@ -11,11 +11,31 @@ import { TaskClaimSuccess } from './TaskClaimSuccess';
 import './Tasks.css';
 import './TasksViewLayout.css';
 
+// Reusing the DifficultyRating component locally for the modal as well
+const DifficultyRating = ({ difficulty }) => {
+  const diff = difficulty?.toLowerCase();
+  let count = 0;
+  if (diff === 'hard') count = 3;
+  else if (diff === 'medium') count = 2;
+  else if (diff === 'easy') count = 1;
+  
+  return (
+    <div className="difficulty-rating" title={`Difficulty: ${difficulty}`} style={{ display: 'flex', gap: '2px' }}>
+      {[...Array(3)].map((_, i) => (
+        <span key={i} style={{ opacity: i < count ? 1 : 0.2, fontSize: '1.1em', filter: i < count ? 'none' : 'grayscale(100%)' }}>
+          💪
+        </span>
+      ))}
+    </div>
+  );
+};
+
 function TasksView() {
   const navigate = useNavigate();
   const { tasks, loading, error, selectTask } = useTasks();
   const { selectedTasks: myTasks, unselectTask } = useMySelectedTasks();
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
+  const [modalContextTasks, setModalContextTasks] = useState([]);
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
   
@@ -68,15 +88,53 @@ function TasksView() {
   const totalAvailable = tasks.filter(t => !t.is_selected).length;
   const totalClaimed = tasks.filter(t => t.is_selected).length;
 
-  const handleViewDetails = (task) => {
+  const handleViewDetails = (task, contextTasks = []) => {
     setSelectedTaskForModal(task);
+    setModalContextTasks(contextTasks);
     setShowClaimSuccess(false);
   };
 
   const handleCloseModal = () => {
     setSelectedTaskForModal(null);
+    setModalContextTasks([]);
     setShowClaimSuccess(false);
   };
+
+  const navigateTask = (direction) => {
+    if (!selectedTaskForModal || modalContextTasks.length === 0) return;
+    
+    const currentIndex = modalContextTasks.findIndex(t => t.id === selectedTaskForModal.id);
+    if (currentIndex === -1) return;
+    
+    let nextIndex;
+    if (direction === 'next') {
+      nextIndex = currentIndex + 1;
+      if (nextIndex < modalContextTasks.length) {
+        setSelectedTaskForModal(modalContextTasks[nextIndex]);
+      }
+    } else {
+      nextIndex = currentIndex - 1;
+      if (nextIndex >= 0) {
+        setSelectedTaskForModal(modalContextTasks[nextIndex]);
+      }
+    }
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!selectedTaskForModal || showClaimSuccess) return;
+      
+      if (e.key === 'ArrowLeft') {
+        navigateTask('prev');
+      } else if (e.key === 'ArrowRight') {
+        navigateTask('next');
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedTaskForModal, modalContextTasks, showClaimSuccess]);
 
   const handleSelectFromModal = async () => {
     if (!selectedTaskForModal || isSelecting) return;
@@ -153,6 +211,12 @@ function TasksView() {
       </div>
     );
   }
+
+  const currentIndex = selectedTaskForModal && modalContextTasks.length > 0
+    ? modalContextTasks.findIndex(t => t.id === selectedTaskForModal.id)
+    : -1;
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex !== -1 && currentIndex < modalContextTasks.length - 1;
 
   return (
     <div className="tasks-view tasks-gallery">
@@ -288,18 +352,50 @@ function TasksView() {
           ) : (
             <>
               <div className="task-detail-modal-header">
-                <div className="modal-badges">
-                  {selectedTaskForModal.is_highlighted && (
-                    <Badge variant="priority" size="sm">Priority</Badge>
-                  )}
-                  <Badge variant="category" size="sm">{selectedTaskForModal.category}</Badge>
-                  {selectedTaskForModal.difficulty && (
-                    <Badge variant={selectedTaskForModal.difficulty.toLowerCase()} size="sm">
-                      {selectedTaskForModal.difficulty}
-                    </Badge>
-                  )}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <div className="modal-badges" style={{ alignItems: 'center' }}>
+                      {/* Breadcrumb instead of pill */}
+                      <div className="task-breadcrumb">
+                        <span className="breadcrumb-segment parent">{selectedTaskForModal.category}</span>
+                        <span className="breadcrumb-separator">/</span>
+                        <span className="breadcrumb-segment current">
+                          {selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory}
+                        </span>
+                      </div>
+
+                      {selectedTaskForModal.difficulty && (
+                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
+                           <DifficultyRating difficulty={selectedTaskForModal.difficulty} />
+                         </div>
+                      )}
+                    </div>
+                    <h2>Your challenge</h2>
+                  </div>
+                  
+                  <div className="modal-navigation" style={{ display: 'flex', gap: '8px' }}>
+                    <button 
+                      className="modal-nav-btn"
+                      onClick={() => navigateTask('prev')}
+                      disabled={!hasPrev}
+                      title="Previous Task (Left Arrow)"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                    </button>
+                    <button 
+                      className="modal-nav-btn"
+                      onClick={() => navigateTask('next')}
+                      disabled={!hasNext}
+                      title="Next Task (Right Arrow)"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <h2>{selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory || 'Engineering Task'}</h2>
               </div>
               
               <div className="task-detail-modal-body">
@@ -307,7 +403,7 @@ function TasksView() {
               </div>
 
               <div className="task-detail-modal-footer">
-                {(selectedTaskForModal.is_special || selectedTaskForModal.priority_tag) && (
+                {(selectedTaskForModal.is_special || selectedTaskForModal.priority_tag || selectedTaskForModal.is_highlighted) && (
                   <div style={{ marginRight: 'auto' }}>
                     <Badge variant="accent">Double Pay</Badge>
                   </div>
@@ -324,7 +420,7 @@ function TasksView() {
                   onClick={handleSelectFromModal}
                   loading={isSelecting}
                 >
-                  Claim Task
+                  Claim Challenge
                 </Button>
               </div>
             </>
