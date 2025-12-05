@@ -20,9 +20,12 @@ export const docsConfig = {
     {
       title: 'Video Walkthroughs',
       items: [
+        { slug: 'creating-tasks/videos/creating-task', title: 'Creating a Task' },
         { slug: 'creating-tasks/videos/running-your-task', title: 'Running Your Task' },
         { slug: 'creating-tasks/videos/creating-solution', title: 'Creating solution.sh' },
         { slug: 'creating-tasks/videos/creating-tests', title: 'Creating Tests' },
+        { slug: 'testing-and-validation/oracle-training', title: 'Oracle Training' },
+        { slug: 'testing-and-validation/ci-feedback-training', title: 'CI Feedback Training' },
       ]
     },
     {

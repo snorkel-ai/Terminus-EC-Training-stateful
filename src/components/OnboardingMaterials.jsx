@@ -3,6 +3,8 @@ import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 import './Workbook.css';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 function OnboardingMaterials() {
   const navigate = useNavigate();
 
@@ -29,7 +31,7 @@ function OnboardingMaterials() {
             <h3>Onboarding Slides</h3>
             <p>Download or view the onboarding presentation slides</p>
             <a 
-              href="/Terminus-EC-Training/Terminus%20EC%20Onboarding.pdf" 
+              href={`${baseUrl}Terminus%20EC%20Onboarding.pdf`} 
               target="_blank"
               rel="noopener noreferrer"
               className="download-button"
@@ -53,7 +55,7 @@ function OnboardingMaterials() {
                   objectFit: 'contain'
                 }}
               >
-                <source src="/Terminus-EC-Training/video1251502681.mp4" type="video/mp4" />
+                <source src={`${baseUrl}video1251502681.mp4`} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>

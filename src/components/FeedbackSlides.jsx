@@ -3,6 +3,8 @@ import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 import './Workbook.css';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 function FeedbackSlides() {
   const navigate = useNavigate();
 
@@ -29,7 +31,7 @@ function FeedbackSlides() {
             <h3>Feedback 10/31</h3>
             <p>Feedback slides from October 31st</p>
             <a 
-              href="/Terminus-EC-Training/Feedback%2010_31.pdf" 
+              href={`${baseUrl}Feedback%2010_31.pdf`} 
               target="_blank"
               rel="noopener noreferrer"
               className="download-button"
@@ -43,7 +45,7 @@ function FeedbackSlides() {
             <h3>Feedback 11/3</h3>
             <p>Feedback slides from November 3rd</p>
             <a 
-              href="/Terminus-EC-Training/Feedback%2011_3.pdf" 
+              href={`${baseUrl}Feedback%2011_3.pdf`} 
               target="_blank"
               rel="noopener noreferrer"
               className="download-button"

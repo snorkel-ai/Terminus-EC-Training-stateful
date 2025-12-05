@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import CompletionToggle from './Progress/CompletionToggle';
 import './Videos.css';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 function GitHubOnboarding() {
   const navigate = useNavigate();
 
@@ -43,7 +45,7 @@ function GitHubOnboarding() {
             
             <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
               <a 
-                href="/Terminus-EC-Training-stateful/Terminus EC Onboarding.pdf" 
+                href={`${baseUrl}Terminus EC Onboarding.pdf`} 
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -89,7 +91,7 @@ function GitHubOnboarding() {
                     objectFit: 'contain'
                   }}
                 >
-                  <source src="/Terminus-EC-Training-stateful/Onboarding_11-14-2025.mp4" type="video/mp4" />
+                  <source src="https://snorkel-ai.github.io/Terminus-EC-Training/Onboarding_11-14-2025.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>
