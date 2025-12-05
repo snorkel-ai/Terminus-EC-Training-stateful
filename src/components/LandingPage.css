@@ -66,12 +66,39 @@
 }
 
 /* Section Headers */
+.section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
 .section-header {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 2.5rem;
+  margin: 0;
   letter-spacing: -0.02em;
+}
+
+.reset-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.reset-button:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
 }
 
 /* Get Started Section */
@@ -81,54 +108,272 @@
 
 .resources-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
+  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+  transition: all 0.4s ease;
 }
 
-/* Resource Card - Layout only (styles from ui-card-minimal) */
-.resource-card {
+.resources-grid .resource-card-rich {
+  transition: all 0.3s ease;
+  animation: cardEnter 0.3s ease;
+}
+
+/* Card closing animation */
+.resource-card-rich.card-closing {
+  animation: cardExit 0.3s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cardExit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* Bento layout */
+/* Card 1: Top left */
+.resources-grid .resource-card-rich:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Card 2: Right side, spans 2 rows (tall) */
+.resources-grid .resource-card-rich:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.resources-grid .resource-card-rich:nth-child(2) .image-placeholder {
+  height: 420px;
+}
+
+.resources-grid .resource-card-rich:nth-child(2) .preview-gradient {
+  height: 60px;
+}
+
+/* Card 3: Bottom left */
+.resources-grid .resource-card-rich:nth-child(3) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Card 4: Bottom left */
+.resources-grid .resource-card-rich:nth-child(4) {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+/* Card 5: Bottom right */
+.resources-grid .resource-card-rich:nth-child(5) {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* Rich Resource Card */
+.resource-card-rich {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  height: 100%;
+  padding: 0 !important;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.resource-icon-wrapper {
-  background-color: var(--bg-secondary);
-  padding: 0.75rem;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  color: var(--accent);
+.resource-card-rich:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.resource-preview {
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 200px;
+  background: #d1d5db;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.resource-icon {
-  font-size: 1.5rem;
+.preview-gradient {
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(180deg, #d1d5db 0%, #ffffff 100%);
 }
 
-.resource-content {
+.preview-placeholder-text {
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* When you add real images */
+.resource-preview img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.resource-body {
+  padding: 1.25rem;
   flex: 1;
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .resource-title {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   color: var(--text-primary);
+  line-height: 1.3;
 }
 
 .resource-description {
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.5;
 }
 
-.resource-action {
-  margin-top: auto;
+.resource-footer {
+  padding: 0.75rem 1.25rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mark-complete-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-success, #16a34a);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.mark-complete-link:hover {
+  opacity: 0.7;
+}
+
+.resource-footer .ui-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.resource-footer .ui-button svg {
+  font-size: 0.875rem;
+  transition: transform 0.15s;
+}
+
+.resource-footer .ui-button:hover svg {
+  transform: translateX(2px);
+}
+
+/* Dynamic grid layouts based on card count */
+
+/* 4 cards: 2x2 bento */
+.resources-grid.cards-4 .resource-card-rich:nth-child(5) {
+  display: none;
+}
+
+.resources-grid.cards-4 .resource-card-rich:nth-child(4) {
+  grid-column: 1 / 3;
+  grid-row: 3;
+}
+
+.resources-grid.cards-4 .resource-card-rich:nth-child(4) .image-placeholder {
+  height: 180px;
+}
+
+/* 3 cards: equal columns */
+.resources-grid.cards-3 {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+}
+
+.resources-grid.cards-3 .resource-card-rich:nth-child(1),
+.resources-grid.cards-3 .resource-card-rich:nth-child(2),
+.resources-grid.cards-3 .resource-card-rich:nth-child(3) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+.resources-grid.cards-3 .resource-card-rich .image-placeholder {
+  height: 180px;
+}
+
+.resources-grid.cards-3 .resource-card-rich .preview-gradient {
+  height: 40px;
+}
+
+/* 2 cards: side by side */
+.resources-grid.cards-2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+}
+
+.resources-grid.cards-2 .resource-card-rich:nth-child(1),
+.resources-grid.cards-2 .resource-card-rich:nth-child(2) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+.resources-grid.cards-2 .resource-card-rich .image-placeholder {
+  height: 200px;
+}
+
+.resources-grid.cards-2 .resource-card-rich .preview-gradient {
+  height: 50px;
+}
+
+.resources-grid.cards-1 {
+  grid-template-columns: 1fr;
+  max-width: 500px;
+}
+
+.resources-grid.cards-1 .resource-card-rich {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+.resources-grid.cards-1 .resource-card-rich .image-placeholder {
+  height: 220px;
+}
+
+.resources-grid.cards-0 {
+  display: none;
 }
 
 /* Inspiration Section - Overrides for TaskPreviewSection */
@@ -201,7 +446,33 @@
 
   .resources-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-rows: auto;
+  }
+  
+  .resources-grid .resource-card-rich:nth-child(1),
+  .resources-grid .resource-card-rich:nth-child(2),
+  .resources-grid .resource-card-rich:nth-child(3),
+  .resources-grid .resource-card-rich:nth-child(4) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  
+  .resources-grid .resource-card-rich:nth-child(2) .image-placeholder,
+  .resources-grid .resource-card-rich:nth-child(4) .image-placeholder {
+    height: 140px;
+    width: 100%;
+  }
+  
+  .resources-grid .resource-card-rich:nth-child(2) .preview-gradient {
+    height: 40px;
+  }
+  
+  .resources-grid .resource-card-rich:nth-child(4) .resource-preview {
+    flex-direction: column;
+  }
+  
+  .resources-grid .resource-card-rich:nth-child(4) .preview-gradient {
+    display: block;
   }
   
   .main-content {
