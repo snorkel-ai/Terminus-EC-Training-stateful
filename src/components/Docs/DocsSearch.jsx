@@ -162,3 +162,4 @@ function DocsSearch({ isOpen, onClose, onSelect }) {
 }
 
 export default DocsSearch;
+

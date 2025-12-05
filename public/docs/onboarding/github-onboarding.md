@@ -8,7 +8,7 @@ Get started with TerminalBench using the GitHub workflow. Watch the onboarding v
 
 ## Onboarding Slides
 
-<pdf-download src="/Terminus EC Onboarding.pdf" title="GitHub Onboarding Slides" />
+<pdf-download src="/Terminus-EC-Training-stateful/Terminus EC Onboarding.pdf" title="GitHub Onboarding Slides" />
 
 ## Key Takeaways
 
