@@ -5,6 +5,7 @@ export const docsConfig = {
       title: 'Getting Started',
       items: [
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
+        { slug: 'onboarding/project-overview', title: 'Project Overview' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
         { slug: 'getting-started/environment-setup', title: 'Environment Setup' },
       ]
@@ -14,7 +15,14 @@ export const docsConfig = {
       items: [
         { slug: 'onboarding/platform-onboarding', title: 'Platform Onboarding' },
         { slug: 'onboarding/github-onboarding', title: 'GitHub Onboarding' },
-        { slug: 'onboarding/project-overview', title: 'Project Overview' },
+      ]
+    },
+    {
+      title: 'Video Walkthroughs',
+      items: [
+        { slug: 'creating-tasks/videos/running-your-task', title: 'Running Your Task' },
+        { slug: 'creating-tasks/videos/creating-solution', title: 'Creating solution.sh' },
+        { slug: 'creating-tasks/videos/creating-tests', title: 'Creating Tests' },
       ]
     },
     {
@@ -36,14 +44,6 @@ export const docsConfig = {
         { slug: 'creating-tasks/creating-docker-environment', title: 'Docker Environment' },
         { slug: 'creating-tasks/writing-oracle-solution', title: 'Writing Oracle Solution' },
         { slug: 'creating-tasks/writing-tests', title: 'Writing Tests' },
-      ]
-    },
-    {
-      title: 'Video Walkthroughs',
-      items: [
-        { slug: 'creating-tasks/videos/running-your-task', title: 'Running Your Task' },
-        { slug: 'creating-tasks/videos/creating-solution', title: 'Creating solution.sh' },
-        { slug: 'creating-tasks/videos/creating-tests', title: 'Creating Tests' },
       ]
     },
     {
