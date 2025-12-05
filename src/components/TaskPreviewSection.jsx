@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Button, Badge, CornerBadge, Card, ActionLink } from './ui';
+import { Button, TaskCard } from './ui';
 import './TaskPreviewSection.css';
 
 const TaskPreviewSection = () => {
@@ -84,49 +84,16 @@ const TaskPreviewSection = () => {
           ))
         ) : (
           displayTasks.map((task, index) => (
-            <Card 
+            <div 
               key={index}
-              variant="minimal"
-              padding="none"
-              hoverable
-              className={`task-preview-card ${isShuffling ? 'shuffling' : ''}`}
+              className={`task-preview-card-wrapper ${isShuffling ? 'shuffling' : ''}`}
               style={{ transitionDelay: `${index * 100}ms` }}
-              onClick={() => handleTaskClick(task.id)}
             >
-              <div className="task-preview-card-inner">
-                {task.is_special && (
-                  <CornerBadge>2x</CornerBadge>
-                )}
-                <div className="task-preview-card-header">
-                  <div className="header-badges">
-                    <Badge variant="category">{task.category}</Badge>
-                  </div>
-                </div>
-                
-                <div className="task-preview-divider"></div>
-                
-                <div className="task-preview-body">
-                  <div className="task-header-row">
-                    <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
-                  </div>
-                  <p>{task.description}</p>
-                  
-                  <div className="task-card-footer">
-                    <Badge variant={task.difficulty?.toLowerCase() || 'medium'} size="sm">
-                      {task.difficulty || 'Medium'}
-                    </Badge>
-                    <ActionLink 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleTaskClick(task.id);
-                      }}
-                    >
-                      Learn more
-                    </ActionLink>
-                  </div>
-                </div>
-              </div>
-            </Card>
+              <TaskCard
+                task={task}
+                onClick={() => handleTaskClick(task.id)}
+              />
+            </div>
           ))
         )}
       </div>

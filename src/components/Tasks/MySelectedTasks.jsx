@@ -1,8 +1,127 @@
-import { useState } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMySelectedTasks } from '../../hooks/useTasks';
 import { Button, LoadingState, Modal, Badge, TaskCard, DifficultyRating, Tabs, Tab } from '../ui';
 import './Tasks.css';
+import './TaskCategorySection.css';
+
+// Collapsible category section for accepted tasks
+function AcceptedCategorySection({ category, tasks, onTaskClick }) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const scrollContainerRef = useRef(null);
+  
+  // Only show controls if more than 4 tasks
+  const needsScrollControls = tasks.length > 4;
+
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  return (
+    <div className="task-category-section">
+      <div className="section-header">
+        <div className="section-title-group" onClick={() => setIsCollapsed(!isCollapsed)}>
+          <button className={`collapse-btn ${isCollapsed ? 'collapsed' : ''}`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <div className="section-title-wrapper">
+            <h3>
+              {category}
+              <span className="section-count">{tasks.length}</span>
+            </h3>
+          </div>
+        </div>
+        
+        {!isCollapsed && !showAll && needsScrollControls && (
+          <div className="section-controls">
+            <Button variant="ghost" size="sm" className="explore-all-btn" onClick={(e) => {
+              e.stopPropagation();
+              setShowAll(true);
+            }}>
+              <span className="explore-btn-content">
+                <span>View all</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </span>
+            </Button>
+            <button className="scroll-btn" onClick={() => scroll('left')} aria-label="Scroll left">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button className="scroll-btn" onClick={() => scroll('right')} aria-label="Scroll right">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        )}
+        
+        {!isCollapsed && showAll && (
+          <div className="section-controls">
+            <Button variant="ghost" size="sm" className="explore-all-btn" onClick={(e) => {
+              e.stopPropagation();
+              setShowAll(false);
+            }}>
+              <span className="explore-btn-content">
+                <span>Collapse</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </span>
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {!isCollapsed && (
+        <div className="section-content">
+          {showAll ? (
+            <div className="tasks-grid-row show-all">
+              {tasks.map(task => (
+                <div key={task.id} className="grid-item">
+                  <TaskCard
+                    task={task}
+                    isCompleted={true}
+                    isHighlighted={task.is_highlighted}
+                    claimedAt={task.selected_at}
+                    completedAt={task.completed_at}
+                    onClick={() => onTaskClick(task)}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="tasks-carousel" ref={scrollContainerRef}>
+              {tasks.map(task => (
+                <div key={task.id} className="carousel-item">
+                  <TaskCard
+                    task={task}
+                    isCompleted={true}
+                    isHighlighted={task.is_highlighted}
+                    claimedAt={task.selected_at}
+                    completedAt={task.completed_at}
+                    onClick={() => onTaskClick(task)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function MySelectedTasks() {
   const navigate = useNavigate();
@@ -13,6 +132,21 @@ function MySelectedTasks() {
 
   const activeTasks = selectedTasks.filter(t => !t.completed_at);
   const completedTasks = selectedTasks.filter(t => t.completed_at);
+
+  // Group completed tasks by category for hierarchical display
+  const groupedCompletedTasks = useMemo(() => {
+    const groups = {};
+    completedTasks.forEach(task => {
+      const category = task.category || 'Uncategorized';
+      if (!groups[category]) {
+        groups[category] = [];
+      }
+      groups[category].push(task);
+    });
+    
+    // Sort groups by number of tasks (most first)
+    return Object.entries(groups).sort((a, b) => b[1].length - a[1].length);
+  }, [completedTasks]);
 
   const handleOpenModal = (task) => {
     setSelectedTaskForModal(task);
@@ -97,7 +231,6 @@ function MySelectedTasks() {
   }
 
   const isModalTaskCompleted = selectedTaskForModal?.completed_at;
-  const currentTasks = activeTab === 'active' ? activeTasks : completedTasks;
 
   return (
     <div className="tasks-view my-tasks-view">
@@ -130,7 +263,7 @@ function MySelectedTasks() {
               )}
             </Tab>
             <Tab value="completed">
-              Accepted
+              Accepted Tasks
               {completedTasks.length > 0 && (
                 <span className="tab-count">{completedTasks.length}</span>
               )}
@@ -139,33 +272,47 @@ function MySelectedTasks() {
 
           {/* Tab Content */}
           <div className="my-tasks-tab-content">
-            {currentTasks.length === 0 ? (
-              <div className="tasks-empty-tab">
-                {activeTab === 'active' ? (
-                  <>
-                    <p>No active challenges. All done! 🎉</p>
-                    <Button variant="secondary" onClick={() => navigate('/portal/tasks')}>
-                      Find More Challenges
-                    </Button>
-                  </>
-                ) : (
-                  <p>No accepted challenges yet. Keep going!</p>
-                )}
-              </div>
+            {activeTab === 'active' ? (
+              // Active tasks - flat grid
+              activeTasks.length === 0 ? (
+                <div className="tasks-empty-tab">
+                  <p>No active challenges. All done! 🎉</p>
+                  <Button variant="secondary" onClick={() => navigate('/portal/tasks')}>
+                    Find More Challenges
+                  </Button>
+                </div>
+              ) : (
+                <div className="my-tasks-grid">
+                  {activeTasks.map(task => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      isCompleted={false}
+                      isHighlighted={task.is_highlighted}
+                      claimedAt={task.selected_at}
+                      onClick={() => handleOpenModal(task)}
+                    />
+                  ))}
+                </div>
+              )
             ) : (
-              <div className="my-tasks-grid">
-                {currentTasks.map(task => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    isCompleted={activeTab === 'completed'}
-                    isHighlighted={task.is_highlighted}
-                    claimedAt={task.selected_at}
-                    completedAt={task.completed_at}
-                    onClick={() => handleOpenModal(task)}
-                  />
-                ))}
-              </div>
+              // Completed tasks - grouped by category with collapsible carousels
+              completedTasks.length === 0 ? (
+                <div className="tasks-empty-tab">
+                  <p>No accepted challenges yet. Keep going!</p>
+                </div>
+              ) : (
+                <div className="tasks-grouped-layout">
+                  {groupedCompletedTasks.map(([category, categoryTasks]) => (
+                    <AcceptedCategorySection
+                      key={category}
+                      category={category}
+                      tasks={categoryTasks}
+                      onTaskClick={handleOpenModal}
+                    />
+                  ))}
+                </div>
+              )
             )}
           </div>
         </div>

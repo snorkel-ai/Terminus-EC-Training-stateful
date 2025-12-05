@@ -539,6 +539,31 @@
   font-size: var(--font-base);
 }
 
+/* Grouped tasks by category */
+.my-tasks-grouped {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.my-tasks-category-section {
+  /* Each category section */
+}
+
+.my-tasks-category-header {
+  margin-bottom: var(--space-4);
+}
+
+.my-tasks-category-header h3 {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 /* Corner Ribbon for Accepted Tasks */
 .modal-ribbon {
   position: absolute;
