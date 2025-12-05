@@ -57,108 +57,35 @@
   }
 }
 
-/* Task Card - Uses ui-card-minimal as base, these are layout/animation overrides */
-.task-preview-card {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 220px;
-  position: relative;
-  
+/* Task Card Wrapper - For shuffle animation */
+.task-preview-card-wrapper {
   /* 3D flip transitions */
-  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease;
   transform-style: preserve-3d;
   transform-origin: center;
   opacity: 1;
+  height: 100%;
 }
 
-.task-preview-card.shuffling {
+.task-preview-card-wrapper.shuffling {
   transform: rotateY(90deg) scale(0.95);
   opacity: 0;
   pointer-events: none;
 }
 
+/* Ensure TaskCard fills the wrapper */
+.task-preview-card-wrapper .task-card {
+  height: 100%;
+  min-height: 280px;
+}
+
+/* Skeleton loading state */
 .task-preview-card.skeleton {
   background: var(--bg-secondary);
   animation: pulse 1.5s infinite;
-  border: none;
-  min-height: 220px;
-}
-
-.header-badges {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Use design system corner badge with custom radius for preview cards */
-.task-preview-card .ui-corner-badge {
-  --corner-badge-radius: var(--radius-lg, 12px);
-}
-
-.task-preview-card-inner {
-  backface-visibility: hidden;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.task-preview-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 1.5rem;
-}
-
-.task-preview-divider {
-  height: 1px;
-  background-color: var(--border-color);
-  width: 100%;
-}
-
-.task-preview-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.task-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.task-preview-card h3 {
-  font-size: 1.125rem;
-  color: var(--text-primary);
-  margin-bottom: 0;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-}
-
-.task-preview-card p {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-clamp: 3;
-}
-
-.task-card-footer {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  min-height: 280px;
 }
 
 .task-preview-footer {

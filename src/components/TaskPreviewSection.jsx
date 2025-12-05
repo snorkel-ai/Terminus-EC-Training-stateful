@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Button, TaskCard } from './ui';
+import { Button, TaskCard, TaskDetailModal } from './ui';
 import './TaskPreviewSection.css';
 
 const TaskPreviewSection = () => {
@@ -10,6 +10,7 @@ const TaskPreviewSection = () => {
   const [displayTasks, setDisplayTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isShuffling, setIsShuffling] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   useEffect(() => {
     fetchTasks();
@@ -65,8 +66,12 @@ const TaskPreviewSection = () => {
     setDisplayTasks(shuffled.slice(0, 6));
   };
 
-  const handleTaskClick = (taskId) => {
-    navigate(`/portal/task/${taskId}`);
+  const handleTaskClick = (task) => {
+    setSelectedTask(task);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTask(null);
   };
 
   return (
@@ -91,7 +96,7 @@ const TaskPreviewSection = () => {
             >
               <TaskCard
                 task={task}
-                onClick={() => handleTaskClick(task.id)}
+                onClick={() => handleTaskClick(task)}
               />
             </div>
           ))
@@ -107,6 +112,13 @@ const TaskPreviewSection = () => {
           Browse Task Gallery →
         </Button>
       </div>
+
+      {/* Task Detail Modal - uses design system component */}
+      <TaskDetailModal
+        task={selectedTask}
+        isOpen={!!selectedTask}
+        onClose={handleCloseModal}
+      />
     </section>
   );
 };

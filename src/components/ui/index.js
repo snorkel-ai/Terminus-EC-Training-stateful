@@ -31,4 +31,5 @@ export { Timer, TimerCompact } from './Timer';
 
 // Task Components
 export { default as TaskCard, DifficultyRating } from './TaskCard';
+export { TaskDetailModal } from './TaskDetailModal';
 
