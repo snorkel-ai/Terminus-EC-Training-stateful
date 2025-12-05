@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiCheck, FiRotateCcw } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import TaskPreviewSection from './TaskPreviewSection';
-import { Card, Button } from './ui';
+import { Card, Button, Alert } from './ui';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -79,6 +79,13 @@ function LandingPage() {
             <p className="welcome-subtitle">Welcome to the community advancing agentic development.</p>
           </div>
         </section>
+
+        <Alert variant="warning" className="announcement-banner">
+          <strong>PLEASE DO NOT REACH OUT TO REVIEWERS DIRECTLY.</strong>
+          <div style={{ marginTop: '0.5rem' }}>
+            Reviews will be performed ASAP and messaging them will not increase the speed at which your submission is reviewed.
+          </div>
+        </Alert>
 
         <section className="get-started-section">
           <div className="section-header-row">

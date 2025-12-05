@@ -65,6 +65,11 @@
   font-weight: 600;
 }
 
+/* Announcement Banner */
+.announcement-banner {
+  margin-bottom: 3rem;
+}
+
 /* Section Headers */
 .section-header-row {
   display: flex;
