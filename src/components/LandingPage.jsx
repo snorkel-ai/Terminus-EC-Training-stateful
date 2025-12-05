@@ -20,30 +20,35 @@ function LandingPage() {
       label: 'Platform Onboarding', 
       description: 'New to Snorkel? Watch the onboarding video and download the slides to get familiar with the Expert Platform interface.',
       path: '/portal/expert-platform-onboarding',
+      image: '/images/onboarding_platform.png',
     },
     { 
       id: 'onboarding-github',
       label: 'GitHub Onboarding', 
       description: 'Prefer working with Git? Set up your local environment, clone the repo, and configure your CLI tools for the GitHub workflow.',
       path: '/portal/github-onboarding',
+      image: '/images/onboarding_github.png',
     },
     { 
       id: 'submission-platform',
       label: 'Platform Submissions', 
       description: 'Ready to submit? Follow our walkthrough to package your task, upload it to the platform, and track your submission through review.',
       path: '/portal/expert-platform-walkthrough',
+      image: '/images/onboarding_submit_tasks.png',
     },
     { 
       id: 'submission-github',
       label: 'GitHub Submissions', 
       description: 'Create a branch, push your task, and open a pull request. Learn how to navigate CI checks and iterate on reviewer feedback.',
       path: '/portal/github-submission-walkthrough',
+      image: '/images/onboarding_submit_github.png',
     },
     { 
       id: 'great-tasks',
       label: 'What Makes Great TerminalBench Tasks', 
       description: 'Discover the key ingredients that make tasks challenging, realistic, and valuable for training AI agents. Learn patterns to follow and pitfalls to avoid.',
       path: '/portal/guidelines',
+      image: '/images/onboarding_great_tb_task.png',
     },
   ];
   
@@ -94,9 +99,13 @@ function LandingPage() {
                 onClick={() => navigate(resource.path)}
               >
                 <div className="resource-preview">
-                  <div className="image-placeholder">
-                    <span className="preview-placeholder-text">Card cover image here</span>
-                  </div>
+                  {resource.image ? (
+                    <img src={resource.image} alt={resource.label} className="resource-image" />
+                  ) : (
+                    <div className="image-placeholder">
+                      <span className="preview-placeholder-text">Card cover image here</span>
+                    </div>
+                  )}
                   <div className="preview-gradient"></div>
                 </div>
                 <div className="resource-body">

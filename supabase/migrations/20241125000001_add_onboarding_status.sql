@@ -8,3 +8,4 @@ COMMENT ON COLUMN profiles.onboarding_completed IS 'Tracks if the user has seen 
 
 
 
+

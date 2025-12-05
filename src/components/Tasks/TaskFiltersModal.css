@@ -313,12 +313,6 @@
   background: rgba(0, 0, 0, 0.03);
 }
 
-/* Dark mode adjustment if needed */
-@media (prefers-color-scheme: dark) {
-  .tree-header:hover {
-    background: rgba(255, 255, 255, 0.05);
-  }
-}
 
 .tree-label-group {
   display: flex;

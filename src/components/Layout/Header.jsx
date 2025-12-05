@@ -64,6 +64,12 @@ function Header() {
             >
               Task gallery
             </NavLink>
+            <NavLink 
+              to="/portal/docs" 
+              active={isActive('/docs')}
+            >
+              Docs
+            </NavLink>
             <div className="nav-dropdown-container" ref={resourcesMenuRef}>
               <NavLink 
                 as="button"

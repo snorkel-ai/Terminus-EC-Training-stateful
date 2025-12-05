@@ -24,6 +24,7 @@ import Glossary from './components/Glossary';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import ProfilePage from './components/Profile/ProfilePage';
 import TasksView from './components/Tasks/TasksView';
+import { DocsLayout } from './components/Docs';
 import MySelectedTasks from './components/Tasks/MySelectedTasks';
 import TaskDetail from './components/Tasks/TaskDetail';
 import OnboardingModal from './components/Onboarding/OnboardingModal';
@@ -63,6 +64,8 @@ function App() {
                       <Route path="/feedback" element={<FeedbackSlides />} />
                       <Route path="/faq" element={<FAQ />} />
                       <Route path="/glossary" element={<Glossary />} />
+                      <Route path="/docs" element={<DocsLayout />} />
+                      <Route path="/docs/:slug" element={<DocsLayout />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/admin" element={<AdminDashboard />} />
                       
