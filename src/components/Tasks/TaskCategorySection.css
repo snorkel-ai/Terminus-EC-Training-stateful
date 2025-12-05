@@ -63,6 +63,16 @@
   font-weight: 500;
 }
 
+.explore-btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.explore-btn-content svg {
+  flex-shrink: 0;
+}
+
 .explore-all-btn:hover {
   background: var(--bg-secondary);
 }

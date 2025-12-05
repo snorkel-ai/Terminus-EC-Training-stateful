@@ -58,7 +58,12 @@ function TaskCategorySection({
               e.stopPropagation();
               onExplore(title);
             }}>
-              Explore all
+              <span className="explore-btn-content">
+                <span>Explore domain</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </span>
             </Button>
             <button className="scroll-btn" onClick={() => scroll('left')} aria-label="Scroll left">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

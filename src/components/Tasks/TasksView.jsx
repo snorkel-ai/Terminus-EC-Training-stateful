@@ -6,6 +6,7 @@ import { Button, LoadingState, Modal, Badge } from '../ui';
 import TaskSearchHeader from './TaskSearchHeader';
 import TaskFiltersModal from './TaskFiltersModal';
 import TaskCategorySection from './TaskCategorySection';
+import CategoryExploreView from './CategoryExploreView';
 import { TaskClaimSuccess } from './TaskClaimSuccess';
 import './Tasks.css';
 import './TasksViewLayout.css';
@@ -104,11 +105,17 @@ function TasksView() {
     }
   };
 
+  // Track which category is being explored (for drill-down view)
+  const [exploringCategory, setExploringCategory] = useState(null);
+
   const handleExplore = (category) => {
-    setFilters(prev => ({
-      ...prev,
-      categories: [category]
-    }));
+    setExploringCategory(category);
+    // Scroll to top when exploring
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackFromExplore = () => {
+    setExploringCategory(null);
   };
 
   const activeFilterCount = 
@@ -197,8 +204,16 @@ function TasksView() {
             )}
           </div>
 
-          {/* Grouped Sections */}
-          {filteredTasks.length === 0 ? (
+          {/* Category Explore View or Grouped Sections */}
+          {exploringCategory ? (
+            <CategoryExploreView
+              category={exploringCategory}
+              tasks={filteredTasks.filter(t => t.category === exploringCategory)}
+              onTaskSelect={handleViewDetails}
+              onBack={handleBackFromExplore}
+              searchQuery={searchQuery}
+            />
+          ) : filteredTasks.length === 0 ? (
             <div className="tasks-empty">
               <div className="empty-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -226,11 +241,11 @@ function TasksView() {
             </div>
           ) : (
             <div className="tasks-grouped-layout">
-              {groupedTasks.map(([category, tasks]) => (
+              {groupedTasks.map(([category, categoryTasks]) => (
                 <TaskCategorySection
                   key={category}
                   title={category}
-                  tasks={tasks}
+                  tasks={categoryTasks}
                   onTaskSelect={handleViewDetails}
                   onTaskUnselect={() => {}}
                   onExplore={handleExplore}
