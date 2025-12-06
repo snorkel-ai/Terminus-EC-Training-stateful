@@ -86,13 +86,13 @@ function Header() {
               </NavLink>
               <div className={`nav-dropdown-menu ${isQuickLinksOpen ? 'open' : ''}`}>
                 <a 
-              href="https://snorkel.ai" 
-              target="_blank" 
-              rel="noopener noreferrer"
+                  href="https://snorkel.ai" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="dropdown-item"
                   onClick={() => setIsQuickLinksOpen(false)}
-            >
-              Snorkel Expert Platform
+                >
+                  Snorkel Expert Platform
                 </a>
                 <a 
                   href="https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203" 
@@ -113,14 +113,14 @@ function Header() {
                   GitHub Repo
                 </a>
                 <Link 
-                  to="/portal/glossary" 
+                  to="/portal/docs/reference/glossary" 
                   className="dropdown-item"
                   onClick={() => setIsQuickLinksOpen(false)}
                 >
                   Glossary
                 </Link>
                 <Link 
-                  to="/portal/faq" 
+                  to="/portal/docs/reference/faq" 
                   className="dropdown-item"
                   onClick={() => setIsQuickLinksOpen(false)}
                 >
@@ -131,8 +131,8 @@ function Header() {
 
             <div className="nav-divider"></div>
             <NavLink 
-              to="/portal/faq" 
-              active={isActive('/faq')}
+              to="/portal/docs/reference/faq" 
+              active={isActive('/docs/reference/faq')}
             >
               Help
             </NavLink>
