@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTasks, useMySelectedTasks } from '../../hooks/useTasks';
+import { useTasks, useMySelectedTasks, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Badge } from './Badge';
@@ -26,7 +26,7 @@ export function TaskDetailModal({
   showNavigation = false 
 }) {
   const navigate = useNavigate();
-  const { selectTask } = useTasks();
+  const { selectTask, activeTaskCount, canClaimMore } = useTasks();
   const { unselectTask } = useMySelectedTasks();
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
@@ -233,11 +233,17 @@ export function TaskDetailModal({
           </div>
 
           <div className="task-detail-modal-footer">
-            {(task.is_special || task.priority_tag || task.is_highlighted) && (
-              <div style={{ marginRight: 'auto' }}>
+            {/* Left side: badges and claim limit */}
+            <div style={{ marginRight: 'auto', display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+              {(task.is_special || task.priority_tag || task.is_highlighted) && (
                 <Badge variant="accent">Double Pay</Badge>
-              </div>
-            )}
+              )}
+              <span style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
+                Active: <strong style={{ color: canClaimMore ? 'var(--text-primary)' : 'var(--color-warning)' }}>
+                  {activeTaskCount}/{MAX_ACTIVE_TASKS}
+                </strong>
+              </span>
+            </div>
             <Button 
               variant="ghost" 
               onClick={handleClose}
@@ -259,8 +265,10 @@ export function TaskDetailModal({
               variant="primary" 
               onClick={handleClaimTask}
               loading={isSelecting}
+              disabled={!canClaimMore}
+              title={!canClaimMore ? `You can only have ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review to free up slots.` : ''}
             >
-              Claim Task
+              {canClaimMore ? 'Claim Task' : 'Limit Reached'}
             </Button>
           </div>
         </>

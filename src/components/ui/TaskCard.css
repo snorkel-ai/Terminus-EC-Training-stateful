@@ -198,6 +198,42 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* Status Badge */
+.task-card-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.task-card-status-badge.claimed {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.task-card-status-badge.in-progress {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.task-card-status-badge.waiting-on-review {
+  background: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+}
+
+.task-card-status-badge.accepted {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
 }
 
 .task-card-claimed {

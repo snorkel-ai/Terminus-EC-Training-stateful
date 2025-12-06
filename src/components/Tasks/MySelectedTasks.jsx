@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMySelectedTasks } from '../../hooks/useTasks';
+import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
 import { Button, LoadingState, Modal, Badge, TaskCard, DifficultyRating, Tabs, Tab } from '../ui';
 import './Tasks.css';
 import './TaskCategorySection.css';
@@ -125,18 +125,33 @@ function AcceptedCategorySection({ category, tasks, onTaskClick }) {
 
 function MySelectedTasks() {
   const navigate = useNavigate();
-  const { selectedTasks, loading, error, unselectTask, completeTask, uncompleteTask } = useMySelectedTasks();
+  const { 
+    selectedTasks, 
+    loading, 
+    error, 
+    unselectTask, 
+    startTask, 
+    submitForReview, 
+    acceptTask, 
+    reopenTask,
+    activeTaskCount,
+    canClaimMore 
+  } = useMySelectedTasks();
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
   const [isActioning, setIsActioning] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
 
-  const activeTasks = selectedTasks.filter(t => !t.completed_at);
-  const completedTasks = selectedTasks.filter(t => t.completed_at);
+  // Group tasks by their workflow status
+  const activeTasks = selectedTasks.filter(t => 
+    t.status === TASK_STATUS.CLAIMED || t.status === TASK_STATUS.IN_PROGRESS
+  );
+  const reviewTasks = selectedTasks.filter(t => t.status === TASK_STATUS.WAITING_REVIEW);
+  const acceptedTasks = selectedTasks.filter(t => t.status === TASK_STATUS.ACCEPTED);
 
-  // Group completed tasks by category for hierarchical display
-  const groupedCompletedTasks = useMemo(() => {
+  // Group accepted tasks by category for hierarchical display
+  const groupedAcceptedTasks = useMemo(() => {
     const groups = {};
-    completedTasks.forEach(task => {
+    acceptedTasks.forEach(task => {
       const category = task.category || 'Uncategorized';
       if (!groups[category]) {
         groups[category] = [];
@@ -146,7 +161,7 @@ function MySelectedTasks() {
     
     // Sort groups by number of tasks (most first)
     return Object.entries(groups).sort((a, b) => b[1].length - a[1].length);
-  }, [completedTasks]);
+  }, [acceptedTasks]);
 
   const handleOpenModal = (task) => {
     setSelectedTaskForModal(task);
@@ -156,31 +171,76 @@ function MySelectedTasks() {
     setSelectedTaskForModal(null);
   };
 
-  const handleComplete = async () => {
+  const handleStartWorking = async () => {
     if (!selectedTaskForModal || isActioning) return;
     
     setIsActioning(true);
     try {
-      await completeTask(selectedTaskForModal.id);
-      // Update the modal state to reflect completion
-      setSelectedTaskForModal(prev => prev ? { ...prev, completed_at: new Date().toISOString() } : null);
+      await startTask(selectedTaskForModal.id);
+      setSelectedTaskForModal(prev => prev ? { 
+        ...prev, 
+        status: TASK_STATUS.IN_PROGRESS,
+        started_at: new Date().toISOString() 
+      } : null);
     } catch (err) {
-      console.error('Error completing task:', err);
+      console.error('Error starting task:', err);
+      alert(err.message);
     } finally {
       setIsActioning(false);
     }
   };
 
-  const handleUncomplete = async () => {
+  const handleSubmitForReview = async () => {
     if (!selectedTaskForModal || isActioning) return;
     
     setIsActioning(true);
     try {
-      await uncompleteTask(selectedTaskForModal.id);
-      // Update the modal state to reflect uncomplete
-      setSelectedTaskForModal(prev => prev ? { ...prev, completed_at: null } : null);
+      await submitForReview(selectedTaskForModal.id);
+      setSelectedTaskForModal(prev => prev ? { 
+        ...prev, 
+        status: TASK_STATUS.WAITING_REVIEW,
+        submitted_for_review_at: new Date().toISOString() 
+      } : null);
     } catch (err) {
-      console.error('Error uncompleting task:', err);
+      console.error('Error submitting task for review:', err);
+      alert(err.message);
+    } finally {
+      setIsActioning(false);
+    }
+  };
+
+  const handleAccept = async () => {
+    if (!selectedTaskForModal || isActioning) return;
+    
+    setIsActioning(true);
+    try {
+      await acceptTask(selectedTaskForModal.id);
+      setSelectedTaskForModal(prev => prev ? { 
+        ...prev, 
+        status: TASK_STATUS.ACCEPTED,
+        completed_at: new Date().toISOString() 
+      } : null);
+    } catch (err) {
+      console.error('Error accepting task:', err);
+      alert(err.message);
+    } finally {
+      setIsActioning(false);
+    }
+  };
+
+  const handleReopen = async () => {
+    if (!selectedTaskForModal || isActioning) return;
+    
+    setIsActioning(true);
+    try {
+      await reopenTask(selectedTaskForModal.id);
+      setSelectedTaskForModal(prev => prev ? { 
+        ...prev, 
+        status: TASK_STATUS.IN_PROGRESS 
+      } : null);
+    } catch (err) {
+      console.error('Error reopening task:', err);
+      alert(err.message);
     } finally {
       setIsActioning(false);
     }
@@ -230,7 +290,10 @@ function MySelectedTasks() {
     );
   }
 
-  const isModalTaskCompleted = selectedTaskForModal?.completed_at;
+  const modalTaskStatus = selectedTaskForModal?.status;
+  const isModalTaskActive = modalTaskStatus === TASK_STATUS.CLAIMED || modalTaskStatus === TASK_STATUS.IN_PROGRESS;
+  const isModalTaskInReview = modalTaskStatus === TASK_STATUS.WAITING_REVIEW;
+  const isModalTaskAccepted = modalTaskStatus === TASK_STATUS.ACCEPTED;
 
   return (
     <div className="tasks-view my-tasks-view">
@@ -254,6 +317,23 @@ function MySelectedTasks() {
         </div>
       ) : (
         <div className="gallery-content" style={{ marginTop: 'var(--space-6)' }}>
+          {/* Claim limit indicator */}
+          <div className="claim-limit-indicator" style={{ 
+            marginBottom: 'var(--space-4)', 
+            padding: 'var(--space-3) var(--space-4)',
+            background: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--space-2)'
+          }}>
+            <span style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
+              Active Task Quota: <strong style={{ color: canClaimMore ? 'var(--text-primary)' : 'var(--color-warning)' }}>
+                {activeTaskCount} / {MAX_ACTIVE_TASKS}
+              </strong>
+            </span>
+          </div>
+          
           {/* Tabs */}
           <Tabs value={activeTab} onChange={setActiveTab}>
             <Tab value="active">
@@ -262,24 +342,32 @@ function MySelectedTasks() {
                 <span className="tab-count">{activeTasks.length}</span>
               )}
             </Tab>
-            <Tab value="completed">
-              Accepted Tasks
-              {completedTasks.length > 0 && (
-                <span className="tab-count">{completedTasks.length}</span>
+            <Tab value="review">
+              In Review
+              {reviewTasks.length > 0 && (
+                <span className="tab-count">{reviewTasks.length}</span>
+              )}
+            </Tab>
+            <Tab value="accepted">
+              Accepted
+              {acceptedTasks.length > 0 && (
+                <span className="tab-count">{acceptedTasks.length}</span>
               )}
             </Tab>
           </Tabs>
 
           {/* Tab Content */}
           <div className="my-tasks-tab-content">
-            {activeTab === 'active' ? (
-              // Active tasks - flat grid
+            {activeTab === 'active' && (
+              // Active tasks (claimed or in_progress) - flat grid
               activeTasks.length === 0 ? (
                 <div className="tasks-empty-tab">
-                  <p>No active challenges. All done! 🎉</p>
-                  <Button variant="secondary" onClick={() => navigate('/portal/tasks')}>
-                    Find More Challenges
-                  </Button>
+                  <p>No active challenges. {canClaimMore ? 'Claim some tasks to get started!' : 'Submit tasks for review to free up slots.'}</p>
+                  {canClaimMore && (
+                    <Button variant="secondary" onClick={() => navigate('/portal/tasks')}>
+                      Find Challenges
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div className="my-tasks-grid">
@@ -290,20 +378,46 @@ function MySelectedTasks() {
                       isCompleted={false}
                       isHighlighted={task.is_highlighted}
                       claimedAt={task.selected_at}
+                      statusBadge={TASK_STATUS_LABELS[task.status]}
                       onClick={() => handleOpenModal(task)}
                     />
                   ))}
                 </div>
               )
-            ) : (
-              // Completed tasks - grouped by category with collapsible carousels
-              completedTasks.length === 0 ? (
+            )}
+            
+            {activeTab === 'review' && (
+              // Tasks waiting for human review
+              reviewTasks.length === 0 ? (
+                <div className="tasks-empty-tab">
+                  <p>No tasks waiting for review.</p>
+                </div>
+              ) : (
+                <div className="my-tasks-grid">
+                  {reviewTasks.map(task => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      isCompleted={false}
+                      isHighlighted={task.is_highlighted}
+                      claimedAt={task.selected_at}
+                      statusBadge="Waiting on Review"
+                      onClick={() => handleOpenModal(task)}
+                    />
+                  ))}
+                </div>
+              )
+            )}
+            
+            {activeTab === 'accepted' && (
+              // Accepted tasks - grouped by category with collapsible carousels
+              acceptedTasks.length === 0 ? (
                 <div className="tasks-empty-tab">
                   <p>No accepted challenges yet. Keep going!</p>
                 </div>
               ) : (
                 <div className="tasks-grouped-layout">
-                  {groupedCompletedTasks.map(([category, categoryTasks]) => (
+                  {groupedAcceptedTasks.map(([category, categoryTasks]) => (
                     <AcceptedCategorySection
                       key={category}
                       category={category}
@@ -327,49 +441,73 @@ function MySelectedTasks() {
       >
         {selectedTaskForModal && (
           <>
-            {/* Corner ribbon for accepted tasks */}
-            {isModalTaskCompleted && (
+            {/* Corner ribbon for accepted tasks only */}
+            {isModalTaskAccepted && (
               <div className="modal-ribbon">
                 <span>Accepted</span>
               </div>
             )}
             
             <div className="task-detail-modal-header">
-              <div>
-                <div className="modal-badges" style={{ alignItems: 'center' }}>
-                  <div className="task-breadcrumb">
-                    <span className="breadcrumb-segment parent">{selectedTaskForModal.category}</span>
-                    <span className="breadcrumb-separator">/</span>
-                    <span className="breadcrumb-segment current">
-                      {selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory}
-                    </span>
-                  </div>
-                  {selectedTaskForModal.difficulty && (
-                    <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
-                      <DifficultyRating difficulty={selectedTaskForModal.difficulty} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+                <div>
+                  <div className="modal-badges" style={{ alignItems: 'center' }}>
+                    <div className="task-breadcrumb">
+                      <span className="breadcrumb-segment parent">{selectedTaskForModal.category}</span>
+                      <span className="breadcrumb-separator">/</span>
+                      <span className="breadcrumb-segment current">
+                        {selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory}
+                      </span>
                     </div>
-                  )}
+                    {selectedTaskForModal.difficulty && (
+                      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
+                        <DifficultyRating difficulty={selectedTaskForModal.difficulty} />
+                      </div>
+                    )}
+                  </div>
+                  <h2>Your challenge</h2>
                 </div>
-                <h2>Your challenge</h2>
+                {/* Top right pill for in_progress */}
+                {modalTaskStatus === TASK_STATUS.IN_PROGRESS && (
+                  <Badge variant="info" style={{ flexShrink: 0 }}>
+                    In Progress
+                  </Badge>
+                )}
+                {/* Top right pill for waiting on review */}
+                {isModalTaskInReview && (
+                  <Badge variant="warning" style={{ flexShrink: 0 }}>
+                    Waiting on Review
+                  </Badge>
+                )}
               </div>
             </div>
             
             <div className="task-detail-modal-body">
               <p>{selectedTaskForModal.description}</p>
               
-              {/* Show accepted date for completed tasks */}
-              {isModalTaskCompleted && selectedTaskForModal.completed_at && (
-                <div className="modal-accepted-info">
-                  <span>🎉</span>
-                  <span>Accepted on {new Date(selectedTaskForModal.completed_at).toLocaleDateString('en-US', { 
-                    weekday: 'short',
-                    month: 'short', 
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: '2-digit'
-                  })}</span>
-                </div>
-              )}
+              {/* Show timeline info */}
+              <div className="modal-timeline-info" style={{ marginTop: 'var(--space-4)', fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
+                {selectedTaskForModal.selected_at && (
+                  <div>Claimed on {new Date(selectedTaskForModal.selected_at).toLocaleDateString('en-US', { 
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                  })}</div>
+                )}
+                {selectedTaskForModal.started_at && (
+                  <div>Started on {new Date(selectedTaskForModal.started_at).toLocaleDateString('en-US', { 
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                  })}</div>
+                )}
+                {selectedTaskForModal.submitted_for_review_at && (
+                  <div>Submitted for review on {new Date(selectedTaskForModal.submitted_for_review_at).toLocaleDateString('en-US', { 
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                  })}</div>
+                )}
+                {isModalTaskAccepted && selectedTaskForModal.completed_at && (
+                  <div>🎉 Accepted on {new Date(selectedTaskForModal.completed_at).toLocaleDateString('en-US', { 
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                  })}</div>
+                )}
+              </div>
             </div>
 
             <div className="task-detail-modal-footer">
@@ -380,8 +518,8 @@ function MySelectedTasks() {
                 </div>
               )}
               
-              {/* Abandon button - only show for active tasks */}
-              {!isModalTaskCompleted && (
+              {/* Abandon button - only show for active tasks (claimed or in_progress) */}
+              {isModalTaskActive && (
                 <Button 
                   variant="danger" 
                   onClick={handleAbandon}
@@ -391,22 +529,47 @@ function MySelectedTasks() {
                 </Button>
               )}
 
-              {/* Complete / Mark Active button */}
-              {isModalTaskCompleted ? (
-                <Button 
-                  variant="secondary" 
-                  onClick={handleUncomplete}
-                  loading={isActioning}
-                >
-                  Re-open Task
-                </Button>
-              ) : (
+              {/* Workflow action buttons based on current status */}
+              {modalTaskStatus === TASK_STATUS.CLAIMED && (
                 <Button 
                   variant="primary" 
-                  onClick={handleComplete}
+                  onClick={handleStartWorking}
+                  loading={isActioning}
+                >
+                  Started working on this task
+                </Button>
+              )}
+              
+              {modalTaskStatus === TASK_STATUS.IN_PROGRESS && (
+                <Button 
+                  variant="primary" 
+                  onClick={handleSubmitForReview}
+                  loading={isActioning}
+                >
+                  Submitted for review
+                </Button>
+              )}
+              
+              {modalTaskStatus === TASK_STATUS.WAITING_REVIEW && (
+                <Button 
+                  variant="primary" 
+                  onClick={handleAccept}
                   loading={isActioning}
                 >
                   Mark as Accepted
+                </Button>
+              )}
+              
+              {/* Re-open button for tasks in review or accepted */}
+              {(isModalTaskInReview || isModalTaskAccepted) && (
+                <Button 
+                  variant="secondary" 
+                  onClick={handleReopen}
+                  loading={isActioning}
+                  disabled={!canClaimMore && !isModalTaskActive}
+                  title={!canClaimMore ? `You have ${MAX_ACTIVE_TASKS} active tasks. Submit or complete some first.` : ''}
+                >
+                  Re-open Task
                 </Button>
               )}
             </div>

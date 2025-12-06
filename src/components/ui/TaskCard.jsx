@@ -68,6 +68,7 @@ export const DifficultyRating = ({ difficulty }) => {
  * @param {React.ReactNode} footer - Optional footer content (buttons, etc.)
  * @param {string} claimedAt - ISO date string of when the task was claimed
  * @param {string} completedAt - ISO date string of when the task was completed/accepted
+ * @param {string} statusBadge - Optional status badge text to display (e.g., "In Progress", "Waiting on Review")
  * @param {string} className - Additional CSS classes
  */
 function TaskCard({ 
@@ -79,6 +80,7 @@ function TaskCard({
   footer,
   claimedAt,
   completedAt,
+  statusBadge,
   className = ''
 }) {
   // Search highlighting for description
@@ -135,25 +137,32 @@ function TaskCard({
         </div>
       </div>
 
-      {/* Meta info (claim/completion date) */}
-      {(claimedAt || completedAt) && (
+      {/* Meta info (claim/completion date and status) */}
+      {(claimedAt || completedAt || statusBadge) && (
         <div className="task-card-meta">
-          <span className={`task-card-claimed ${isCompleted && completedAt ? 'accepted' : ''}`}>
-            {isCompleted && completedAt ? (
-              // Party/celebration icon for accepted
-              <span className="accepted-icon">🎉</span>
-            ) : (
-              // Clock icon for claimed
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-            )}
-            {isCompleted && completedAt 
-              ? `Accepted ${formatTimeSince(completedAt)}`
-              : `Claimed ${formatTimeSince(claimedAt)}`
-            }
-          </span>
+          {statusBadge && (
+            <span className={`task-card-status-badge ${statusBadge.toLowerCase().replace(/\s+/g, '-')}`}>
+              {statusBadge}
+            </span>
+          )}
+          {(claimedAt || completedAt) && (
+            <span className={`task-card-claimed ${isCompleted && completedAt ? 'accepted' : ''}`}>
+              {isCompleted && completedAt ? (
+                // Party/celebration icon for accepted
+                <span className="accepted-icon">🎉</span>
+              ) : (
+                // Clock icon for claimed
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              )}
+              {isCompleted && completedAt 
+                ? `Accepted ${formatTimeSince(completedAt)}`
+                : `Claimed ${formatTimeSince(claimedAt)}`
+              }
+            </span>
+          )}
         </div>
       )}
 
