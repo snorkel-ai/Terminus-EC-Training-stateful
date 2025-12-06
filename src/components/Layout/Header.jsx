@@ -9,18 +9,13 @@ function Header() {
   const { profile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
   const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
-  const resourcesMenuRef = useRef(null);
   const quickLinksMenuRef = useRef(null);
 
   if (!profile) return null;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (resourcesMenuRef.current && !resourcesMenuRef.current.contains(event.target)) {
-        setIsResourcesOpen(false);
-      }
       if (quickLinksMenuRef.current && !quickLinksMenuRef.current.contains(event.target)) {
         setIsQuickLinksOpen(false);
       }
@@ -70,104 +65,6 @@ function Header() {
             >
               Docs
             </NavLink>
-            <div className="nav-dropdown-container" ref={resourcesMenuRef}>
-              <NavLink 
-                as="button"
-                className={`dropdown-trigger ${isActive('/onboarding') ? 'active' : ''}`}
-                onClick={() => setIsResourcesOpen(!isResourcesOpen)}
-              >
-                Resources
-                <svg 
-                  className={`dropdown-arrow ${isResourcesOpen ? 'open' : ''}`} 
-                  width="10" 
-                  height="6" 
-                  viewBox="0 0 10 6" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </NavLink>
-              <div className={`nav-dropdown-menu ${isResourcesOpen ? 'open' : ''}`}>
-                <Link 
-                  to="/portal/expert-platform-onboarding" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Expert Platform Onboarding Materials
-                </Link>
-                <Link 
-                  to="/portal/github-onboarding" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  GitHub Onboarding Materials
-                </Link>
-                <Link 
-                  to="/portal/expert-platform-walkthrough" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Expert Platform Submission Walkthrough
-                </Link>
-                <Link 
-                  to="/portal/github-submission-walkthrough" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  GitHub Submission Walkthrough
-                </Link>
-                <Link 
-                  to="/portal/workbook" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  CI Feedback Training
-                </Link>
-                <Link 
-                  to="/portal/oracle" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Oracle Training
-                </Link>
-                <Link 
-                  to="/portal/feedback" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Office Hours Recordings/Slides
-                </Link>
-                <Link 
-                  to="/portal/components" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Task Components
-                </Link>
-                <Link 
-                  to="/portal/taxonomy" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Task Type Taxonomy
-                </Link>
-                <Link 
-                  to="/portal/requirements" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Task Requirements
-                </Link>
-                <Link 
-                  to="/portal/examples" 
-                  className="dropdown-item"
-                  onClick={() => setIsResourcesOpen(false)}
-                >
-                  Example Tasks
-                </Link>
-              </div>
-            </div>
 
             <div className="nav-dropdown-container" ref={quickLinksMenuRef}>
             <NavLink 
