@@ -257,6 +257,9 @@ export function useMySelectedTasks() {
     if (!user) throw new Error('User not authenticated');
 
     try {
+      // Find the task first to check its status
+      const taskToRemove = selectedTasks.find(t => t.id === taskId);
+      
       const { error: deleteError } = await supabase
         .from('selected_tasks')
         .delete()
@@ -266,6 +269,14 @@ export function useMySelectedTasks() {
 
       // Optimistically update local state
       setSelectedTasks(prev => prev.filter(t => t.id !== taskId));
+
+      // Update active task count if the removed task was active
+      if (taskToRemove && (
+          taskToRemove.status === TASK_STATUS.CLAIMED || 
+          taskToRemove.status === TASK_STATUS.IN_PROGRESS
+      )) {
+        setActiveTaskCount(prev => Math.max(0, prev - 1));
+      }
 
       return true;
     } catch (err) {
