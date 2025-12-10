@@ -22,16 +22,13 @@ const MissionPage = () => {
               Progress in agentic AI depends on more than next-token prediction.
             </p>
             <p className="mission-text">
-              To evaluate and improve these systems, we need benchmarks that reflect the true complexity of real-world software engineering—multistep reasoning, troubleshooting, environment manipulation, and recovery from failure.
+              To evaluate and improve these systems, we need benchmarks that reflect the true complexity of real-world software engineering, including multistep reasoning, troubleshooting, environment manipulation, and recovery from failure.
             </p>
             <p className="mission-text highlight">
               TerminalBench was created to meet that need.
             </p>
-          </div>
-
-          <div className="mission-section">
             <p className="mission-text">
-              Developed in collaboration with Stanford NLRG, Laude Institute, and Snorkel AI, TerminalBench provides a rigorous, end-to-end evaluation of how AI agents perform in realistic command-line environments. Each task reveals specific model limitations—gaps in reasoning, planning, execution, or robustness—that cannot be detected through synthetic datasets or code-completion benchmarks.
+              Developed in collaboration with Stanford University, Laude Institute, and Snorkel AI, TerminalBench provides a rigorous, end-to-end evaluation of how AI agents perform in realistic command-line environments. Each task reveals specific model limitations, gaps in reasoning, planning, execution, or robustness, that cannot be detected through synthetic datasets or code-completion benchmarks.
             </p>
           </div>
 
@@ -50,10 +47,7 @@ const MissionPage = () => {
 
           <div className="mission-section closing">
             <p className="mission-text strong">
-              This is not crowdsourced labeling.
-            </p>
-            <p className="mission-text strong">
-              It is applied research, grounded in real engineering practice.
+              This is not crowdsourced labeling, it is applied research, grounded in real engineering practice.
             </p>
             <p className="mission-text">
               TerminalBench advances only as far as its community of experts pushes it.
@@ -62,7 +56,7 @@ const MissionPage = () => {
               Every accepted task becomes part of a shared scientific instrument used across academia and industry.
             </p>
             <p className="mission-text welcome-message">
-              Welcome—and thank you for helping build the next foundation of agentic AI evaluation.
+              On behalf of the Snorkel team, welcome and thank you for helping build the foundation of next-generation agentic AI evaluation.
             </p>
           </div>
         </div>

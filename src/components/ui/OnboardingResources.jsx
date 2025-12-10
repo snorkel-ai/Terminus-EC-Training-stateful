@@ -4,7 +4,7 @@ import { FiArrowRight, FiCheck, FiDownload } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 import { useProgress } from '../../contexts/ProgressContext';
 import { useToast } from '../../contexts/ToastContext';
-import { Card, Button } from '../ui';
+import { Card, Button } from './index';
 import './OnboardingResources.css';
 
 const baseUrl = import.meta.env.BASE_URL;

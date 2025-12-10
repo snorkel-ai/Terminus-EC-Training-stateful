@@ -35,4 +35,5 @@ export { default as TaskCard, DifficultyRating } from './TaskCard';
 export { TaskDetailModal } from './TaskDetailModal';
 
 // Onboarding Components
-export { OnboardingResources, OnboardingModal } from '../Onboarding';
+export { default as OnboardingResources } from './OnboardingResources';
+export { OnboardingModal } from '../Onboarding';

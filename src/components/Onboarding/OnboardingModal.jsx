@@ -1,21 +1,45 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Button, StepIndicator } from '../ui';
+import { Button, StepIndicator, Input } from '../ui';
 import slackLogo from '../../assets/slack.webp';
 import './OnboardingModal.css';
 
 const OnboardingModal = () => {
-  const { profile, completeOnboarding } = useAuth();
+  const { profile, completeOnboarding, updateProfile } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
+  const [firstName, setFirstName] = useState(profile?.first_name || '');
+  const [lastName, setLastName] = useState(profile?.last_name || '');
+  const [githubUsername, setGithubUsername] = useState(profile?.github_username || '');
+  const [isSaving, setIsSaving] = useState(false);
 
   // If profile isn't loaded or onboarding is already complete, don't render
   if (!profile || profile.onboarding_completed) return null;
 
-  const handleNext = () => {
-    setStep(prev => prev + 1);
+  const handleNext = async () => {
+    if (step === 1) {
+      if (!firstName.trim() || !lastName.trim() || !githubUsername.trim()) return;
+      
+      setIsSaving(true);
+      try {
+        const { error } = await updateProfile({ 
+          first_name: firstName, 
+          last_name: lastName,
+          github_username: githubUsername
+        });
+        if (error) throw error;
+        setStep(prev => prev + 1);
+      } catch (error) {
+        console.error('Failed to update profile:', error);
+        // Could show an error toast here
+      } finally {
+        setIsSaving(false);
+      }
+    } else {
+      setStep(prev => prev + 1);
+    }
   };
 
   const handleBack = () => {
@@ -82,7 +106,7 @@ const OnboardingModal = () => {
         </div>
       )
     },
-    // Step 1: Purpose
+    // Step 1: Your Details
     {
       content: (
         <div className="onboarding-step-content">
@@ -93,20 +117,37 @@ const OnboardingModal = () => {
           </p>
           
           <h3 className="onboarding-section-title">
-            Your goals:
+            Your details:
           </h3>
 
-          <div className="purpose-grid">
-            <div className="purpose-card">
-              <span className="purpose-icon">🔨</span>
-              <h3>Build problems that stump frontier agents.</h3>
-              <p>Real reasoning. Multi-step execution. No toy problems..</p>
+          <div style={{ marginTop: '32px', textAlign: 'left', maxWidth: '400px', margin: '32px auto 0' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <Input
+                label="First Name"
+                placeholder="e.g. Jane"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                autoFocus
+              />
+              <Input
+                label="Last Name"
+                placeholder="e.g. Doe"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
             </div>
-            <div className="purpose-card">
-              <span className="purpose-icon">💰</span>
-              <h3>Earn payouts</h3>
-              <p>Get paid for every task that gets accepted.</p>
-            </div>
+            
+            <Input
+              label="GitHub Username"
+              placeholder="e.g. janedoe"
+              value={githubUsername}
+              onChange={(e) => setGithubUsername(e.target.value)}
+              helperText="We use this to verify your contributions and link to your GitHub profile."
+            />
+            
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '24px' }}>
+              We use these details to match your profile with our internal systems and process payouts.
+            </p>
           </div>
         </div>
       )
@@ -126,8 +167,8 @@ const OnboardingModal = () => {
             What’s next?
           </h3>
 
-          <div className="next-steps-list" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-            <div className="next-step-card" style={{ cursor: 'default', maxWidth: '480px', textAlign: 'center', alignItems: 'center' }}>
+          <div className="next-steps-list" style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginTop: '20px' }}>
+            <div className="next-step-card" style={{ cursor: 'default', maxWidth: '400px', textAlign: 'center', alignItems: 'center', flex: 1 }}>
               <div className="next-step-icon" style={{ overflow: 'hidden', padding: '0', backgroundColor: 'transparent', width: '64px', height: '64px', marginBottom: '16px' }}>
                 <img 
                   src={slackLogo}
@@ -138,7 +179,7 @@ const OnboardingModal = () => {
               <div className="next-step-content" style={{ marginBottom: '24px' }}>
                 <h4 className="next-step-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Join the Community</h4>
                 <span className="next-step-subtitle" style={{ fontSize: '16px' }}>
-                  Connect with other TerminalBench contributors, Snorkelers, get help with tasks, and stay updated on the latest announcements.
+                  Connect with other TerminalBench contributors and chat with the team.
                 </span>
               </div>
               <Button 
@@ -150,7 +191,34 @@ const OnboardingModal = () => {
                   window.open('https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203', '_blank');
                 }}
               >
-                Join Slack Channel
+                Join Community
+              </Button>
+            </div>
+
+            <div className="next-step-card" style={{ cursor: 'default', maxWidth: '400px', textAlign: 'center', alignItems: 'center', flex: 1 }}>
+              <div className="next-step-icon" style={{ overflow: 'hidden', padding: '0', backgroundColor: 'transparent', width: '64px', height: '64px', marginBottom: '16px' }}>
+                <img 
+                  src={slackLogo}
+                  alt="Slack" 
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              </div>
+              <div className="next-step-content" style={{ marginBottom: '24px' }}>
+                <h4 className="next-step-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Announcements Channel</h4>
+                <span className="next-step-subtitle" style={{ fontSize: '16px' }}>
+                  The single source of truth for important announcements, updates, etc.
+                </span>
+              </div>
+              <Button 
+                variant="secondary"
+                size="lg"
+                style={{ width: '100%' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open('https://snorkel-team.enterprise.slack.com/archives/C0A1WM7EPK4', '_blank');
+                }}
+              >
+                Join Announcements Channel
               </Button>
             </div>
           </div>
@@ -186,7 +254,13 @@ const OnboardingModal = () => {
             )}
             
             {step < steps.length - 1 ? (
-              <Button variant="primary" size="lg" onClick={handleNext}>
+              <Button 
+                variant="primary" 
+                size="lg" 
+                onClick={handleNext}
+                disabled={step === 1 && (!firstName.trim() || !lastName.trim() || !githubUsername.trim())}
+                loading={step === 1 && isSaving}
+              >
                 {step === 0 ? 'Start Onboarding' : 'Next Step'}
               </Button>
             ) : (
