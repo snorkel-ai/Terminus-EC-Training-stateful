@@ -1,12 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePostHog } from 'posthog-js/react';
 import './Videos.css';
 import './Content.css';
 import './Sidebar.css';
 
 function ExpertPlatformWalkthrough() {
   const navigate = useNavigate();
+  const posthog = usePostHog();
   const [activeSection, setActiveSection] = useState('');
+
+  const handleSkeletonDownload = () => {
+    if (posthog) {
+      posthog.capture('skeleton_downloaded', {
+        file_name: 'template-task.zip',
+        file_title: 'Task Skeleton',
+        source: 'walkthrough',
+      });
+    }
+  };
 
   const sections = [
     { id: 'workflow', title: 'Environment Setup and Tasking Workflow' },
@@ -99,6 +111,7 @@ function ExpertPlatformWalkthrough() {
                 <a 
                   href="/Terminus-EC-Training-stateful/template-task.zip" 
                   download="template-task.zip"
+                  onClick={handleSkeletonDownload}
                   style={{
                     display: 'inline-block',
                     backgroundColor: '#1e40af',

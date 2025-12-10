@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom';
 import './DocsSidebar.css';
 
-function DocsSidebar({ sections, currentSlug, onSearchClick, isOpen, onClose }) {
+function DocsSidebar({ sections, currentSlug, onSearchClick, isOpen, onClose, onNavClick }) {
+  const handleNavClick = () => {
+    if (onNavClick) onNavClick();
+    onClose();
+  };
+
   return (
     <>
       {/* Overlay for mobile */}
@@ -37,7 +42,7 @@ function DocsSidebar({ sections, currentSlug, onSearchClick, isOpen, onClose }) 
                     <Link
                       to={`/portal/docs/${item.slug}`}
                       className={`docs-nav-link ${currentSlug === item.slug ? 'docs-nav-link--active' : ''}`}
-                      onClick={onClose}
+                      onClick={handleNavClick}
                     >
                       {item.title}
                     </Link>

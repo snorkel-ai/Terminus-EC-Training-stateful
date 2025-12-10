@@ -1,3 +1,4 @@
+import { usePostHog } from 'posthog-js/react';
 import './PdfDownload.css';
 
 /**
@@ -8,12 +9,27 @@ import './PdfDownload.css';
  */
 
 function PdfDownload({ src, title }) {
+  const posthog = usePostHog();
   const fileName = src.split('/').pop();
   const isNotebook = fileName.endsWith('.ipynb');
   const isZip = fileName.endsWith('.zip');
+  const isSkeleton = fileName.includes('template-task') || fileName.includes('skeleton');
   
   const icon = isNotebook ? '📓' : isZip ? '📦' : '📄';
   const label = isNotebook ? 'Jupyter Notebook' : isZip ? 'ZIP Archive' : 'PDF Document';
+
+  const handleDownloadClick = () => {
+    if (posthog) {
+      // Use specific event for skeleton, generic for other downloads
+      const eventName = isSkeleton ? 'skeleton_downloaded' : 'docs_file_downloaded';
+      posthog.capture(eventName, {
+        file_name: fileName,
+        file_title: title || fileName,
+        file_type: label,
+        source: 'docs',
+      });
+    }
+  };
   
   return (
     <div className="pdf-download">
@@ -28,6 +44,7 @@ function PdfDownload({ src, title }) {
         rel="noopener noreferrer"
         className="pdf-download-button"
         download={isNotebook || isZip ? fileName : undefined}
+        onClick={handleDownloadClick}
       >
         {isNotebook || isZip ? 'Download' : 'View / Download'}
       </a>

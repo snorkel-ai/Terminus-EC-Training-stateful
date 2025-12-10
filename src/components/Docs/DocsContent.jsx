@@ -57,7 +57,7 @@ const CodeBlock = ({ inline, className, children }) => {
   );
 };
 
-function DocsContent({ content, loading, title, prevDoc, nextDoc }) {
+function DocsContent({ content, loading, title, prevDoc, nextDoc, onPaginationClick }) {
   if (loading) {
     return (
       <div className="docs-content-loading">
@@ -156,7 +156,11 @@ function DocsContent({ content, loading, title, prevDoc, nextDoc }) {
       {/* Navigation footer */}
       <nav className="docs-pagination">
         {prevDoc ? (
-          <Link to={`/portal/docs/${prevDoc.slug}`} className="docs-pagination-link docs-pagination-prev">
+          <Link 
+            to={`/portal/docs/${prevDoc.slug}`} 
+            className="docs-pagination-link docs-pagination-prev"
+            onClick={onPaginationClick}
+          >
             <span className="docs-pagination-label">Previous</span>
             <span className="docs-pagination-title">
               <span className="docs-pagination-icon">{prevDoc.icon}</span>
@@ -166,7 +170,11 @@ function DocsContent({ content, loading, title, prevDoc, nextDoc }) {
         ) : <div />}
         
         {nextDoc ? (
-          <Link to={`/portal/docs/${nextDoc.slug}`} className="docs-pagination-link docs-pagination-next">
+          <Link 
+            to={`/portal/docs/${nextDoc.slug}`} 
+            className="docs-pagination-link docs-pagination-next"
+            onClick={onPaginationClick}
+          >
             <span className="docs-pagination-label">Next</span>
             <span className="docs-pagination-title">
               {nextDoc.title}

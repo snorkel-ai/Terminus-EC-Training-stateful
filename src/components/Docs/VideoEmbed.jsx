@@ -1,3 +1,5 @@
+import { useRef, useCallback } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import './VideoEmbed.css';
 
 /**
@@ -9,6 +11,32 @@ import './VideoEmbed.css';
  */
 
 export function VideoEmbed({ src, title }) {
+  const posthog = usePostHog();
+  const hasTrackedStart = useRef(false);
+  const hasTrackedComplete = useRef(false);
+
+  const handlePlay = useCallback(() => {
+    if (posthog && !hasTrackedStart.current) {
+      posthog.capture('docs_video_started', {
+        video_src: src,
+        video_title: title || src,
+        video_type: 'local',
+      });
+      hasTrackedStart.current = true;
+    }
+  }, [posthog, src, title]);
+
+  const handleEnded = useCallback(() => {
+    if (posthog && !hasTrackedComplete.current) {
+      posthog.capture('docs_video_completed', {
+        video_src: src,
+        video_title: title || src,
+        video_type: 'local',
+      });
+      hasTrackedComplete.current = true;
+    }
+  }, [posthog, src, title]);
+
   return (
     <div className="video-embed">
       {title && <h4 className="video-embed-title">{title}</h4>}
@@ -18,6 +46,8 @@ export function VideoEmbed({ src, title }) {
           preload="metadata"
           className="video-embed-player"
           title={title}
+          onPlay={handlePlay}
+          onEnded={handleEnded}
         >
           <source src={src} type="video/mp4" />
           Your browser does not support the video tag.
@@ -28,8 +58,22 @@ export function VideoEmbed({ src, title }) {
 }
 
 export function LoomEmbed({ id, title }) {
+  const posthog = usePostHog();
+  const hasTrackedView = useRef(false);
   const embedUrl = `https://www.loom.com/embed/${id}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`;
   
+  const handleLoad = useCallback(() => {
+    // Track when Loom embed loads (user likely interacting)
+    if (posthog && !hasTrackedView.current) {
+      posthog.capture('docs_video_started', {
+        video_src: id,
+        video_title: title || id,
+        video_type: 'loom',
+      });
+      hasTrackedView.current = true;
+    }
+  }, [posthog, id, title]);
+
   return (
     <div className="video-embed">
       {title && <h4 className="video-embed-title">{title}</h4>}
@@ -40,6 +84,7 @@ export function LoomEmbed({ id, title }) {
           allowFullScreen
           className="video-embed-iframe"
           title={title || 'Loom video'}
+          onLoad={handleLoad}
         />
       </div>
     </div>

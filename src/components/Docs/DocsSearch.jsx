@@ -1,13 +1,16 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import Fuse from 'fuse.js';
 import { getAllDocs, getDocContent } from '../../docs';
 import './DocsSearch.css';
 
 function DocsSearch({ isOpen, onClose, onSelect }) {
+  const posthog = usePostHog();
   const [query, setQuery] = useState('');
   const [searchIndex, setSearchIndex] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
+  const lastTrackedQueryRef = useRef('');
 
   // Build search index from all docs
   useEffect(() => {
@@ -59,6 +62,24 @@ function DocsSearch({ isOpen, onClose, onSelect }) {
     setSelectedIndex(0);
   }, [results.length]);
 
+  // Track search performed (debounced to avoid tracking every keystroke)
+  useEffect(() => {
+    if (query.length < 2 || query === lastTrackedQueryRef.current) return;
+    
+    const timer = setTimeout(() => {
+      if (posthog && query.length >= 2) {
+        posthog.capture('docs_search_performed', {
+          search_query: query,
+          results_count: results.length,
+          has_results: results.length > 0,
+        });
+        lastTrackedQueryRef.current = query;
+      }
+    }, 500); // Wait 500ms after user stops typing
+    
+    return () => clearTimeout(timer);
+  }, [query, results.length, posthog]);
+
   // Focus input when modal opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -87,7 +108,7 @@ function DocsSearch({ isOpen, onClose, onSelect }) {
         case 'Enter':
           e.preventDefault();
           if (results[selectedIndex]) {
-            onSelect(results[selectedIndex].item.slug);
+            onSelect(results[selectedIndex].item.slug, query);
           }
           break;
       }
@@ -139,7 +160,7 @@ function DocsSearch({ isOpen, onClose, onSelect }) {
                 <li key={item.slug}>
                   <button
                     className={`docs-search-result ${index === selectedIndex ? 'docs-search-result--selected' : ''}`}
-                    onClick={() => onSelect(item.slug)}
+                    onClick={() => onSelect(item.slug, query)}
                     onMouseEnter={() => setSelectedIndex(index)}
                   >
                     <span className="docs-search-result-icon">{item.icon}</span>
