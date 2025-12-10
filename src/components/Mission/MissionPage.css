@@ -20,7 +20,7 @@
 .mission-content-container {
   position: relative;
   z-index: 1;
-  max-width: 800px;
+  max-width: 1200px; /* Increased width as requested */
   width: 100%;
   padding: 4rem 2rem;
   margin-top: 2rem;
@@ -44,23 +44,23 @@
 }
 
 .mission-title {
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: var(--font-5xl);
+  font-weight: var(--font-bold);
   background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
   text-align: center;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tracking-tight);
 }
 
 .mission-subtitle {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: var(--font-2xl);
+  font-weight: var(--font-semibold);
   color: var(--text-secondary);
   text-align: center;
   margin-bottom: 3rem;
-  line-height: 1.4;
+  line-height: var(--leading-snug);
 }
 
 .mission-section {
@@ -68,27 +68,27 @@
 }
 
 .mission-text {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: var(--font-lg);
+  line-height: var(--leading-loose);
   color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
 .mission-text.highlight {
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-weight: var(--font-semibold);
+  font-size: var(--font-xl);
   color: var(--accent);
 }
 
 .mission-text.strong {
-  font-weight: 700;
-  font-size: 1.2rem;
+  font-weight: var(--font-bold);
+  font-size: var(--font-xl);
   margin-bottom: 0.5rem;
 }
 
 .mission-text.welcome-message {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--font-xl);
+  font-weight: var(--font-semibold);
   text-align: center;
   margin-top: 2rem;
   color: var(--text-primary);
@@ -97,8 +97,8 @@
 }
 
 .contributions h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--font-xl);
+  font-weight: var(--font-bold);
   margin-bottom: 1rem;
   color: var(--text-primary);
 }
@@ -113,8 +113,8 @@
   position: relative;
   padding-left: 2rem;
   margin-bottom: 1rem;
-  font-size: 1.125rem;
-  line-height: 1.6;
+  font-size: var(--font-lg);
+  line-height: var(--leading-relaxed);
   color: var(--text-primary);
 }
 
@@ -123,8 +123,8 @@
   position: absolute;
   left: 0.5rem;
   color: var(--accent);
-  font-weight: bold;
-  font-size: 1.5rem;
+  font-weight: var(--font-bold);
+  font-size: var(--font-2xl);
   line-height: 1;
 }
 
@@ -149,10 +149,10 @@
   }
   
   .mission-title {
-    font-size: 2.25rem;
+    font-size: var(--font-4xl);
   }
   
   .mission-subtitle {
-    font-size: 1.25rem;
+    font-size: var(--font-xl);
   }
 }
