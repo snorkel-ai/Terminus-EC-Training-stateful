@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Button, Badge, CornerBadge } from './ui';
+import { Button, TaskCard, TaskDetailModal } from './ui';
 import './TaskPreviewSection.css';
 
 const TaskPreviewSection = () => {
@@ -10,6 +10,7 @@ const TaskPreviewSection = () => {
   const [displayTasks, setDisplayTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isShuffling, setIsShuffling] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   useEffect(() => {
     fetchTasks();
@@ -65,8 +66,12 @@ const TaskPreviewSection = () => {
     setDisplayTasks(shuffled.slice(0, 6));
   };
 
-  const handleTaskClick = (taskId) => {
-    navigate(`/portal/task/${taskId}`);
+  const handleTaskClick = (task) => {
+    setSelectedTask(task);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTask(null);
   };
 
   return (
@@ -83,48 +88,16 @@ const TaskPreviewSection = () => {
             <div key={i} className="task-preview-card skeleton"></div>
           ))
         ) : (
-          // Use index as key to keep DOM elements stable for content swap animation
           displayTasks.map((task, index) => (
             <div 
-              key={index} 
-              className={`task-preview-card ${isShuffling ? 'shuffling' : ''}`}
+              key={index}
+              className={`task-preview-card-wrapper ${isShuffling ? 'shuffling' : ''}`}
               style={{ transitionDelay: `${index * 100}ms` }}
-              onClick={() => handleTaskClick(task.id)}
             >
-              <div className="task-preview-card-inner">
-                {task.is_special && (
-                  <CornerBadge>2x</CornerBadge>
-                )}
-                <div className="task-preview-card-header">
-                  <div className="header-badges">
-                  <Badge variant="category">{task.category}</Badge>
-                  </div>
-                </div>
-                
-                <div className="task-preview-divider"></div>
-                
-                <div className="task-preview-body">
-                  <div className="task-header-row">
-                  <h3>{task.subcategory || task.subsubcategory || 'Engineering Task'}</h3>
-                  </div>
-                  <p>{task.description}</p>
-                  
-                  <div className="task-card-footer">
-                    <Badge variant={task.difficulty?.toLowerCase() || 'medium'} size="sm">
-                      {task.difficulty || 'Medium'}
-                    </Badge>
-                    <button 
-                      className="learn-link"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleTaskClick(task.id);
-                      }}
-                    >
-                      <span className="learn-text">Learn more</span> <span className="learn-arrow">→</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <TaskCard
+                task={task}
+                onClick={() => handleTaskClick(task)}
+              />
             </div>
           ))
         )}
@@ -139,6 +112,13 @@ const TaskPreviewSection = () => {
           Browse Task Gallery →
         </Button>
       </div>
+
+      {/* Task Detail Modal - uses design system component */}
+      <TaskDetailModal
+        task={selectedTask}
+        isOpen={!!selectedTask}
+        onClose={handleCloseModal}
+      />
     </section>
   );
 };

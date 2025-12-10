@@ -64,6 +64,18 @@ function UserMenu() {
           <button
             className="user-menu-item"
             onClick={() => {
+              navigate('/portal/my-tasks');
+              setIsOpen(false);
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M2.5 2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5v-11zM3 13h10V3H3v10zm2-2h6v1H5v-1zm0-3h6v1H5V8zm0-3h6v1H5V5z"/>
+            </svg>
+            My tasks
+          </button>
+          <button
+            className="user-menu-item"
+            onClick={() => {
               navigate('/portal/profile');
               setIsOpen(false);
             }}

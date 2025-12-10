@@ -1,0 +1,175 @@
+.mission-page {
+  position: relative;
+  min-height: calc(100vh - 64px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--bg-primary);
+  display: flex;
+  justify-content: center;
+}
+
+.mission-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.mission-content-container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  width: 100%;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+}
+
+.mission-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8rem 5rem 6rem 5rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='light'] .mission-content {
+  background: rgba(255, 255, 255, 0.92);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.06);
+}
+
+.mission-seal-container {
+  display: none;
+}
+
+.mission-seal {
+  display: none;
+}
+
+.mission-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  text-align: left;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.mission-subtitle {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: left;
+  margin-bottom: 4rem;
+  line-height: 1.2; /* Adjusted line height */
+  letter-spacing: -0.03em;
+  padding-bottom: 0.2em; /* Added padding to prevent descender clipping */
+}
+
+.mission-section {
+  margin-bottom: 4rem;
+}
+
+.mission-text {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+}
+
+.mission-text:last-child {
+  margin-bottom: 0;
+}
+
+.mission-text.highlight {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.mission-text.strong {
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.mission-text.welcome-message {
+  font-size: 1.125rem;
+  font-weight: 500;
+  font-style: italic;
+  text-align: left;
+  margin-top: 2rem;
+  color: var(--text-secondary);
+}
+
+.contributions h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.mission-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0 0;
+}
+
+.mission-list li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.mission-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.closing .mission-text {
+  margin-bottom: 0.75rem;
+}
+
+.closing .mission-text.strong {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .mission-content {
+    padding: 6rem 1.5rem 4rem 1.5rem;
+  }
+  
+  .mission-subtitle {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .mission-text {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .mission-section {
+    margin-bottom: 3rem;
+  }
+}

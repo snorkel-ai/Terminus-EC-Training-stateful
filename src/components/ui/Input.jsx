@@ -58,6 +58,8 @@ export function TextArea({
 
 export function SearchInput({ 
   className = '',
+  onClear,
+  value,
   ...props 
 }) {
   return (
@@ -76,12 +78,37 @@ export function SearchInput({
       <input
         type="search"
         className="ui-input ui-search-input"
+        value={value}
         {...props}
       />
+      {value && onClear && (
+        <button
+          type="button"
+          className="ui-search-clear"
+          onClick={onClear}
+          aria-label="Clear search"
+        >
+          <svg 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }
 
 export default Input;
+
+
 
 

@@ -1,0 +1,191 @@
+/* TaskDetailModal - Design System Component */
+
+/* Modal Header */
+.task-detail-modal .task-detail-modal-header {
+  padding-bottom: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+.task-detail-modal .task-detail-modal-header h2 {
+  margin: 0;
+}
+
+.task-detail-modal .modal-badges {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.task-detail-modal .task-breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+.task-detail-modal .breadcrumb-segment {
+  padding: 2px 0;
+}
+
+.task-detail-modal .breadcrumb-segment.parent {
+  color: var(--text-tertiary);
+}
+
+.task-detail-modal .breadcrumb-segment.current {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.task-detail-modal .breadcrumb-separator {
+  margin: 0 6px;
+  color: var(--text-tertiary);
+}
+
+.task-detail-modal h2 {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Navigation Buttons */
+.task-detail-modal .modal-navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.task-detail-modal .modal-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.task-detail-modal .modal-nav-btn:hover:not(:disabled) {
+  color: var(--accent);
+}
+
+.task-detail-modal .modal-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Modal Body */
+.task-detail-modal .task-detail-modal-body {
+  padding: 0 0 var(--space-4) 0;
+}
+
+.task-detail-modal .task-detail-modal-body p {
+  font-size: var(--font-base);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Modal Footer */
+.task-detail-modal .task-detail-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Claim Success State */
+.task-detail-modal .task-claim-success {
+  text-align: center;
+  padding: var(--space-4) var(--space-2);
+  animation: fadeIn 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.task-detail-modal .success-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.task-detail-modal .success-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--color-success, #10b981);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.task-detail-modal .task-claim-success h2 {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.task-detail-modal .task-claim-success p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+  font-size: var(--font-base);
+  line-height: 1.5;
+}
+
+.task-detail-modal .success-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Confetti Animation */
+.task-detail-modal .confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 0;
+  opacity: 0;
+  border-radius: 2px;
+  animation: confetti-fall ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.task-detail-modal .confetti-piece:nth-child(odd) {
+  width: 8px;
+  height: 12px;
+}
+
+.task-detail-modal .confetti-piece:nth-child(3n) {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(400px) translateX(var(--x)) rotate(var(--rotation));
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+

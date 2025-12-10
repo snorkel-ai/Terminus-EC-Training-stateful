@@ -3,26 +3,22 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
+  // Always initialize to light
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    // Check local storage or system preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    }
+    // Enforce light mode on mount and updates
+    // We ignore system preference and local storage for dark mode
+    setTheme('light');
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('theme', 'light');
   }, []);
 
-  useEffect(() => {
-    // Update data-theme attribute on document element
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
+  // Keep toggleTheme as a no-op or forced set to light to prevent errors if used elsewhere
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme('light');
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('theme', 'light');
   };
 
   return (
@@ -33,6 +29,3 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const useTheme = () => useContext(ThemeContext);
-
-
-

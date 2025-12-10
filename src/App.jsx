@@ -3,17 +3,22 @@ import './App.css';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ProgressProvider } from './contexts/ProgressContext';
+import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
-import AuthPage from './components/Auth/AuthPage';
 import Login from './components/Auth/Login';
 import PublicLanding from './components/Landing/PublicLanding';
 import Header from './components/Layout/Header';
 import LandingPage from './components/LandingPage'; // This is now the Portal Dashboard
+import MissionPage from './components/Mission/MissionPage';
 import GuidelineSection from './components/GuidelineSection';
 import Videos from './components/Videos';
 import Workbook from './components/Workbook';
 import OracleTraining from './components/OracleTraining';
 import OnboardingMaterials from './components/OnboardingMaterials';
+import ExpertPlatformOnboarding from './components/ExpertPlatformOnboarding';
+import GitHubOnboarding from './components/GitHubOnboarding';
+import ExpertPlatformWalkthrough from './components/ExpertPlatformWalkthrough';
+import GitHubSubmissionWalkthrough from './components/GitHubSubmissionWalkthrough';
 import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
@@ -25,6 +30,7 @@ import { trainingSections } from './data/trainingData';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import ProfilePage from './components/Profile/ProfilePage';
 import TasksView from './components/Tasks/TasksView';
+import { DocsLayout } from './components/Docs';
 import MySelectedTasks from './components/Tasks/MySelectedTasks';
 import TaskDetail from './components/Tasks/TaskDetail';
 import OnboardingModal from './components/Onboarding/OnboardingModal';
@@ -32,9 +38,10 @@ import OnboardingModal from './components/Onboarding/OnboardingModal';
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <ProgressProvider>
-          <Routes>
+      <ToastProvider>
+        <AuthProvider>
+          <ProgressProvider>
+            <Routes>
             {/* Public Routes */}
             <Route path="/" element={<PublicLanding />} />
             <Route path="/login" element={<Login />} />
@@ -49,6 +56,7 @@ function App() {
                     <Header />
                     <Routes>
                       <Route path="/" element={<LandingPage />} />
+                      <Route path="/overview" element={<MissionPage />} />
                       <Route path="/tasks" element={<TasksView />} />
                       <Route path="/task/:taskId" element={<TaskDetail />} />
                       <Route path="/my-tasks" element={<MySelectedTasks />} />
@@ -58,9 +66,24 @@ function App() {
                       <Route path="/onboarding" element={<OnboardingMaterials />} />
                       <Route path="/environment-setup" element={<EnvironmentSetup />} />
                       <Route path="/local-testing" element={<LocalTestingInfo />} />
+                      <Route path="/expert-platform-onboarding" element={<ExpertPlatformOnboarding />} />
+                      <Route path="/github-onboarding" element={<GitHubOnboarding />} />
+                      <Route path="/expert-platform-walkthrough" element={<ExpertPlatformWalkthrough />} />
+                      <Route path="/github-submission-walkthrough" element={<GitHubSubmissionWalkthrough />} />
                       <Route path="/feedback" element={<FeedbackSlides />} />
                       <Route path="/faq" element={<FAQ />} />
                       <Route path="/glossary" element={<Glossary />} />
+                      <Route path="/docs/*" element={<DocsLayout />} />
+                      
+                      {/* Redirects from old routes to new docs pages */}
+                      <Route path="/docs-platform-onboarding" element={<Navigate to="/portal/docs/onboarding/platform-onboarding" replace />} />
+                      <Route path="/docs-github-onboarding" element={<Navigate to="/portal/docs/onboarding/github-onboarding" replace />} />
+                      <Route path="/docs-platform-submission" element={<Navigate to="/portal/docs/submitting-tasks/platform-submission" replace />} />
+                      <Route path="/docs-github-submission" element={<Navigate to="/portal/docs/submitting-tasks/github-submission" replace />} />
+                      <Route path="/docs-ci-training" element={<Navigate to="/portal/docs/testing-and-validation/ci-feedback-training" replace />} />
+                      <Route path="/docs-oracle-training" element={<Navigate to="/portal/docs/testing-and-validation/oracle-training" replace />} />
+                      <Route path="/docs-faq" element={<Navigate to="/portal/docs/reference/faq" replace />} />
+                      <Route path="/docs-glossary" element={<Navigate to="/portal/docs/reference/glossary" replace />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/admin" element={<AdminDashboard />} />
                       
@@ -83,8 +106,9 @@ function App() {
             {/* Fallback for unknown routes */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </ProgressProvider>
-      </AuthProvider>
+          </ProgressProvider>
+        </AuthProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 }

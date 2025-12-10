@@ -1,0 +1,193 @@
+.task-category-section {
+  margin-bottom: var(--space-8);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.section-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.section-title-group h3 {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.double-pay-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  
+  /* Subtle background override */
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--accent) !important;
+  border: none !important;
+}
+
+
+.section-count {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.explore-all-btn {
+  margin-left: var(--space-2);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.explore-btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.explore-btn-content svg {
+  flex-shrink: 0;
+}
+
+.explore-all-btn:hover {
+  background: var(--bg-secondary);
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.collapse-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.collapse-btn.collapsed {
+  transform: rotate(-90deg);
+}
+
+.section-controls {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.scroll-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scroll-btn:hover {
+  border-color: var(--text-primary);
+  background: var(--bg-secondary);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Grid Layout for "Show All" */
+.tasks-grid-row.show-all {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+}
+
+/* Carousel Layout for Default View */
+.tasks-carousel {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-bottom: var(--space-4); /* Space for scrollbar or shadow */
+  scroll-behavior: smooth;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  margin: 0 -4px; /* Negative margin to accommodate hover shadows */
+  padding: 4px; /* padding to accommodate hover shadows */
+}
+
+.tasks-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  flex: 0 0 350px; /* Fixed width for carousel items */
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.grid-item {
+  min-width: 0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .tasks-grid-row {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: var(--space-4);
+    gap: var(--space-4);
+    scroll-snap-type: x mandatory;
+    grid-template-columns: none;
+  }
+  
+  .carousel-item, .grid-item {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    display: block !important; /* Show all items on mobile scroll */
+  }
+  
+  .section-controls {
+    display: none; /* Hide manual scroll buttons on mobile */
+  }
+  
+  /* Hide scrollbar for cleaner look */
+  .tasks-grid-row::-webkit-scrollbar,
+  .tasks-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .tasks-grid-row, .tasks-carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

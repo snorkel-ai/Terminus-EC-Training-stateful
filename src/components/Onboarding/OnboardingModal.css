@@ -261,14 +261,6 @@
   align-items: center;
 }
 
-/* Position override for skip button - uses Button component */
-.btn-skip-top {
-  position: absolute;
-  top: 60px;
-  right: 60px;
-  z-index: 10;
-}
-
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }

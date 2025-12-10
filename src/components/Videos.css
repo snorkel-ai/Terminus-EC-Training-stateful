@@ -194,7 +194,7 @@
 }
 
 .faq-item:hover {
-  border-color: #2563eb;
+  border-color: #1e40af;
   box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
 }
 
@@ -226,4 +226,3 @@
     font-size: 0.938rem;
   }
 }
-

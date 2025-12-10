@@ -1,0 +1,150 @@
+/* Enhanced Tasks View Layout */
+.tasks-view-enhanced {
+  max-width: 1200px;
+}
+
+/* Search Section */
+.tasks-search-section {
+  margin-bottom: var(--space-6);
+}
+
+.search-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.search-row .task-search-bar {
+  flex: 1;
+}
+
+/* Results Header */
+.tasks-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: none;
+}
+
+.results-count {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Two Column Task Grid */
+.tasks-grid.two-column {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+/* My Tasks Section */
+.my-tasks-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.my-tasks-grid {
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+/* Empty State Enhancement */
+.tasks-empty {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  background: var(--card-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-xl);
+}
+
+.tasks-empty .empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+  color: var(--text-secondary);
+}
+
+.tasks-empty h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.tasks-empty p {
+  margin: 0 0 var(--space-6);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* Tabs Update */
+.tasks-tabs-container {
+  margin-bottom: var(--space-6);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .tasks-grid.two-column {
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 900px) {
+  .tasks-grid.two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .tasks-view-enhanced {
+    padding: var(--space-4);
+  }
+  
+  .search-row {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .search-row .task-search-bar {
+    width: 100%;
+  }
+  
+  .search-row .advanced-search {
+    width: 100%;
+  }
+  
+  .search-row .advanced-search-trigger {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .tasks-results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+}
+
+/* Highlighted search matches */
+.search-highlight {
+  background: rgba(245, 158, 11, 0.25);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .search-highlight {
+  background: rgba(245, 158, 11, 0.3);
+}
+

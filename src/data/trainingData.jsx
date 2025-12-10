@@ -4,9 +4,6 @@ export const trainingSections = [
     title: 'Project Overview',
     content: (
       <>
-        <h2>Terminus Overview</h2>
-        <p>Version 1.0 (Last updated: Oct 23, 2025)</p>
-        
         <h3>Project Goal</h3>
         <p>
           This project aims to develop a high-quality dataset in the style of Terminal-Bench. 

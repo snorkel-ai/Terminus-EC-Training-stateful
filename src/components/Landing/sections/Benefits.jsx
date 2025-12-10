@@ -27,7 +27,7 @@ const Benefits = () => {
 
   return (
     <section id="benefits" className="landing-section">
-      <h2 className="section-title">Why Join TerminalBench?</h2>
+      <h2 className="section-title">You + TerminalBench</h2>
       <div className="benefits-grid">
         {benefits.map((benefit, index) => (
           <div key={index} className="benefit-item">

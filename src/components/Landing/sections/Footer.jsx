@@ -48,7 +48,7 @@ const Footer = () => {
               color: '#86868b', 
               maxWidth: '480px'
             }}>
-              The only thing missing is <b>your expertise</b>.
+              The thing frontier agents are missing: <b>your expertise</b>.
             </p>
           </div>
 
@@ -84,7 +84,7 @@ const Footer = () => {
           </div>
           
           <p style={{ color: '#86868b', fontSize: '0.8rem' }}>
-            &copy; {new Date().getFullYear()} TerminalBench x Snorkel AI. All rights reserved.
+            &copy; {new Date().getFullYear()} Snorkel AI. All rights reserved. TerminalBench is a project of Stanford University and Laude Institute.
           </p>
         </div>
       </div>

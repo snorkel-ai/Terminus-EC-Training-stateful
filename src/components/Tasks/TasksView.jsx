@@ -1,115 +1,116 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import { useTasks, useMySelectedTasks } from '../../hooks/useTasks';
-import { Button, LoadingState, Modal, Badge, Tabs, Tab } from '../ui';
-import TaskFilters from './TaskFilters';
-import TaskTile from './TaskTile';
-import { TaskClaimSuccess } from './TaskClaimSuccess';
+import { useTaskSearch } from '../../hooks/useTaskSearch';
+import { Button, LoadingState, TaskDetailModal } from '../ui';
+import TaskSearchHeader from './TaskSearchHeader';
+import TaskFiltersModal from './TaskFiltersModal';
+import TaskCategorySection from './TaskCategorySection';
+import CategoryExploreView from './CategoryExploreView';
 import './Tasks.css';
+import './TasksViewLayout.css';
 
 function TasksView() {
-  const { tasks, loading, error, selectTask } = useTasks();
-  const { selectedTasks: myTasks, loading: myTasksLoading, unselectTask } = useMySelectedTasks();
-  const [activeTab, setActiveTab] = useState('all');
-  const [filters, setFilters] = useState({
-    category: '',
-    subcategory: '',
-    subsubcategory: '',
-    search: ''
-  });
+  const { tasks, loading, error } = useTasks();
+  const { selectedTasks: myTasks } = useMySelectedTasks();
+  const posthog = usePostHog();
+  const hasTrackedView = useRef(false);
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
-  const [isSelecting, setIsSelecting] = useState(false);
-  const [showClaimSuccess, setShowClaimSuccess] = useState(false);
+  const [modalContextTasks, setModalContextTasks] = useState([]);
+  
+  // Filter Modal State
+  const [filtersModalOpen, setFiltersModalOpen] = useState(false);
 
-  // Filter tasks based on current filters
-  const filteredTasks = useMemo(() => {
-    return tasks.filter(task => {
-      // Hide already selected tasks completely
-      if (task.is_selected) {
-        return false;
+  // Track gallery view once when tasks load
+  useEffect(() => {
+    if (posthog && tasks.length > 0 && !hasTrackedView.current) {
+      posthog.capture('gallery_viewed', {
+        total_tasks: tasks.length,
+        available_tasks: tasks.filter(t => !t.is_selected).length,
+      });
+      hasTrackedView.current = true;
+    }
+  }, [posthog, tasks]);
+
+  // Use the new search hook
+  const {
+    searchQuery,
+    setSearchQuery,
+    filters,
+    setFilters,
+    filteredTasks,
+    suggestions,
+    recentSearches,
+    handleSuggestionSelect,
+    addToRecentSearches,
+    clearSearch
+  } = useTaskSearch(tasks);
+
+  // Scroll to top when filters change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [filters, searchQuery]);
+
+  // Group filtered tasks by category for "grouped" view
+  const groupedTasks = useMemo(() => {
+    const groups = {};
+    filteredTasks.forEach(task => {
+      const category = task.category || 'Uncategorized';
+      if (!groups[category]) {
+        groups[category] = [];
       }
-
-      // Filter by category
-      if (filters.category && task.category !== filters.category) {
-        return false;
-      }
-
-      // Filter by subcategory
-      if (filters.subcategory && task.subcategory !== filters.subcategory) {
-        return false;
-      }
-
-      // Filter by subsubcategory
-      if (filters.subsubcategory && task.subsubcategory !== filters.subsubcategory) {
-        return false;
-      }
-
-      // Filter by search term (search in category, subcategory, and description)
-      if (filters.search) {
-        const searchLower = filters.search.toLowerCase();
-        const matchesCategory = task.category?.toLowerCase().includes(searchLower);
-        const matchesSubcategory = task.subcategory?.toLowerCase().includes(searchLower);
-        const matchesSubsubcategory = task.subsubcategory?.toLowerCase().includes(searchLower);
-        const matchesDescription = task.description?.toLowerCase().includes(searchLower);
-        
-        if (!matchesCategory && !matchesSubcategory && !matchesSubsubcategory && !matchesDescription) {
-          return false;
-        }
-      }
-
-      return true;
+      groups[category].push(task);
     });
-  }, [tasks, filters]);
+    
+    // Sort groups: Prioritized categories first, then by number of tasks
+    return Object.entries(groups).sort((a, b) => {
+      const aHasPriority = a[1].some(t => t.is_special || t.priority_tag);
+      const bHasPriority = b[1].some(t => t.is_special || t.priority_tag);
+      
+      if (aHasPriority && !bHasPriority) return -1;
+      if (!aHasPriority && bHasPriority) return 1;
+      
+      return b[1].length - a[1].length;
+    });
+  }, [filteredTasks]);
 
   // Count total available and claimed tasks (before filtering)
   const totalAvailable = tasks.filter(t => !t.is_selected).length;
   const totalClaimed = tasks.filter(t => t.is_selected).length;
 
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
-  };
-
-  const handleViewDetails = (task) => {
+  const handleViewDetails = (task, contextTasks = []) => {
     setSelectedTaskForModal(task);
-    setShowClaimSuccess(false);
-  };
-
-  const handleViewMyTask = (task) => {
-    setSelectedTaskForModal(task);
-    setShowClaimSuccess(true);
+    setModalContextTasks(contextTasks);
   };
 
   const handleCloseModal = () => {
     setSelectedTaskForModal(null);
-    setShowClaimSuccess(false);
+    setModalContextTasks([]);
   };
 
-  const handleSelectFromModal = async () => {
-    if (!selectedTaskForModal || isSelecting) return;
-    
-    setIsSelecting(true);
-    try {
-      await selectTask(selectedTaskForModal.id);
-      setShowClaimSuccess(true);
-    } catch (error) {
-      console.error('Error selecting task:', error);
-      // Error is handled by useTasks usually, but we could show an alert here
-    } finally {
-      setIsSelecting(false);
-    }
+  const handleNavigateTask = (task) => {
+    setSelectedTaskForModal(task);
   };
 
-  const handleReleaseFromModal = async () => {
-    if (!selectedTaskForModal) return;
-    
-    if (window.confirm('Are you sure you want to release this task?')) {
-      try {
-        await unselectTask(selectedTaskForModal.id);
-        handleCloseModal();
-      } catch (error) {
-        console.error('Error releasing task:', error);
-      }
-    }
+  // Track which category is being explored (for drill-down view)
+  const [exploringCategory, setExploringCategory] = useState(null);
+
+  const handleExplore = (category) => {
+    setExploringCategory(category);
+    // Scroll to top when exploring
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleBackFromExplore = () => {
+    setExploringCategory(null);
+  };
+
+  const activeFilterCount = 
+    (filters.categories?.length || 0) + 
+    (filters.difficulties?.length || 0) + 
+    (filters.priorityOnly ? 1 : 0);
+
+  const hasActiveFilters = searchQuery || activeFilterCount > 0;
 
   if (loading) {
     return (
@@ -141,166 +142,127 @@ function TasksView() {
   }
 
   return (
-    <div className="tasks-view">
+    <div className="tasks-view tasks-gallery">
+      {/* Header */}
       <div className="tasks-header">
-        <h1>Task Inspiration</h1>
-        <p>Browse from {tasks.length} terminal-bench style task prompts</p>
-        <div className="tasks-stats">
-          <span className="stat">
-            <strong>{totalAvailable}</strong> available
-          </span>
-          <span className="stat-separator">•</span>
-          <span className="stat">
-            <strong>{totalClaimed}</strong> claimed
-          </span>
-        </div>
+        <h1>Pick Your Next Challenge.</h1>
+        <p>Real problems frontier models still struggle with. Choose one and start building.</p>
       </div>
 
-      <div className="tasks-tabs-container" style={{ marginBottom: '2rem' }}>
-        <Tabs value={activeTab} onChange={setActiveTab}>
-          <Tab value="all">All Tasks</Tab>
-          <Tab value="mine">
-            My Tasks
-            {myTasks.length > 0 && (
-              <Badge variant="primary" size="sm" style={{ marginLeft: '0.5rem' }}>{myTasks.length}</Badge>
-            )}
-          </Tab>
-        </Tabs>
-      </div>
+      <div className="gallery-container">
+        {/* Search Header */}
+        <TaskSearchHeader
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          suggestions={suggestions}
+          recentSearches={recentSearches}
+          handleSuggestionSelect={handleSuggestionSelect}
+          clearSearch={clearSearch}
+          filters={filters}
+          setFilters={setFilters}
+          onOpenFilters={() => setFiltersModalOpen(true)}
+        />
 
-      {activeTab === 'all' ? (
-        <>
-          <TaskFilters 
-            filters={filters} 
-            onFilterChange={handleFilterChange}
-            tasks={tasks}
-          />
-
-          <div className="tasks-results">
+        <div className="gallery-content">
+          {/* Results Header */}
+          <div className="tasks-results-header">
             <p className="results-count">
-              Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
+              {hasActiveFilters && (
+                <>Found {filteredTasks.length} tasks</>
+              )}
             </p>
-
-            {filteredTasks.length === 0 ? (
-              <div className="tasks-empty">
-                <p>No tasks match your current filters.</p>
-                <Button variant="secondary" onClick={() => handleFilterChange({ category: '', subcategory: '', subsubcategory: '', search: '' })}>
-                  Clear Filters
-                </Button>
-              </div>
-            ) : (
-              <div className="tasks-grid">
-                {filteredTasks.map(task => (
-                  <TaskTile
-                    key={task.id}
-                    task={task}
-                    isSelected={task.is_selected}
-                    isMine={false}
-                    onSelect={() => handleViewDetails(task)}
-                    onUnselect={() => {}}
-                    showActions={true}
-                  />
-                ))}
-              </div>
+            {hasActiveFilters && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => {
+                  clearSearch();
+                  setFilters({
+                    categories: [],
+                    subcategories: [],
+                    difficulties: [],
+                    priorityOnly: false,
+                    search: ''
+                  });
+                }}
+              >
+                Clear all filters
+              </Button>
             )}
           </div>
-        </>
-      ) : (
-        <div className="tasks-results">
-          {myTasksLoading ? (
-            <div className="tasks-loading">
-              <LoadingState message="Loading your tasks..." />
-            </div>
-          ) : myTasks.length === 0 ? (
+
+          {/* Category Explore View or Grouped Sections */}
+          {exploringCategory ? (
+            <CategoryExploreView
+              category={exploringCategory}
+              tasks={filteredTasks.filter(t => t.category === exploringCategory)}
+              onTaskSelect={handleViewDetails}
+              onBack={handleBackFromExplore}
+              searchQuery={searchQuery}
+            />
+          ) : filteredTasks.length === 0 ? (
             <div className="tasks-empty">
-              <p>You haven't claimed any tasks yet.</p>
-              <Button variant="primary" onClick={() => setActiveTab('all')}>
-                Browse Tasks
+              <div className="empty-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </div>
+              <h3>No tasks found</h3>
+              <p>Try adjusting your search or filters to find what you're looking for.</p>
+              <Button 
+                variant="secondary" 
+                onClick={() => {
+                  clearSearch();
+                  setFilters({
+                    categories: [],
+                    subcategories: [],
+                    difficulties: [],
+                    priorityOnly: false,
+                    search: ''
+                  });
+                }}
+              >
+                Clear All Filters
               </Button>
             </div>
           ) : (
-            <div className="tasks-grid">
-              {myTasks.map(task => (
-                <TaskTile
-                  key={task.id}
-                  task={task}
-                  isSelected={true}
-                  isMine={true}
-                  onSelect={() => handleViewMyTask(task)}
-                  onUnselect={async () => {
-                    if (window.confirm('Are you sure you want to release this task?')) {
-                      await unselectTask(task.id);
-                    }
-                  }}
-                  showActions={true}
+            <div className="tasks-grouped-layout">
+              {groupedTasks.map(([category, categoryTasks]) => (
+                <TaskCategorySection
+                  key={category}
+                  title={category}
+                  tasks={categoryTasks}
+                  onTaskSelect={handleViewDetails}
+                  onTaskUnselect={() => {}}
+                  onExplore={handleExplore}
+                  searchQuery={searchQuery}
+                  showAll={filters.categories?.includes(category)}
                 />
               ))}
             </div>
           )}
         </div>
-      )}
+      </div>
 
-      {/* Task Detail Modal */}
-      <Modal
+      {/* Filters Modal */}
+      <TaskFiltersModal
+        isOpen={filtersModalOpen}
+        onClose={() => setFiltersModalOpen(false)}
+        tasks={tasks}
+        filters={filters}
+        onFilterChange={setFilters}
+      />
+
+      {/* Task Detail Modal - uses design system component */}
+      <TaskDetailModal
+        task={selectedTaskForModal}
         isOpen={!!selectedTaskForModal}
         onClose={handleCloseModal}
-        size="lg"
-        className="task-detail-modal"
-      >
-        {selectedTaskForModal && (
-          showClaimSuccess ? (
-            <TaskClaimSuccess 
-              task={selectedTaskForModal} 
-              onClose={handleCloseModal} 
-              onRelease={handleReleaseFromModal}
-            />
-          ) : (
-            <>
-              <div className="task-detail-modal-header">
-                <div className="modal-badges">
-                  {selectedTaskForModal.is_highlighted && (
-                    <Badge variant="priority" size="sm">Priority</Badge>
-                  )}
-                  <Badge variant="category" size="sm">{selectedTaskForModal.category}</Badge>
-                  {selectedTaskForModal.difficulty && (
-                    <Badge variant={selectedTaskForModal.difficulty.toLowerCase()} size="sm">
-                      {selectedTaskForModal.difficulty}
-                    </Badge>
-                  )}
-                </div>
-                <h2>{selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory || 'Engineering Task'}</h2>
-              </div>
-              
-              <div className="task-detail-modal-body">
-                <p>{selectedTaskForModal.description}</p>
-                {/* Add more details if available in the task object */}
-              </div>
-
-              <div className="task-detail-modal-footer">
-                {(selectedTaskForModal.is_special || selectedTaskForModal.priority_tag) && (
-                  <div style={{ marginRight: 'auto' }}>
-                    <Badge variant="accent">Double Pay</Badge>
-                  </div>
-                )}
-                <Button 
-                  variant="secondary" 
-                  onClick={handleCloseModal}
-                  disabled={isSelecting}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  variant="primary" 
-                  onClick={handleSelectFromModal}
-                  loading={isSelecting}
-                >
-                  Select Task
-                </Button>
-              </div>
-            </>
-          )
-        )}
-      </Modal>
+        contextTasks={modalContextTasks}
+        onNavigate={handleNavigateTask}
+        showNavigation={modalContextTasks.length > 1}
+      />
     </div>
   );
 }

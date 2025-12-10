@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './Videos.css';
+import CompletionToggle from './Progress/CompletionToggle';
 
 function FAQ() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function FAQ() {
           
           <div className="faq-item">
             <h2 className="faq-question">3. How do I receive my API keys?</h2>
-            <p className="faq-answer">You should receive an email with your OpenAI API key shortly after joining the project. If you haven't received it within a day or two, please reach out to Connor Young on Slack. You will only need the OpenAI key - our infrastructure will allow you to run Anthropic models using only this key.</p>
+            <p className="faq-answer">You should receive an email with your OpenAI API key shortly after joining the project. If you haven't received it within a day or two, please reach out to Puyun Tafreshi or Alejandro Sanchez on Slack. You will only need the OpenAI key - our infrastructure will allow you to run Anthropic models using only this key.</p>
           </div>
           
           <div className="faq-item">
@@ -48,7 +49,7 @@ function FAQ() {
           
           <div className="faq-item">
             <h2 className="faq-question">7. How do I claim an existing task idea from the sheet?</h2>
-            <p className="faq-answer">To claim a task, please DM Connor Young on Slack with the line number of the task that you would like to claim. Please do not request more than 2-3 tasks at once, you will be capped at this until you have completed one or more of the tasks that you have previously requested.</p>
+            <p className="faq-answer">To claim a task, please DM Puyun Tafreshi or Alejandro Sanchez on Slack with the line number of the task that you would like to claim. Please do not request more than 2-3 tasks at once, you will be capped at this until you have completed one or more of the tasks that you have previously requested.</p>
           </div>
           
           <div className="faq-item">
@@ -66,16 +67,20 @@ function FAQ() {
                 <strong>Make a debugging-style task:</strong> When an agent has to figure out the root cause of an issue, it inherently requires reasoning.
               </li>
               <li style={{ marginBottom: '0.75rem' }}>
-                <strong>Make tasks requiring special/niche knowledge:</strong> Knowledge is publicly available but LLMs have not been well-trained on it due to niche nature. Example: <a href="https://github.com/snorkel-ai/snorkel-tb-tasks/pull/103" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none' }}>Blockchains/NFT task</a>
+                <strong>Make tasks requiring special/niche knowledge:</strong> Knowledge is publicly available but LLMs have not been well-trained on it due to niche nature. Example: <a href="https://github.com/snorkel-ai/snorkel-tb-tasks/pull/103" target="_blank" rel="noopener noreferrer" style={{ color: '#1e40af', textDecoration: 'none' }}>Blockchains/NFT task</a>
               </li>
               <li style={{ marginBottom: '0.75rem' }}>
-                <strong>Use a bespoke rule buried in common rules:</strong> The task.yaml still has to clearly define it, but a bespoke rule seems to confuse an agent. Example: <a href="https://github.com/snorkel-ai/snorkel-tb-tasks/pull/174#discussion_r2497044356" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none' }}>Bespoke rule example</a>
+                <strong>Use a bespoke rule buried in common rules:</strong> The task.yaml still has to clearly define it, but a bespoke rule seems to confuse an agent. Example: <a href="https://github.com/snorkel-ai/snorkel-tb-tasks/pull/174#discussion_r2497044356" target="_blank" rel="noopener noreferrer" style={{ color: '#1e40af', textDecoration: 'none' }}>Bespoke rule example</a>
               </li>
               <li style={{ marginBottom: '0.75rem' }}>
                 <strong>Develop a complex, multi-step task:</strong> Each step has a certain amount of chance that an agent fails, making the overall failure rate higher.
               </li>
             </ul>
           </div>
+        </div>
+
+        <div className="workbook-actions" style={{ marginTop: '2rem' }}>
+          <CompletionToggle itemId="resource-faq" />
         </div>
       </main>
 
@@ -87,4 +92,3 @@ function FAQ() {
 }
 
 export default FAQ;
-

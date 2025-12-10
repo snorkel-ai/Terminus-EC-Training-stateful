@@ -6,6 +6,7 @@ export { Button } from './Button';
 export { Card, CardHeader, CardBody, CardFooter } from './Card';
 export { Input, TextArea, SearchInput } from './Input';
 export { Badge, CornerBadge } from './Badge';
+export { Checkbox } from './Checkbox';
 
 // Feedback
 export { Modal, ModalHeader, ModalBody, ModalFooter } from './Modal';
@@ -13,6 +14,7 @@ export { Spinner, LoadingState } from './Spinner';
 export { Alert } from './Alert';
 export { Note } from './Note';
 export { ProgressBar } from './ProgressBar';
+export { Toast } from './Toast'; // Added Toast export
 
 // Navigation & Layout
 export { Tabs, Tab } from './Tabs';
@@ -28,3 +30,10 @@ export { EmptyState } from './EmptyState';
 export { CodeBlock, CommandBox } from './CodeBlock';
 export { Timer, TimerCompact } from './Timer';
 
+// Task Components
+export { default as TaskCard, DifficultyRating } from './TaskCard';
+export { TaskDetailModal } from './TaskDetailModal';
+
+// Onboarding Components
+export { default as OnboardingResources } from './OnboardingResources';
+export { OnboardingModal } from '../Onboarding';

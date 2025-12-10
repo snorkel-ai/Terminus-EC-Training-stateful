@@ -28,4 +28,3 @@ function GuidelineSection({ section }) {
 }
 
 export default GuidelineSection;
-

@@ -43,13 +43,11 @@
 .ui-modal-lg {
   max-width: 960px;
   padding: 3rem;
-  min-height: 400px;
 }
 
 .ui-modal-xl {
   max-width: 1200px;
   padding: 3.5rem;
-  min-height: 500px;
 }
 
 .ui-modal-full {
@@ -145,5 +143,7 @@
     right: 1rem;
   }
 }
+
+
 
 

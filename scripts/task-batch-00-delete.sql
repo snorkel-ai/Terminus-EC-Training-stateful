@@ -1,1 +1,0 @@
-DELETE FROM task_inspiration;

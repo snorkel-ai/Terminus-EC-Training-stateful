@@ -48,7 +48,7 @@
   gap: 1.5rem;
   margin-bottom: 4rem;
   min-height: 450px;
-  perspective: 1000px; /* Enable 3D perspective */
+  perspective: 1000px;
 }
 
 @media (min-width: 1024px) {
@@ -57,180 +57,39 @@
   }
 }
 
-.task-preview-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 0;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 220px;
-  cursor: pointer;
-  position: relative;
-  
+/* Task Card Wrapper - For shuffle animation */
+.task-preview-card-wrapper {
   /* 3D flip transitions */
-  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease;
   transform-style: preserve-3d;
   transform-origin: center;
   opacity: 1;
-}
-
-.task-preview-card.shuffling {
-  transform: rotateY(90deg) scale(0.95); /* Rotate and slight scale down */
-  opacity: 0; /* Fade out while flipping */
-  pointer-events: none; /* Disable clicks while flipping */
-}
-
-.task-preview-card.skeleton {
-  background: #f3f4f6;
-  animation: pulse 1.5s infinite;
-  border: none;
-  min-height: 220px;
-}
-
-.task-preview-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
-  border-color: #d1d5db;
-  z-index: 1;
-}
-
-.header-badges {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Use design system corner badge with custom radius for preview cards */
-.task-preview-card .ui-corner-badge {
-  --corner-badge-radius: 12px; /* Match card's 12px border-radius */
-}
-
-.task-preview-card-inner {
-  /* Ensure content doesn't flicker during flip */
-  backface-visibility: hidden;
   height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
-.task-preview-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 1.5rem;
+.task-preview-card-wrapper.shuffling {
+  transform: rotateY(90deg) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
 }
 
-.task-preview-divider {
-  height: 1px;
-  background-color: #e5e7eb;
-  width: 100%;
+/* Ensure TaskCard fills the wrapper */
+.task-preview-card-wrapper .task-card {
+  height: 100%;
+  min-height: 280px;
 }
 
-.task-preview-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.task-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.task-preview-card h3 {
-  font-size: 1.125rem;
-  color: #111827;
-  margin-bottom: 0;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-}
-
-.task-preview-card p {
-  font-size: 0.95rem;
-  color: #4b5563;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-clamp: 3;
-}
-
-.task-card-footer {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.learn-link {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--accent);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.2s ease;
-}
-
-.learn-link:hover {
-  color: var(--accent-hover);
-  text-decoration: none;
-}
-
-.learn-link:hover .learn-text {
-  text-decoration: underline;
-}
-
-.learn-arrow {
-  transition: transform 0.2s ease;
-  display: inline-block;
-}
-
-.learn-link:hover .learn-arrow {
-  transform: translateX(4px);
-  text-decoration: none;
-  display: inline-block;
+/* Skeleton loading state */
+.task-preview-card.skeleton {
+  background: var(--bg-secondary);
+  animation: pulse 1.5s infinite;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  min-height: 280px;
 }
 
 .task-preview-footer {
   margin-top: 1rem;
-}
-
-.browse-gallery-btn {
-  background: #0071e3;
-  color: white;
-  border: none;
-  padding: 0.875rem 2rem;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.browse-gallery-btn:hover {
-  background: #0077ed;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes fadeIn {

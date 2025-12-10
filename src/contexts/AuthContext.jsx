@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext({});
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const posthog = usePostHog();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -51,6 +53,16 @@ export const AuthProvider = ({ children }) => {
 
       if (error) throw error;
       setProfile(data);
+      
+      // Identify user in PostHog for analytics
+      if (posthog && data) {
+        posthog.identify(userId, {
+          email: data.email,
+          github_username: data.github_username,
+          name: [data.first_name, data.last_name].filter(Boolean).join(' ') || undefined,
+          created_at: data.created_at,
+        });
+      }
     } catch (error) {
       console.error('Error loading profile:', error);
       setProfile(null);
@@ -63,10 +75,34 @@ export const AuthProvider = ({ children }) => {
 
   const signInWithGitHub = async () => {
     try {
+      // Construct redirect URL - use the current origin and pathname structure
+      // Extract base path from current location
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      let basePath = '';
+      
+      // If we're on localhost with the base path, include it
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Check if path includes the repo name
+        if (pathParts[0] === 'Terminus-EC-Training-stateful') {
+          basePath = '/Terminus-EC-Training-stateful';
+        }
+      } else {
+        // Production: always include base path
+        basePath = '/Terminus-EC-Training-stateful';
+      }
+      
+      const redirectTo = `${window.location.origin}${basePath}/portal`;
+      
+      console.log('🔐 OAuth Debug Info:');
+      console.log('  Current URL:', window.location.href);
+      console.log('  Redirect To:', redirectTo);
+      console.log('  Origin:', window.location.origin);
+      console.log('  Pathname:', window.location.pathname);
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: `${window.location.origin}/portal`,
+          redirectTo: redirectTo,
         },
       });
       if (error) throw error;
@@ -92,11 +128,15 @@ export const AuthProvider = ({ children }) => {
 
   const signUpWithEmail = async (email, password) => {
     try {
+      // Get the base path from the current location
+      const basePath = window.location.pathname.split('/').slice(0, -1).join('/') || '';
+      const emailRedirectTo = `${window.location.origin}${basePath}/portal`;
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/portal`,
+          emailRedirectTo: emailRedirectTo,
         },
       });
       if (error) throw error;
@@ -112,6 +152,11 @@ export const AuthProvider = ({ children }) => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       setProfile(null);
+      
+      // Reset PostHog identity on sign out
+      if (posthog) {
+        posthog.reset();
+      }
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;

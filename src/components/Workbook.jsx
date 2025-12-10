@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import './Workbook.css';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 function Workbook() {
   const navigate = useNavigate();
   
@@ -24,7 +26,7 @@ function Workbook() {
           </p>
           <p>
             <a 
-              href="/Terminus-EC-Training/ci_feedback_training.ipynb" 
+              href={`${baseUrl}ci_feedback_training.ipynb`} 
               download="ci_feedback_training.ipynb"
               className="notebook-download-link"
             >

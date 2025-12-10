@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import './Videos.css';
 import './Workbook.css';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 function OnboardingMaterials() {
   const navigate = useNavigate();
   
@@ -28,7 +30,7 @@ function OnboardingMaterials() {
             <h3>Onboarding Slides</h3>
             <p>Download or view the onboarding presentation slides</p>
             <a 
-              href="/Terminus-EC-Training/Terminus%20EC%20Onboarding.pdf" 
+              href={`${baseUrl}Terminus%20EC%20Onboarding.pdf`} 
               target="_blank"
               rel="noopener noreferrer"
               className="download-button"
@@ -57,7 +59,7 @@ function OnboardingMaterials() {
                   console.error('Video src:', e.target.currentSrc);
                 }}
               >
-                <source src="/Terminus-EC-Training/Onboarding_11-14-2025.mp4" type="video/mp4" />
+                <source src={`${baseUrl}video1251502681.mp4`} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -73,4 +75,3 @@ function OnboardingMaterials() {
 }
 
 export default OnboardingMaterials;
-

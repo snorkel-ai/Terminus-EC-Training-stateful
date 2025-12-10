@@ -1,51 +1,225 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
+const TASKS_CACHE_KEY = 'tasks_cache';
+const TASKS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+// Helper to get cached tasks from localStorage
+const getCachedTasks = () => {
+  try {
+    const cached = localStorage.getItem(TASKS_CACHE_KEY);
+    if (!cached) return null;
+    
+    const { tasks, timestamp } = JSON.parse(cached);
+    const isExpired = Date.now() - timestamp > TASKS_CACHE_TTL;
+    
+    // Return cached data even if expired (we'll refresh in background)
+    return { tasks, isExpired };
+  } catch {
+    return null;
+  }
+};
+
+// Helper to save tasks to localStorage
+const setCachedTasks = (tasks) => {
+  try {
+    localStorage.setItem(TASKS_CACHE_KEY, JSON.stringify({
+      tasks,
+      timestamp: Date.now()
+    }));
+  } catch {
+    // localStorage might be full or disabled
+  }
+};
+
+// Helper to update a single task's selection status in cache
+// Used when claiming/abandoning tasks from other pages
+export const updateTaskCacheSelection = (taskId, isSelected) => {
+  try {
+    const cached = getCachedTasks();
+    if (!cached?.tasks) return;
+    
+    const updatedTasks = cached.tasks.map(t => 
+      t.id === taskId ? { ...t, is_selected: isSelected } : t
+    );
+    setCachedTasks(updatedTasks);
+  } catch {
+    // Ignore cache errors
+  }
+};
+
 export function useTasks() {
   const { user } = useAuth();
+  const posthog = usePostHog();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTaskCount, setActiveTaskCount] = useState(0);
+  const channelRef = useRef(null);
+  const isSubscribedRef = useRef(false);
+  const isFetchingRef = useRef(false);
 
-  useEffect(() => {
-    fetchTasks();
-  }, [user]);
-
-  const fetchTasks = async () => {
+  // Fetch function - updates both state and cache
+  const fetchTasksInternal = async () => {
+    // Prevent duplicate concurrent fetches
+    if (isFetchingRef.current) return null;
+    isFetchingRef.current = true;
+    
     try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch all tasks with their selection status and priorities
+      // IMPORTANT: Supabase defaults to 1000 rows - we need all ~1,446 tasks
       const { data, error: fetchError } = await supabase
         .from('v_tasks_with_priorities')
         .select('*')
         .order('display_order', { ascending: true, nullsFirst: false })
         .order('is_highlighted', { ascending: false })
         .order('category', { ascending: true })
-        .order('subcategory', { ascending: true });
+        .order('subcategory', { ascending: true })
+        .limit(2000); // Increase limit to get all tasks
 
       if (fetchError) throw fetchError;
-
-      setTasks(data || []);
+      
+      const newTasks = data || [];
+      setTasks(newTasks);
+      setCachedTasks(newTasks); // Update cache
+      setError(null);
+      return newTasks;
     } catch (err) {
       console.error('Error fetching tasks:', err);
       setError(err.message);
+      return null;
     } finally {
-      setLoading(false);
+      isFetchingRef.current = false;
     }
+  };
+
+  // Initial fetch and user-dependent data
+  useEffect(() => {
+    const initialFetch = async () => {
+      // Stale-while-revalidate:
+      // 1. Show cached data immediately (no loader)
+      // 2. Fetch fresh data in background
+      const cachedData = getCachedTasks();
+      
+      if (cachedData?.tasks?.length) {
+        // Show cache instantly - no loading spinner
+        setTasks(cachedData.tasks);
+        setLoading(false);
+        
+        // Fetch fresh in background
+        fetchTasksInternal();
+      } else {
+        // No cache - show loader and wait for fetch
+        setLoading(true);
+        await fetchTasksInternal();
+        setLoading(false);
+      }
+    };
+    
+    initialFetch();
+    
+    if (user) {
+      fetchActiveTaskCount();
+    }
+  }, [user]);
+
+  // Separate effect for realtime subscription - runs once on mount
+  useEffect(() => {
+    // Prevent duplicate subscriptions (React StrictMode)
+    if (isSubscribedRef.current) return;
+    isSubscribedRef.current = true;
+
+    // Subscribe to realtime changes on selected_tasks
+    // This updates the task list when ANY user claims/unclaims a task
+    const channel = supabase
+      .channel('tasks_realtime_' + Date.now()) // Unique channel name
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'selected_tasks' },
+        (payload) => {
+          // Update just the affected task locally (no refetch needed!)
+          // This is much faster than fetching all 1,446 tasks
+          if (payload.eventType === 'INSERT' && payload.new?.task_id) {
+            setTasks(prev => {
+              const updated = prev.map(t => 
+                t.id === payload.new.task_id 
+                  ? { ...t, is_selected: true } 
+                  : t
+              );
+              setCachedTasks(updated); // Keep cache in sync
+              return updated;
+            });
+          } else if (payload.eventType === 'DELETE' && payload.old?.task_id) {
+            setTasks(prev => {
+              const updated = prev.map(t => 
+                t.id === payload.old.task_id 
+                  ? { ...t, is_selected: false } 
+                  : t
+              );
+              setCachedTasks(updated); // Keep cache in sync
+              return updated;
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    channelRef.current = channel;
+
+    // Cleanup subscription on unmount
+    return () => {
+      isSubscribedRef.current = false;
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
+    };
+  }, []); // Empty deps - only run once
+
+  const fetchActiveTaskCount = async () => {
+    if (!user) {
+      setActiveTaskCount(0);
+      return;
+    }
+    
+    try {
+      // Get count of active tasks (claimed or in_progress)
+      const { data, error: countError } = await supabase
+        .from('selected_tasks')
+        .select('status')
+        .eq('user_id', user.id)
+        .in('status', ['claimed', 'in_progress']);
+      
+      if (countError) throw countError;
+      setActiveTaskCount(data?.length || 0);
+    } catch (err) {
+      console.error('Error fetching active task count:', err);
+    }
+  };
+
+  // Public refetch function that shows loading state
+  const fetchTasks = async () => {
+    setLoading(true);
+    await fetchTasksInternal();
+    setLoading(false);
   };
 
   const selectTask = async (taskId) => {
     if (!user) throw new Error('User not authenticated');
+
+    // Check claim limit before attempting
+    if (activeTaskCount >= MAX_ACTIVE_TASKS) {
+      throw new Error(`You can only have up to ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review or complete them to claim more.`);
+    }
 
     try {
       const { error: insertError } = await supabase
         .from('selected_tasks')
         .insert({
           user_id: user.id,
-          task_id: taskId
+          task_id: taskId,
+          status: 'claimed'
         });
 
       if (insertError) {
@@ -53,22 +227,40 @@ export function useTasks() {
         if (insertError.code === '23505') {
           throw new Error('This task has already been selected by another user');
         }
+        // Check for claim limit error from database trigger
+        if (insertError.code === 'P0001') {
+          throw new Error(insertError.message);
+        }
         throw insertError;
       }
 
-      // Optimistically update local state
+      // Optimistically update local state and cache
       const now = new Date().toISOString();
-      setTasks(prevTasks => 
-        prevTasks.map(t => 
+      const claimedTask = tasks.find(t => t.id === taskId);
+      setTasks(prevTasks => {
+        const updated = prevTasks.map(t => 
           t.id === taskId ? { ...t, is_selected: true, selected_at: now } : t
-        )
-      );
+        );
+        setCachedTasks(updated);
+        return updated;
+      });
+      setActiveTaskCount(prev => prev + 1);
+
+      // Track task claimed event
+      if (posthog && claimedTask) {
+        posthog.capture('task_claimed', {
+          task_id: taskId,
+          category: claimedTask.category,
+          subcategory: claimedTask.subcategory,
+        });
+      }
 
       return true;
     } catch (err) {
       console.error('Error selecting task:', err);
       // Revert optimistic update on error
       await fetchTasks();
+      await fetchActiveTaskCount();
       throw err;
     }
   };
@@ -84,12 +276,14 @@ export function useTasks() {
 
       if (deleteError) throw deleteError;
 
-      // Optimistically update local state
-      setTasks(prevTasks => 
-        prevTasks.map(t => 
+      // Optimistically update local state and cache
+      setTasks(prevTasks => {
+        const updated = prevTasks.map(t => 
           t.id === taskId ? { ...t, is_selected: false } : t
-        )
-      );
+        );
+        setCachedTasks(updated);
+        return updated;
+      });
 
       return true;
     } catch (err) {
@@ -104,21 +298,71 @@ export function useTasks() {
     tasks,
     loading,
     error,
+    activeTaskCount,
+    canClaimMore: activeTaskCount < MAX_ACTIVE_TASKS,
     refetch: fetchTasks,
+    refetchActiveCount: fetchActiveTaskCount,
     selectTask,
     unselectTask
   };
 }
 
+// Task status constants
+export const TASK_STATUS = {
+  CLAIMED: 'claimed',
+  IN_PROGRESS: 'in_progress',
+  WAITING_REVIEW: 'waiting_review',
+  ACCEPTED: 'accepted'
+};
+
+// Status display labels
+export const TASK_STATUS_LABELS = {
+  [TASK_STATUS.CLAIMED]: 'Claimed',
+  [TASK_STATUS.IN_PROGRESS]: 'In Progress',
+  [TASK_STATUS.WAITING_REVIEW]: 'Waiting on Review',
+  [TASK_STATUS.ACCEPTED]: 'Accepted'
+};
+
+// Max active tasks (claimed or in_progress) a user can have
+export const MAX_ACTIVE_TASKS = 3;
+
 export function useMySelectedTasks() {
   const { user } = useAuth();
+  const posthog = usePostHog();
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTaskCount, setActiveTaskCount] = useState(0);
+  const channelRef = useRef(null);
 
   useEffect(() => {
     if (user) {
       fetchMySelectedTasks();
+
+      // Subscribe to realtime changes for this user's tasks
+      // This keeps the "My Tasks" page in sync with any changes
+      channelRef.current = supabase
+        .channel(`my_tasks_${user.id}`)
+        .on(
+          'postgres_changes',
+          { 
+            event: '*', 
+            schema: 'public', 
+            table: 'selected_tasks',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            // Refetch user's tasks on any change
+            setTimeout(() => fetchMySelectedTasks(), 100);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        if (channelRef.current) {
+          supabase.removeChannel(channelRef.current);
+        }
+      };
     }
   }, [user]);
 
@@ -127,19 +371,26 @@ export function useMySelectedTasks() {
       setLoading(true);
       setError(null);
 
-      // Get user's task IDs first (including first_commit_at)
+      // Get user's task IDs with all workflow fields
       const { data: selections, error: selectError } = await supabase
         .from('selected_tasks')
-        .select('task_id, selected_at, first_commit_at')
+        .select('task_id, selected_at, first_commit_at, completed_at, status, started_at, submitted_for_review_at')
         .eq('user_id', user.id);
 
       if (selectError) throw selectError;
 
       if (!selections || selections.length === 0) {
         setSelectedTasks([]);
+        setActiveTaskCount(0);
         setLoading(false);
         return;
       }
+
+      // Calculate active task count (claimed or in_progress)
+      const activeCount = selections.filter(s => 
+        s.status === TASK_STATUS.CLAIMED || s.status === TASK_STATUS.IN_PROGRESS
+      ).length;
+      setActiveTaskCount(activeCount);
 
       const taskIds = selections.map(s => s.task_id);
 
@@ -151,15 +402,31 @@ export function useMySelectedTasks() {
 
       if (fetchError) throw fetchError;
 
-      // Add selected_at and first_commit_at timestamps to each task
+      // Add workflow fields to each task
       const formattedData = data?.map(task => {
         const selection = selections.find(s => s.task_id === task.id);
         return {
           ...task,
           selected_at: selection?.selected_at,
-          first_commit_at: selection?.first_commit_at
+          first_commit_at: selection?.first_commit_at,
+          completed_at: selection?.completed_at,
+          status: selection?.status || TASK_STATUS.CLAIMED,
+          started_at: selection?.started_at,
+          submitted_for_review_at: selection?.submitted_for_review_at
         };
-      }).sort((a, b) => new Date(b.selected_at) - new Date(a.selected_at)) || [];
+      }).sort((a, b) => {
+        // Sort by status priority, then selection date
+        const statusOrder = {
+          [TASK_STATUS.IN_PROGRESS]: 0,
+          [TASK_STATUS.CLAIMED]: 1,
+          [TASK_STATUS.WAITING_REVIEW]: 2,
+          [TASK_STATUS.ACCEPTED]: 3
+        };
+        if (statusOrder[a.status] !== statusOrder[b.status]) {
+          return statusOrder[a.status] - statusOrder[b.status];
+        }
+        return new Date(b.selected_at) - new Date(a.selected_at);
+      }) || [];
 
       setSelectedTasks(formattedData);
     } catch (err) {
@@ -174,6 +441,9 @@ export function useMySelectedTasks() {
     if (!user) throw new Error('User not authenticated');
 
     try {
+      // Find the task first to check its status
+      const taskToRemove = selectedTasks.find(t => t.id === taskId);
+      
       const { error: deleteError } = await supabase
         .from('selected_tasks')
         .delete()
@@ -184,6 +454,17 @@ export function useMySelectedTasks() {
       // Optimistically update local state
       setSelectedTasks(prev => prev.filter(t => t.id !== taskId));
 
+      // Update Task Gallery cache so abandoned task appears immediately
+      updateTaskCacheSelection(taskId, false);
+
+      // Update active task count if the removed task was active
+      if (taskToRemove && (
+          taskToRemove.status === TASK_STATUS.CLAIMED || 
+          taskToRemove.status === TASK_STATUS.IN_PROGRESS
+      )) {
+        setActiveTaskCount(prev => Math.max(0, prev - 1));
+      }
+
       return true;
     } catch (err) {
       console.error('Error unselecting task:', err);
@@ -192,6 +473,105 @@ export function useMySelectedTasks() {
       throw err;
     }
   };
+
+  // Update task status with proper workflow transitions
+  const updateTaskStatus = async (taskId, newStatus) => {
+    if (!user) throw new Error('User not authenticated');
+
+    try {
+      const now = new Date().toISOString();
+      const updateData = { status: newStatus };
+      const task = selectedTasks.find(t => t.id === taskId);
+      
+      // Set appropriate timestamp based on new status
+      if (newStatus === TASK_STATUS.IN_PROGRESS) {
+        updateData.started_at = now;
+      } else if (newStatus === TASK_STATUS.WAITING_REVIEW) {
+        updateData.submitted_for_review_at = now;
+      } else if (newStatus === TASK_STATUS.ACCEPTED) {
+        updateData.completed_at = now;
+      }
+      
+      const { error: updateError } = await supabase
+        .from('selected_tasks')
+        .update(updateData)
+        .match({ user_id: user.id, task_id: taskId });
+
+      if (updateError) throw updateError;
+
+      // Track task status change events
+      if (posthog && task) {
+        const eventName = {
+          [TASK_STATUS.IN_PROGRESS]: 'task_started',
+          [TASK_STATUS.WAITING_REVIEW]: 'task_submitted_for_review',
+          [TASK_STATUS.ACCEPTED]: 'task_accepted',
+        }[newStatus];
+        
+        if (eventName) {
+          posthog.capture(eventName, {
+            task_id: taskId,
+            category: task.category,
+            subcategory: task.subcategory,
+          });
+        }
+      }
+
+      // Optimistically update local state
+      setSelectedTasks(prev => {
+        const updated = prev.map(task => 
+          task.id === taskId ? { ...task, ...updateData } : task
+        );
+        // Re-sort by status priority
+        const statusOrder = {
+          [TASK_STATUS.IN_PROGRESS]: 0,
+          [TASK_STATUS.CLAIMED]: 1,
+          [TASK_STATUS.WAITING_REVIEW]: 2,
+          [TASK_STATUS.ACCEPTED]: 3
+        };
+        return updated.sort((a, b) => {
+          if (statusOrder[a.status] !== statusOrder[b.status]) {
+            return statusOrder[a.status] - statusOrder[b.status];
+          }
+          return new Date(b.selected_at) - new Date(a.selected_at);
+        });
+      });
+
+      // Update active task count
+      if (newStatus === TASK_STATUS.WAITING_REVIEW || newStatus === TASK_STATUS.ACCEPTED) {
+        setActiveTaskCount(prev => Math.max(0, prev - 1));
+      } else if (newStatus === TASK_STATUS.CLAIMED || newStatus === TASK_STATUS.IN_PROGRESS) {
+        // This would only happen if reopening a task
+        setActiveTaskCount(prev => prev + 1);
+      }
+
+      return true;
+    } catch (err) {
+      console.error('Error updating task status:', err);
+      await fetchMySelectedTasks();
+      throw err;
+    }
+  };
+
+  // Convenience methods for status transitions
+  const startTask = (taskId) => updateTaskStatus(taskId, TASK_STATUS.IN_PROGRESS);
+  const submitForReview = (taskId) => updateTaskStatus(taskId, TASK_STATUS.WAITING_REVIEW);
+  const acceptTask = (taskId) => updateTaskStatus(taskId, TASK_STATUS.ACCEPTED);
+  
+  // Re-open a task (from waiting_review back to in_progress)
+  const reopenTask = async (taskId) => {
+    if (!user) throw new Error('User not authenticated');
+    
+    // Check if user can have more active tasks
+    if (activeTaskCount >= MAX_ACTIVE_TASKS) {
+      throw new Error(`You can only have up to ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review or wait for acceptance to free up slots.`);
+    }
+    
+    return updateTaskStatus(taskId, TASK_STATUS.IN_PROGRESS);
+  };
+
+  // Legacy methods for backward compatibility
+  const completeTask = acceptTask;
+  const uncompleteTask = reopenTask;
 
   const markFirstCommit = async (taskId) => {
     if (!user) throw new Error('User not authenticated');
@@ -225,8 +605,19 @@ export function useMySelectedTasks() {
     selectedTasks,
     loading,
     error,
+    activeTaskCount,
+    canClaimMore: activeTaskCount < MAX_ACTIVE_TASKS,
     refetch: fetchMySelectedTasks,
     unselectTask,
-    markFirstCommit
+    markFirstCommit,
+    // New workflow methods
+    startTask,
+    submitForReview,
+    acceptTask,
+    reopenTask,
+    updateTaskStatus,
+    // Legacy methods (for backward compatibility)
+    completeTask,
+    uncompleteTask
   };
 }

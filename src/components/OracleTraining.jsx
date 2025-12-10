@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import './Videos.css';
 import './Workbook.css';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 function OracleTraining() {
   const navigate = useNavigate();
   
@@ -30,7 +32,7 @@ function OracleTraining() {
             <h3>Oracle Agent Training Notebook</h3>
             <p>Download the Jupyter notebook for hands-on practice with the Oracle Agent</p>
             <a 
-              href="/Terminus-EC-Training/oracle_agent_training.ipynb" 
+              href={`${baseUrl}oracle_agent_training.ipynb`} 
               download="oracle_agent_training.ipynb"
               className="download-button"
             >
