@@ -4,11 +4,11 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
-import AuthPage from './components/Auth/AuthPage';
 import Login from './components/Auth/Login';
 import PublicLanding from './components/Landing/PublicLanding';
 import Header from './components/Layout/Header';
 import LandingPage from './components/LandingPage'; // This is now the Portal Dashboard
+import MissionPage from './components/Mission/MissionPage';
 import GuidelineSection from './components/GuidelineSection';
 import Videos from './components/Videos';
 import Workbook from './components/Workbook';
@@ -50,6 +50,7 @@ function App() {
                     <Header />
                     <Routes>
                       <Route path="/" element={<LandingPage />} />
+                      <Route path="/overview" element={<MissionPage />} />
                       <Route path="/tasks" element={<TasksView />} />
                       <Route path="/task/:taskId" element={<TaskDetail />} />
                       <Route path="/my-tasks" element={<MySelectedTasks />} />
