@@ -4,7 +4,7 @@ globs:
 alwaysApply: true
 ---
 
-Never hallucinate an API key. Instead, always use the API key populated in the .env file.
+Never hallucinate an API key. Instead, always use the API key populated in the .env.local file.
 
 # Feature flags
 
