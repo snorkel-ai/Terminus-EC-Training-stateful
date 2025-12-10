@@ -2,6 +2,53 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
+const TASKS_CACHE_KEY = 'tasks_cache';
+const TASKS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+// Helper to get cached tasks from localStorage
+const getCachedTasks = () => {
+  try {
+    const cached = localStorage.getItem(TASKS_CACHE_KEY);
+    if (!cached) return null;
+    
+    const { tasks, timestamp } = JSON.parse(cached);
+    const isExpired = Date.now() - timestamp > TASKS_CACHE_TTL;
+    
+    // Return cached data even if expired (we'll refresh in background)
+    return { tasks, isExpired };
+  } catch {
+    return null;
+  }
+};
+
+// Helper to save tasks to localStorage
+const setCachedTasks = (tasks) => {
+  try {
+    localStorage.setItem(TASKS_CACHE_KEY, JSON.stringify({
+      tasks,
+      timestamp: Date.now()
+    }));
+  } catch {
+    // localStorage might be full or disabled
+  }
+};
+
+// Helper to update a single task's selection status in cache
+// Used when claiming/abandoning tasks from other pages
+export const updateTaskCacheSelection = (taskId, isSelected) => {
+  try {
+    const cached = getCachedTasks();
+    if (!cached?.tasks) return;
+    
+    const updatedTasks = cached.tasks.map(t => 
+      t.id === taskId ? { ...t, is_selected: isSelected } : t
+    );
+    setCachedTasks(updatedTasks);
+  } catch {
+    // Ignore cache errors
+  }
+};
+
 export function useTasks() {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
@@ -10,34 +57,64 @@ export function useTasks() {
   const [activeTaskCount, setActiveTaskCount] = useState(0);
   const channelRef = useRef(null);
   const isSubscribedRef = useRef(false);
+  const isFetchingRef = useRef(false);
 
-  // Fetch function - not memoized, uses refs to avoid stale closures
+  // Fetch function - updates both state and cache
   const fetchTasksInternal = async () => {
+    // Prevent duplicate concurrent fetches
+    if (isFetchingRef.current) return null;
+    isFetchingRef.current = true;
+    
     try {
+      // IMPORTANT: Supabase defaults to 1000 rows - we need all ~1,446 tasks
       const { data, error: fetchError } = await supabase
         .from('v_tasks_with_priorities')
         .select('*')
         .order('display_order', { ascending: true, nullsFirst: false })
         .order('is_highlighted', { ascending: false })
         .order('category', { ascending: true })
-        .order('subcategory', { ascending: true });
+        .order('subcategory', { ascending: true })
+        .limit(2000); // Increase limit to get all tasks
 
       if (fetchError) throw fetchError;
-      setTasks(data || []);
+      
+      const newTasks = data || [];
+      setTasks(newTasks);
+      setCachedTasks(newTasks); // Update cache
       setError(null);
+      return newTasks;
     } catch (err) {
       console.error('Error fetching tasks:', err);
       setError(err.message);
+      return null;
+    } finally {
+      isFetchingRef.current = false;
     }
   };
 
   // Initial fetch and user-dependent data
   useEffect(() => {
     const initialFetch = async () => {
-      setLoading(true);
-      await fetchTasksInternal();
-      setLoading(false);
+      // Stale-while-revalidate:
+      // 1. Show cached data immediately (no loader)
+      // 2. Fetch fresh data in background
+      const cachedData = getCachedTasks();
+      
+      if (cachedData?.tasks?.length) {
+        // Show cache instantly - no loading spinner
+        setTasks(cachedData.tasks);
+        setLoading(false);
+        
+        // Fetch fresh in background
+        fetchTasksInternal();
+      } else {
+        // No cache - show loader and wait for fetch
+        setLoading(true);
+        await fetchTasksInternal();
+        setLoading(false);
+      }
     };
+    
     initialFetch();
     
     if (user) {
@@ -59,14 +136,32 @@ export function useTasks() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'selected_tasks' },
         (payload) => {
-          console.log('🔄 Task change detected:', payload.eventType);
-          // Refetch tasks to get updated selection status
-          setTimeout(() => fetchTasksInternal(), 100);
+          // Update just the affected task locally (no refetch needed!)
+          // This is much faster than fetching all 1,446 tasks
+          if (payload.eventType === 'INSERT' && payload.new?.task_id) {
+            setTasks(prev => {
+              const updated = prev.map(t => 
+                t.id === payload.new.task_id 
+                  ? { ...t, is_selected: true } 
+                  : t
+              );
+              setCachedTasks(updated); // Keep cache in sync
+              return updated;
+            });
+          } else if (payload.eventType === 'DELETE' && payload.old?.task_id) {
+            setTasks(prev => {
+              const updated = prev.map(t => 
+                t.id === payload.old.task_id 
+                  ? { ...t, is_selected: false } 
+                  : t
+              );
+              setCachedTasks(updated); // Keep cache in sync
+              return updated;
+            });
+          }
         }
       )
-      .subscribe((status) => {
-        console.log('📡 Realtime status:', status);
-      });
+      .subscribe();
 
     channelRef.current = channel;
 
@@ -137,13 +232,15 @@ export function useTasks() {
         throw insertError;
       }
 
-      // Optimistically update local state
+      // Optimistically update local state and cache
       const now = new Date().toISOString();
-      setTasks(prevTasks => 
-        prevTasks.map(t => 
+      setTasks(prevTasks => {
+        const updated = prevTasks.map(t => 
           t.id === taskId ? { ...t, is_selected: true, selected_at: now } : t
-        )
-      );
+        );
+        setCachedTasks(updated);
+        return updated;
+      });
       setActiveTaskCount(prev => prev + 1);
 
       return true;
@@ -167,12 +264,14 @@ export function useTasks() {
 
       if (deleteError) throw deleteError;
 
-      // Optimistically update local state
-      setTasks(prevTasks => 
-        prevTasks.map(t => 
+      // Optimistically update local state and cache
+      setTasks(prevTasks => {
+        const updated = prevTasks.map(t => 
           t.id === taskId ? { ...t, is_selected: false } : t
-        )
-      );
+        );
+        setCachedTasks(updated);
+        return updated;
+      });
 
       return true;
     } catch (err) {
@@ -341,6 +440,9 @@ export function useMySelectedTasks() {
 
       // Optimistically update local state
       setSelectedTasks(prev => prev.filter(t => t.id !== taskId));
+
+      // Update Task Gallery cache so abandoned task appears immediately
+      updateTaskCacheSelection(taskId, false);
 
       // Update active task count if the removed task was active
       if (taskToRemove && (
