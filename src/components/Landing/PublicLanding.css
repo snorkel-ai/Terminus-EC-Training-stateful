@@ -542,12 +542,82 @@
 
 /* Example Tasks */
 .tasks-section {
-  overflow: visible; /* Changed from hidden to allow content to show */
+  overflow: hidden;
 }
 
+/* Perspective Grid Container */
+.tasks-perspective-container {
+  position: relative;
+  perspective: 1200px;
+  perspective-origin: 50% 0%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  overflow: hidden;
+}
+
+.tasks-perspective-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  transform: rotateX(35deg) translateZ(0);
+  transform-style: preserve-3d;
+  padding: 2rem 0 6rem;
+}
+
+/* Wrapper for TaskCard in the perspective grid */
+.tasks-perspective-grid .task-card-wrapper {
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: floatIn 0.8s ease-out backwards;
+  animation-delay: calc(var(--index) * 0.05s);
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tasks-perspective-grid .task-card {
+  height: 100%;
+  min-height: 200px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--card-bg);
+}
+
+.tasks-perspective-grid .task-card:hover {
+  transform: translateY(-8px) translateZ(20px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border-color: var(--accent);
+  z-index: 10;
+}
+
+/* Compact cards for perspective view */
+.tasks-perspective-grid .task-card-description {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Fade overlay at bottom */
+.tasks-fade-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);
+  pointer-events: none;
+}
+
+/* Legacy static grid - keep for fallback */
 .tasks-container {
   position: relative;
-  /* Removed fixed height and mask for static grid */
   height: auto;
   overflow: visible;
   padding: 0 2rem;
@@ -563,12 +633,10 @@
   padding: 2rem 0;
 }
 
-/* Original fade styles kept but unused for now or can be removed */
 .tasks-grid-fade {
-  display: none; /* Hide old scrolling grid */
+  display: none;
 }
 
-/* Wrapper for TaskCard in the grid */
 .task-card-wrapper {
   height: 100%;
 }
@@ -587,17 +655,46 @@
 }
 
 .fade-overlay {
-  display: none; /* Hide overlay */
+  display: none;
 }
 
-/* Responsive */
+/* Responsive - Perspective Grid */
+@media (max-width: 1200px) {
+  .tasks-perspective-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
+  .tasks-perspective-container {
+    perspective: none;
+  }
+  
+  .tasks-perspective-grid {
+    grid-template-columns: repeat(2, 1fr);
+    transform: none;
+    padding: 1rem 0 4rem;
+  }
+  
+  .tasks-fade-overlay {
+    height: 120px;
+  }
+  
   .tasks-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
+  .tasks-perspective-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .tasks-perspective-container {
+    padding: 0 1rem;
+  }
+  
   .tasks-grid {
     grid-template-columns: 1fr;
   }
