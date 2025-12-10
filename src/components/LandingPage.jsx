@@ -21,9 +21,9 @@ function LandingPage() {
           </section>
 
         <Alert variant="warning" className="announcement-banner">
-          <strong>PLEASE DO NOT REACH OUT TO REVIEWERS DIRECTLY.</strong>
-          <div style={{ marginTop: '0.5rem' }}>
-            Reviews will be performed ASAP and messaging them will not increase the speed at which your submission is reviewed.
+          <strong>Important: Review Process</strong>
+          <div style={{ marginTop: '0.25rem', color: 'var(--text-secondary)' }}>
+            Please do not reach out to reviewers directly. Reviews will be performed ASAP and messaging them will not increase the speed of review.
           </div>
         </Alert>
 
