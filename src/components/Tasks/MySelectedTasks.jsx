@@ -182,11 +182,8 @@ function MySelectedTasks() {
     setIsActioning(true);
     try {
       await startTask(selectedTaskForModal.id);
-      setSelectedTaskForModal(prev => prev ? { 
-        ...prev, 
-        status: TASK_STATUS.IN_PROGRESS,
-        started_at: new Date().toISOString() 
-      } : null);
+      // Close the modal after starting - user can reopen when ready to submit
+      handleCloseModal();
     } catch (err) {
       console.error('Error starting task:', err);
       alert(err.message);
@@ -201,11 +198,8 @@ function MySelectedTasks() {
     setIsActioning(true);
     try {
       await submitForReview(selectedTaskForModal.id);
-      setSelectedTaskForModal(prev => prev ? { 
-        ...prev, 
-        status: TASK_STATUS.WAITING_REVIEW,
-        submitted_for_review_at: new Date().toISOString() 
-      } : null);
+      // Close the modal after submitting - task moves to "In Review" tab
+      handleCloseModal();
     } catch (err) {
       console.error('Error submitting task for review:', err);
       alert(err.message);
