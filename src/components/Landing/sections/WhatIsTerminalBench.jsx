@@ -9,7 +9,7 @@ const WhatIsTerminalBench = () => {
           TerminalBench is a platform where developers complete real engineering tasks to benchmark and improve AI coding agents. Companies and research teams submit real problems, developers solve them, and human results are compared against agent performance to advance the next generation of AI-assisted software development.
         </p>
         <p className="lead-text">
-          TerminalBench was created by <b>Stanford University</b> and the <b>Laude Institute</b>, and has quickly become a leading benchmark for evaluating AI coding agents in command-line environments. Since launch, it has earned over 1,000 GitHub stars and attracted contributions from developers worldwide. This platform is a <b>Snorkel AI initiative</b> to contribute to and expand the benchmark—not an official partnership.
+          TerminalBench was created by <b>Stanford University</b> and the <b>Laude Institute</b>, and has quickly become a leading benchmark for evaluating AI coding agents in command-line environments. Since launch, it has earned over 1,000 GitHub stars and attracted contributions from developers worldwide. This platform is a <b>Snorkel AI initiative</b> to contribute to and expand the benchmark (not an official partnership).
         </p>
         <p className="highlight-text">
           You get paid for high-quality engineering work, and your contributions directly improve the future of agentic development.

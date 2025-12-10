@@ -230,13 +230,6 @@ const OnboardingModal = () => {
   return (
     <div className="onboarding-modal-overlay">
       <div className="onboarding-modal-content">
-        {/* Skip button - Top Right */}
-        {step === 0 && (
-          <Button variant="ghost" size="sm" className="btn-skip-top" onClick={handleComplete}>
-            Skip Onboarding
-          </Button>
-        )}
-
         {/* Dynamic Step Content */}
         <div className="onboarding-step-container" key={step}>
           {steps[step].content}
