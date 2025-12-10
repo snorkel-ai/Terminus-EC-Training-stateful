@@ -5,7 +5,7 @@ import { Button, TaskCard, TaskDetailModal } from './ui';
 import './TaskPreviewSection.css';
 
 // Number of task cards to display
-const DISPLAY_COUNT = 3;
+const DISPLAY_COUNT = 6;
 
 const TaskPreviewSection = () => {
   const navigate = useNavigate();
