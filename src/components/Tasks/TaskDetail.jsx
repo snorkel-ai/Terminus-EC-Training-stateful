@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLoadingMessage } from '../../hooks/useLoadingMessage';
+import { TASK_DETAIL_LOADING_MESSAGES } from '../../utils/loadingMessages';
 import { Button, Badge, LoadingState } from '../ui';
 import './TaskDetail.css';
 
@@ -14,6 +16,9 @@ const TaskDetail = () => {
   const [claiming, setClaiming] = useState(false);
   const [isClaimed, setIsClaimed] = useState(false);
   const [error, setError] = useState(null);
+  
+  // Fun rotating loading message
+  const loadingMessage = useLoadingMessage(TASK_DETAIL_LOADING_MESSAGES, 2200);
 
   useEffect(() => {
     if (taskId) {
@@ -94,7 +99,7 @@ const TaskDetail = () => {
   if (loading) {
     return (
       <div className="task-detail-loading">
-        <LoadingState size="lg" message="Loading task details..." />
+        <LoadingState size="lg" message={loadingMessage} />
       </div>
     );
   }

@@ -1,6 +1,8 @@
 import { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
+import { useLoadingMessage } from '../../hooks/useLoadingMessage';
+import { MY_CHALLENGES_LOADING_MESSAGES } from '../../utils/loadingMessages';
 import { Button, LoadingState, Modal, Badge, TaskCard, DifficultyRating, Tabs, Tab } from '../ui';
 import './Tasks.css';
 import './TaskCategorySection.css';
@@ -140,6 +142,9 @@ function MySelectedTasks() {
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
   const [isActioning, setIsActioning] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
+  
+  // Fun rotating loading message
+  const loadingMessage = useLoadingMessage(MY_CHALLENGES_LOADING_MESSAGES, 2200);
 
   // Group tasks by their workflow status
   const activeTasks = selectedTasks.filter(t => 
@@ -269,7 +274,7 @@ function MySelectedTasks() {
           <p>Track your progress and complete challenges</p>
         </div>
         <div className="tasks-loading">
-          <LoadingState size="lg" message="Loading your challenges..." />
+          <LoadingState size="lg" message={loadingMessage} />
         </div>
       </div>
     );

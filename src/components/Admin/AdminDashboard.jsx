@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
+import { useLoadingMessage } from '../../hooks/useLoadingMessage';
+import { ADMIN_LOADING_MESSAGES } from '../../utils/loadingMessages';
 import { Button, LoadingState } from '../ui';
 import OverviewStats from './OverviewStats';
 import UserStatsTable from './UserStatsTable';
@@ -17,6 +19,9 @@ function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [sections, setSections] = useState([]);
+  
+  // Fun rotating loading message
+  const loadingMessage = useLoadingMessage(ADMIN_LOADING_MESSAGES, 2200);
   
   // Check admin from profile
   const isAdmin = profile?.is_admin || false;
@@ -92,7 +97,7 @@ function AdminDashboard() {
   if (loading) {
     return (
       <div className="admin-loading">
-        <LoadingState size="lg" message="Loading dashboard..." />
+        <LoadingState size="lg" message={loadingMessage} />
       </div>
     );
   }

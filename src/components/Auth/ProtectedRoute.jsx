@@ -1,36 +1,25 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLoadingMessage } from '../../hooks/useLoadingMessage';
+import { AUTH_LOADING_MESSAGES } from '../../utils/loadingMessages';
+import { LoadingState } from '../ui';
 
 function ProtectedRoute({ children }) {
   const { user, profile, loading } = useAuth();
+  
+  // Fun rotating loading message
+  const loadingMessage = useLoadingMessage(AUTH_LOADING_MESSAGES, 2200);
 
   // Show loading state
   if (loading) {
     return (
       <div style={{
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        fontSize: '18px',
-        color: '#666',
-        gap: '16px'
       }}>
-        <div style={{
-          width: '48px',
-          height: '48px',
-          border: '4px solid #e2e8f0',
-          borderTopColor: '#667eea',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }}></div>
-        <div>Authenticating...</div>
-        <style>{`
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `}</style>
+        <LoadingState size="lg" message={loadingMessage} />
       </div>
     );
   }

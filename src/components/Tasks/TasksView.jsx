@@ -2,6 +2,8 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { usePostHog } from 'posthog-js/react';
 import { useTasks, useMySelectedTasks } from '../../hooks/useTasks';
 import { useTaskSearch } from '../../hooks/useTaskSearch';
+import { useLoadingMessage } from '../../hooks/useLoadingMessage';
+import { TASK_LOADING_MESSAGES } from '../../utils/loadingMessages';
 import { Button, LoadingState, TaskDetailModal } from '../ui';
 import TaskSearchHeader from './TaskSearchHeader';
 import TaskFiltersModal from './TaskFiltersModal';
@@ -17,6 +19,9 @@ function TasksView() {
   const hasTrackedView = useRef(false);
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
   const [modalContextTasks, setModalContextTasks] = useState([]);
+  
+  // Fun rotating loading message
+  const loadingMessage = useLoadingMessage(TASK_LOADING_MESSAGES, 2200);
   
   // Filter Modal State
   const [filtersModalOpen, setFiltersModalOpen] = useState(false);
@@ -120,7 +125,7 @@ function TasksView() {
           <p>Browse and select tasks to work on</p>
         </div>
         <div className="tasks-loading">
-          <LoadingState size="lg" message="Loading tasks..." />
+          <LoadingState size="lg" message={loadingMessage} />
         </div>
       </div>
     );
