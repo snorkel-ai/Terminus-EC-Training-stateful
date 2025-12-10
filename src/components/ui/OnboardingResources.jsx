@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePostHog } from 'posthog-js/react';
 import { FiArrowRight, FiCheck, FiDownload } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 import { useProgress } from '../../contexts/ProgressContext';
@@ -24,6 +25,7 @@ const OnboardingResources = () => {
   const { isCompleted, toggleCompletion } = useProgress();
   const { success } = useToast();
   const navigate = useNavigate();
+  const posthog = usePostHog();
   const [closingCards, setClosingCards] = useState([]);
 
   const resources = [
@@ -97,6 +99,15 @@ const OnboardingResources = () => {
   const markComplete = async (e, id) => {
     e.stopPropagation();
     const progressId = PROGRESS_ID_MAP[id];
+    const resource = resources.find(r => r.id === id);
+    
+    // Track onboarding progress
+    if (posthog && resource) {
+      posthog.capture('onboarding_step_completed', {
+        resource_id: id,
+        resource_label: resource.label,
+      });
+    }
     
     // Start closing animation
     setClosingCards(prev => [...prev, id]);
@@ -110,6 +121,14 @@ const OnboardingResources = () => {
   };
 
   const handleResourceClick = (resource) => {
+    // Track resource view/download
+    if (posthog) {
+      posthog.capture(resource.isDownload ? 'skeleton_downloaded' : 'docs_viewed', {
+        resource_id: resource.id,
+        resource_label: resource.label,
+      });
+    }
+
     if (resource.isDownload) {
       const link = document.createElement('a');
       link.href = resource.path;

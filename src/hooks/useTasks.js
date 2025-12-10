@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -51,6 +52,7 @@ export const updateTaskCacheSelection = (taskId, isSelected) => {
 
 export function useTasks() {
   const { user } = useAuth();
+  const posthog = usePostHog();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -234,6 +236,7 @@ export function useTasks() {
 
       // Optimistically update local state and cache
       const now = new Date().toISOString();
+      const claimedTask = tasks.find(t => t.id === taskId);
       setTasks(prevTasks => {
         const updated = prevTasks.map(t => 
           t.id === taskId ? { ...t, is_selected: true, selected_at: now } : t
@@ -242,6 +245,15 @@ export function useTasks() {
         return updated;
       });
       setActiveTaskCount(prev => prev + 1);
+
+      // Track task claimed event
+      if (posthog && claimedTask) {
+        posthog.capture('task_claimed', {
+          task_id: taskId,
+          category: claimedTask.category,
+          subcategory: claimedTask.subcategory,
+        });
+      }
 
       return true;
     } catch (err) {
@@ -316,6 +328,7 @@ export const MAX_ACTIVE_TASKS = 3;
 
 export function useMySelectedTasks() {
   const { user } = useAuth();
+  const posthog = usePostHog();
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -468,6 +481,7 @@ export function useMySelectedTasks() {
     try {
       const now = new Date().toISOString();
       const updateData = { status: newStatus };
+      const task = selectedTasks.find(t => t.id === taskId);
       
       // Set appropriate timestamp based on new status
       if (newStatus === TASK_STATUS.IN_PROGRESS) {
@@ -484,6 +498,23 @@ export function useMySelectedTasks() {
         .match({ user_id: user.id, task_id: taskId });
 
       if (updateError) throw updateError;
+
+      // Track task status change events
+      if (posthog && task) {
+        const eventName = {
+          [TASK_STATUS.IN_PROGRESS]: 'task_started',
+          [TASK_STATUS.WAITING_REVIEW]: 'task_submitted_for_review',
+          [TASK_STATUS.ACCEPTED]: 'task_accepted',
+        }[newStatus];
+        
+        if (eventName) {
+          posthog.capture(eventName, {
+            task_id: taskId,
+            category: task.category,
+            subcategory: task.subcategory,
+          });
+        }
+      }
 
       // Optimistically update local state
       setSelectedTasks(prev => {

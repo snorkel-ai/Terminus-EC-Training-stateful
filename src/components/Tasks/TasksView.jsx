@@ -1,4 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import { useTasks, useMySelectedTasks } from '../../hooks/useTasks';
 import { useTaskSearch } from '../../hooks/useTaskSearch';
 import { Button, LoadingState, TaskDetailModal } from '../ui';
@@ -12,11 +13,24 @@ import './TasksViewLayout.css';
 function TasksView() {
   const { tasks, loading, error } = useTasks();
   const { selectedTasks: myTasks } = useMySelectedTasks();
+  const posthog = usePostHog();
+  const hasTrackedView = useRef(false);
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
   const [modalContextTasks, setModalContextTasks] = useState([]);
   
   // Filter Modal State
   const [filtersModalOpen, setFiltersModalOpen] = useState(false);
+
+  // Track gallery view once when tasks load
+  useEffect(() => {
+    if (posthog && tasks.length > 0 && !hasTrackedView.current) {
+      posthog.capture('gallery_viewed', {
+        total_tasks: tasks.length,
+        available_tasks: tasks.filter(t => !t.is_selected).length,
+      });
+      hasTrackedView.current = true;
+    }
+  }, [posthog, tasks]);
 
   // Use the new search hook
   const {

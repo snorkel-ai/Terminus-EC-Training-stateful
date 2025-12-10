@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.79.0",
     "dotenv": "^17.2.3",
     "fuse.js": "^7.1.0",
+    "posthog-js": "^1.302.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
