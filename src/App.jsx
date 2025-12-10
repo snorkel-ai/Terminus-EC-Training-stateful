@@ -3,6 +3,7 @@ import './App.css';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ProgressProvider } from './contexts/ProgressContext';
+import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Login from './components/Auth/Login';
 import PublicLanding from './components/Landing/PublicLanding';
@@ -33,9 +34,10 @@ import { trainingSections } from './data/trainingData';
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <ProgressProvider>
-          <Routes>
+      <ToastProvider>
+        <AuthProvider>
+          <ProgressProvider>
+            <Routes>
             {/* Public Routes */}
             <Route path="/" element={<PublicLanding />} />
             <Route path="/login" element={<Login />} />
@@ -98,8 +100,9 @@ function App() {
             {/* Fallback for unknown routes */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </ProgressProvider>
-      </AuthProvider>
+          </ProgressProvider>
+        </AuthProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 }

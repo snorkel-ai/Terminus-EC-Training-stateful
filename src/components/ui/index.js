@@ -14,6 +14,7 @@ export { Spinner, LoadingState } from './Spinner';
 export { Alert } from './Alert';
 export { Note } from './Note';
 export { ProgressBar } from './ProgressBar';
+export { Toast } from './Toast'; // Added Toast export
 
 // Navigation & Layout
 export { Tabs, Tab } from './Tabs';
@@ -33,3 +34,5 @@ export { Timer, TimerCompact } from './Timer';
 export { default as TaskCard, DifficultyRating } from './TaskCard';
 export { TaskDetailModal } from './TaskDetailModal';
 
+// Onboarding Components
+export { OnboardingResources, OnboardingModal } from '../Onboarding';
