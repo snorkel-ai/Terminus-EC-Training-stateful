@@ -4,13 +4,51 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: var(--space-5) var(--space-4);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
   height: 100%;
   min-height: 280px;
   overflow: hidden;
+  animation: taskAppear 0.4s ease-out;
+}
+
+/* Animation for tasks appearing */
+@keyframes taskAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Selected/Claimed by others - faded state */
+.task-card.selected {
+  opacity: 0.5;
+  pointer-events: none;
+  transform: scale(0.98);
+}
+
+.task-card.selected::after {
+  content: 'Claimed';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-primary);
+  color: var(--text-tertiary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border-color);
+  z-index: 10;
 }
 
 /* Corner Ribbon for Completed/Accepted Tasks */

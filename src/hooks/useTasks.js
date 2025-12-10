@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -8,13 +8,77 @@ export function useTasks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTaskCount, setActiveTaskCount] = useState(0);
+  const channelRef = useRef(null);
+  const isSubscribedRef = useRef(false);
 
+  // Fetch function - not memoized, uses refs to avoid stale closures
+  const fetchTasksInternal = async () => {
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('v_tasks_with_priorities')
+        .select('*')
+        .order('display_order', { ascending: true, nullsFirst: false })
+        .order('is_highlighted', { ascending: false })
+        .order('category', { ascending: true })
+        .order('subcategory', { ascending: true });
+
+      if (fetchError) throw fetchError;
+      setTasks(data || []);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching tasks:', err);
+      setError(err.message);
+    }
+  };
+
+  // Initial fetch and user-dependent data
   useEffect(() => {
-    fetchTasks();
+    const initialFetch = async () => {
+      setLoading(true);
+      await fetchTasksInternal();
+      setLoading(false);
+    };
+    initialFetch();
+    
     if (user) {
       fetchActiveTaskCount();
     }
   }, [user]);
+
+  // Separate effect for realtime subscription - runs once on mount
+  useEffect(() => {
+    // Prevent duplicate subscriptions (React StrictMode)
+    if (isSubscribedRef.current) return;
+    isSubscribedRef.current = true;
+
+    // Subscribe to realtime changes on selected_tasks
+    // This updates the task list when ANY user claims/unclaims a task
+    const channel = supabase
+      .channel('tasks_realtime_' + Date.now()) // Unique channel name
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'selected_tasks' },
+        (payload) => {
+          console.log('🔄 Task change detected:', payload.eventType);
+          // Refetch tasks to get updated selection status
+          setTimeout(() => fetchTasksInternal(), 100);
+        }
+      )
+      .subscribe((status) => {
+        console.log('📡 Realtime status:', status);
+      });
+
+    channelRef.current = channel;
+
+    // Cleanup subscription on unmount
+    return () => {
+      isSubscribedRef.current = false;
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
+    };
+  }, []); // Empty deps - only run once
 
   const fetchActiveTaskCount = async () => {
     if (!user) {
@@ -37,29 +101,11 @@ export function useTasks() {
     }
   };
 
+  // Public refetch function that shows loading state
   const fetchTasks = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch all tasks with their selection status and priorities
-      const { data, error: fetchError } = await supabase
-        .from('v_tasks_with_priorities')
-        .select('*')
-        .order('display_order', { ascending: true, nullsFirst: false })
-        .order('is_highlighted', { ascending: false })
-        .order('category', { ascending: true })
-        .order('subcategory', { ascending: true });
-
-      if (fetchError) throw fetchError;
-
-      setTasks(data || []);
-    } catch (err) {
-      console.error('Error fetching tasks:', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    await fetchTasksInternal();
+    setLoading(false);
   };
 
   const selectTask = async (taskId) => {
@@ -175,10 +221,36 @@ export function useMySelectedTasks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTaskCount, setActiveTaskCount] = useState(0);
+  const channelRef = useRef(null);
 
   useEffect(() => {
     if (user) {
       fetchMySelectedTasks();
+
+      // Subscribe to realtime changes for this user's tasks
+      // This keeps the "My Tasks" page in sync with any changes
+      channelRef.current = supabase
+        .channel(`my_tasks_${user.id}`)
+        .on(
+          'postgres_changes',
+          { 
+            event: '*', 
+            schema: 'public', 
+            table: 'selected_tasks',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            // Refetch user's tasks on any change
+            setTimeout(() => fetchMySelectedTasks(), 100);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        if (channelRef.current) {
+          supabase.removeChannel(channelRef.current);
+        }
+      };
     }
   }, [user]);
 
