@@ -28,7 +28,7 @@ const MissionPage = () => {
               TerminalBench was created to meet that need.
             </p>
             <p className="mission-text">
-              Developed in collaboration with Stanford University, Laude Institute, and Snorkel AI, TerminalBench provides a rigorous, end-to-end evaluation of how AI agents perform in realistic command-line environments. Each task reveals specific model limitations, gaps in reasoning, planning, execution, or robustness, that cannot be detected through synthetic datasets or code-completion benchmarks.
+              TerminalBench, created by Stanford University and Laude Institute, provides a rigorous, end-to-end evaluation of how AI agents perform in realistic command-line environments. This platform is a Snorkel AI initiative to contribute to and expand the benchmark. Each task reveals specific model limitations—gaps in reasoning, planning, execution, or robustness—that cannot be detected through synthetic datasets or code-completion benchmarks.
             </p>
           </div>
 

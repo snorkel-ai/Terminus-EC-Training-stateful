@@ -9,7 +9,7 @@ const WhatIsTerminalBench = () => {
           TerminalBench is a platform where developers complete real engineering tasks to benchmark and improve AI coding agents. Companies and research teams submit real problems, developers solve them, and human results are compared against agent performance to advance the next generation of AI-assisted software development.
         </p>
         <p className="lead-text">
-          TerminalBench originated as a joint project between <b>Stanford University</b> and the <b>Laude Institute</b>, and has quickly become a leading benchmark for evaluating AI coding agents in command-line environments. Since launch, it has earned over 1,000 GitHub stars and attracted contributions from developers worldwide, with Snorkel AI among the top external contributors.
+          TerminalBench was created by <b>Stanford University</b> and the <b>Laude Institute</b>, and has quickly become a leading benchmark for evaluating AI coding agents in command-line environments. Since launch, it has earned over 1,000 GitHub stars and attracted contributions from developers worldwide. This platform is a <b>Snorkel AI initiative</b> to contribute to and expand the benchmark—not an official partnership.
         </p>
         <p className="highlight-text">
           You get paid for high-quality engineering work, and your contributions directly improve the future of agentic development.
@@ -33,7 +33,7 @@ const WhatIsTerminalBench = () => {
               <span className="research-label">Deep Dive</span>
               <span className="research-question">Terminal-Bench 2.0: Raising the bar for AI agent evaluation</span>
               <span className="research-cta">
-                Read the Snorkel's contribution to Terminal-Bench 2.0 
+                Read about Snorkel's contribution to Terminal-Bench 2.0 
                 <svg className="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
