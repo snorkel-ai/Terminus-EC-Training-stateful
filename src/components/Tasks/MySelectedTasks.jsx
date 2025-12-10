@@ -270,7 +270,7 @@ function MySelectedTasks() {
     return (
       <div className="tasks-view my-tasks-view">
         <div className="tasks-header">
-          <h1>My Challenges</h1>
+          <h1>My Tasks</h1>
           <p>Track your progress and complete challenges</p>
         </div>
         <div className="tasks-loading">
@@ -284,7 +284,7 @@ function MySelectedTasks() {
     return (
       <div className="tasks-view my-tasks-view">
         <div className="tasks-header">
-          <h1>My Challenges</h1>
+          <h1>My Tasks</h1>
           <p>Track your progress and complete challenges</p>
         </div>
         <div className="tasks-error">
@@ -303,8 +303,8 @@ function MySelectedTasks() {
   return (
     <div className="tasks-view my-tasks-view">
       <div className="tasks-header">
-        <h1>My Challenges</h1>
-        <p>Track your progress and complete challenges.</p>
+        <h1>My Tasks</h1>
+        <p>Track your progress as you work on tasks.</p>
       </div>
 
       {selectedTasks.length === 0 ? (
