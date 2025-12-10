@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import TaskPreviewSection from './TaskPreviewSection';
-import { Alert, OnboardingResources } from './ui';
+import { AnnouncementBanner, OnboardingResources } from './ui';
 import './LandingPage.css';
 import './Content.css';
 
@@ -20,12 +20,13 @@ function LandingPage() {
           </div>
           </section>
 
-        <Alert variant="warning" className="announcement-banner">
-          <strong>Important: Review Process</strong>
-          <div style={{ marginTop: '0.25rem', color: 'var(--text-secondary)' }}>
-            Please do not reach out to reviewers directly. Reviews will be performed ASAP and messaging them will not increase the speed of review.
-          </div>
-        </Alert>
+        <AnnouncementBanner 
+          variant="warning"
+          title="Please do not reach out to reviewers directly"
+          style={{ marginBottom: '3rem' }}
+        >
+          Reviews will be performed ASAP and messaging them will not increase the speed at which your submission is reviewed.
+        </AnnouncementBanner>
 
         <OnboardingResources />
 

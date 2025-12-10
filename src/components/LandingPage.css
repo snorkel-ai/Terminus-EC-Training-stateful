@@ -14,53 +14,6 @@
   color: #2563eb;
 }
 
-/* Announcement Banner */
-.announcement-banner.ui-alert {
-  background: linear-gradient(to right, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  color: var(--text-primary);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem 2rem;
-  justify-content: flex-start;
-  text-align: left;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.announcement-banner.ui-alert:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-}
-
-.announcement-banner .ui-alert-icon {
-  color: var(--color-warning);
-  background: rgba(245, 158, 11, 0.1);
-  padding: 8px;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.announcement-banner .ui-alert-content {
-  flex: 1;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.announcement-banner strong {
-  display: block;
-  color: var(--text-primary);
-  font-size: 1.1rem;
-  margin-bottom: 0.25rem;
-  letter-spacing: -0.01em;
-}
-
 /* Main Content */
 .main-content {
   flex: 1;
