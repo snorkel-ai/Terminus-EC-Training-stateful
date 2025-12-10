@@ -4,7 +4,7 @@ import { TaskCard } from '../../ui';
 
 const Tasks = () => {
   // Map static tasks to TaskCard format
-  const mappedTasks = tasks.map((task, index) => ({
+  const mappedTasks = tasks.slice(0, 3).map((task, index) => ({
     id: index,
     subcategory: task.title,
     description: task.description,
@@ -18,16 +18,14 @@ const Tasks = () => {
       <p className="section-subtitle">
         Think you can beat the models? Prove it and get paid.
       </p>
-      <div className="tasks-container">
-        <div className="tasks-grid-fade">
-          {/* Duplicate tasks for infinite scroll effect */}
-          {[...mappedTasks, ...mappedTasks].map((task, index) => (
+      <div className="tasks-container static-grid">
+        <div className="tasks-grid">
+          {mappedTasks.map((task, index) => (
             <div key={index} className="task-card-wrapper" style={{ '--index': index }}>
               <TaskCard task={task} />
             </div>
           ))}
         </div>
-        <div className="fade-overlay"></div>
       </div>
     </section>
   );

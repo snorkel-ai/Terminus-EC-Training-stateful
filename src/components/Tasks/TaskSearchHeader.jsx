@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import TaskSearchBar from './TaskSearchBar';
-import { Button } from '../ui';
 import './TaskSearchHeader.css';
 
 function TaskSearchHeader({
@@ -10,34 +8,8 @@ function TaskSearchHeader({
   recentSearches,
   handleSuggestionSelect,
   clearSearch,
-  filters,
-  setFilters,
   onOpenFilters
 }) {
-  const [difficultyOpen, setDifficultyOpen] = useState(false);
-
-  const handleDifficultySelect = (diff) => {
-    // Toggle logic
-    const currentDiffs = filters.difficulties || [];
-    const newDiffs = currentDiffs.includes(diff)
-      ? currentDiffs.filter(d => d !== diff)
-      : [...currentDiffs, diff];
-    
-    setFilters({
-      ...filters,
-      difficulties: newDiffs
-    });
-  };
-
-  const difficulties = ['Easy', 'Medium', 'Hard'];
-  const activeDifficulties = filters.difficulties || [];
-  // Helper to capitalize first letter
-  const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-  
-  const difficultyLabel = activeDifficulties.length > 0 
-    ? activeDifficulties.map(d => capitalize(d)).join(', ')
-    : 'Any difficulty';
-
   return (
     <div className="task-search-header">
       {/* Search Input Section */}
@@ -54,46 +26,6 @@ function TaskSearchHeader({
           variant="embedded"
           placeholder="Search tasks..."
         />
-      </div>
-
-      <div className="header-divider"></div>
-
-      {/* Difficulty Dropdown Section */}
-      <div className="header-section difficulty-section">
-        <div 
-          className="difficulty-trigger"
-          onClick={() => setDifficultyOpen(!difficultyOpen)}
-        >
-          <div className="section-label">Difficulty</div>
-          <div className={`section-value ${activeDifficulties.length > 0 ? 'active' : ''}`}>
-            {difficultyLabel}
-          </div>
-        </div>
-        
-        {difficultyOpen && (
-          <>
-            <div className="fixed-overlay" onClick={() => setDifficultyOpen(false)} />
-            <div className="difficulty-dropdown">
-              {difficulties.map(diff => (
-                <div 
-                  key={diff}
-                  className={`difficulty-option ${activeDifficulties.includes(diff.toLowerCase()) ? 'selected' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDifficultySelect(diff.toLowerCase());
-                  }}
-                >
-                  <span>{diff}</span>
-                  {activeDifficulties.includes(diff.toLowerCase()) && (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </div>
-              ))}
-            </div>
-          </>
-        )}
       </div>
 
       <div className="header-divider"></div>

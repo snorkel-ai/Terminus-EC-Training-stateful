@@ -44,24 +44,6 @@ function TaskFacets({
     return data;
   }, [tasks]);
 
-  // Calculate difficulty counts
-  const difficultyData = useMemo(() => {
-    const counts = { easy: 0, medium: 0, hard: 0, unknown: 0 };
-    
-    tasks.forEach(task => {
-      if (task.is_selected) return;
-      
-      const diff = task.difficulty?.toLowerCase();
-      if (diff === 'easy' || diff === 'medium' || diff === 'hard') {
-        counts[diff]++;
-      } else {
-        counts.unknown++;
-      }
-    });
-    
-    return counts;
-  }, [tasks]);
-
   // Count priority tasks
   const priorityCount = useMemo(() => {
     return tasks.filter(t => t.is_highlighted && !t.is_selected).length;
@@ -116,17 +98,6 @@ function TaskFacets({
     });
   };
 
-  const handleDifficultyToggle = (difficulty) => {
-    const newDifficulties = filters.difficulties?.includes(difficulty)
-      ? filters.difficulties.filter(d => d !== difficulty)
-      : [...(filters.difficulties || []), difficulty];
-    
-    onFilterChange({
-      ...filters,
-      difficulties: newDifficulties
-    });
-  };
-
   const handlePriorityToggle = () => {
     onFilterChange({
       ...filters,
@@ -139,7 +110,6 @@ function TaskFacets({
       search: '',
       categories: [],
       subcategories: [],
-      difficulties: [],
       priorityOnly: false
     });
   };
@@ -147,7 +117,6 @@ function TaskFacets({
   const activeFilterCount = 
     (filters.categories?.length || 0) + 
     (filters.subcategories?.length || 0) + 
-    (filters.difficulties?.length || 0) + 
     (filters.priorityOnly ? 1 : 0) +
     (filters.search ? 1 : 0);
 
@@ -184,12 +153,6 @@ function TaskFacets({
                 <button onClick={() => handleCategoryToggle(cat)}>×</button>
               </span>
             ))}
-            {filters.difficulties?.map(diff => (
-              <span key={diff} className="filter-pill difficulty">
-                {diff}
-                <button onClick={() => handleDifficultyToggle(diff)}>×</button>
-              </span>
-            ))}
           </div>
         </div>
       )}
@@ -212,44 +175,6 @@ function TaskFacets({
           <span className="checkbox-label">Show priority only</span>
           <Badge variant="priority" size="sm">{priorityCount}</Badge>
         </label>
-      </div>
-
-      {/* Difficulty Filter */}
-      <div className="facet-section">
-        <h3 className="facet-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 20V10" />
-            <path d="M18 20V4" />
-            <path d="M6 20v-4" />
-          </svg>
-          Difficulty
-        </h3>
-        <div className="difficulty-chips">
-          <button
-            className={`difficulty-chip easy ${filters.difficulties?.includes('easy') ? 'active' : ''}`}
-            onClick={() => handleDifficultyToggle('easy')}
-          >
-            Easy <span>{difficultyData.easy}</span>
-          </button>
-          <button
-            className={`difficulty-chip medium ${filters.difficulties?.includes('medium') ? 'active' : ''}`}
-            onClick={() => handleDifficultyToggle('medium')}
-          >
-            Medium <span>{difficultyData.medium}</span>
-          </button>
-          <button
-            className={`difficulty-chip hard ${filters.difficulties?.includes('hard') ? 'active' : ''}`}
-            onClick={() => handleDifficultyToggle('hard')}
-          >
-            Hard <span>{difficultyData.hard}</span>
-          </button>
-          <button
-            className={`difficulty-chip unknown ${filters.difficulties?.includes('unknown') ? 'active' : ''}`}
-            onClick={() => handleDifficultyToggle('unknown')}
-          >
-            Unrated <span>{difficultyData.unknown}</span>
-          </button>
-        </div>
       </div>
 
       {/* Categories */}

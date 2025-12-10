@@ -184,3 +184,59 @@
 .docs-search-result--selected .docs-search-result-arrow {
   opacity: 1;
 }
+
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+  .docs-search-overlay {
+    padding-top: 10vh;
+  }
+  
+  .docs-search-modal {
+    max-width: 100%;
+    margin: 0 var(--space-3);
+    border-radius: 20px;
+  }
+  
+  .docs-search-results {
+    max-height: 50vh;
+  }
+}
+
+/* Responsive - Small mobile */
+@media (max-width: 480px) {
+  .docs-search-overlay {
+    padding-top: 0;
+    align-items: flex-end;
+  }
+  
+  .docs-search-modal {
+    margin: 0;
+    border-radius: 20px 20px 0 0;
+    max-height: 85vh;
+  }
+  
+  .docs-search-header {
+    padding: var(--space-3);
+  }
+  
+  .docs-search-input {
+    font-size: var(--font-base);
+  }
+  
+  .docs-search-results {
+    max-height: 60vh;
+  }
+  
+  .docs-search-hint {
+    padding: var(--space-6);
+  }
+  
+  .docs-search-shortcuts {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .docs-search-result {
+    padding: var(--space-3);
+  }
+}

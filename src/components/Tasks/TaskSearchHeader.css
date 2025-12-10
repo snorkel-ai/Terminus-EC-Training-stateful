@@ -77,16 +77,6 @@
     color: var(--text-secondary);
 }
 
-.header-section.difficulty-section {
-  flex: 1;
-  min-width: 160px; /* Wider */
-  padding-left: var(--space-8);
-}
-
-.header-section.difficulty-section:hover {
-    border-radius: 0;
-}
-
 /* Filter Section inside bar */
 .header-section.filter-section {
   flex: 0.9;
@@ -178,100 +168,102 @@
   font-weight: 600;
 }
 
-/* Difficulty Dropdown */
-.difficulty-trigger {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.difficulty-dropdown {
-  position: absolute;
-  top: calc(100% + 16px);
-  left: 0;
-  min-width: 240px;
-  background: var(--card-bg);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-  padding: var(--space-3);
-  z-index: 100;
-  border: 1px solid var(--border-color);
-}
-
-.difficulty-option {
-  padding: var(--space-3) var(--space-4);
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--font-base);
-  color: var(--text-primary);
-  margin-bottom: 2px;
-}
-
-.difficulty-option:hover {
-  background: var(--bg-secondary);
-}
-
-.difficulty-option.selected {
-  background: var(--bg-secondary);
-  font-weight: 600;
-}
-
-.fixed-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 99;
-}
-
-/* Responsive */
+/* Responsive - Tablet */
 @media (max-width: 768px) {
     .task-search-header {
-        flex-direction: column;
-        height: auto;
-        border-radius: 32px;
-        padding: var(--space-2);
-        gap: var(--space-2);
-    }
-    
-    .header-divider {
-        width: 100%;
-        height: 1px;
-        display: none; /* Hide dividers on mobile */
+        height: 64px;
+        margin: var(--space-4) var(--space-4) var(--space-8);
+        max-width: none;
     }
     
     .header-section {
-        width: 100%;
-        height: 72px;
-        padding: var(--space-2) var(--space-6);
-        border-radius: 24px;
+        padding: 0 var(--space-4);
     }
 
     .header-section.search-section {
         padding-left: var(--space-6);
     }
+    
+    .header-divider {
+        height: 32px;
+    }
+
+    .filter-button-container {
+        padding: 0 var(--space-2) 0 var(--space-4);
+    }
+    
+    .filter-icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .filter-icon-wrapper svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .section-label {
+        font-size: 10px;
+        margin-bottom: 2px;
+    }
+    
+    .section-value {
+        font-size: var(--font-sm);
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+    .task-search-header {
+        height: 56px;
+        border-radius: 28px;
+        margin: var(--space-3) var(--space-3) var(--space-6);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    
+    .header-section {
+        padding: 0 var(--space-3);
+    }
+
+    .header-section.search-section {
+        flex: 1;
+        padding-left: var(--space-5);
+    }
+    
+    .header-section.search-section .section-label {
+        display: none; /* Hide "Where" label on small mobile */
+    }
+    
+    .task-search-header .task-search-bar.embedded .search-input {
+        font-size: var(--font-sm);
+        height: 24px;
+        line-height: 24px;
+    }
+    
+    .header-divider {
+        height: 28px;
+    }
 
     .header-section.filter-section {
-        padding-right: var(--space-6);
-        justify-content: space-between;
+        flex: 0 0 auto;
     }
     
     .filter-button-container {
-      width: 100%;
-      justify-content: space-between;
-      margin-right: 0;
-      padding-right: 0;
-      border-radius: 24px; /* Reset pill border radius for mobile block */
-      padding-left: 0;
+        padding: 0 var(--space-1) 0 var(--space-3);
     }
     
     .filter-text-group {
-      align-items: flex-start;
+        display: none; /* Hide text, just show icon on mobile */
+    }
+    
+    .filter-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        margin-left: 0;
+    }
+    
+    .filter-icon-wrapper svg {
+        width: 16px;
+        height: 16px;
     }
 }

@@ -189,3 +189,79 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+  .task-detail-modal .task-detail-modal-header h2 {
+    font-size: var(--font-lg);
+  }
+  
+  .task-detail-modal .task-detail-modal-footer {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  
+  /* Move active count to its own row */
+  .task-detail-modal .task-detail-modal-footer > div:first-child {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+/* Responsive - Small mobile */
+@media (max-width: 480px) {
+  .task-detail-modal .modal-badges {
+    margin-bottom: var(--space-2);
+  }
+  
+  .task-detail-modal .task-breadcrumb {
+    font-size: var(--font-xs);
+  }
+  
+  .task-detail-modal h2 {
+    font-size: var(--font-lg);
+  }
+  
+  .task-detail-modal .modal-navigation {
+    display: none;
+  }
+  
+  .task-detail-modal .task-detail-modal-body p {
+    font-size: var(--font-sm);
+    line-height: 1.6;
+  }
+  
+  .task-detail-modal .task-detail-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .task-detail-modal .task-detail-modal-footer > div:first-child {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .task-detail-modal .task-detail-modal-footer button,
+  .task-detail-modal .task-detail-modal-footer .ui-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Success state on mobile */
+  .task-detail-modal .task-claim-success {
+    padding: var(--space-2) 0;
+  }
+  
+  .task-detail-modal .success-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 1.75rem;
+  }
+  
+  .task-detail-modal .task-claim-success h2 {
+    font-size: var(--font-xl);
+  }
+}
+

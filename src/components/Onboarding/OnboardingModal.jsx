@@ -177,7 +177,7 @@ const OnboardingModal = () => {
                 />
               </div>
               <div className="next-step-content" style={{ marginBottom: '24px' }}>
-                <h4 className="next-step-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Join the Community</h4>
+                <h4 className="next-step-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Community</h4>
                 <span className="next-step-subtitle" style={{ fontSize: '16px' }}>
                   Connect with other TerminalBench contributors and chat with the team.
                 </span>
@@ -191,7 +191,7 @@ const OnboardingModal = () => {
                   window.open('https://snorkel-team.enterprise.slack.com/archives/C09MNJL1203', '_blank');
                 }}
               >
-                Join Community
+                Join
               </Button>
             </div>
 
@@ -204,7 +204,7 @@ const OnboardingModal = () => {
                 />
               </div>
               <div className="next-step-content" style={{ marginBottom: '24px' }}>
-                <h4 className="next-step-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Announcements Channel</h4>
+                <h4 className="next-step-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Announcements</h4>
                 <span className="next-step-subtitle" style={{ fontSize: '16px' }}>
                   The single source of truth for important announcements, updates, etc.
                 </span>
@@ -218,7 +218,7 @@ const OnboardingModal = () => {
                   window.open('https://snorkel-team.enterprise.slack.com/archives/C0A1WM7EPK4', '_blank');
                 }}
               >
-                Join Announcements Channel
+                Join
               </Button>
             </div>
           </div>

@@ -33,8 +33,18 @@
   display: block;
 }
 
-[data-theme="dark"] .ui-snorkel-logo-img {
-  filter: brightness(0) invert(1);
+@media (max-width: 768px) {
+  /* Hide the terminal-bench part and separator on mobile */
+  .ui-tbench-logo,
+  .ui-logo-lockup .ui-logo-separator {
+    display: none;
+  }
+  
+  /* Ensure Snorkel logo is visible */
+  .ui-logo-lockup .ui-snorkel-logo-img {
+    display: block;
+    height: 24px; /* Slightly larger on mobile for visibility */
+  }
 }
 
 

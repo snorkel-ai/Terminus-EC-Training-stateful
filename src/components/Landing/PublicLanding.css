@@ -542,32 +542,33 @@
 
 /* Example Tasks */
 .tasks-section {
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to allow content to show */
 }
 
 .tasks-container {
   position: relative;
-  height: 800px;
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  /* Removed fixed height and mask for static grid */
+  height: auto;
+  overflow: visible;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.tasks-grid-fade {
+.tasks-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
   width: 100%;
-  padding: 2rem;
-  animation: scroll-vertical 120s linear infinite;
+  padding: 2rem 0;
 }
 
-/* Pause animation on hover */
-.tasks-container:hover .tasks-grid-fade {
-  animation-play-state: paused;
+/* Original fade styles kept but unused for now or can be removed */
+.tasks-grid-fade {
+  display: none; /* Hide old scrolling grid */
 }
 
-/* Wrapper for TaskCard in the scrolling grid */
+/* Wrapper for TaskCard in the grid */
 .task-card-wrapper {
   height: 100%;
 }
@@ -586,14 +587,20 @@
 }
 
 .fade-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 150px;
-  background: linear-gradient(to top, var(--bg-primary), transparent);
-  z-index: 2;
-  pointer-events: none;
+  display: none; /* Hide overlay */
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .tasks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .tasks-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Benefits */
@@ -731,18 +738,25 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .landing-hero {
+    padding: 8rem 1.5rem 4rem; /* Increased top padding to lower content, standardized side padding */
+    justify-content: center; /* Keep centered but pushed down by padding */
+  }
+
   .hero-title {
     font-size: 3rem;
   }
   
   .hero-ctas {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center; /* Ensure center alignment for CTAs */
+    width: 100%;
   }
   
   .cta-button {
     width: 100%;
     text-align: center;
+    justify-content: center;
   }
   
   .trusted-logos {
@@ -870,4 +884,46 @@
 
 .learn-more-link:hover {
   text-decoration: underline;
+}
+
+/* Modal Responsive - Mobile */
+@media (max-width: 480px) {
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 1.5rem;
+    padding-bottom: 2rem;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  
+  .modal-close {
+    top: 1rem;
+    right: 1rem;
+  }
+  
+  .modal-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    padding-right: 2rem;
+  }
+  
+  .modal-body p {
+    font-size: 0.95rem;
+  }
+  
+  .modal-tags {
+    margin-top: 1rem;
+  }
+  
+  .modal-tag {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
 }

@@ -120,11 +120,13 @@
 }
 
 @media (max-width: 640px) {
-  .user-name {
+  .user-name,
+  .user-menu-chevron {
     display: none;
   }
 
   .user-menu-button {
-    padding: 6px;
+    padding: 4px;
+    gap: 0;
   }
 }

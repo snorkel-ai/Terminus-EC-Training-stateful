@@ -163,8 +163,6 @@ function TasksView() {
           recentSearches={recentSearches}
           handleSuggestionSelect={handleSuggestionSelect}
           clearSearch={clearSearch}
-          filters={filters}
-          setFilters={setFilters}
           onOpenFilters={() => setFiltersModalOpen(true)}
         />
 

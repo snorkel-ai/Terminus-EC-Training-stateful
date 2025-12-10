@@ -22,21 +22,6 @@ function TaskSidebar({
     return Object.entries(data).sort((a, b) => b[1] - a[1]);
   }, [tasks]);
 
-  // Calculate difficulty counts
-  const difficultyData = useMemo(() => {
-    const counts = { easy: 0, medium: 0, hard: 0, unknown: 0 };
-    tasks.forEach(task => {
-      if (task.is_selected) return;
-      const diff = task.difficulty?.toLowerCase();
-      if (diff === 'easy' || diff === 'medium' || diff === 'hard') {
-        counts[diff]++;
-      } else {
-        counts.unknown++;
-      }
-    });
-    return counts;
-  }, [tasks]);
-
   // Count priority tasks
   const priorityCount = useMemo(() => {
     return tasks.filter(t => t.is_highlighted && !t.is_selected).length;
@@ -53,17 +38,6 @@ function TaskSidebar({
     });
   };
 
-  const handleDifficultyToggle = (difficulty) => {
-    const newDifficulties = filters.difficulties?.includes(difficulty)
-      ? filters.difficulties.filter(d => d !== difficulty)
-      : [...(filters.difficulties || []), difficulty];
-    
-    onFilterChange({
-      ...filters,
-      difficulties: newDifficulties
-    });
-  };
-
   const handlePriorityToggle = () => {
     onFilterChange({
       ...filters,
@@ -75,7 +49,6 @@ function TaskSidebar({
     onFilterChange({
       ...filters,
       categories: [],
-      difficulties: [],
       priorityOnly: false
     });
     if (window.innerWidth < 768) {
@@ -85,7 +58,6 @@ function TaskSidebar({
 
   const activeFilterCount = 
     (filters.categories?.length || 0) + 
-    (filters.difficulties?.length || 0) + 
     (filters.priorityOnly ? 1 : 0);
 
   return (
@@ -117,32 +89,6 @@ function TaskSidebar({
             <span className="toggle-label">Priority Tasks Only</span>
             <Badge variant="priority" size="sm">{priorityCount}</Badge>
           </label>
-        </div>
-
-        {/* Difficulty */}
-        <div className="sidebar-section">
-          <h4>Difficulty</h4>
-          <div className="filter-group">
-            {[
-              { key: 'easy', label: 'Easy', count: difficultyData.easy },
-              { key: 'medium', label: 'Medium', count: difficultyData.medium },
-              { key: 'hard', label: 'Hard', count: difficultyData.hard },
-              { key: 'unknown', label: 'Unrated', count: difficultyData.unknown }
-            ].map(({ key, label, count }) => (
-              <label key={key} className="filter-item">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={filters.difficulties?.includes(key) || false}
-                    onChange={() => handleDifficultyToggle(key)}
-                  />
-                  <span className="checkbox-custom" />
-                  <span>{label}</span>
-                </div>
-                <span className="filter-count">{count}</span>
-              </label>
-            ))}
-          </div>
         </div>
 
         {/* Categories */}

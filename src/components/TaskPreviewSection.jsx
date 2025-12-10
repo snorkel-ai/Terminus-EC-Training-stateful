@@ -4,6 +4,9 @@ import { supabase } from '../lib/supabase';
 import { Button, TaskCard, TaskDetailModal } from './ui';
 import './TaskPreviewSection.css';
 
+// Number of task cards to display
+const DISPLAY_COUNT = 3;
+
 const TaskPreviewSection = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
@@ -62,8 +65,7 @@ const TaskPreviewSection = () => {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    // Select first 6
-    setDisplayTasks(shuffled.slice(0, 6));
+    setDisplayTasks(shuffled.slice(0, DISPLAY_COUNT));
   };
 
   const handleTaskClick = (task) => {
@@ -84,7 +86,7 @@ const TaskPreviewSection = () => {
       <div className="task-preview-grid">
         {loading ? (
           // Loading skeletons
-          Array(6).fill(0).map((_, i) => (
+          Array(DISPLAY_COUNT).fill(0).map((_, i) => (
             <div key={i} className="task-preview-card skeleton"></div>
           ))
         ) : (

@@ -601,3 +601,19 @@
   color: var(--text-secondary);
   font-size: var(--font-sm);
 }
+
+/* Modal ribbon responsive */
+@media (max-width: 480px) {
+  .modal-ribbon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .modal-ribbon span {
+    width: 120px;
+    padding: 4px 0;
+    font-size: 0.6rem;
+    top: 16px;
+    left: -32px;
+  }
+}
