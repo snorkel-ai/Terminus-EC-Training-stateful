@@ -86,7 +86,7 @@ function Header() {
               </NavLink>
               <div className={`nav-dropdown-menu ${isQuickLinksOpen ? 'open' : ''}`}>
                 <a 
-                  href="https://snorkel.ai" 
+                  href="https://experts.snorkel-ai.com/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="dropdown-item"
