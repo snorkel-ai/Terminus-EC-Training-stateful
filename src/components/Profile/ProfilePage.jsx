@@ -21,7 +21,6 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { selectedTasks, loading: tasksLoading } = useMySelectedTasks();
   
-  const [activeTab, setActiveTab] = useState('profile');
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -185,25 +184,7 @@ const ProfilePage = () => {
         </div>
       )}
 
-      {/* Navigation Tabs */}
-      <div className="profile-tabs">
-        <button 
-          className={`tab-btn ${activeTab === 'profile' ? 'active' : ''}`}
-          onClick={() => setActiveTab('profile')}
-        >
-          My Profile
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'submitted' ? 'active' : ''}`}
-          onClick={() => setActiveTab('submitted')}
-        >
-          My Submitted Tasks
-        </button>
-      </div>
-
-      {/* Tab Content */}
-      {activeTab === 'profile' ? (
-        <div className="profile-grid">
+      <div className="profile-grid">
           <div className="profile-main">
             <section className="profile-card">
               <form onSubmit={handleSubmit}>
@@ -363,15 +344,6 @@ const ProfilePage = () => {
             </section>
           </div>
         </div>
-      ) : (
-        <div className="submitted-tasks-placeholder">
-          <span className="placeholder-icon">📝</span>
-          <div className="placeholder-text">
-            <h3>My Submitted Tasks</h3>
-            <p>A list of your accepted tasks will appear here soon.</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
