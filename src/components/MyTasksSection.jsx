@@ -4,9 +4,10 @@ import { usePostHog } from 'posthog-js/react';
 import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS } from '../hooks/useTasks';
 import { Button, Badge, TaskWorkflowModal, EmptyState } from './ui';
 import { FiSearch, FiChevronUp, FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import emptyTasksImage from '/images/empty_tasks.png';
 import './TaskPreviewSection.css'; 
 import './MyTasksSection.css';
+
+const emptyTasksImage = `${import.meta.env.BASE_URL}images/empty_tasks.png`;
 
 const ITEMS_PER_PAGE = 10;
 
