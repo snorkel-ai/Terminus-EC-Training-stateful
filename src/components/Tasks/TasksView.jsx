@@ -37,24 +37,19 @@ function TasksView() {
     }
   }, [posthog, tasks]);
 
-  // Use the new search hook
+  // Use the search hook - simplified, no controlled input state
   const {
-    searchQuery,
-    setSearchQuery,
     filters,
     setFilters,
     filteredTasks,
-    suggestions,
-    recentSearches,
-    handleSuggestionSelect,
-    addToRecentSearches,
+    applySearch,
     clearSearch
   } = useTaskSearch(tasks);
 
-  // Scroll to top when filters change
+  // Scroll to top when filters change (only when search is applied, not on every keystroke)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [filters, searchQuery]);
+  }, [filters]);
 
   // Group filtered tasks by category for "grouped" view
   const groupedTasks = useMemo(() => {
@@ -115,7 +110,8 @@ function TasksView() {
     (filters.difficulties?.length || 0) + 
     (filters.priorityOnly ? 1 : 0);
 
-  const hasActiveFilters = searchQuery || activeFilterCount > 0;
+  // Only show "active filters" when search is actually applied (after Enter)
+  const hasActiveFilters = filters.search || activeFilterCount > 0;
 
   if (loading) {
     return (
@@ -157,12 +153,8 @@ function TasksView() {
       <div className="gallery-container">
         {/* Search Header */}
         <TaskSearchHeader
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          suggestions={suggestions}
-          recentSearches={recentSearches}
-          handleSuggestionSelect={handleSuggestionSelect}
-          clearSearch={clearSearch}
+          onSearch={applySearch}
+          onClearSearch={clearSearch}
           onOpenFilters={() => setFiltersModalOpen(true)}
         />
 
@@ -201,7 +193,7 @@ function TasksView() {
               tasks={filteredTasks.filter(t => t.category === exploringCategory)}
               onTaskSelect={handleViewDetails}
               onBack={handleBackFromExplore}
-              searchQuery={searchQuery}
+              searchQuery={filters.search}
             />
           ) : filteredTasks.length === 0 ? (
             <div className="tasks-empty">
@@ -239,7 +231,7 @@ function TasksView() {
                   onTaskSelect={handleViewDetails}
                   onTaskUnselect={() => {}}
                   onExplore={handleExplore}
-                  searchQuery={searchQuery}
+                  searchQuery={filters.search}
                   showAll={filters.categories?.includes(category)}
                 />
               ))}

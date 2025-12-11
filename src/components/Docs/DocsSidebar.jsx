@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './DocsSidebar.css';
 
@@ -6,6 +7,15 @@ function DocsSidebar({ sections, currentSlug, onSearchClick, isOpen, onClose, on
     if (onNavClick) onNavClick();
     onClose();
   };
+
+  // Detect if user is on Mac for keyboard shortcut display
+  const isMac = useMemo(() => {
+    if (typeof navigator === 'undefined') return false;
+    if (navigator.userAgentData?.platform) {
+      return navigator.userAgentData.platform.toLowerCase().includes('mac');
+    }
+    return navigator.platform?.toLowerCase().includes('mac') ?? false;
+  }, []);
 
   return (
     <>
@@ -29,7 +39,7 @@ function DocsSidebar({ sections, currentSlug, onSearchClick, isOpen, onClose, on
             <path d="M21 21l-4.35-4.35" />
           </svg>
           <span>Search docs...</span>
-          <kbd>⌘K</kbd>
+          <kbd>{isMac ? '⌘K' : 'Ctrl+K'}</kbd>
         </button>
 
         <nav className="docs-nav">

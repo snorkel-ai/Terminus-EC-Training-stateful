@@ -1,30 +1,41 @@
+import { useRef } from 'react';
 import TaskSearchBar from './TaskSearchBar';
 import './TaskSearchHeader.css';
 
 function TaskSearchHeader({
-  searchQuery,
-  setSearchQuery,
-  suggestions,
-  recentSearches,
-  handleSuggestionSelect,
-  clearSearch,
+  onSearch,
+  onClearSearch,
   onOpenFilters
 }) {
+  const searchBarRef = useRef(null);
+
+  const handleSearchSectionClick = (e) => {
+    // Focus the search input when clicking anywhere in the search section
+    if (!e.target.closest('.search-clear')) {
+      searchBarRef.current?.focus();
+    }
+  };
+
+  const handleSubmit = (value) => {
+    onSearch?.(value);
+  };
+
+  const handleClear = () => {
+    searchBarRef.current?.clear();
+    onClearSearch?.();
+  };
+
   return (
     <div className="task-search-header">
       {/* Search Input Section */}
-      <div className="header-section search-section">
+      <div className="header-section search-section" onClick={handleSearchSectionClick}>
         <div className="section-label">Where</div>
         <TaskSearchBar
-          value={searchQuery}
-          onChange={setSearchQuery}
-          suggestions={suggestions}
-          recentSearches={recentSearches}
-          onSuggestionSelect={handleSuggestionSelect}
-          onClear={clearSearch}
-          loading={false}
+          ref={searchBarRef}
+          onSubmit={handleSubmit}
+          onClear={handleClear}
           variant="embedded"
-          placeholder="Search tasks..."
+          placeholder="Search tasks... (press Enter)"
         />
       </div>
 

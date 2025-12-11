@@ -127,6 +127,32 @@
   color: var(--text-secondary);
 }
 
+/* Submit button - shown when typing */
+.search-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: var(--accent);
+  border-radius: var(--radius-full);
+  color: white;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.search-submit:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.search-submit:active {
+  transform: scale(0.95);
+}
+
 /* Dropdown */
 .search-dropdown {
   position: absolute;
