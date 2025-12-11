@@ -20,14 +20,14 @@ Before you begin, make sure you have:
 # Install uv (package manager)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Clone the repository
+# Optional: clone the repository (if you have access to the repo)
 git clone https://github.com/snorkel-ai/snorkel-tb-tasks.git
 cd snorkel-tb-tasks
 ```
 
 ### Step 2: Create Your First Task
 
-**Option A: Use the task creation wizard**
+**Option A: Use the task creation wizard (if you have access to the repo)**
 
 ```bash
 uv run stb tasks create
