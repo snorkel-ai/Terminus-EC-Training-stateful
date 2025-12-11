@@ -28,7 +28,7 @@ Run checks → Identify failures → Fix issues → Re-run → Repeat
 ### Step 1: Run All Checks
 
 ```bash
-uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai/gpt-5
+uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
 ```
 
 ### Step 2: Review Output
@@ -66,7 +66,7 @@ instruction: |
 ### Step 4: Re-run and Verify
 
 ```bash
-uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai/gpt-5
+uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
 ```
 
 ### Step 5: Repeat

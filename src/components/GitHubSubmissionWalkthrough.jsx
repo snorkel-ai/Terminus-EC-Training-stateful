@@ -176,7 +176,7 @@ uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20
                   <ul>
                     <li>Use GPT-5 as it is used in CI:
                       <pre><code>
-uv run harbor tasks check -m openai/@openai/gpt-5 -m openai/@openai/gpt-5 harbor_tasks/&lt;task-name&gt;
+uv run harbor tasks check -m openai/@openai-tbench/gpt-5 -m openai/@openai-tbench/gpt-5 harbor_tasks/&lt;task-name&gt;
                       </code></pre>
                     </li>
                   </ul>

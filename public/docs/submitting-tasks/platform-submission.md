@@ -35,7 +35,7 @@ Run all checks one more time:
 tb run --agent oracle --task-id <task-name>
 
 # CI/LLMaJ checks
-tb tasks check <task-id> --model openai/@openai/gpt-5
+tb tasks check <task-id> --model openai/@openai-tbench/gpt-5
 ```
 
 ### Step 2: Create ZIP File

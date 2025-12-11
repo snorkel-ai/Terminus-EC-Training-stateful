@@ -126,7 +126,7 @@ Run CI/LLMaJ checks locally on your task:
 
 **GPT-5:**
 ```bash
-tb tasks check <task_id> --model openai/@openai/gpt-5
+tb tasks check <task_id> --model openai/@openai-tbench/gpt-5
 ```
 
 **Claude Sonnet 4.5:**

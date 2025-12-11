@@ -49,7 +49,7 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1</code></pre>
             </li>
             <li>Two models are available currently - GPT-5 and Claude Sonnet 4.5:
               <pre><code># GPT-5
-tb tasks check &lt;task_id&gt; --model openai/@openai/gpt-5
+tb tasks check &lt;task_id&gt; --model openai/@openai-tbench/gpt-5
 
 # Claude Sonnet 4.5
 tb tasks check &lt;task_id&gt; --model openai/@anthropic-tbench/claude-sonnet-4-5-20250929</code></pre>

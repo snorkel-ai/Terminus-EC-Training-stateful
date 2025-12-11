@@ -6,10 +6,10 @@ All submissions must pass these automated CI checks. This reference explains eac
 
 ```bash
 # Using GPT-5 (recommended - matches CI)
-uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai/gpt-5
+uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
 
 # Platform workflow
-tb tasks check <task-id> --model openai/@openai/gpt-5
+tb tasks check <task-id> --model openai/@openai-tbench/gpt-5
 ```
 
 ## CI Checks
