@@ -4,7 +4,7 @@ Learn how to interact with your task environment and test your solution locally.
 
 ## Video Tutorial
 
-<video-loom id="22449b76123d41e6abff0efb39d0b960" title="Running Your Task" />
+<video-loom id="22449b76123d41e6abff0efb39d0b960" title="Running Your Task"></video-loom>
 
 ## What You'll Learn
 

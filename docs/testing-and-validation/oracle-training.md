@@ -4,13 +4,13 @@ Learn how to effectively use and debug the Oracle Agent with hands-on practice.
 
 ## Video Tutorial
 
-<video-loom id="72b70216a5314068823bc6ed0350e672" title="Oracle Training Tutorial" />
+<video-loom id="72b70216a5314068823bc6ed0350e672" title="Oracle Training Tutorial"></video-loom>
 
 ## Practice Notebook
 
 Download the Jupyter notebook for hands-on practice:
 
-<pdf-download src="/Terminus-EC-Training-stateful/oracle_agent_training.ipynb" title="Download Oracle Training Notebook" />
+<pdf-download src="/Terminus-EC-Training-stateful/oracle_agent_training.ipynb" title="Download Oracle Training Notebook"></pdf-download>
 
 ## What You'll Learn
 

@@ -37,7 +37,7 @@ Follow the prompts to set up your task structure.
 
 **Option B: Download the task skeleton**
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Task Skeleton Template" />
+<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Task Skeleton Template"></pdf-download>
 
 Download and extract to get a pre-configured task structure with all required files.
 

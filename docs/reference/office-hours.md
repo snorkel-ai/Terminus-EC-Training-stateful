@@ -22,7 +22,7 @@ Check Slack (`#ec-terminus-submission`) for the current office hours schedule. S
 
 Common feedback patterns and best practices discussed.
 
-<pdf-download src="/Terminus-EC-Training-stateful/Feedback 10_31.pdf" title="Download Feedback Slides (Oct 31)" />
+<pdf-download src="/Terminus-EC-Training-stateful/Feedback 10_31.pdf" title="Download Feedback Slides (Oct 31)"></pdf-download>
 
 ---
 
@@ -30,7 +30,7 @@ Common feedback patterns and best practices discussed.
 
 Additional feedback patterns and Q&A from submissions.
 
-<pdf-download src="/Terminus-EC-Training-stateful/Feedback 11_3.pdf" title="Download Feedback Slides (Nov 3)" />
+<pdf-download src="/Terminus-EC-Training-stateful/Feedback 11_3.pdf" title="Download Feedback Slides (Nov 3)"></pdf-download>
 
 ---
 

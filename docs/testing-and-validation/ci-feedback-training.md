@@ -4,13 +4,13 @@ Learn to iterate on CI and LLMaJ feedback to get your task passing all checks.
 
 ## Video Tutorial
 
-<video-loom id="db35a5b03c1c43ab80f46f481fa02be1" title="CI Feedback Training" />
+<video-loom id="db35a5b03c1c43ab80f46f481fa02be1" title="CI Feedback Training"></video-loom>
 
 ## Practice Notebook
 
 Download the Jupyter notebook for hands-on practice:
 
-<pdf-download src="/Terminus-EC-Training-stateful/ci_feedback_training.ipynb" title="Download CI Feedback Training Notebook" />
+<pdf-download src="/Terminus-EC-Training-stateful/ci_feedback_training.ipynb" title="Download CI Feedback Training Notebook"></pdf-download>
 
 ## What You'll Learn
 

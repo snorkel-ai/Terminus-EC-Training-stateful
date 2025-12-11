@@ -4,11 +4,11 @@ Get started with TerminalBench using the GitHub workflow. Watch the onboarding v
 
 ## Onboarding Video
 
-<video-embed src="https://snorkel-ai.github.io/Terminus-EC-Training/Onboarding_11-14-2025.mp4" title="GitHub Onboarding Video" />
+<video-embed src="https://snorkel-ai.github.io/Terminus-EC-Training/Onboarding_11-14-2025.mp4" title="GitHub Onboarding Video"></video-embed>
 
 ## Onboarding Slides
 
-<pdf-download src="/Terminus-EC-Training-stateful/Terminus EC Onboarding.pdf" title="GitHub Onboarding Slides" />
+<pdf-download src="/Terminus-EC-Training-stateful/Terminus EC Onboarding.pdf" title="GitHub Onboarding Slides"></pdf-download>
 
 ## Key Takeaways
 

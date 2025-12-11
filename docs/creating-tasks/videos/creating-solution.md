@@ -4,7 +4,7 @@ Learn how to write an effective oracle solution (solution.sh) for your task.
 
 ## Video Tutorial
 
-<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh" />
+<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh"></video-loom>
 
 ## What You'll Learn
 

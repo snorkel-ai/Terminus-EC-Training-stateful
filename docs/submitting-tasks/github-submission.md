@@ -14,19 +14,19 @@ Before submitting:
 
 ### 1. Creating a Task
 
-<video-loom id="92c2e195ac1c4b1e9b1177668dfcb81a" title="Creating a Task" />
+<video-loom id="92c2e195ac1c4b1e9b1177668dfcb81a" title="Creating a Task"></video-loom>
 
 ### 2. Running Your Task
 
-<video-loom id="22449b76123d41e6abff0efb39d0b960" title="Running your task" />
+<video-loom id="22449b76123d41e6abff0efb39d0b960" title="Running your task"></video-loom>
 
 ### 3. Creating a solution.sh
 
-<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh" />
+<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh"></video-loom>
 
 ### 4. Creating Tests
 
-<video-loom id="a00541ff2787464c84bf4601415ee624" title="Creating tests for your task" />
+<video-loom id="a00541ff2787464c84bf4601415ee624" title="Creating tests for your task"></video-loom>
 
 ## Submission Steps
 
