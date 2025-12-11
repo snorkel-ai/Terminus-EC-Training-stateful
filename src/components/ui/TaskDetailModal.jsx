@@ -268,7 +268,7 @@ export function TaskDetailModal({
               disabled={!canClaimMore}
               title={!canClaimMore ? `You can only have ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review to free up slots.` : ''}
             >
-              {canClaimMore ? 'Claim Task' : 'Limit Reached'}
+              {canClaimMore ? 'Claim Task' : 'Active Task Limit Reached'}
             </Button>
           </div>
         </>
