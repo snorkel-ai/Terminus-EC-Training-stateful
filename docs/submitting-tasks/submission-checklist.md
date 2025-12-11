@@ -50,7 +50,7 @@ uv run harbor run --agent oracle --path harbor_tasks/<task-name>
 ### CI Checks
 
 ```bash
-uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai/gpt-5
+uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
 ```
 
 - [ ] pinned_dependencies ✓
