@@ -102,9 +102,26 @@ const OnboardingResources = () => {
     setIsMarkingAll(true);
     
     try {
-      const incompleteIds = resources
-        .filter(r => !isCompleted(PROGRESS_ID_MAP[r.id]))
-        .map(r => r.id);
+      const incompleteResources = resources
+        .filter(r => !isCompleted(PROGRESS_ID_MAP[r.id]));
+      const incompleteIds = incompleteResources.map(r => r.id);
+
+      // Track each step completion for funnel accuracy
+      if (posthog && incompleteResources.length > 0) {
+        incompleteResources.forEach(resource => {
+          posthog.capture('onboarding_step_completed', {
+            resource_id: resource.id,
+            resource_label: resource.label,
+            source: 'mark_all_complete',
+          });
+        });
+        
+        // Also fire a summary event
+        posthog.capture('onboarding_all_completed', {
+          resources_completed: incompleteResources.map(r => r.id),
+          count: incompleteResources.length,
+        });
+      }
 
       // Animate all cards closing
       setClosingCards(prev => [...prev, ...incompleteIds]);
@@ -135,6 +152,7 @@ const OnboardingResources = () => {
       posthog.capture('onboarding_step_completed', {
         resource_id: id,
         resource_label: resource.label,
+        source: 'individual_card',
       });
     }
     
