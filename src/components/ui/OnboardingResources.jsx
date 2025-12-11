@@ -27,6 +27,7 @@ const OnboardingResources = () => {
   const navigate = useNavigate();
   const posthog = usePostHog();
   const [closingCards, setClosingCards] = useState([]);
+  const [isMarkingAll, setIsMarkingAll] = useState(false);
 
   const resources = [
     { 
@@ -96,6 +97,34 @@ const OnboardingResources = () => {
     return null;
   }
 
+  const handleMarkAllComplete = async () => {
+    if (isMarkingAll) return;
+    setIsMarkingAll(true);
+    
+    try {
+      const incompleteIds = resources
+        .filter(r => !isCompleted(PROGRESS_ID_MAP[r.id]))
+        .map(r => r.id);
+
+      // Animate all cards closing
+      setClosingCards(prev => [...prev, ...incompleteIds]);
+
+      // Wait for animation then toggle all
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const promises = incompleteIds.map(id => 
+        toggleCompletion(PROGRESS_ID_MAP[id])
+      );
+      
+      await Promise.all(promises);
+      success('All onboarding tasks marked as complete!');
+    } catch (error) {
+      console.error('Error marking all complete:', error);
+    } finally {
+      setIsMarkingAll(false);
+    }
+  };
+
   const markComplete = async (e, id) => {
     e.stopPropagation();
     const progressId = PROGRESS_ID_MAP[id];
@@ -145,6 +174,14 @@ const OnboardingResources = () => {
     <section className="get-started-section">
       <div className="section-header-row">
         <h2 className="section-header">Get Started</h2>
+        <Button 
+          variant="ghost" 
+          onClick={handleMarkAllComplete}
+          disabled={isMarkingAll}
+          className="mark-all-complete-btn"
+        >
+          I have onboarded already
+        </Button>
       </div>
       <div className={`resources-grid cards-${visibleResources.length}`}>
         {visibleResources.map((resource) => (

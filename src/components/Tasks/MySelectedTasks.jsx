@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
 import { useLoadingMessage } from '../../hooks/useLoadingMessage';
 import { MY_CHALLENGES_LOADING_MESSAGES } from '../../utils/loadingMessages';
-import { Button, LoadingState, Modal, Badge, TaskCard, DifficultyRating, Tabs, Tab } from '../ui';
+import { Button, LoadingState, TaskCard, TaskWorkflowModal, Tabs, Tab } from '../ui';
 import './Tasks.css';
 import './TaskCategorySection.css';
 
@@ -131,16 +131,11 @@ function MySelectedTasks() {
     selectedTasks, 
     loading, 
     error, 
-    unselectTask, 
-    startTask, 
-    submitForReview, 
-    acceptTask, 
-    reopenTask,
     activeTaskCount,
-    canClaimMore 
+    canClaimMore,
+    refetch
   } = useMySelectedTasks();
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
-  const [isActioning, setIsActioning] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
   
   // Fun rotating loading message
@@ -174,90 +169,8 @@ function MySelectedTasks() {
 
   const handleCloseModal = () => {
     setSelectedTaskForModal(null);
-  };
-
-  const handleStartWorking = async () => {
-    if (!selectedTaskForModal || isActioning) return;
-    
-    setIsActioning(true);
-    try {
-      await startTask(selectedTaskForModal.id);
-      // Close the modal after starting - user can reopen when ready to submit
-      handleCloseModal();
-    } catch (err) {
-      console.error('Error starting task:', err);
-      alert(err.message);
-    } finally {
-      setIsActioning(false);
-    }
-  };
-
-  const handleSubmitForReview = async () => {
-    if (!selectedTaskForModal || isActioning) return;
-    
-    setIsActioning(true);
-    try {
-      await submitForReview(selectedTaskForModal.id);
-      // Close the modal after submitting - task moves to "In Review" tab
-      handleCloseModal();
-    } catch (err) {
-      console.error('Error submitting task for review:', err);
-      alert(err.message);
-    } finally {
-      setIsActioning(false);
-    }
-  };
-
-  const handleAccept = async () => {
-    if (!selectedTaskForModal || isActioning) return;
-    
-    setIsActioning(true);
-    try {
-      await acceptTask(selectedTaskForModal.id);
-      setSelectedTaskForModal(prev => prev ? { 
-        ...prev, 
-        status: TASK_STATUS.ACCEPTED,
-        completed_at: new Date().toISOString() 
-      } : null);
-    } catch (err) {
-      console.error('Error accepting task:', err);
-      alert(err.message);
-    } finally {
-      setIsActioning(false);
-    }
-  };
-
-  const handleReopen = async () => {
-    if (!selectedTaskForModal || isActioning) return;
-    
-    setIsActioning(true);
-    try {
-      await reopenTask(selectedTaskForModal.id);
-      setSelectedTaskForModal(prev => prev ? { 
-        ...prev, 
-        status: TASK_STATUS.IN_PROGRESS 
-      } : null);
-    } catch (err) {
-      console.error('Error reopening task:', err);
-      alert(err.message);
-    } finally {
-      setIsActioning(false);
-    }
-  };
-
-  const handleAbandon = async () => {
-    if (!selectedTaskForModal || isActioning) return;
-    if (!window.confirm('Are you sure you want to abandon this challenge?')) return;
-    
-    setIsActioning(true);
-    try {
-      await unselectTask(selectedTaskForModal.id);
-      handleCloseModal();
-    } catch (err) {
-      console.error('Error abandoning task:', err);
-    } finally {
-      setIsActioning(false);
-    }
+    // Refetch to ensure data is in sync after modal actions
+    refetch();
   };
 
   if (loading) {
@@ -289,11 +202,6 @@ function MySelectedTasks() {
     );
   }
 
-  const modalTaskStatus = selectedTaskForModal?.status;
-  const isModalTaskActive = modalTaskStatus === TASK_STATUS.CLAIMED || modalTaskStatus === TASK_STATUS.IN_PROGRESS;
-  const isModalTaskInReview = modalTaskStatus === TASK_STATUS.WAITING_REVIEW;
-  const isModalTaskAccepted = modalTaskStatus === TASK_STATUS.ACCEPTED;
-
   return (
     <div className="tasks-view my-tasks-view">
       <div className="tasks-header">
@@ -309,7 +217,7 @@ function MySelectedTasks() {
             </svg>
           </div>
           <h3>No challenges yet</h3>
-          <p>Browse the task gallery and claim challenges to get started.</p>
+          <p>Browse tasks and claim challenges to get started.</p>
           <Button variant="primary" onClick={() => navigate('/portal/tasks')}>
             Browse Tasks
           </Button>
@@ -431,150 +339,13 @@ function MySelectedTasks() {
         </div>
       )}
 
-      {/* Task Detail Modal */}
-      <Modal
+      {/* Reusable Task Workflow Modal */}
+      <TaskWorkflowModal
+        task={selectedTaskForModal}
         isOpen={!!selectedTaskForModal}
         onClose={handleCloseModal}
-        size="lg"
-        className="task-detail-modal"
-      >
-        {selectedTaskForModal && (
-          <>
-            {/* Corner ribbon for accepted tasks only */}
-            {isModalTaskAccepted && (
-              <div className="modal-ribbon">
-                <span>Accepted</span>
-              </div>
-            )}
-            
-            <div className="task-detail-modal-header">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
-                <div>
-                  <div className="modal-badges" style={{ alignItems: 'center' }}>
-                    <div className="task-breadcrumb">
-                      <span className="breadcrumb-segment parent">{selectedTaskForModal.category}</span>
-                      <span className="breadcrumb-separator">/</span>
-                      <span className="breadcrumb-segment current">
-                        {selectedTaskForModal.subcategory || selectedTaskForModal.subsubcategory}
-                      </span>
-                    </div>
-                    {selectedTaskForModal.difficulty && (
-                      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
-                        <DifficultyRating difficulty={selectedTaskForModal.difficulty} />
-                      </div>
-                    )}
-                  </div>
-                  <h2>Your challenge</h2>
-                </div>
-                {/* Top right pill for in_progress */}
-                {modalTaskStatus === TASK_STATUS.IN_PROGRESS && (
-                  <Badge variant="info" style={{ flexShrink: 0 }}>
-                    In Progress
-                  </Badge>
-                )}
-                {/* Top right pill for waiting on review */}
-                {isModalTaskInReview && (
-                  <Badge variant="warning" style={{ flexShrink: 0 }}>
-                    Waiting on Review
-                  </Badge>
-                )}
-              </div>
-            </div>
-            
-            <div className="task-detail-modal-body">
-              <p>{selectedTaskForModal.description}</p>
-              
-              {/* Show timeline info */}
-              <div className="modal-timeline-info" style={{ marginTop: 'var(--space-4)', fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
-                {selectedTaskForModal.selected_at && (
-                  <div>Claimed on {new Date(selectedTaskForModal.selected_at).toLocaleDateString('en-US', { 
-                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
-                  })}</div>
-                )}
-                {selectedTaskForModal.started_at && (
-                  <div>Started on {new Date(selectedTaskForModal.started_at).toLocaleDateString('en-US', { 
-                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
-                  })}</div>
-                )}
-                {selectedTaskForModal.submitted_for_review_at && (
-                  <div>Submitted for review on {new Date(selectedTaskForModal.submitted_for_review_at).toLocaleDateString('en-US', { 
-                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
-                  })}</div>
-                )}
-                {isModalTaskAccepted && selectedTaskForModal.completed_at && (
-                  <div>🎉 Accepted on {new Date(selectedTaskForModal.completed_at).toLocaleDateString('en-US', { 
-                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
-                  })}</div>
-                )}
-              </div>
-            </div>
-
-            <div className="task-detail-modal-footer">
-              {/* Double Pay badge if applicable */}
-              {(selectedTaskForModal.is_special || selectedTaskForModal.priority_tag || selectedTaskForModal.is_highlighted) && (
-                <div style={{ marginRight: 'auto' }}>
-                  <Badge variant="accent">Double Pay</Badge>
-                </div>
-              )}
-              
-              {/* Abandon button - only show for active tasks (claimed or in_progress) */}
-              {isModalTaskActive && (
-                <Button 
-                  variant="danger" 
-                  onClick={handleAbandon}
-                  disabled={isActioning}
-                >
-                  Abandon Task
-                </Button>
-              )}
-
-              {/* Workflow action buttons based on current status */}
-              {modalTaskStatus === TASK_STATUS.CLAIMED && (
-                <Button 
-                  variant="primary" 
-                  onClick={handleStartWorking}
-                  loading={isActioning}
-                >
-                  Started working on this task
-                </Button>
-              )}
-              
-              {modalTaskStatus === TASK_STATUS.IN_PROGRESS && (
-                <Button 
-                  variant="primary" 
-                  onClick={handleSubmitForReview}
-                  loading={isActioning}
-                >
-                  Submitted for review
-                </Button>
-              )}
-              
-              {modalTaskStatus === TASK_STATUS.WAITING_REVIEW && (
-                <Button 
-                  variant="primary" 
-                  onClick={handleAccept}
-                  loading={isActioning}
-                >
-                  Mark as Accepted
-                </Button>
-              )}
-              
-              {/* Re-open button for tasks in review or accepted */}
-              {(isModalTaskInReview || isModalTaskAccepted) && (
-                <Button 
-                  variant="secondary" 
-                  onClick={handleReopen}
-                  loading={isActioning}
-                  disabled={!canClaimMore && !isModalTaskActive}
-                  title={!canClaimMore ? `You have ${MAX_ACTIVE_TASKS} active tasks. Submit or complete some first.` : ''}
-                >
-                  Re-open Task
-                </Button>
-              )}
-            </div>
-          </>
-        )}
-      </Modal>
+        onTaskUpdate={() => refetch()}
+      />
     </div>
   );
 }

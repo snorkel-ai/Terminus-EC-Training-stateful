@@ -111,7 +111,7 @@ const TaskPreviewSection = () => {
           size="lg"
           onClick={() => navigate('/portal/tasks')}
         >
-          Browse Task Gallery →
+          Browse tasks →
         </Button>
       </div>
 

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import TaskPreviewSection from './TaskPreviewSection';
+import MyTasksSection from './MyTasksSection';
 import { AnnouncementBanner, OnboardingResources } from './ui';
 import './LandingPage.css';
 import './Content.css';
@@ -30,9 +30,7 @@ function LandingPage() {
 
         <OnboardingResources />
 
-        <section className="inspiration-section">
-           <TaskPreviewSection />
-        </section>
+        <MyTasksSection />
       </main>
 
       <footer className="footer">

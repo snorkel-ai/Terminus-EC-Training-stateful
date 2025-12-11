@@ -3,7 +3,7 @@ import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
-const TASKS_CACHE_KEY = 'tasks_cache';
+const TASKS_CACHE_KEY = 'tasks_cache_v3'; // v3: Added pagination to fetch all 1600+ tasks
 const TASKS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // Helper to get cached tasks from localStorage
@@ -62,29 +62,46 @@ export function useTasks() {
   const isFetchingRef = useRef(false);
 
   // Fetch function - updates both state and cache
+  // Uses pagination because Supabase API limits to 1000 rows per request (PGRST_DB_MAX_ROWS)
   const fetchTasksInternal = async () => {
     // Prevent duplicate concurrent fetches
     if (isFetchingRef.current) return null;
     isFetchingRef.current = true;
     
     try {
-      // IMPORTANT: Supabase defaults to 1000 rows - we need all ~1,446 tasks
-      const { data, error: fetchError } = await supabase
-        .from('v_tasks_with_priorities')
-        .select('*')
-        .order('display_order', { ascending: true, nullsFirst: false })
-        .order('is_highlighted', { ascending: false })
-        .order('category', { ascending: true })
-        .order('subcategory', { ascending: true })
-        .limit(2000); // Increase limit to get all tasks
+      const PAGE_SIZE = 1000;
+      let allTasks = [];
+      let page = 0;
+      let hasMore = true;
 
-      if (fetchError) throw fetchError;
+      // Fetch all pages until we get less than PAGE_SIZE results
+      while (hasMore) {
+        const from = page * PAGE_SIZE;
+        const to = from + PAGE_SIZE - 1;
+        
+        const { data, error: fetchError } = await supabase
+          .from('v_tasks_with_priorities')
+          .select('*')
+          .order('display_order', { ascending: true, nullsFirst: false })
+          .order('is_highlighted', { ascending: false })
+          .order('category', { ascending: true })
+          .order('subcategory', { ascending: true })
+          .range(from, to);
+
+        if (fetchError) throw fetchError;
+        
+        const pageData = data || [];
+        allTasks = [...allTasks, ...pageData];
+        
+        // If we got less than PAGE_SIZE, we've reached the end
+        hasMore = pageData.length === PAGE_SIZE;
+        page++;
+      }
       
-      const newTasks = data || [];
-      setTasks(newTasks);
-      setCachedTasks(newTasks); // Update cache
+      setTasks(allTasks);
+      setCachedTasks(allTasks); // Update cache
       setError(null);
-      return newTasks;
+      return allTasks;
     } catch (err) {
       console.error('Error fetching tasks:', err);
       setError(err.message);
@@ -326,6 +343,27 @@ export const TASK_STATUS_LABELS = {
 // Max active tasks (claimed or in_progress) a user can have
 export const MAX_ACTIVE_TASKS = 3;
 
+// Cache for selected tasks (per user)
+const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v1';
+
+const getCachedSelectedTasks = (userId) => {
+  try {
+    const cached = localStorage.getItem(`${SELECTED_TASKS_CACHE_KEY}_${userId}`);
+    if (!cached) return null;
+    return JSON.parse(cached);
+  } catch {
+    return null;
+  }
+};
+
+const setCachedSelectedTasks = (userId, tasks) => {
+  try {
+    localStorage.setItem(`${SELECTED_TASKS_CACHE_KEY}_${userId}`, JSON.stringify(tasks));
+  } catch {
+    // localStorage might be full or disabled
+  }
+};
+
 export function useMySelectedTasks() {
   const { user } = useAuth();
   const posthog = usePostHog();
@@ -334,10 +372,24 @@ export function useMySelectedTasks() {
   const [error, setError] = useState(null);
   const [activeTaskCount, setActiveTaskCount] = useState(0);
   const channelRef = useRef(null);
+  const isFetchingRef = useRef(false);
 
   useEffect(() => {
     if (user) {
-      fetchMySelectedTasks();
+      // Stale-while-revalidate: show cached data immediately, fetch in background
+      const cachedData = getCachedSelectedTasks(user.id);
+      
+      if (cachedData?.tasks?.length > 0) {
+        // Show cache instantly - no loading spinner
+        setSelectedTasks(cachedData.tasks);
+        setActiveTaskCount(cachedData.activeCount || 0);
+        setLoading(false);
+        // Fetch fresh data in background (without showing loading)
+        fetchMySelectedTasks(false);
+      } else {
+        // No cache - show loader and wait for fetch
+        fetchMySelectedTasks(true);
+      }
 
       // Subscribe to realtime changes for this user's tasks
       // This keeps the "My Tasks" page in sync with any changes
@@ -352,8 +404,8 @@ export function useMySelectedTasks() {
             filter: `user_id=eq.${user.id}`
           },
           (payload) => {
-            // Refetch user's tasks on any change
-            setTimeout(() => fetchMySelectedTasks(), 100);
+            // Refetch user's tasks on any change (without loading spinner)
+            setTimeout(() => fetchMySelectedTasks(false), 100);
           }
         )
         .subscribe();
@@ -366,9 +418,15 @@ export function useMySelectedTasks() {
     }
   }, [user]);
 
-  const fetchMySelectedTasks = async () => {
+  const fetchMySelectedTasks = async (showLoading = true) => {
+    // Prevent duplicate concurrent fetches
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
+    
     try {
-      setLoading(true);
+      if (showLoading) {
+        setLoading(true);
+      }
       setError(null);
 
       // Get user's task IDs with all workflow fields
@@ -383,6 +441,10 @@ export function useMySelectedTasks() {
         setSelectedTasks([]);
         setActiveTaskCount(0);
         setLoading(false);
+        isFetchingRef.current = false;
+        if (user) {
+          setCachedSelectedTasks(user.id, { tasks: [], activeCount: 0 });
+        }
         return;
       }
 
@@ -429,10 +491,16 @@ export function useMySelectedTasks() {
       }) || [];
 
       setSelectedTasks(formattedData);
+      
+      // Cache the results
+      if (user) {
+        setCachedSelectedTasks(user.id, { tasks: formattedData, activeCount });
+      }
     } catch (err) {
       console.error('Error fetching selected tasks:', err);
       setError(err.message);
     } finally {
+      isFetchingRef.current = false;
       setLoading(false);
     }
   };
@@ -454,7 +522,7 @@ export function useMySelectedTasks() {
       // Optimistically update local state
       setSelectedTasks(prev => prev.filter(t => t.id !== taskId));
 
-      // Update Task Gallery cache so abandoned task appears immediately
+      // Update tasks cache so abandoned task appears immediately
       updateTaskCacheSelection(taskId, false);
 
       // Update active task count if the removed task was active

@@ -118,6 +118,7 @@
 /* Inspiration Section - Overrides for TaskPreviewSection */
 .inspiration-section {
   margin-bottom: 6rem;
+  margin-top: 6rem;
 }
 
 .landing-page .task-preview-section {
@@ -189,6 +190,11 @@
   
   .get-started-section {
     margin-bottom: 5rem;
+  }
+
+  .inspiration-section {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
   }
 
   .announcement-banner.ui-alert {

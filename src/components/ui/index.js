@@ -34,6 +34,7 @@ export { Timer, TimerCompact } from './Timer';
 // Task Components
 export { default as TaskCard, DifficultyRating } from './TaskCard';
 export { TaskDetailModal } from './TaskDetailModal';
+export { TaskWorkflowModal } from './TaskWorkflowModal';
 
 // Onboarding Components
 export { default as OnboardingResources } from './OnboardingResources';

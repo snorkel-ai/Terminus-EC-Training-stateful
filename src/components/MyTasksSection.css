@@ -1,0 +1,262 @@
+.my-tasks-section {
+  /* Ensure section starts at top */
+  align-self: flex-start;
+}
+
+/* Override the task-preview-section center alignment for table */
+.my-tasks-section.task-preview-section {
+  text-align: left;
+}
+
+.my-tasks-content {
+  text-align: left;
+  margin-top: 0;
+}
+
+/* Override any min-height from task-preview-grid if it gets inherited */
+.my-tasks-section .my-tasks-content {
+  min-height: auto;
+}
+
+/* Reduce header margin for tighter layout */
+.my-tasks-section .task-preview-header {
+  margin-bottom: 1rem;
+}
+
+/* New header row layout */
+.my-tasks-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.my-tasks-header-row .header-title-group h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.my-tasks-header-row .header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.my-tasks-table-container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  /* Explicitly remove any spacing */
+  padding: 0;
+  margin: 0;
+  line-height: 0; /* Prevent inline spacing */
+}
+
+.my-tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: left;
+  font-size: var(--font-sm);
+  table-layout: fixed;
+  margin: 0;
+  padding: 0;
+  line-height: normal; /* Restore normal line height for table content */
+  background: var(--bg-surface);
+}
+
+/* First row header should have rounded top corners */
+.my-tasks-table thead tr:first-child th:first-child {
+  border-top-left-radius: calc(var(--radius-lg) - 1px);
+}
+
+.my-tasks-table thead tr:first-child th:last-child {
+  border-top-right-radius: calc(var(--radius-lg) - 1px);
+}
+
+/* Last row should have rounded bottom corners */
+.my-tasks-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: calc(var(--radius-lg) - 1px);
+}
+
+.my-tasks-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: calc(var(--radius-lg) - 1px);
+}
+
+.my-tasks-table th {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.my-tasks-table th.sortable {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.my-tasks-table th.sortable:hover {
+  background: var(--bg-secondary-hover, #f3f4f6);
+  color: var(--text-primary);
+}
+
+.my-tasks-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.my-tasks-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column widths */
+.my-tasks-table th.col-category { width: 28%; }
+.my-tasks-table th.col-description { width: 45%; }
+.my-tasks-table th.col-status { width: 15%; }
+.my-tasks-table th.col-updated { width: 12%; }
+
+
+/* Header & Search Styles */
+.my-tasks-section .search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.my-tasks-section .search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-secondary);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.my-tasks-section .task-search-input {
+  width: 240px;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  transition: all 0.2s;
+  height: 36px;
+}
+
+.my-tasks-section .task-search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-transparent, rgba(59, 130, 246, 0.1));
+  width: 280px;
+}
+
+.sort-icon-placeholder {
+  display: inline-block;
+  width: 16px;
+}
+
+.no-results-cell {
+  text-align: center;
+  padding: var(--space-8) !important;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* EmptyState styles handled by shared component */
+
+/* Pagination */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-2) 0;
+}
+
+.pagination-info {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  min-width: 100px;
+  text-align: center;
+}
+
+.pagination-controls button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Footer with separated buttons */
+.my-tasks-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.my-tasks-footer .footer-left,
+.my-tasks-footer .footer-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .my-tasks-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .my-tasks-header-row .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .my-tasks-section .task-search-input {
+    width: 100%;
+  }
+  
+  .my-tasks-section .task-search-input:focus {
+    width: 100%;
+  }
+
+  .my-tasks-footer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .my-tasks-footer .footer-left,
+  .my-tasks-footer .footer-right {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .my-tasks-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}
