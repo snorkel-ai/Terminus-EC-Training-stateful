@@ -519,6 +519,17 @@ export function useMySelectedTasks() {
 
       if (deleteError) throw deleteError;
 
+      // Track task abandonment
+      if (posthog && taskToRemove) {
+        posthog.capture('task_abandoned', {
+          task_id: taskId,
+          task_category: taskToRemove.category,
+          task_subcategory: taskToRemove.subcategory,
+          task_status_at_abandon: taskToRemove.status,
+          task_difficulty: taskToRemove.difficulty,
+        });
+      }
+
       // Optimistically update local state
       setSelectedTasks(prev => prev.filter(t => t.id !== taskId));
 
