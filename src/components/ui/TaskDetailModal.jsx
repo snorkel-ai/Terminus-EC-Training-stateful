@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePostHog } from 'posthog-js/react';
 import { useTasks, useMySelectedTasks, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
 import { Modal } from './Modal';
 import { Button } from './Button';
@@ -26,11 +27,25 @@ export function TaskDetailModal({
   showNavigation = false 
 }) {
   const navigate = useNavigate();
+  const posthog = usePostHog();
   const { selectTask, activeTaskCount, canClaimMore } = useTasks();
   const { unselectTask } = useMySelectedTasks();
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
   const confettiContainerRef = useRef(null);
+
+  // Track when task card is opened
+  useEffect(() => {
+    if (isOpen && task && posthog) {
+      posthog.capture('task_card_viewed', {
+        task_id: task.id,
+        task_category: task.category,
+        task_subcategory: task.subcategory,
+        task_difficulty: task.difficulty,
+        is_special: task.is_special || task.priority_tag || task.is_highlighted,
+      });
+    }
+  }, [isOpen, task?.id, posthog]);
 
   // Reset success state when task changes or modal closes
   useEffect(() => {
