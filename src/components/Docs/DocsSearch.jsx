@@ -4,6 +4,42 @@ import Fuse from 'fuse.js';
 import { getAllDocs, getDocContent } from '../../docs';
 import './DocsSearch.css';
 
+// Extract a snippet around matched text
+const getContentSnippet = (content, query, maxLength = 120) => {
+  if (!content || !query) return null;
+  
+  const lowerContent = content.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  const matchIndex = lowerContent.indexOf(lowerQuery);
+  
+  if (matchIndex === -1) return null;
+  
+  // Calculate start and end positions for the snippet
+  const snippetPadding = Math.floor((maxLength - query.length) / 2);
+  let start = Math.max(0, matchIndex - snippetPadding);
+  let end = Math.min(content.length, matchIndex + query.length + snippetPadding);
+  
+  // Adjust to word boundaries
+  if (start > 0) {
+    const spaceIndex = content.indexOf(' ', start);
+    if (spaceIndex !== -1 && spaceIndex < matchIndex) {
+      start = spaceIndex + 1;
+    }
+  }
+  if (end < content.length) {
+    const spaceIndex = content.lastIndexOf(' ', end);
+    if (spaceIndex > matchIndex + query.length) {
+      end = spaceIndex;
+    }
+  }
+  
+  let snippet = content.slice(start, end).trim();
+  if (start > 0) snippet = '...' + snippet;
+  if (end < content.length) snippet = snippet + '...';
+  
+  return snippet;
+};
+
 function DocsSearch({ isOpen, onClose, onSelect }) {
   const posthog = usePostHog();
   const [query, setQuery] = useState('');
@@ -25,9 +61,12 @@ function DocsSearch({ isOpen, onClose, onSelect }) {
               .replace(/#{1,6}\s/g, '')
               .replace(/\*\*/g, '')
               .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-              .replace(/`{1,3}[^`]*`{1,3}/g, '')
-              .replace(/\n/g, ' ')
-              .slice(0, 500); // Limit content length
+              .replace(/```[\s\S]*?```/g, '')  // Remove fenced code blocks
+              .replace(/`[^`]+`/g, '')          // Remove inline code
+              .replace(/\n+/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim()
+              .slice(0, 8000); // Large limit to capture full doc content
             return { ...doc, content: plainContent };
           } catch {
             return { ...doc, content: doc.title };
@@ -47,9 +86,11 @@ function DocsSearch({ isOpen, onClose, onSelect }) {
         { name: 'section', weight: 2 },
         { name: 'content', weight: 1 }
       ],
-      threshold: 0.4,
+      threshold: 0.15,           // Stricter matching to avoid false positives
       includeMatches: true,
       minMatchCharLength: 2,
+      ignoreLocation: true,      // Search entire content, not just beginning
+      findAllMatches: true,      // Find all matches in the content
     });
   }, [searchIndex]);
 
@@ -156,24 +197,30 @@ function DocsSearch({ isOpen, onClose, onSelect }) {
             </div>
           ) : (
             <ul className="docs-search-list">
-              {results.map(({ item }, index) => (
-                <li key={item.slug}>
-                  <button
-                    className={`docs-search-result ${index === selectedIndex ? 'docs-search-result--selected' : ''}`}
-                    onClick={() => onSelect(item.slug, query)}
-                    onMouseEnter={() => setSelectedIndex(index)}
-                  >
-                    <span className="docs-search-result-icon">{item.icon}</span>
-                    <div className="docs-search-result-text">
-                      <span className="docs-search-result-title">{item.title}</span>
-                      <span className="docs-search-result-section">{item.section}</span>
-                    </div>
-                    <svg className="docs-search-result-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
-                </li>
-              ))}
+              {results.map(({ item }, index) => {
+                const snippet = getContentSnippet(item.content, query);
+                return (
+                  <li key={item.slug}>
+                    <button
+                      className={`docs-search-result ${index === selectedIndex ? 'docs-search-result--selected' : ''}`}
+                      onClick={() => onSelect(item.slug, query)}
+                      onMouseEnter={() => setSelectedIndex(index)}
+                    >
+                      <span className="docs-search-result-icon">{item.icon}</span>
+                      <div className="docs-search-result-text">
+                        <span className="docs-search-result-title">{item.title}</span>
+                        <span className="docs-search-result-section">{item.section}</span>
+                        {snippet && (
+                          <span className="docs-search-result-snippet">{snippet}</span>
+                        )}
+                      </div>
+                      <svg className="docs-search-result-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
