@@ -4,7 +4,7 @@ Learn how to write effective pytest tests that verify task completion.
 
 ## Video Tutorial
 
-<video-loom id="a00541ff2787464c84bf4601415ee624" title="Creating Tests for Your Task" />
+<video-loom id="a00541ff2787464c84bf4601415ee624" title="Creating Tests for Your Task"></video-loom>
 
 ## What You'll Learn
 

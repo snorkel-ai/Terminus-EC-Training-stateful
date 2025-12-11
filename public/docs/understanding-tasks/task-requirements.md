@@ -17,7 +17,7 @@ Every task submission must include:
 | `tests/test_outputs.py` | ✅ | Pytest validation tests |
 | `tests/run-tests.sh` | ✅ | Test runner script |
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template" />
+<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
 
 ---
 

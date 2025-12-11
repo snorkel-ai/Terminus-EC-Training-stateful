@@ -14,6 +14,7 @@ export const docsConfig = {
       title: 'Onboarding',
       items: [
         { slug: 'onboarding/platform-onboarding', title: 'Platform Onboarding' },
+        { slug: 'onboarding/platform-walkthrough', title: 'Platform Walkthrough' },
         { slug: 'onboarding/github-onboarding', title: 'GitHub Onboarding' },
       ]
     },

@@ -4,11 +4,11 @@ Get started with TerminalBench using the Snorkel Expert Platform. Watch the onbo
 
 ## Onboarding Video
 
-<video-embed src="https://snorkel-ai.github.io/Terminus-EC-Training/platform_onboarding_11-25-2025.mp4" title="Platform Onboarding Video" />
+<video-embed src="https://snorkel-ai.github.io/Terminus-EC-Training/platform_onboarding_11-25-2025.mp4" title="Platform Onboarding Video"></video-embed>
 
 ## Onboarding Slides
 
-<pdf-download src="/Terminus-EC-Training-stateful/Terminus EC Onboarding - Platform.pdf" title="Platform Onboarding Slides" />
+<pdf-download src="/Terminus-EC-Training-stateful/Terminus EC Onboarding - Platform.pdf" title="Platform Onboarding Slides"></pdf-download>
 
 ## Key Takeaways
 
@@ -40,7 +40,7 @@ This gives you tools for running agents and programmatic checks locally.
 
 To get started with a new task, download the template:
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton (ZIP)" />
+<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton (ZIP)"></pdf-download>
 
 ## Next Steps
 

@@ -4,7 +4,7 @@ Learn how to create a new task from scratch using the task creation wizard.
 
 ## Video Tutorial
 
-<video-loom id="92c2e195ac1c4b1e9b1177668dfcb81a" title="Creating a Task" />
+<video-loom id="92c2e195ac1c4b1e9b1177668dfcb81a" title="Creating a Task"></video-loom>
 
 ## What You'll Learn
 
