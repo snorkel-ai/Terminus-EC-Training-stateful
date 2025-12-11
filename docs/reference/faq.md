@@ -106,6 +106,23 @@ uv run harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<
 uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task>
 ```
 
+### Portkey / API key issues — agent won't connect
+
+**90% of Portkey issues are solved by setting the base URL:**
+
+```bash
+export OPENAI_BASE_URL=https://api.portkey.ai/v1
+```
+
+Make sure you have BOTH environment variables set:
+
+```bash
+export OPENAI_API_KEY=<your-portkey-api-key>
+export OPENAI_BASE_URL=https://api.portkey.ai/v1
+```
+
+> **Note:** The same API key works for both GPT-5 and Claude models through Portkey.
+
 ### Docker won't start. What do I do?
 
 1. Ensure Docker Desktop is running
@@ -119,14 +136,6 @@ sudo dseditgroup -o edit -a $USER -t user docker
 ---
 
 ## Payment
-
-### How much do I get paid?
-
-| Difficulty | Payout |
-|------------|--------|
-| Easy | $140 |
-| Medium | $245 |
-| Hard | $350 |
 
 ### When do I get paid?
 
