@@ -4,6 +4,7 @@ import { usePostHog } from 'posthog-js/react';
 import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS } from '../hooks/useTasks';
 import { Button, Badge, TaskWorkflowModal, EmptyState } from './ui';
 import { FiSearch, FiChevronUp, FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import emptyTasksImage from '/images/empty_tasks.png';
 import './TaskPreviewSection.css'; 
 import './MyTasksSection.css';
 
@@ -272,7 +273,7 @@ const MyTasksSection = () => {
             <EmptyState
               icon={
                 <img 
-                  src="/images/empty_tasks.png" 
+                  src={emptyTasksImage} 
                   alt="No tasks" 
                   style={{ width: '300px', height: 'auto', opacity: 0.9 }}
                 />
