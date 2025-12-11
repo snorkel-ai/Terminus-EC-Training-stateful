@@ -198,7 +198,7 @@ const OnboardingResources = () => {
           disabled={isMarkingAll}
           className="mark-all-complete-btn"
         >
-          I have onboarded already
+          Hide this section
         </Button>
       </div>
       <div className={`resources-grid cards-${visibleResources.length}`}>
