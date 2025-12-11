@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePostHog } from 'posthog-js/react';
 import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS } from '../hooks/useTasks';
 import { Button, Badge, TaskWorkflowModal, EmptyState } from './ui';
 import { FiSearch, FiChevronUp, FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -10,6 +11,7 @@ const ITEMS_PER_PAGE = 10;
 
 const MyTasksSection = () => {
   const navigate = useNavigate();
+  const posthog = usePostHog();
   const { selectedTasks, loading, refetch } = useMySelectedTasks();
   const [selectedTask, setSelectedTask] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,6 +24,16 @@ const MyTasksSection = () => {
     t.status === TASK_STATUS.IN_PROGRESS ||
     t.status === TASK_STATUS.WAITING_REVIEW
   );
+
+  const handleBrowseTasksClick = (source) => {
+    if (posthog) {
+      posthog.capture('browse_tasks_clicked', {
+        source,
+        active_task_count: activeTasks.length
+      });
+    }
+    navigate('/portal/tasks');
+  };
 
   const handleTaskClick = (task) => {
     setSelectedTask(task);
@@ -119,14 +131,16 @@ const MyTasksSection = () => {
       <div className="my-tasks-header-row">
         <div className="header-title-group">
           <h2>My Active Tasks</h2>
-          <Button 
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/portal/my-tasks')}
-            className="view-all-tasks-btn"
-          >
-            Show all tasks
-          </Button>
+          {activeTasks.length > 0 && (
+            <Button 
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/portal/my-tasks')}
+              className="view-all-tasks-btn"
+            >
+              Show all tasks
+            </Button>
+          )}
         </div>
         <div className="header-actions">
           {activeTasks.length > 0 && (
@@ -248,7 +262,7 @@ const MyTasksSection = () => {
               <Button 
                 variant="primary"
                 size="lg"
-                onClick={() => navigate('/portal/tasks')}
+                onClick={() => handleBrowseTasksClick('landing_page_footer')}
               >
                 Browse tasks →
               </Button>
@@ -269,7 +283,7 @@ const MyTasksSection = () => {
                 <Button 
                   variant="primary"
                   size="lg"
-                  onClick={() => navigate('/portal/tasks')}
+                  onClick={() => handleBrowseTasksClick('landing_page_empty_state')}
                 >
                   Browse tasks →
                 </Button>
