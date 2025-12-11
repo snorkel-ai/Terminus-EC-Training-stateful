@@ -10,7 +10,15 @@ import './DocsContent.css';
 
 // Code block component with copy functionality
 const CodeBlock = ({ inline, className, children }) => {
-  if (inline) {
+  // Detect inline code: 
+  // - explicitly marked inline
+  // - OR no language class AND no newlines in content (single-line code without language = inline)
+  const content = String(children);
+  const hasNewlines = content.includes('\n');
+  const hasLanguage = className?.startsWith('language-');
+  const isInline = inline === true || (!hasLanguage && !hasNewlines);
+  
+  if (isInline) {
     return <code className="docs-inline-code">{children}</code>;
   }
   
