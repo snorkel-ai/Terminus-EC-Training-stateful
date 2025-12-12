@@ -468,7 +468,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
           className="reshuffle-btn"
           disabled={isShuffling}
         >
-          I'm feeling lucky
+          Not these? Spin again
         </Button>
         
         <Button 
