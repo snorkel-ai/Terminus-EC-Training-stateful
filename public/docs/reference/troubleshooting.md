@@ -265,4 +265,4 @@ Include:
 
 - **Slack:** `#ec-terminus-submission`
 - **GitHub:** Comment on your PR
-- **Payment issues:** hr@hireart.com
+- **Payment issues:** Reach out to Snorkel

@@ -148,7 +148,7 @@ const ProfilePage = () => {
       console.error('Error deleting account:', error);
       setMessage({ 
         type: 'error', 
-        text: 'Failed to delete account. Please try again or contact support.' 
+        text: 'Failed to delete account. Please try again or reach out to Snorkel.' 
       });
       setIsDeleting(false);
       setShowDeleteConfirm(false);

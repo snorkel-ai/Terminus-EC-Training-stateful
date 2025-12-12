@@ -116,7 +116,7 @@ For task.yaml and docker-compose.yaml syntax.
 
 ### Payment Support
 
-- **Email:** hr@hireart.com
+- Reach out to Snorkel for payment-related questions
 
 ### Technical Support (non-project)
 
