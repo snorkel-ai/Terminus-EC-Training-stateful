@@ -193,14 +193,15 @@ echo $OPENAI_BASE_URL
 ### Agent times out
 
 **Possible causes:**
-- Task timeout too short (increase in task.yaml)
+- Task timeout too short (increase in task.toml)
 - Solution is inefficient
 - Environment is slow to start
 
 **Fix:**
-```yaml
-# In task.yaml
-timeout: 3600  # Increase from default
+```toml
+# In task.toml
+[agent]
+timeout_sec = 3600.0  # Increase from default
 ```
 
 ### Agent passes too often (> 80%)

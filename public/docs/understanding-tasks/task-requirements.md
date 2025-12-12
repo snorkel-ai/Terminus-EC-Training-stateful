@@ -10,33 +10,31 @@ Every task submission must include:
 
 | File | Required | Description |
 |------|----------|-------------|
-| `task.yaml` | ✅ | Task instructions and metadata |
-| `Dockerfile` | ✅ | Environment setup |
-| `docker-compose.yaml` | ✅ | Service orchestration |
+| `instruction.md` | ✅ | Task instructions (markdown) |
+| `task.toml` | ✅ | Task configuration and metadata |
+| `environment/Dockerfile` | ✅ | Environment setup (or `environment/docker-compose.yaml`) |
 | `solution/solve.sh` | ✅ | Oracle solution script |
+| `tests/test.sh` | ✅ | Test runner script (must produce reward file) |
 | `tests/test_outputs.py` | ✅ | Pytest validation tests |
-| `tests/run-tests.sh` | ✅ | Test runner script |
 
 <pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
 
 ---
 
-## task.yaml Requirements
+## instruction.md Requirements
 
-Your `task.yaml` must include:
+Your `instruction.md` must include clear, unambiguous instructions:
 
-```yaml
-task_id: unique-task-name
-authors: [your-name]
-description: |
-  Clear, unambiguous instructions for the agent.
-  
-  ## Requirements
-  - All requirements explicitly listed
-  - Use absolute paths (/app/file.txt)
-  - Specify output file names
-  - Define data schemas completely
-tags: [category, type, difficulty]
+```markdown
+# Task Title
+
+Clear, unambiguous instructions for the agent.
+
+## Requirements
+- All requirements explicitly listed
+- Use absolute paths (/app/file.txt)
+- Specify output file names
+- Define data schemas completely
 ```
 
 ### Writing Quality Standards
@@ -46,6 +44,34 @@ tags: [category, type, difficulty]
 - **Explicit requirements** — Don't assume anything; state everything
 - **Absolute paths** — Always use `/app/file.txt`, never relative paths
 - **Named outputs** — Tell the agent exactly what files to create and where
+- **Markdown formatting** — Use proper markdown for readability
+
+## task.toml Requirements
+
+Your `task.toml` must include required metadata:
+
+```toml
+version = "1.0"
+
+[metadata]
+difficulty = "medium"
+category = "debugging"
+tags = ["category", "type", "difficulty"]
+author_name = "Your Name"
+author_email = "your.email@example.com"
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 10240
+```
 
 ---
 
@@ -121,11 +147,13 @@ def test_canary_present():
 
 ---
 
-## Dockerfile Requirements
+## Environment Requirements
 
-### Base Image
+The environment definition must be in the `environment/` folder.
 
-Use one of the approved base images:
+### Dockerfile Location
+
+Your Dockerfile must be in `environment/Dockerfile`:
 
 ```dockerfile
 FROM python:3.11-slim
@@ -153,6 +181,7 @@ RUN pip install pandas numpy
 - [ ] Solution files not baked into image
 - [ ] Test dependencies not pre-installed
 - [ ] Minimal attack surface
+- [ ] Environment folder structure prevents accidental file copying
 
 ---
 
@@ -173,10 +202,10 @@ Run your task against real agents (minimum 2-3 times each):
 
 ```bash
 # GPT-5
-tb run --agent terminus-2 --model openai/@openai-tbench/gpt-5 --task-id <task-id>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
 
 # Claude Sonnet 4.5
-tb run --agent terminus-2 --model openai/@anthropic-tbench/claude-sonnet-4-5-20250929 --task-id <task-id>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
 ```
 
 ---
@@ -216,10 +245,10 @@ Your task must pass all CI and LLMaJ checks:
 | `tests_or_solution_in_image` | Solution not in Docker image |
 | `check_canary` | Canary strings present |
 | `check_dockerfile_references` | All referenced files exist |
-| `check_run-tests_sh` | Test runner uses uv |
+| `check_test_sh` | Test runner uses uv and produces reward file |
 | `check_task_absolute_path` | Uses absolute paths |
 | `ruff` | Python code passes linting |
-| `validate_task_fields` | task.yaml is complete |
+| `validate_task_fields` | task.toml is complete |
 
 ### LLMaJ Checks (Must Pass)
 
@@ -239,8 +268,10 @@ Your task must pass all CI and LLMaJ checks:
 
 Before submitting, verify:
 
-- [ ] All required files present
-- [ ] task.yaml is human-written and clear
+- [ ] All required files present (`instruction.md`, `task.toml`, `environment/Dockerfile`, `solution/solve.sh`, `tests/test.sh`)
+- [ ] `instruction.md` is human-written and clear
+- [ ] `task.toml` has all required fields
+- [ ] `tests/test.sh` produces `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`
 - [ ] solution.sh is deterministic
 - [ ] All tests have docstrings
 - [ ] Dependencies are pinned

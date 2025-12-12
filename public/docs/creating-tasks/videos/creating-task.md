@@ -1,73 +1,85 @@
-# Video: Creating a Task
+# Creating a Task
 
-Learn how to create a new task from scratch using the task creation wizard.
+Learn how to create a new task from scratch using the task skeleton template.
 
-## Video Tutorial
+## Getting Started
 
-<video-loom id="92c2e195ac1c4b1e9b1177668dfcb81a" title="Creating a Task"></video-loom>
+To create a new task, you'll start with the task skeleton template and customize it for your specific task.
 
-## What You'll Learn
+## Step 1: Download the Task Skeleton
 
-- How to use the task creation wizard
-- Setting up task metadata (name, description, tags)
-- Understanding the generated file structure
-- Getting your task ready for development
+Download the task skeleton ZIP file from the training site:
 
-## Creating a New Task
+<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
 
-### Using the CLI Wizard
+## Step 2: Extract and Rename
 
-```bash
-uv run stb tasks create
+1. **Extract the ZIP file** to your desired location
+2. **Rename the unzipped folder** to match your task name
+
+**Naming conventions:**
+- Use kebab-case (lowercase, hyphens)
+- Be descriptive but concise
+- Examples: `parse-json-logs`, `debug-python-import`, `configure-nginx-ssl`
+
+**Good task names:**
+- ✅ `parse-json-logs`
+- ✅ `debug-python-import`
+- ✅ `configure-nginx-ssl`
+
+**Bad task names:**
+- ❌ `task1`
+- ❌ `my-task`
+- ❌ `test`
+
+## Task Structure
+
+After extracting and renaming, you'll have a folder structure like this:
+
+```
+your-task-name/
+├── instruction.md      # Task instructions (markdown)
+├── task.toml           # Task configuration and metadata
+├── environment/        # Environment definition folder
+│   ├── Dockerfile      # OR docker-compose.yaml
+│   └── [build files]   # Additional environment files
+├── solution/           # Oracle solution (optional)
+│   └── solve.sh        # Solution script + dependencies
+└── tests/              # Test verification
+    ├── test.sh         # Test execution script
+    └── [test files]    # Test dependencies
 ```
 
-The wizard will prompt you for:
-
-1. **Task name** — A unique, descriptive identifier (e.g., `parse-json-logs`)
-2. **Description** — What the agent needs to accomplish
-3. **Category** — Select from the task taxonomy
-4. **Tags** — 3-6 descriptive tags
-5. **Difficulty** — Easy, Medium, or Hard
-6. **Time estimate** — Expected completion time
-
-### Generated Structure
-
-After running the wizard, you'll have:
-
-```
-harbor_tasks/<task-name>/
-├── task.yaml           # Task instructions and metadata
-├── Dockerfile          # Environment setup
-├── docker-compose.yaml # Service orchestration
-├── solution/
-│   └── solve.sh        # Oracle solution script
-└── tests/
-    ├── run-tests.sh    # Test runner
-    └── test_outputs.py # Pytest validation
-```
-
-## Tips for Good Task Names
-
-| ✅ Good | ❌ Bad |
-|---------|--------|
-| `parse-json-logs` | `task1` |
-| `debug-python-import` | `my-task` |
-| `configure-nginx-ssl` | `test` |
+> **Note:** This structure follows the Harbor 2.0 task format. See [Task Components](/portal/docs/understanding-tasks/task-components) for details on each file.
 
 ## Next Steps
 
-After creating your task:
+After downloading and renaming your task skeleton:
 
-1. **Edit `task.yaml`** — Write clear, unambiguous instructions
-2. **Set up Docker** — Configure the environment
-3. **Run your task** — Test the environment interactively
-4. **Write the solution** — Create `solve.sh`
-5. **Add tests** — Implement `test_outputs.py`
+1. **Edit `instruction.md`** — Write clear, unambiguous task instructions
+   - [Guide: Writing task instructions](/portal/docs/creating-tasks/writing-task-yaml)
+
+2. **Configure `task.toml`** — Set up metadata and configuration
+   - [Guide: Task Components](/portal/docs/understanding-tasks/task-components)
+
+3. **Set up environment** — Configure Docker in the `environment/` folder
+   - [Guide: Creating Docker environment](/portal/docs/creating-tasks/creating-docker-environment)
+
+4. **Write the solution** — Create `solution/solve.sh`
+   - [Guide: Writing oracle solution](/portal/docs/creating-tasks/writing-oracle-solution)
+
+5. **Create tests** — Write `tests/test.sh` and test files
+   - [Guide: Writing tests](/portal/docs/creating-tasks/writing-tests)
+
+6. **Test locally** — Run the oracle agent to verify your task works
+   - [Guide: Oracle agent](/portal/docs/testing-and-validation/oracle-agent)
 
 ---
 
-## Related Videos
+## Related Resources
 
 - [Running your task](/portal/docs/creating-tasks/videos/running-your-task)
-- [Creating a solution.sh](/portal/docs/creating-tasks/videos/creating-solution)
-- [Creating tests for your task](/portal/docs/creating-tasks/videos/creating-tests)
+- [Writing oracle solution](/portal/docs/creating-tasks/writing-oracle-solution)
+- [Writing tests](/portal/docs/creating-tasks/writing-tests)
+- [Task Components](/portal/docs/understanding-tasks/task-components)
+- [Task Requirements](/portal/docs/understanding-tasks/task-requirements)

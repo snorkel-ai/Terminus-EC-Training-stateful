@@ -18,11 +18,7 @@ Learn how to interact with your task environment and test your solution locally.
 ### Start Interactive Mode
 
 ```bash
-# GitHub workflow
-uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
-
-# Platform workflow
-tb tasks interact -t <task-name>
+harbor run --agent oracle --path harbor_tasks/<task-name> --interactive
 ```
 
 ### Inside the Container
@@ -43,7 +39,7 @@ exit
 
 1. **Test everything manually first** — Run each command of your solution inside the container before writing `solve.sh`
 
-2. **Check file paths** — Verify that all paths in task.yaml exist
+2. **Check file paths** — Verify that all paths in `instruction.md` exist
 
 3. **Verify dependencies** — Make sure all required packages are installed
 
@@ -55,12 +51,12 @@ exit
 |---------|----------|
 | Container won't start | Check Docker is running |
 | Permission denied | Run Docker Desktop with admin rights |
-| Missing packages | Add to Dockerfile and rebuild |
-| Wrong working directory | Check WORKDIR in Dockerfile |
+| Missing packages | Add to environment/Dockerfile and rebuild |
+| Wrong working directory | Check WORKDIR in environment/Dockerfile |
 
 ---
 
 ## Related Videos
 
-- [Creating a solution.sh](/portal/docs/creating-tasks/videos/creating-solution)
-- [Creating tests for your task](/portal/docs/creating-tasks/videos/creating-tests)
+- [Writing oracle solution](/portal/docs/creating-tasks/writing-oracle-solution)
+- [Writing tests](/portal/docs/creating-tasks/writing-tests)

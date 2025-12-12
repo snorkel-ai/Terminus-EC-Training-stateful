@@ -244,9 +244,8 @@ export const trainingSections = [
 
         <h3>Creating the File Structure for a New Task</h3>
         <ol>
-          <li>Run the task creation wizard
-            <pre><code>uv run stb tasks create</code></pre>
-          </li>
+          <li>Download the task skeleton template from the training site</li>
+          <li>Extract and rename the folder to match your task name</li>
           <li>[Optional] Enter 'y' to receive an overview of Terminal-Bench, or 'n' to skip</li>
           <li>Follow the steps given in the terminal to:
             <ul>

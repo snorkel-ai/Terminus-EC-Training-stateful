@@ -1,8 +1,10 @@
 # Creating Docker Environment
 
-The Dockerfile sets up the task environment. It must be reproducible, lightweight, and run without privileged mode.
+The Dockerfile sets up the task environment. It must be placed in the `environment/` folder and be reproducible, lightweight, and run without privileged mode.
 
 ## Basic Dockerfile
+
+Your Dockerfile should be located at `environment/Dockerfile`:
 
 ```dockerfile
 FROM python:3.11-slim
@@ -165,6 +167,7 @@ RUN git clone https://github.com/example/repo.git /app \
 
 ```bash
 # Test your Dockerfile locally
+cd environment
 docker build -t my-task .
 docker run -it my-task bash
 ```

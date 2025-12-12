@@ -51,7 +51,7 @@ When you push changes, explain what you did:
 Addressed review feedback:
 - Line 45: Changed string match to field check
 - Line 67: Added docstring to test_output
-- task.yaml: Clarified output format requirement
+- instruction.md: Clarified output format requirement
 ```
 
 ### Don't Over-Engineer

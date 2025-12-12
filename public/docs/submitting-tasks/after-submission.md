@@ -45,7 +45,6 @@ Pass rate determines final difficulty classification.
 Congratulations! Your task is accepted.
 
 - Task added to benchmark suite
-- Payment processed (see [Rate Schedule](/portal/docs/reference/rate-schedule))
 - Credit recorded in your profile
 
 ### Changes Requested
@@ -113,32 +112,11 @@ If you disagree with feedback:
 
 Remember: Reviewers want to help. Most disagreements are resolved through discussion.
 
-## Payment
-
-### When You Get Paid
-
-- After task is **accepted** (not just submitted)
-- Processed in billing week (Friday-Thursday UTC)
-- Deposited ~1-2 weeks after billing week
-
-### Payment Amounts
-
-| Difficulty | Payout |
-|------------|--------|
-| Easy | $140 |
-| Medium | $245 |
-| Hard | $350 |
-
-### Tracking Payment
-
-- Platform status "Payout Submitted" = Payment on the way
-- If > 1 week after "Payout Submitted" with no deposit, reach out to Snorkel
-
 ## Tips for Faster Acceptance
 
 1. **Run all checks locally** before submitting
 2. **Follow the checklist** exactly
-3. **Write clear documentation** in task.yaml
+3. **Write clear documentation** in `instruction.md`
 4. **Address feedback promptly** 
 5. **Ask questions** if feedback is unclear
 

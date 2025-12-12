@@ -6,10 +6,7 @@ All submissions must pass these automated CI checks. This reference explains eac
 
 ```bash
 # Using GPT-5 (recommended - matches CI)
-uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
-
-# Platform workflow
-tb tasks check <task-id> --model openai/@openai-tbench/gpt-5
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
 ```
 
 ## CI Checks
@@ -43,7 +40,7 @@ RUN pip install numpy==1.26.4 pandas==2.1.0
 
 **What it checks:** The tests/ folder or solution files are NOT copied into the Docker image.
 
-**How to fix:** Remove from Dockerfile:
+**How to fix:** Remove from `environment/Dockerfile`:
 ```dockerfile
 # Remove these lines!
 COPY tests/ /tests/
@@ -54,15 +51,15 @@ COPY solution/ /solution/
 
 ### test_deps_in_image
 
-**What it checks:** Test dependencies are installed in run-tests.sh, not Dockerfile.
+**What it checks:** Test dependencies are installed in `tests/test.sh`, not Dockerfile.
 
 **How to fix:**
 
 ```bash
-# In run-tests.sh (correct)
+# In tests/test.sh (correct)
 uv pip install pytest requests
 
-# Not in Dockerfile (wrong)
+# Not in environment/Dockerfile (wrong)
 RUN pip install pytest requests
 ```
 
@@ -72,7 +69,7 @@ RUN pip install pytest requests
 
 **What it checks:** Canary string is present at top of required files.
 
-**How to fix:** Add to task.yaml, solution.sh, Dockerfile, test_outputs.py:
+**How to fix:** Add to `instruction.md`, `solution/solve.sh`, `environment/Dockerfile`, `tests/test_outputs.py`:
 ```
 # CANARY_STRING_PLACEHOLDER
 ```
@@ -83,27 +80,35 @@ RUN pip install pytest requests
 
 **What it checks:** Solution/test files not referenced in Dockerfile.
 
-**How to fix:** Remove references to:
+**How to fix:** Remove references from `environment/Dockerfile`:
 - `solution.yaml`
 - `solution.sh`
-- `run-tests.sh`
+- `tests/test.sh`
 - `test_outputs.py`
 
 ---
 
-### check_run-tests_sh
+### check_test_sh
 
-**What it checks:** run-tests.sh uses uv init/venv or task.yaml has required keywords.
+**What it checks:** `tests/test.sh` uses uv init/venv and produces reward file.
 
 **How to fix:**
 ```bash
-# In run-tests.sh
+# In tests/test.sh
 uv venv
-# or
-uv init
-```
+source .venv/bin/activate
+uv pip install pytest
 
-Or add `global` or `system-wide` keywords to task.yaml.
+# Run tests
+pytest test_outputs.py -v
+
+# Produce reward file (REQUIRED)
+if [ $? -eq 0 ]; then
+  echo 1 > /logs/verifier/reward.txt
+else
+  echo 0 > /logs/verifier/reward.txt
+fi
+```
 
 ---
 
@@ -112,12 +117,12 @@ Or add `global` or `system-wide` keywords to task.yaml.
 **What it checks:** Task instructions use absolute paths.
 
 **How to fix:**
-```yaml
+```markdown
 # Bad
-instruction: "Edit config/settings.json"
+Edit config/settings.json
 
 # Good
-instruction: "Edit /app/config/settings.json"
+Edit /app/config/settings.json
 ```
 
 ---
@@ -126,7 +131,7 @@ instruction: "Edit /app/config/settings.json"
 
 **What it checks:** No privileged containers in docker-compose.yaml.
 
-**How to fix:** Remove from docker-compose.yaml:
+**How to fix:** Remove from `environment/docker-compose.yaml`:
 ```yaml
 # Remove this!
 privileged: true
@@ -159,14 +164,14 @@ ruff check --fix tests/test_outputs.py
 
 ### validate_task_fields
 
-**What it checks:** All required fields present in task.yaml.
+**What it checks:** All required fields present in `task.toml`.
 
-**How to fix:** Ensure task.yaml has:
-- instruction
-- category
-- difficulty
-- tags
-- timeout
+**How to fix:** Ensure `task.toml` has:
+- `[metadata].difficulty`
+- `[metadata].category`
+- `[metadata].tags`
+- `[verifier].timeout_sec` (optional)
+- `[agent].timeout_sec` (optional)
 
 ---
 
@@ -177,10 +182,10 @@ ruff check --fix tests/test_outputs.py
 | pinned_dependencies | Exact versions | Add `==x.y.z` to pip installs |
 | typos | Spelling | Correct typos |
 | tests_or_solution_in_image | No test/solution in Docker | Remove COPY commands |
-| test_deps_in_image | Test deps in run-tests.sh | Move pip installs |
+| test_deps_in_image | Test deps in tests/test.sh | Move pip installs |
 | check_canary | Canary string present | Add comment to files |
 | check_dockerfile_references | No forbidden references | Remove solution/test refs |
-| check_run-tests_sh | Uses uv | Add `uv venv` |
+| check_test_sh | Uses uv + produces reward | Add `uv venv` and reward file |
 | check_task_absolute_path | Absolute paths | Use `/full/path` |
 | check_privileged_containers | No privileged mode | Remove `privileged: true` |
 | ruff | Linting passes | Run `ruff --fix` |
