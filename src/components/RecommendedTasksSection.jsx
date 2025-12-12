@@ -5,13 +5,20 @@ import { useTasks } from '../hooks/useTasks';
 import { Button, TaskDetailModal, LoadingState, TaskCard } from './ui';
 import './RecommendedTasksSection.css';
 
-const REEL_COUNT = 3;
+const MAX_REEL_COUNT = 3;
 // Keep these in sync with CSS variables in `RecommendedTasksSection.css`
 // TaskCard has `min-height: 280px` by default; match it to avoid layout jumps.
 const REEL_CARD_HEIGHT = 280;
 const REEL_GAP = 16;
 const REEL_PEEK = 46;
 const REEL_STEP = REEL_CARD_HEIGHT + REEL_GAP;
+
+function getReelCountForViewport() {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return MAX_REEL_COUNT;
+  if (window.matchMedia('(min-width: 1024px)').matches) return 3;
+  if (window.matchMedia('(min-width: 768px)').matches) return 2;
+  return 1;
+}
 
 function shuffleArray(arr) {
   const a = [...arr];
@@ -80,12 +87,13 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
   const posthog = usePostHog();
   const { tasks, loading, refetch } = useTasks();
   const [selectedTask, setSelectedTask] = useState(null);
+  const [reelCount, setReelCount] = useState(getReelCountForViewport);
   
   // Center tasks (used for analytics + initial render)
   const [visibleTasks, setVisibleTasks] = useState([]);
 
   // Reel state: each reel has a strip of items and a "current index" aligned to the payline
-  const [reels, setReels] = useState(() => Array.from({ length: REEL_COUNT }, () => ({
+  const [reels, setReels] = useState(() => Array.from({ length: MAX_REEL_COUNT }, () => ({
     items: [],
     index: 1,
     locked: true,
@@ -99,6 +107,30 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
   const timeoutsRef = useRef([]);
   const spinTokenRef = useRef(0);
 
+  // Responsive reel count (3 → 2 → 1)
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+    const mqDesktop = window.matchMedia('(min-width: 1024px)');
+    const mqTablet = window.matchMedia('(min-width: 768px)');
+
+    const recompute = () => setReelCount(getReelCountForViewport());
+    recompute();
+
+    const add = (mq) => (mq.addEventListener ? mq.addEventListener('change', recompute) : mq.addListener(recompute));
+    const remove = (mq) => (mq.removeEventListener ? mq.removeEventListener('change', recompute) : mq.removeListener(recompute));
+
+    add(mqDesktop);
+    add(mqTablet);
+    window.addEventListener('resize', recompute);
+
+    return () => {
+      remove(mqDesktop);
+      remove(mqTablet);
+      window.removeEventListener('resize', recompute);
+    };
+  }, []);
+
   // Filter for available tasks
   const availableTasks = useMemo(() => {
     if (!tasks || tasks.length === 0) return [];
@@ -109,21 +141,16 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
   useEffect(() => {
     if (availableTasks.length === 0) return;
 
-    // In some load orders the component can render before we’ve populated reel items.
-    // Ensure reels are always initialized once tasks are available.
-    const reelsHaveItems = reels.some(r => (r.items?.length || 0) > 0);
-    if (reelsHaveItems) return;
+    // Ensure the currently active reel slots are always initialized (also handles breakpoint changes).
+    const activeReelsHaveItems = reels.slice(0, reelCount).every(r => (r.items?.length || 0) > 0);
+    const visibleMatches = visibleTasks.length === reelCount;
+    if (activeReelsHaveItems && visibleMatches) return;
 
-    const initial =
-      visibleTasks.length === REEL_COUNT
-        ? visibleTasks
-        : pickUnique(availableTasks, REEL_COUNT);
-
-    if (visibleTasks.length !== REEL_COUNT) {
-      setVisibleTasks(initial);
-    }
+    const initial = visibleMatches ? visibleTasks : pickUnique(availableTasks, reelCount);
+    if (!visibleMatches) setVisibleTasks(initial);
 
     setReels(prev => prev.map((r, i) => {
+      if (i >= reelCount) return r;
       const center = initial[i];
       return {
         ...r,
@@ -133,14 +160,14 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
         justLocked: false,
       };
     }));
-  }, [availableTasks, reels, visibleTasks]);
+  }, [availableTasks, reels, visibleTasks, reelCount]);
 
-  // Track when recommended tasks are viewed
+  // Track when task roulette is viewed
   useEffect(() => {
     if (posthog && visibleTasks.length > 0 && !isShuffling) {
-      posthog.capture('recommended_tasks_viewed', {
-        available_count: availableTasks.length,
-        task_ids: visibleTasks.map(t => t.id)
+      posthog.capture('task_roulette_viewed', {
+        available_tasks_count: availableTasks.length,
+        visible_task_ids: visibleTasks.map(t => t.id),
       });
     }
   }, [posthog, isShuffling, visibleTasks.length]); // Only track when settled
@@ -152,8 +179,16 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
     animationsRef.current = [];
   };
 
+  // If breakpoint changes mid-spin, stop animations cleanly.
+  useEffect(() => {
+    if (!isShuffling) return;
+    clearPending();
+    setIsShuffling(false);
+    setReels(prev => prev.map((r, i) => (i < reelCount ? { ...r, locked: true, justLocked: false } : r)));
+  }, [reelCount]);
+
   const handleReshuffle = () => {
-    if (isShuffling || availableTasks.length < 3) return;
+    if (isShuffling || availableTasks.length < reelCount) return;
     
     clearPending();
     spinTokenRef.current += 1;
@@ -166,30 +201,39 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
 
     setIsShuffling(true);
     setReels(prev => prev.map(r => ({ ...r, locked: false, justLocked: false })));
+
+    const currentCenters = reels
+      .slice(0, reelCount)
+      .map((r, i) => r.items?.[r.index] || visibleTasks[i])
+      .filter(Boolean);
     
     if (posthog) {
-      posthog.capture('recommended_tasks_reshuffled');
+      posthog.capture('task_roulette_spin_clicked', {
+        previous_task_ids: currentCenters.map(t => t?.id).filter(Boolean),
+        available_tasks_count: availableTasks.length,
+      });
     }
-
-    const currentCenters = reels.map((r, i) => r.items?.[r.index] || visibleTasks[i]).filter(Boolean);
     const currentIds = new Set(currentCenters.map(t => t?.id).filter(Boolean));
-    const winners = pickUnique(availableTasks, REEL_COUNT, currentIds);
+    const winners = pickUnique(availableTasks, reelCount, currentIds);
 
     if (reduceMotion) {
-      setReels(prev => prev.map((r, i) => ({
-        ...r,
-        items: defaultReelItems(availableTasks, winners[i]),
-        index: 1,
-        locked: true,
-        justLocked: false,
-      })));
+      setReels(prev => prev.map((r, i) => {
+        if (i >= reelCount) return r;
+        return {
+          ...r,
+          items: defaultReelItems(availableTasks, winners[i]),
+          index: 1,
+          locked: true,
+          justLocked: false,
+        };
+      }));
       setVisibleTasks(winners);
       // Keep a small "win" glow even with reduced motion
       timeoutsRef.current.push(setTimeout(() => {
-        setReels(prev => prev.map((r, i) => ({ ...r, justLocked: true })));
+        setReels(prev => prev.map((r, i) => (i < reelCount ? { ...r, justLocked: true } : r)));
       }, 0));
       timeoutsRef.current.push(setTimeout(() => {
-        setReels(prev => prev.map(r => ({ ...r, justLocked: false })));
+        setReels(prev => prev.map((r, i) => (i < reelCount ? { ...r, justLocked: false } : r)));
         setIsShuffling(false);
       }, 450));
       return;
@@ -206,13 +250,16 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
     });
 
     // Put the reels in "spin list" state first, so the DOM contains the strip.
-    setReels(prev => prev.map((r, i) => ({
-      ...r,
-      items: spinPlans[i].items,
-      index: spinPlans[i].startIndex,
-      locked: false,
-      justLocked: false,
-    })));
+    setReels(prev => prev.map((r, i) => {
+      if (i >= reelCount) return r;
+      return {
+        ...r,
+        items: spinPlans[i].items,
+        index: spinPlans[i].startIndex,
+        locked: false,
+        justLocked: false,
+      };
+    }));
 
     // Kick the animations next frame once the new strips are mounted.
     timeoutsRef.current.push(setTimeout(() => {
@@ -287,7 +334,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
             triggerJustLocked(i);
 
             finishedCount += 1;
-            if (finishedCount === REEL_COUNT) {
+            if (finishedCount === reelCount) {
               setVisibleTasks(winners);
               setIsShuffling(false);
             }
@@ -306,8 +353,8 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
 
   const handleBrowseTasksClick = () => {
     if (posthog) {
-      posthog.capture('browse_tasks_clicked', {
-        source: 'recommended_section'
+      posthog.capture('task_roulette_browse_all_clicked', {
+        visible_task_ids: visibleTasks.map(t => t.id),
       });
     }
     navigate('/portal/tasks');
@@ -317,10 +364,10 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
     if (isShuffling) return; // Prevent clicks while shuffling
     
     if (posthog) {
-      posthog.capture('recommended_task_clicked', {
+      posthog.capture('task_roulette_task_opened', {
         task_id: task.id,
-        category: task.category,
-        subcategory: task.subcategory
+        task_category: task.category,
+        task_subcategory: task.subcategory,
       });
     }
     setSelectedTask(task);
@@ -362,7 +409,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
           <div className={`slot-glow ${isShuffling ? 'active' : ''}`} />
           
           <div className="recommended-grid">
-            {reels.map((reel, index) => {
+            {reels.slice(0, reelCount).map((reel, index) => {
               const centerTask = reel.items?.[reel.index];
               const reelClasses = [
                 'recommended-reel',
