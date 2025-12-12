@@ -30,6 +30,20 @@ Called when a user logs in to associate their identity with analytics.
 
 ## Events
 
+### Page View Events
+
+#### `landing_page_viewed`
+**Location:** `src/components/LandingPage.jsx`
+
+Fired when a user views the authenticated landing page (home page after login).
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `has_profile` | boolean | Whether user has a profile loaded |
+| `has_github_username` | boolean | Whether user has a GitHub username set |
+
+---
+
 ### Onboarding Events
 
 #### `onboarding_step_completed`
@@ -269,19 +283,22 @@ Fired when a user downloads a non-skeleton file from docs.
 
 ## Funnels
 
-### User Onboarding Funnel (9 steps)
+### User Onboarding Funnel (10 steps)
 
 Tracks the complete user journey from login to task completion:
 
 1. **User Login** (`$identify`)
-2. **Completed Onboarding Step** (`onboarding_step_completed`)
-3. **Clicked Browse Tasks** (`browse_tasks_clicked`)
-4. **Viewed Task Gallery** (`gallery_viewed`)
-5. **Opened Task Card** (`task_card_viewed`)
-6. **Claimed a Task** (`task_claimed`)
-7. **Started Working** (`task_started`)
-8. **Submitted for Review** (`task_submitted_for_review`)
-9. **Task Accepted** (`task_accepted`)
+2. **Viewed Landing Page** (`landing_page_viewed`)
+3. **Completed Onboarding Step** (`onboarding_step_completed`) - *optional, users may skip*
+4. **Clicked Browse Tasks** (`browse_tasks_clicked`)
+5. **Viewed Task Gallery** (`gallery_viewed`)
+6. **Opened Task Card** (`task_card_viewed`)
+7. **Claimed a Task** (`task_claimed`)
+8. **Started Working** (`task_started`)
+9. **Submitted for Review** (`task_submitted_for_review`)
+10. **Task Accepted** (`task_accepted`)
+
+> **Note:** Step 3 (onboarding) is optional. Users can navigate directly to Browse Tasks without completing onboarding. Consider creating a separate funnel that skips step 3 to measure direct conversion paths.
 
 **Settings:**
 - Window: 30 days

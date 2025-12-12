@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePostHog } from 'posthog-js/react';
 import { useAuth } from '../contexts/AuthContext';
 import MyTasksSection from './MyTasksSection';
 import { AnnouncementBanner, OnboardingResources } from './ui';
@@ -7,6 +9,17 @@ import './Content.css';
 
 function LandingPage() {
   const { user, profile } = useAuth();
+  const posthog = usePostHog();
+
+  // Track landing page view for funnel analysis
+  useEffect(() => {
+    if (posthog) {
+      posthog.capture('landing_page_viewed', {
+        has_profile: !!profile,
+        has_github_username: !!profile?.github_username,
+      });
+    }
+  }, [posthog]);
   
   const displayName = profile?.first_name || profile?.github_username || user?.user_metadata?.full_name?.split(' ')[0] || 'there';
 
