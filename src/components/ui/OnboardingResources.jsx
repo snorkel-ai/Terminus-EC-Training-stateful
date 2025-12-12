@@ -13,10 +13,8 @@ const baseUrl = import.meta.env.BASE_URL;
 // Map resource IDs to progress_items IDs in Supabase
 const PROGRESS_ID_MAP = {
   'onboarding-platform': 'onboarding-tile-platform',
-  'onboarding-github': 'onboarding-tile-github',
   'task-skeleton': 'onboarding-tile-skeleton',
   'submission-platform': 'onboarding-tile-submission-platform',
-  'submission-github': 'onboarding-tile-submission-github',
   'great-tasks': 'onboarding-tile-great-tasks',
   'video-walkthroughs': 'onboarding-tile-videos',
 };
@@ -38,13 +36,6 @@ const OnboardingResources = () => {
       image: `${baseUrl}images/onboarding_platform.png`,
     },
     { 
-      id: 'onboarding-github',
-      label: 'GitHub Onboarding', 
-      description: 'Prefer working with Git? Set up your local environment, clone the repo, and configure your CLI tools for the GitHub workflow.',
-      path: '/portal/docs/onboarding/github-onboarding',
-      image: `${baseUrl}images/onboarding_github.png`,
-    },
-    { 
       id: 'task-skeleton',
       label: 'Download Task Skeleton', 
       description: 'Get the starter files you need to build your task, including the directory structure and required configuration files.',
@@ -58,13 +49,6 @@ const OnboardingResources = () => {
       description: 'Ready to submit? Follow our walkthrough to package your task, upload it to the platform, and track your submission through review.',
       path: '/portal/docs/submitting-tasks/platform-submission',
       image: `${baseUrl}images/onboarding_submit_task2.png`,
-    },
-    { 
-      id: 'submission-github',
-      label: 'GitHub Submissions', 
-      description: 'Create a branch, push your task, and open a pull request. Learn how to navigate CI checks and iterate on reviewer feedback.',
-      path: '/portal/docs/submitting-tasks/github-submission',
-      image: `${baseUrl}images/onboarding_submit_github.png`,
     },
     { 
       id: 'great-tasks',
