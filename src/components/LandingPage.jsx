@@ -41,9 +41,9 @@ function LandingPage() {
           Reviews will be performed ASAP and messaging them will not increase the speed at which your submission is reviewed.
         </AnnouncementBanner>
 
-        <OnboardingResources />
-
         <MyTasksSection />
+
+        <OnboardingResources />
       </main>
 
       <footer className="footer">

@@ -151,6 +151,11 @@
   color: var(--text-secondary);
 }
 
+/* Add margin specifically for the active tasks section on landing page to separate from Get Started */
+.landing-page .my-tasks-section {
+  margin-bottom: 6rem;
+}
+
 .landing-page .task-controls {
   justify-content: flex-start;
 }

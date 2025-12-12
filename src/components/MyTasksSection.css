@@ -1,6 +1,8 @@
 .my-tasks-section {
   /* Ensure section starts at top */
   align-self: flex-start;
+  /* Add space between this section and the Get Started section below */
+  margin-bottom: var(--space-8, 2rem);
 }
 
 /* Override the task-preview-section center alignment for table */
