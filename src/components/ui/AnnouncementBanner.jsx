@@ -1,10 +1,29 @@
 import './AnnouncementBanner.css';
 
 /**
- * AnnouncementBanner - A prominent banner for important announcements
+ * AnnouncementBanner - A banner for important announcements
  * 
- * @param {string} variant - 'warning' | 'info' | 'success' | 'error' (default: 'warning')
- * @param {string} title - Bold headline text
+ * Variants:
+ * - 'warning' (default): Amber/orange prominent card for warnings
+ * - 'info': Blue prominent card for informational messages
+ * - 'success': Green prominent card for success confirmations
+ * - 'error': Red prominent card for errors
+ * - 'subtle': Compact inline strip (great for persistent messages under nav)
+ * 
+ * @example
+ * // Prominent warning banner
+ * <AnnouncementBanner variant="warning" title="Important Notice">
+ *   Additional details here.
+ * </AnnouncementBanner>
+ * 
+ * @example
+ * // Subtle banner for under navigation
+ * <AnnouncementBanner variant="subtle" title="Notice —">
+ *   Brief message displayed inline.
+ * </AnnouncementBanner>
+ * 
+ * @param {string} variant - 'warning' | 'info' | 'success' | 'error' | 'subtle'
+ * @param {string} title - Bold headline text (for subtle variant, add "—" for visual separator)
  * @param {string|ReactNode} children - Description/body content
  * @param {string} className - Additional CSS classes
  * @param {boolean} dismissible - Show dismiss button (default: false)
@@ -56,7 +75,7 @@ export function AnnouncementBanner({
       {...props}
     >
       <div className="announcement-banner__icon">
-        {icons[variant]}
+        {icons[variant] || icons.warning}
       </div>
       <div className="announcement-banner__content">
         {title && <strong className="announcement-banner__title">{title}</strong>}

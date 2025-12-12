@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Button, TaskCard, TaskDetailModal } from './ui';
@@ -7,13 +7,34 @@ import './TaskPreviewSection.css';
 // Number of task cards to display
 const DISPLAY_COUNT = 6;
 
+// Generate random flight paths for cards
+const generateFlightPath = (index) => {
+  const directions = [
+    { x: -150, y: -200, rotate: -25 },  // top-left
+    { x: 0, y: -250, rotate: 5 },        // top
+    { x: 150, y: -200, rotate: 25 },     // top-right
+    { x: -200, y: 0, rotate: -15 },      // left
+    { x: 200, y: 0, rotate: 15 },        // right
+    { x: -150, y: 200, rotate: -20 },    // bottom-left
+    { x: 0, y: 250, rotate: -5 },        // bottom
+    { x: 150, y: 200, rotate: 20 },      // bottom-right
+  ];
+  return directions[index % directions.length];
+};
+
 const TaskPreviewSection = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [displayTasks, setDisplayTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isShuffling, setIsShuffling] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState('idle'); // 'idle' | 'exiting' | 'entering'
   const [selectedTask, setSelectedTask] = useState(null);
+  const shuffleKeyRef = useRef(0);
+
+  // Generate stable random flight paths for current shuffle
+  const flightPaths = useMemo(() => {
+    return displayTasks.map((_, index) => generateFlightPath(index));
+  }, [shuffleKeyRef.current]);
 
   useEffect(() => {
     fetchTasks();
@@ -46,13 +67,20 @@ const TaskPreviewSection = () => {
     if (!pool.length) return;
     
     if (animate) {
-      setIsShuffling(true);
+      // Phase 1: Cards fly out
+      setAnimationPhase('exiting');
       
-      // Wait for staggered exit animation (6 items * 100ms delay + 400ms duration = ~1000ms)
+      // Phase 2: Swap cards and fly in
       setTimeout(() => {
+        shuffleKeyRef.current += 1;
         performShuffle(pool);
-        setIsShuffling(false);
-      }, 1000);
+        setAnimationPhase('entering');
+        
+        // Phase 3: Back to idle
+        setTimeout(() => {
+          setAnimationPhase('idle');
+        }, 800);
+      }, 700);
     } else {
       performShuffle(pool);
     }
@@ -76,6 +104,29 @@ const TaskPreviewSection = () => {
     setSelectedTask(null);
   };
 
+  const getCardStyle = (index) => {
+    const path = flightPaths[index] || generateFlightPath(index);
+    const delay = index * 80;
+    
+    if (animationPhase === 'exiting') {
+      return {
+        '--flight-x': `${path.x}%`,
+        '--flight-y': `${path.y}px`,
+        '--flight-rotate': `${path.rotate}deg`,
+        '--animation-delay': `${delay}ms`,
+      };
+    }
+    if (animationPhase === 'entering') {
+      return {
+        '--flight-x': `${-path.x}%`,
+        '--flight-y': `${-path.y}px`,
+        '--flight-rotate': `${-path.rotate}deg`,
+        '--animation-delay': `${delay}ms`,
+      };
+    }
+    return {};
+  };
+
   return (
     <section className="task-preview-section">
       <div className="task-preview-header">
@@ -83,26 +134,32 @@ const TaskPreviewSection = () => {
         <p>Here are some of the 1000+ tasks you can pick from (or just explore what's possible)</p>
       </div>
 
-      <div className="task-preview-grid">
-        {loading ? (
-          // Loading skeletons
-          Array(DISPLAY_COUNT).fill(0).map((_, i) => (
-            <div key={i} className="task-preview-card skeleton"></div>
-          ))
-        ) : (
-          displayTasks.map((task, index) => (
-            <div 
-              key={index}
-              className={`task-preview-card-wrapper ${isShuffling ? 'shuffling' : ''}`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <TaskCard
-                task={task}
-                onClick={() => handleTaskClick(task)}
-              />
-            </div>
-          ))
-        )}
+      {/* Portal area with extra space for flying cards */}
+      <div className="task-portal-area">
+        {/* Decorative portal glow effect */}
+        <div className={`portal-glow ${animationPhase !== 'idle' ? 'active' : ''}`} />
+        
+        <div className={`task-preview-grid ${animationPhase !== 'idle' ? 'shuffling' : ''}`}>
+          {loading ? (
+            // Loading skeletons
+            Array(DISPLAY_COUNT).fill(0).map((_, i) => (
+              <div key={i} className="task-preview-card skeleton"></div>
+            ))
+          ) : (
+            displayTasks.map((task, index) => (
+              <div 
+                key={`${shuffleKeyRef.current}-${index}`}
+                className={`task-preview-card-wrapper ${animationPhase}`}
+                style={getCardStyle(index)}
+              >
+                <TaskCard
+                  task={task}
+                  onClick={() => handleTaskClick(task)}
+                />
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       <div className="task-preview-footer">

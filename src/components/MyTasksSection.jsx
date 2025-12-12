@@ -4,6 +4,7 @@ import { usePostHog } from 'posthog-js/react';
 import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS } from '../hooks/useTasks';
 import { Button, Badge, TaskWorkflowModal, EmptyState } from './ui';
 import { FiSearch, FiChevronUp, FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import RecommendedTasksSection from './RecommendedTasksSection';
 import './TaskPreviewSection.css'; 
 import './MyTasksSection.css';
 
@@ -266,31 +267,13 @@ const MyTasksSection = () => {
                 size="lg"
                 onClick={() => handleBrowseTasksClick('landing_page_footer')}
               >
-                Browse tasks →
+                Browse more tasks →
               </Button>
             </div>
           </>
         ) : (
-            <EmptyState
-              icon={
-                <img 
-                  src={emptyTasksImage} 
-                  alt="No tasks" 
-                  style={{ width: '300px', height: 'auto', opacity: 0.9 }}
-                />
-              }
-              title="No active tasks yet"
-              description="Browse the gallery to find and claim your first task!"
-              action={
-                <Button 
-                  variant="primary"
-                  size="lg"
-                  onClick={() => handleBrowseTasksClick('landing_page_empty_state')}
-                >
-                  Browse tasks →
-                </Button>
-              }
-            />
+            /* Only show recommended tasks when user has NO active tasks */
+            <RecommendedTasksSection />
           )}
         </div>
       

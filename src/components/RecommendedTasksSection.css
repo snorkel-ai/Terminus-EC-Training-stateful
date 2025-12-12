@@ -1,0 +1,396 @@
+.recommended-tasks-section {
+  width: 100%;
+  margin-top: calc(var(--space-8) + var(--space-2));
+  overflow: visible; 
+  /* Keep in sync with constants in `RecommendedTasksSection.jsx` */
+  --reel-card-height: 280px;
+  --reel-gap: 16px;
+  --reel-peek: 46px;
+  --reel-viewport-height: calc(var(--reel-card-height) + (2 * var(--reel-peek)));
+  /* Force TaskCard surface to be white/surface within this section */
+  --card-bg: var(--bg-surface);
+}
+
+.recommended-header {
+  margin-bottom: var(--space-4);
+}
+
+.recommended-title {
+  font-size: var(--font-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Slot Machine Container */
+.slot-machine-container {
+  position: relative;
+  margin-bottom: var(--space-6);
+}
+
+/* Slot machine viewport - shows the reels with extra vertical space for peek cards */
+.slot-machine-viewport {
+  position: relative;
+  padding: 34px 0;
+  margin: -18px 0;
+  overflow: visible;
+}
+
+.slot-machine-viewport.spinning {
+  overflow: visible;
+}
+
+/* Fade overlays at top and bottom for slot machine depth effect */
+.slot-machine-fade-top,
+.slot-machine-fade-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.slot-machine-viewport.spinning .slot-machine-fade-top,
+.slot-machine-viewport.spinning .slot-machine-fade-bottom {
+  opacity: 1;
+}
+
+.slot-machine-fade-top {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bg-primary) 20%, transparent 100%);
+}
+
+.slot-machine-fade-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg-primary) 20%, transparent 100%);
+}
+
+/* Glow effect when spinning */
+.slot-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse 50% 40% at 50% 50%,
+    rgba(59, 130, 246, 0) 0%,
+    rgba(59, 130, 246, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+  transition: all 0.4s ease;
+}
+
+.slot-glow.active {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 50%,
+    rgba(59, 130, 246, 0.09) 0%,
+    rgba(59, 130, 246, 0.04) 40%,
+    rgba(59, 130, 246, 0) 70%
+  );
+}
+
+.recommended-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--space-4);
+  min-height: var(--reel-viewport-height);
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .recommended-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .recommended-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* --- True Slot Reels --- */
+.recommended-reel {
+  position: relative;
+}
+
+.reel-viewport {
+  position: relative;
+  height: var(--reel-viewport-height);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: none;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Feather mask to partially hide prev/next items */
+.reel-viewport::before,
+.reel-viewport::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Only feather the peek area; don't cover winner content */
+  height: calc(var(--reel-peek) + 52px);
+  pointer-events: none;
+  z-index: 6;
+  /* Slight blur to avoid a crisp "cut line" */
+  filter: blur(1px);
+}
+
+.reel-viewport::before {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.98) 14%,
+    rgba(255, 255, 255, 0.82) 42%,
+    rgba(255, 255, 255, 0.35) 78%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.reel-viewport::after {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.98) 14%,
+    rgba(255, 255, 255, 0.82) 42%,
+    rgba(255, 255, 255, 0.35) 78%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Prefer a theme-aware feather when supported */
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+  .reel-viewport::before {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg-surface) 100%, transparent) 0%,
+      color-mix(in srgb, var(--bg-surface) 98%, transparent) 14%,
+      color-mix(in srgb, var(--bg-surface) 82%, transparent) 42%,
+      color-mix(in srgb, var(--bg-surface) 35%, transparent) 78%,
+      transparent 100%
+    );
+  }
+  .reel-viewport::after {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--bg-surface) 100%, transparent) 0%,
+      color-mix(in srgb, var(--bg-surface) 98%, transparent) 14%,
+      color-mix(in srgb, var(--bg-surface) 82%, transparent) 42%,
+      color-mix(in srgb, var(--bg-surface) 35%, transparent) 78%,
+      transparent 100%
+    );
+  }
+}
+
+/* Thin center line to help the "snap to payline" illusion */
+.reel-payline {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-1px);
+  background: linear-gradient(
+    to right,
+    rgba(59, 130, 246, 0) 0%,
+    rgba(59, 130, 246, 0.35) 20%,
+    rgba(59, 130, 246, 0.35) 80%,
+    rgba(59, 130, 246, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.35;
+}
+
+/* Hide payline once the reel is locked */
+.recommended-reel.locked .reel-payline {
+  opacity: 0;
+}
+
+.reel-strip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reel-gap);
+  will-change: transform, filter;
+  transform: translate3d(0, 0, 0);
+  padding: 0;
+  width: 100%;
+}
+
+.reel-item {
+  height: var(--reel-card-height);
+  flex: 0 0 auto;
+  padding: 0;
+  width: 100%;
+}
+
+.reel-item .task-card {
+  height: 100%;
+}
+
+.reel-item.peek {
+  opacity: 0.34;
+  transform: scale(0.985);
+  filter: saturate(0.8) blur(0.2px);
+}
+
+.reel-item.peek .reel-stub {
+  /* Remove sharp edges that get clipped by the viewport */
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.reel-item.peek .task-card {
+  box-shadow: none;
+}
+
+.reel-item.center {
+  opacity: 1;
+  transform: scale(1);
+  filter: none;
+  position: relative;
+  z-index: 2;
+}
+
+.recommended-reel.locked .reel-item.center .task-card {
+  /* Avoid a "double border" (TaskCard already has a gray border). */
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.14);
+}
+
+.recommended-card {
+  height: 100%;
+  background-color: var(--bg-surface);
+}
+
+/* Override TaskCard's default min-height in this section */
+.recommended-card.task-card {
+  min-height: 0;
+}
+
+/* Disable interactions while spinning */
+.slot-machine-viewport.spinning .reel-viewport {
+  cursor: default;
+}
+
+.slot-machine-viewport.spinning .reel-item .task-card {
+  pointer-events: none;
+}
+
+/* Lock "thunk" */
+@keyframes reelLockThump {
+  0% { transform: translateY(0); }
+  55% { transform: translateY(3px); }
+  100% { transform: translateY(0); }
+}
+
+.recommended-reel.locked .reel-viewport {
+  animation: reelLockThump 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.recommended-reel.just-locked .reel-viewport {
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35), 0 0 28px rgba(59, 130, 246, 0.25), var(--shadow-sm);
+}
+
+/* Lightweight card stub used during the spin (less DOM/layout) */
+.reel-stub {
+  height: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reel-stub-title {
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reel-stub-desc {
+  margin-top: var(--space-3);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-tight, 1.25);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recommended-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+}
+
+@media (min-width: 640px) {
+  .recommended-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.reshuffle-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+}
+
+.reshuffle-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-hover);
+}
+
+.btn-icon {
+  font-size: 1.1em;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.reshuffle-btn .btn-icon.spinning {
+  animation: spin 0.6s linear infinite;
+}
+
+/* Placeholder while empty */
+.recommended-card-placeholder {
+  height: var(--reel-card-height);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recommended-reel.locked .reel-viewport {
+    animation: none;
+  }
+  .reshuffle-btn .btn-icon.spinning {
+    animation: none;
+  }
+}

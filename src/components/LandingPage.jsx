@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { usePostHog } from 'posthog-js/react';
 import { useAuth } from '../contexts/AuthContext';
 import MyTasksSection from './MyTasksSection';
-import { AnnouncementBanner, OnboardingResources } from './ui';
+import { OnboardingResources } from './ui';
 import './LandingPage.css';
 import './Content.css';
 
@@ -32,14 +31,6 @@ function LandingPage() {
             <p className="welcome-subtitle">Welcome to the community advancing agentic development.</p>
           </div>
           </section>
-
-        <AnnouncementBanner 
-          variant="warning"
-          title="Please do not reach out to reviewers directly"
-          style={{ marginBottom: '3rem' }}
-        >
-          Reviews will be performed ASAP and messaging them will not increase the speed at which your submission is reviewed.
-        </AnnouncementBanner>
 
         <MyTasksSection />
 
