@@ -72,14 +72,14 @@ Fired when a user clicks "I have onboarded already" to skip all onboarding.
 ### Navigation Events
 
 #### `browse_tasks_clicked`
-**Location:** `src/components/MyTasksSection.jsx`
+**Location:** `src/components/MyTasksSection.jsx`, `src/components/Layout/Header.jsx`
 
-Fired when a user clicks the "Browse tasks" button on the landing page.
+Fired when a user clicks the "Browse tasks" button on the landing page or "Task gallery" in the header navigation.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `source` | string | `landing_page_footer` or `landing_page_empty_state` |
-| `active_task_count` | number | Number of active tasks the user has |
+| `source` | string | `landing_page_footer`, `landing_page_empty_state`, or `header_nav` |
+| `active_task_count` | number | Number of active tasks the user has (only for landing page sources) |
 
 #### `gallery_viewed`
 **Location:** `src/components/Tasks/TasksView.jsx`
