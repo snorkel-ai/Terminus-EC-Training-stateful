@@ -4,6 +4,7 @@ import { usePostHog } from 'posthog-js/react';
 import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS } from '../hooks/useTasks';
 import { Button, Badge, TaskWorkflowModal, EmptyState } from './ui';
 import { FiSearch, FiChevronUp, FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import RecommendedTasksSection from './RecommendedTasksSection';
 import './TaskPreviewSection.css'; 
 import './MyTasksSection.css';
 
@@ -130,10 +131,10 @@ const MyTasksSection = () => {
 
   return (
     <section className="task-preview-section my-tasks-section">
-      <div className="my-tasks-header-row">
-        <div className="header-title-group">
-          <h2>My Active Tasks</h2>
-          {activeTasks.length > 0 && (
+      {activeTasks.length > 0 && (
+        <div className="my-tasks-header-row">
+          <div className="header-title-group">
+            <h2>My Active Tasks</h2>
             <Button 
               variant="ghost"
               size="sm"
@@ -142,10 +143,8 @@ const MyTasksSection = () => {
             >
               Show all tasks
             </Button>
-          )}
-        </div>
-        <div className="header-actions">
-          {activeTasks.length > 0 && (
+          </div>
+          <div className="header-actions">
             <div className="search-input-container">
               <FiSearch className="search-icon" />
               <input
@@ -159,9 +158,9 @@ const MyTasksSection = () => {
                 className="task-search-input"
               />
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="my-tasks-content">
          {activeTasks.length > 0 ? (
@@ -266,31 +265,13 @@ const MyTasksSection = () => {
                 size="lg"
                 onClick={() => handleBrowseTasksClick('landing_page_footer')}
               >
-                Browse tasks →
+                Browse more tasks →
               </Button>
             </div>
           </>
         ) : (
-            <EmptyState
-              icon={
-                <img 
-                  src={emptyTasksImage} 
-                  alt="No tasks" 
-                  style={{ width: '300px', height: 'auto', opacity: 0.9 }}
-                />
-              }
-              title="No active tasks yet"
-              description="Browse the gallery to find and claim your first task!"
-              action={
-                <Button 
-                  variant="primary"
-                  size="lg"
-                  onClick={() => handleBrowseTasksClick('landing_page_empty_state')}
-                >
-                  Browse tasks →
-                </Button>
-              }
-            />
+            /* Only show recommended tasks when user has NO active tasks */
+            <RecommendedTasksSection onTaskUpdate={refetch} />
           )}
         </div>
       

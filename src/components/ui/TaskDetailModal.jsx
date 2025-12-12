@@ -22,6 +22,7 @@ export function TaskDetailModal({
   task, 
   isOpen, 
   onClose, 
+  onTaskUpdate,
   contextTasks = [],
   onNavigate,
   showNavigation = false 
@@ -109,6 +110,7 @@ export function TaskDetailModal({
     try {
       await selectTask(task.id);
       setShowClaimSuccess(true);
+      onTaskUpdate?.();
     } catch (error) {
       console.error('Error claiming task:', error);
       alert(error.message || 'Failed to claim task. Please try again.');
@@ -123,6 +125,7 @@ export function TaskDetailModal({
     if (window.confirm('Are you sure you want to release this task?')) {
       try {
         await unselectTask(task.id);
+        onTaskUpdate?.();
         handleClose();
       } catch (error) {
         console.error('Error releasing task:', error);

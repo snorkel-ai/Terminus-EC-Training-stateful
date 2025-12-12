@@ -42,13 +42,66 @@
   to { transform: rotate(180deg); }
 }
 
+/* Portal area - expanded to show flying cards */
+.task-portal-area {
+  position: relative;
+  padding: 80px 0;
+  margin: -60px 0;
+  overflow: visible;
+}
+
+/* Portal glow effect */
+.portal-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse 60% 40% at 50% 50%,
+    rgba(139, 92, 246, 0) 0%,
+    rgba(139, 92, 246, 0) 100%
+  );
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+.portal-glow.active {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(139, 92, 246, 0.08) 30%,
+    rgba(139, 92, 246, 0) 70%
+  );
+  animation: portalPulse 0.8s ease-out;
+}
+
+@keyframes portalPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
 .task-preview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
   margin-bottom: 3rem;
   min-height: 400px;
-  perspective: 1000px;
+  perspective: 1200px;
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 1024px) {
@@ -57,26 +110,83 @@
   }
 }
 
-/* Task Card Wrapper - For shuffle animation */
+/* Task Card Wrapper - Dynamic flying animations */
 .task-preview-card-wrapper {
-  /* 3D flip transitions */
-  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease;
+  --flight-x: 0;
+  --flight-y: 0;
+  --flight-rotate: 0deg;
+  --animation-delay: 0ms;
+  
   transform-style: preserve-3d;
   transform-origin: center;
-  opacity: 1;
   height: 100%;
+  will-change: transform, opacity;
 }
 
-.task-preview-card-wrapper.shuffling {
-  transform: rotateY(90deg) scale(0.95);
-  opacity: 0;
+/* Idle state - cards in place */
+.task-preview-card-wrapper.idle {
+  animation: none;
+  transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+/* Exit animation - cards fly out in different directions */
+.task-preview-card-wrapper.exiting {
+  animation: cardFlyOut 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  animation-delay: var(--animation-delay);
   pointer-events: none;
+}
+
+@keyframes cardFlyOut {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: translateX(calc(var(--flight-x) * 0.2)) translateY(calc(var(--flight-y) * 0.2)) rotate(calc(var(--flight-rotate) * 0.3)) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--flight-x)) translateY(var(--flight-y)) rotate(var(--flight-rotate)) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* Enter animation - cards fly in from different directions */
+.task-preview-card-wrapper.entering {
+  animation: cardFlyIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: var(--animation-delay);
+}
+
+@keyframes cardFlyIn {
+  0% {
+    transform: translateX(var(--flight-x)) translateY(var(--flight-y)) rotate(var(--flight-rotate)) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(calc(var(--flight-x) * -0.05)) translateY(calc(var(--flight-y) * -0.05)) rotate(calc(var(--flight-rotate) * -0.1)) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
 }
 
 /* Ensure TaskCard fills the wrapper - compact height for preview grid */
 .task-preview-card-wrapper .task-card {
   height: 100%;
   min-height: 180px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Enhanced shadow during shuffle for depth */
+.task-preview-card-wrapper.exiting .task-card,
+.task-preview-card-wrapper.entering .task-card {
+  box-shadow: 0 8px 40px rgba(139, 92, 246, 0.2), 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .task-preview-card-wrapper .task-card-description {
@@ -117,13 +227,19 @@
     padding: 0 1.5rem;
   }
 
+  .task-portal-area {
+    padding: 40px 0;
+    margin: -20px 0;
+    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+  }
+
   .task-preview-grid {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     gap: 0.75rem;
-    padding: 0 1.5rem 0.5rem; /* Align with header text */
+    padding: 0 1.5rem 0.5rem;
     min-height: auto;
   }
   
@@ -153,5 +269,12 @@
   
   .task-preview-footer {
     padding: 0 1.5rem;
+  }
+
+  /* Tone down flying distance on mobile */
+  .task-preview-card-wrapper.exiting,
+  .task-preview-card-wrapper.entering {
+    --flight-x: calc(var(--flight-x) * 0.5);
+    --flight-y: calc(var(--flight-y) * 0.5);
   }
 }

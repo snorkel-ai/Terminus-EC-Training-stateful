@@ -175,7 +175,7 @@ const OnboardingResources = () => {
   return (
     <section className="get-started-section">
       <div className="section-header-row">
-        <h2 className="section-header">Get Started</h2>
+        <h2 className="section-header">Onboarding Starter Kit</h2>
         <Button 
           variant="ghost" 
           onClick={handleMarkAllComplete}
