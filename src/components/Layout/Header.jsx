@@ -120,6 +120,22 @@ function Header() {
               </NavLink>
               <div className={`nav-dropdown-menu ${isQuickLinksOpen ? 'open' : ''}`}>
                 <a 
+                  href="/Terminus-EC-Training-stateful/template-task.zip"
+                  download="template-task.zip"
+                  className="dropdown-item"
+                  onClick={() => {
+                    if (posthog) {
+                      posthog.capture('skeleton_downloaded', {
+                        source: 'header_quick_links',
+                        file_title: 'Task Skeleton'
+                      });
+                    }
+                    setIsQuickLinksOpen(false);
+                  }}
+                >
+                  Download Task Skeleton
+                </a>
+                <a 
                   href="https://experts.snorkel-ai.com/" 
                   target="_blank" 
                   rel="noopener noreferrer"
@@ -224,6 +240,24 @@ function Header() {
 
             <div className="mobile-nav-section">
               <span className="mobile-nav-section-title">Quick Links</span>
+              <a 
+                href="/Terminus-EC-Training-stateful/template-task.zip"
+                download="template-task.zip"
+                className="mobile-nav-link"
+                onClick={() => {
+                  if (posthog) {
+                    posthog.capture('skeleton_downloaded', {
+                      source: 'mobile_quick_links',
+                      file_title: 'Task Skeleton'
+                    });
+                  }
+                }}
+              >
+                Download Task Skeleton
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                </svg>
+              </a>
               <a 
                 href="https://experts.snorkel-ai.com/" 
                 target="_blank" 
