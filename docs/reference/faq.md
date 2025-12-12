@@ -146,7 +146,7 @@ sudo dseditgroup -o edit -a $USER -t user docker
 ### How do I track my payment?
 
 - Platform status "Payout Submitted" = Payment on the way
-- If > 1 week after that with no deposit, contact hr@hireart.com
+- If > 1 week after that with no deposit, reach out to Snorkel
 
 ### Do I get paid per submission?
 

@@ -132,7 +132,7 @@ Remember: Reviewers want to help. Most disagreements are resolved through discus
 ### Tracking Payment
 
 - Platform status "Payout Submitted" = Payment on the way
-- If > 1 week after "Payout Submitted" with no deposit, contact hr@hireart.com
+- If > 1 week after "Payout Submitted" with no deposit, reach out to Snorkel
 
 ## Tips for Faster Acceptance
 
