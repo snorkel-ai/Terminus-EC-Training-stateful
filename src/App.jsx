@@ -16,9 +16,7 @@ import Workbook from './components/Workbook';
 import OracleTraining from './components/OracleTraining';
 import OnboardingMaterials from './components/OnboardingMaterials';
 import ExpertPlatformOnboarding from './components/ExpertPlatformOnboarding';
-import GitHubOnboarding from './components/GitHubOnboarding';
 import ExpertPlatformWalkthrough from './components/ExpertPlatformWalkthrough';
-import GitHubSubmissionWalkthrough from './components/GitHubSubmissionWalkthrough';
 import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
@@ -74,9 +72,7 @@ function App() {
                       <Route path="/environment-setup" element={<EnvironmentSetup />} />
                       <Route path="/local-testing" element={<LocalTestingInfo />} />
                       <Route path="/expert-platform-onboarding" element={<ExpertPlatformOnboarding />} />
-                      <Route path="/github-onboarding" element={<GitHubOnboarding />} />
-                      <Route path="/expert-platform-walkthrough" element={<ExpertPlatformWalkthrough />} />
-                      <Route path="/github-submission-walkthrough" element={<GitHubSubmissionWalkthrough />} />
+                      <Route path="/expert-platform-walkthrough" element={<Navigate to="/portal/docs/submitting-tasks/platform-submission" replace />} />
                       <Route path="/feedback" element={<FeedbackSlides />} />
                       <Route path="/faq" element={<FAQ />} />
                       <Route path="/glossary" element={<Glossary />} />
@@ -84,9 +80,7 @@ function App() {
                       
                       {/* Redirects from old routes to new docs pages */}
                       <Route path="/docs-platform-onboarding" element={<Navigate to="/portal/docs/onboarding/platform-onboarding" replace />} />
-                      <Route path="/docs-github-onboarding" element={<Navigate to="/portal/docs/onboarding/github-onboarding" replace />} />
                       <Route path="/docs-platform-submission" element={<Navigate to="/portal/docs/submitting-tasks/platform-submission" replace />} />
-                      <Route path="/docs-github-submission" element={<Navigate to="/portal/docs/submitting-tasks/github-submission" replace />} />
                       <Route path="/docs-ci-training" element={<Navigate to="/portal/docs/testing-and-validation/ci-feedback-training" replace />} />
                       <Route path="/docs-oracle-training" element={<Navigate to="/portal/docs/testing-and-validation/oracle-training" replace />} />
                       <Route path="/docs-faq" element={<Navigate to="/portal/docs/reference/faq" replace />} />

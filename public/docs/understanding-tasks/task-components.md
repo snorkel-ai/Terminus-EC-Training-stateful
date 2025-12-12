@@ -1,58 +1,88 @@
 # Task Components
 
-Every TerminalBench task consists of several required components. This guide explains each one and how they work together.
+Every Harbor task consists of several required components. This guide explains each one and how they work together.
+
+> **Note:** Harbor is the evolution of Terminal-Bench. The task format has been updated to address common issues and improve developer experience. See the [Harbor documentation](https://harborframework.com/docs/task-difference) for details on what changed.
 
 ## File Structure
 
 ```
 my-task/
-├── task.yaml           # Task instructions and metadata
-├── Dockerfile          # Environment setup
-├── docker-compose.yaml # Container orchestration
-├── solution/
-│   └── solve.sh        # Oracle solution
-├── tests/
-│   ├── run-tests.sh    # Test execution script
-│   └── test_outputs.py # Pytest verification
+├── instruction.md      # Task instructions (markdown)
+├── task.toml           # Task configuration and metadata
+├── environment/        # Environment definition folder
+│   ├── Dockerfile      # OR docker-compose.yaml
+│   └── [build files]   # Additional environment files
+├── solution/           # Oracle solution (optional)
+│   └── solve.sh        # Solution script + dependencies
+├── tests/              # Test verification
+│   ├── test.sh         # Test execution script
+│   └── [test files]    # Test dependencies
 └── [optional files]    # Data, configs, etc.
 ```
 
 ## Required Components
 
-### 1. task.yaml
+### 1. instruction.md
 
-The task instruction file contains everything the agent sees.
+The task instruction is now in a separate markdown file for better readability and formatting. This file contains the instructions shown to the AI agent.
 
-```yaml
-# Required fields
-instruction: |
-  Your task is to fix the bug in /app/main.py that causes
-  the application to crash when processing empty input.
-  
-  The fix should:
-  1. Handle empty string input gracefully
-  2. Return an empty list instead of crashing
-  3. Not modify any other behavior
+**Basic example:**
+```markdown
+# Fix Empty Input Bug
 
-# Metadata (not shown to agent)
-category: debugging
-difficulty: medium
-tags: [python, error-handling, bugfix]
-timeout: 1800  # 30 minutes
+Your task is to fix the bug in /app/main.py that causes
+the application to crash when processing empty input.
+
+## Requirements
+
+The fix should:
+1. Handle empty string input gracefully
+2. Return an empty list instead of crashing
+3. Not modify any other behavior
 ```
 
-**Key principles:**
-- Be **explicit** — state all requirements
-- Use **absolute paths** (e.g., `/app/main.py`)
-- Mention all **output files** by name if tests check for them
-- Written by a **human** (not LLM-generated)
+> **For detailed guidance:** See [Writing Task Instructions and Configuration](/portal/docs/creating-tasks/writing-task-yaml) for best practices, examples, and common mistakes.
 
-### 2. Dockerfile
+### 2. task.toml
 
-Sets up the task environment. Must be:
-- **Reproducible** — Same result every build
-- **Lightweight** — Only necessary dependencies
-- **Unprivileged** — No root requirements
+Configuration and metadata file (replaces `task.yaml`). Uses TOML format with nested sections for task configuration, metadata, and environment settings.
+
+**Basic structure:**
+```toml
+version = "1.0"
+
+[metadata]
+difficulty = "medium"
+category = "debugging"
+tags = ["python", "error-handling", "bugfix"]
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+```
+
+**Key differences from Terminal-Bench:**
+- Uses TOML instead of YAML (better readability)
+- Configuration nested into sections (`[verifier]`, `[agent]`, `[environment]`)
+- Metadata is arbitrary and can contain any information
+
+> **For detailed guidance:** See [Writing Task Instructions and Configuration](/portal/docs/creating-tasks/writing-task-yaml) for all available fields and configuration options.
+
+### 3. environment/ Folder
+
+The environment definition must be placed in an `environment/` folder. This prevents accidentally copying `task.toml`, `instruction.md`, or test files into the container.
+
+**Required files depend on environment type:**
+- For Docker: `environment/Dockerfile` OR `environment/docker-compose.yaml`
+- For other runtimes: Different files may be required (e.g., `image.def` for Apptainer)
+
+**Example Dockerfile:**
 
 ```dockerfile
 FROM python:3.11-slim
@@ -72,25 +102,17 @@ COPY app/ /app/
 - Pin all dependency versions
 - Never copy `solution/` or `tests/` in Dockerfile
 - No privileged mode
+- Build context stays in `environment/` folder, preventing accidental inclusion of task files
 
-### 3. docker-compose.yaml
+**Special paths in the container:**
+- `/logs/verifier/` - Contains reward file and verifier logs
+- `/logs/agent/` - Directory for agent logs
+- `/oracle/` - Solution folder copied here at runtime
+- `/tests/` - Tests folder copied here at runtime
 
-Orchestrates the task environment:
+### 4. Oracle Solution (solution/solve.sh) - Optional
 
-```yaml
-version: "3.8"
-services:
-  task:
-    build: .
-    volumes:
-      - ./workspace:/workspace
-    environment:
-      - PYTHONPATH=/app
-```
-
-### 4. Oracle Solution (solution/solve.sh)
-
-Expert-authored step-by-step solution that reliably completes the task.
+Expert-authored step-by-step solution that reliably completes the task. The solution folder is copied to `/oracle/` at runtime and executed from the working directory.
 
 ```bash
 #!/bin/bash
@@ -109,10 +131,49 @@ python -c "from main import process; assert process('') == []"
 - Demonstrates the **command sequence**, not just the answer
 - Must be **deterministic** — same result every run
 - No hardcoded outputs (don't just `echo` the answer)
+- Can include **dependencies** (other files in `solution/` folder)
+- If no solution provided, Oracle agent cannot be used to sanity check
 
-### 5. Tests (tests/test_outputs.py)
+### 5. Tests (tests/test.sh)
 
-Pytest tests that verify task completion:
+The test script must be named `tests/test.sh` (renamed from `run-tests.sh`). This script installs test dependencies and verifies the agent completed the instruction.
+
+**Critical:** The test script **must produce a reward file** in `/logs/verifier/`:
+
+```bash
+#!/bin/bash
+
+# Install test dependencies
+cd /tests
+uv venv
+source .venv/bin/activate
+uv pip install pytest
+
+# Run tests
+uvx pytest test_outputs.py -v
+
+# Produce reward file (REQUIRED)
+if [ $? -eq 0 ]; then
+  echo 1 > /logs/verifier/reward.txt
+else
+  echo 0 > /logs/verifier/reward.txt
+fi
+```
+
+**Reward file formats:**
+- `/logs/verifier/reward.txt` - Plain text (e.g., `1` for success, `0` for failure)
+- `/logs/verifier/reward.json` - JSON with multiple metrics: `{ "runtime_sec": 1.23, "accuracy": 0.95 }`
+
+Harbor reads `reward.txt` by default and falls back to `reward.json`.
+
+**Key principles:**
+- **Must produce reward file** - This is how Harbor determines success/failure
+- **Use absolute paths** - Recommended to avoid relative path issues
+- **Can include dependencies** - Other files in `tests/` folder are allowed
+- **Informative** - Tests should clearly verify requirements
+- **Behavioral testing** - Run code, don't parse it statically
+
+**Example test file (tests/test_outputs.py):**
 
 ```python
 """Tests for the bug fix task."""
@@ -128,30 +189,6 @@ def test_normal_input_unchanged():
     """Verify normal behavior is preserved."""
     result = process("hello")
     assert result == ["h", "e", "l", "l", "o"]
-
-def test_none_input_handled():
-    """Verify None input doesn't crash."""
-    result = process(None)
-    assert result == []
-```
-
-**Key principles:**
-- **Informative docstrings** — Each test explains what it checks
-- **All behavior tested** — Every requirement has a test
-- **Not brittle** — Avoid exact string matching
-- **Behavioral testing** — Run code, don't parse it statically
-
-### 6. run-tests.sh
-
-Script that executes the tests:
-
-```bash
-#!/bin/bash
-cd /tests
-uv venv
-source .venv/bin/activate
-uv pip install pytest
-pytest test_outputs.py -v
 ```
 
 ## Optional Components
@@ -167,20 +204,23 @@ pytest test_outputs.py -v
 
 Before submission, verify:
 
-- [ ] task.yaml has all required fields
-- [ ] Dockerfile builds successfully
+- [ ] `instruction.md` is clear and explicit
+- [ ] `task.toml` has all required configuration sections
+- [ ] Environment files are in `environment/` folder
+- [ ] Dockerfile/docker-compose.yaml builds successfully
 - [ ] Dependencies have pinned versions
-- [ ] Solution demonstrates command sequence
-- [ ] Tests have informative docstrings
-- [ ] All behavior in task.yaml has corresponding tests
-- [ ] All behavior in tests is described in task.yaml
+- [ ] Solution demonstrates command sequence (if provided)
+- [ ] `tests/test.sh` produces `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`
+- [ ] All behavior in `instruction.md` has corresponding tests
+- [ ] All behavior in tests is described in `instruction.md`
 - [ ] No solution/test files copied in Dockerfile
-- [ ] Canary string present in required files
+- [ ] Environment folder structure prevents accidental file copying
 
 ---
 
 ## Next Steps
 
+- [Write task instructions and configuration](/portal/docs/creating-tasks/writing-task-yaml) — Detailed guide for writing `instruction.md` and `task.toml`
 - [Learn the task taxonomy](/portal/docs/understanding-tasks/task-taxonomy)
 - [See example tasks](/portal/docs/understanding-tasks/example-tasks)
-- [Create your first task](/portal/docs/creating-tasks/task-creation-wizard)
+- [Create your first task](/portal/docs/creating-tasks/videos/creating-task)

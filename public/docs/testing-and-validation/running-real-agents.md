@@ -1,17 +1,12 @@
-# Running Real Agents & Local Testing
+# Testing Agent Performance
 
-Test your task locally against real AI agents and run CI checks before submitting. By testing locally, you can quickly identify issues, refine your task design, and validate solutions before submitting.
+Test your task against real AI agents to validate difficulty and ensure your task challenges frontier models appropriately.
 
 ## Prerequisites
 
-**Clone the Terminal-Bench repository:**
-
-```bash
-git clone https://github.com/laude-institute/terminal-bench
-cd terminal-bench
-```
-
 **Get your API key from Snorkel via email.** If you haven't received one, DM Puyun or Alejandro on Slack.
+
+> **Note:** You'll need Harbor CLI installed to run agents locally. See [Environment Setup](/portal/docs/getting-started/environment-setup) for installation instructions.
 
 ## Environment Setup
 
@@ -51,66 +46,13 @@ uv run harbor run \
   -p harbor_tasks/<task-name>
 ```
 
-### Platform Workflow (tb commands)
-
-```bash
-# GPT-5
-tb run --agent terminus-2 --model openai/@openai-tbench/gpt-5 --task-id <task-id>
-
-# Claude Sonnet 4.5
-tb run --agent terminus-2 --model openai/@anthropic-tbench/claude-sonnet-4-5-20250929 --task-id <task-id>
-```
-
----
-
-## Run CI and LLMaJ Checks Locally
-
-Before submitting, run the same automated checks that CI will perform. This enables faster iteration without waiting for CI pipelines.
-
-### GitHub Workflow
-
-```bash
-# Run all checks on your task
-uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
-```
-
-### Platform Workflow (tb commands)
-
-```bash
-# GPT-5
-tb tasks check <task-id> --model openai/@openai-tbench/gpt-5
-
-# Claude Sonnet 4.5
-tb tasks check <task-id> --model openai/@anthropic-tbench/claude-sonnet-4-5-20250929
-```
-
-### What Gets Checked
-
-Running locally will validate:
-
-**CI Checks:**
-- `pinned_dependencies` — All deps have pinned versions
-- `typos` — No spelling errors
-- `tests_or_solution_in_image` — Solution not baked into Docker
-- `check_canary` — Canary strings present
-- `check_dockerfile_references` — All files referenced exist
-- `ruff` — Python linting passes
-- `validate_task_fields` — task.yaml is complete
-
-**LLMaJ Checks:**
-- `behavior_in_task_description` — Requirements stated clearly
-- `behavior_in_tests` — Tests verify behavior
-- `informative_test_docstrings` — Tests have good docstrings
-- `anti_cheating_measures` — Task can't be gamed
-- `hardcoded_solution` — Solution isn't trivially derivable
-
 ---
 
 ## Interpreting Results
 
 ### Pass
 
-The agent successfully completed the task. Run multiple times to establish pass rate.
+The agent successfully completed the task. Run each agent 5 times to establish a reliable pass rate.
 
 ### Fail - Good
 
@@ -132,7 +74,7 @@ This means your task needs revision.
 
 ## Determining Difficulty
 
-Run each agent **2-3 times** minimum:
+Run each agent **5 times** to get a reliable pass rate:
 
 | Pass Rate | Difficulty |
 |-----------|------------|
@@ -147,13 +89,18 @@ Run each agent **2-3 times** minimum:
 Run 1 (GPT-5): FAIL
 Run 2 (GPT-5): PASS
 Run 3 (GPT-5): FAIL
+Run 4 (GPT-5): FAIL
+Run 5 (GPT-5): PASS
 Run 1 (Claude): FAIL
 Run 2 (Claude): FAIL
+Run 3 (Claude): FAIL
+Run 4 (Claude): FAIL
+Run 5 (Claude): FAIL
 
-GPT-5: 1/3 = 33%
-Claude: 0/2 = 0%
+GPT-5: 2/5 = 40%
+Claude: 0/5 = 0%
 
-Best: 33% → Hard difficulty ✓
+Best: 40% → Hard difficulty ✓
 ```
 
 ## Analyzing Failures
@@ -202,5 +149,5 @@ Ask yourself:
 
 ## Next Steps
 
-- [Run CI/LLMaJ checks](/portal/docs/testing-and-validation/ci-checks-reference)
+- [Run CI/LLMaJ checks](/portal/docs/testing-and-validation/ci-feedback-training) — Learn how to iterate on CI feedback
 - [Submit your task](/portal/docs/submitting-tasks/submission-checklist)

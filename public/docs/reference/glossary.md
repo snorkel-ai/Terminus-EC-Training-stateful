@@ -27,7 +27,7 @@ A separate line of development in Git. Each task should be developed on its own 
 ## C
 
 ### Canary String
-A placeholder string that must be present at the top of certain files (task.yaml, solution.sh, Dockerfile, test_outputs.py). Used for validation and tracking.
+A placeholder string that must be present at the top of certain files (`instruction.md`, `solution/solve.sh`, `environment/Dockerfile`, `tests/test_outputs.py`). Used for validation and tracking.
 
 ### CI (Continuous Integration)
 Automated systems that run tests and checks when code is submitted. In TerminalBench, CI validates task structure, dependencies, and quality.
@@ -109,8 +109,8 @@ A Docker setting that gives containers root-level access. **Not allowed** in Ter
 
 ## R
 
-### run-tests.sh
-Script that executes the pytest tests to verify task completion. Must set up its own virtual environment using uv.
+### tests/test.sh
+Script that executes the pytest tests to verify task completion. Must set up its own virtual environment using uv and produce a reward file (`/logs/verifier/reward.txt` or `/logs/verifier/reward.json`).
 
 ### Ruff
 A fast Python linter. All Python code in tasks must pass Ruff checks.
@@ -125,8 +125,8 @@ The web-based platform for managing tasks and submissions. Alternative to the Gi
 ### solve.sh / solution.sh
 The oracle solution script that demonstrates how to complete the task. Located in `solution/solve.sh`.
 
-### STB
-The CLI tool (`stb`) used for task creation. Run `uv run stb tasks create` to start the wizard.
+### Harbor
+The CLI tool (`harbor`) used for running agents and validating tasks. Run `harbor run --agent oracle --path harbor_tasks/<task-name>` to test your task.
 
 ---
 
@@ -134,16 +134,17 @@ The CLI tool (`stb`) used for task creation. Run `uv run stb tasks create` to st
 
 ### Task
 A coding challenge designed to test AI agent capabilities. Consists of:
-- Instructions (task.yaml)
-- Environment (Dockerfile)
-- Solution (solve.sh)
-- Tests (test_outputs.py)
+- Instructions (`instruction.md`)
+- Configuration (`task.toml`)
+- Environment (`environment/Dockerfile`)
+- Solution (`solution/solve.sh`)
+- Tests (`tests/test.sh`, `tests/test_outputs.py`)
 
-### task.yaml
-The main configuration file containing the task instruction (shown to agents) and metadata (not shown to agents).
+### instruction.md
+The task instruction file in markdown format, shown to agents. Contains clear, unambiguous requirements.
 
-### TB
-The CLI tool used in the Platform workflow. Commands start with `tb`.
+### task.toml
+The task configuration file in TOML format, containing metadata and settings. Replaces `task.yaml` in Harbor 2.0.
 
 ### Terminal-Bench
 The original benchmark project that TerminalBench is modeled after. See [tbench.ai](https://www.tbench.ai/).
@@ -155,7 +156,7 @@ The internal name for this TerminalBench project at Snorkel.
 The pytest file containing tests that verify task completion. Must have informative docstrings on all tests.
 
 ### Timeout
-Maximum time (in seconds) allowed for an agent to complete a task. Specified in task.yaml.
+Maximum time (in seconds) allowed for an agent to complete a task. Specified in `task.toml` under `[agent].timeout_sec`.
 
 ---
 

@@ -2,6 +2,8 @@
 
 Use this checklist before every submission to ensure your task is complete and will pass review.
 
+> **For detailed requirements:** See [Task Requirements](/portal/docs/understanding-tasks/task-requirements) for complete specifications on each component.
+
 ---
 
 ## Pre-Submission Verification
@@ -15,25 +17,21 @@ Use this checklist before every submission to ensure your task is complete and w
 - [ ] Data schemas are fully specified
 - [ ] Difficulty target: < 80% pass rate
 
-### Components
+### Required Files
 
-- [ ] `task.yaml` has all required fields
-- [ ] `Dockerfile` builds successfully
-- [ ] Dependencies have pinned versions
-- [ ] `docker-compose.yaml` is valid
-- [ ] `solution/solve.sh` is deterministic
-- [ ] `tests/test_outputs.py` has docstrings
-- [ ] `tests/run-tests.sh` uses uv
+- [ ] `instruction.md` — Clear, human-written instructions ([requirements](/portal/docs/understanding-tasks/task-requirements#instructionmd-requirements))
+- [ ] `task.toml` — Complete configuration with all required sections ([requirements](/portal/docs/understanding-tasks/task-requirements#tasktoml-requirements))
+- [ ] `environment/Dockerfile` — Builds successfully, dependencies pinned ([requirements](/portal/docs/understanding-tasks/task-requirements#environment-requirements))
+- [ ] `solution/solve.sh` — Deterministic, human-written solution ([requirements](/portal/docs/understanding-tasks/task-requirements#solution-requirements))
+- [ ] `tests/test.sh` — Uses uv, produces reward file ([requirements](/portal/docs/understanding-tasks/task-requirements#test-requirements))
+- [ ] `tests/test_outputs.py` — Tests with docstrings, verify behavior
 
-### Quality
+### Quality Standards
 
-- [ ] task.yaml written by human (not LLM)
-- [ ] solution.sh written by human
-- [ ] Tests check behavior, not implementation
 - [ ] All requirements have corresponding tests
 - [ ] All tests verify described requirements
-- [ ] Anti-cheating measures in place
-- [ ] Canary strings present
+- [ ] Anti-cheating measures in place (canary strings)
+- [ ] Tests check behavior, not implementation
 
 ---
 
@@ -59,7 +57,7 @@ uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench
 - [ ] test_deps_in_image ✓
 - [ ] check_canary ✓
 - [ ] check_dockerfile_references ✓
-- [ ] check_run-tests_sh ✓
+- [ ] check_test_sh ✓
 - [ ] check_task_absolute_path ✓
 - [ ] check_privileged_containers ✓
 - [ ] ruff ✓
@@ -130,35 +128,18 @@ uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20
 
 ## Submission Method
 
-### GitHub
-
-- [ ] Created branch: `username/<task-id>`
-- [ ] Committed with descriptive message
-- [ ] Pushed to remote
-- [ ] PR title starts with "Task:"
-- [ ] PR template filled out
-
-### Platform
-
 - [ ] Created ZIP of files (not folder)
-- [ ] All files included in ZIP
-- [ ] Uploaded to terminus-project
+- [ ] All required files included in ZIP
+- [ ] Uploaded to terminus-project-v2 on Snorkel Expert Platform
 - [ ] Metadata filled in
+
+See [Platform Submission Guide](/portal/docs/submitting-tasks/platform-submission) for detailed submission steps.
 
 ---
 
 ## Ready?
 
-If you've completed all items above:
-
-**GitHub:**
-```bash
-git push origin username/<task-id>
-# Then create PR on GitHub
-```
-
-**Platform:**
-Upload your ZIP file to the Snorkel Expert Platform.
+If you've completed all items above, upload your ZIP file to the Snorkel Expert Platform.
 
 **Good luck!** 🎉
 

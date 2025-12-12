@@ -6,27 +6,9 @@ export const docsConfig = {
       items: [
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
         { slug: 'onboarding/project-overview', title: 'Project Overview' },
+        { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
         { slug: 'getting-started/environment-setup', title: 'Environment Setup' },
-      ]
-    },
-    {
-      title: 'Onboarding',
-      items: [
-        { slug: 'onboarding/platform-onboarding', title: 'Platform Onboarding' },
-        { slug: 'onboarding/platform-walkthrough', title: 'Platform Walkthrough' },
-        { slug: 'onboarding/github-onboarding', title: 'GitHub Onboarding' },
-      ]
-    },
-    {
-      title: 'Video Walkthroughs',
-      items: [
-        { slug: 'creating-tasks/videos/creating-task', title: 'Creating a Task' },
-        { slug: 'creating-tasks/videos/running-your-task', title: 'Running Your Task' },
-        { slug: 'creating-tasks/videos/creating-solution', title: 'Creating solution.sh' },
-        { slug: 'creating-tasks/videos/creating-tests', title: 'Creating Tests' },
-        { slug: 'testing-and-validation/oracle-training', title: 'Oracle Training' },
-        { slug: 'testing-and-validation/ci-feedback-training', title: 'CI Feedback Training' },
       ]
     },
     {
@@ -41,10 +23,19 @@ export const docsConfig = {
       ]
     },
     {
-      title: 'Creating Tasks',
+      title: 'Tasking Overview',
       items: [
-        { slug: 'creating-tasks/task-creation-wizard', title: 'Task Creation Wizard' },
-        { slug: 'creating-tasks/writing-task-yaml', title: 'Writing task.yaml' },
+        { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
+        { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
+        { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
+      ]
+    },
+    {
+      title: 'Detailed Tasking Guides',
+      items: [
+        { slug: 'creating-tasks/videos/creating-task', title: 'Creating a Task' },
+        { slug: 'creating-tasks/videos/running-your-task', title: 'Running Your Task' },
+        { slug: 'creating-tasks/writing-task-yaml', title: 'Writing Instructions & Config' },
         { slug: 'creating-tasks/creating-docker-environment', title: 'Docker Environment' },
         { slug: 'creating-tasks/writing-oracle-solution', title: 'Writing Oracle Solution' },
         { slug: 'creating-tasks/writing-tests', title: 'Writing Tests' },
@@ -54,20 +45,10 @@ export const docsConfig = {
       title: 'Testing & Validation',
       items: [
         { slug: 'testing-and-validation/oracle-agent', title: 'Oracle Agent' },
-        { slug: 'testing-and-validation/oracle-training', title: 'Oracle Training' },
-        { slug: 'testing-and-validation/running-real-agents', title: 'Running Real Agents' },
+        { slug: 'testing-and-validation/running-real-agents', title: 'Testing Agent Performance' },
+        { slug: 'testing-and-validation/ci-feedback-training', title: 'CI Feedback Training' },
         { slug: 'testing-and-validation/ci-checks-reference', title: 'CI Checks Reference' },
         { slug: 'testing-and-validation/llmaj-checks-reference', title: 'LLMaJ Checks Reference' },
-        { slug: 'testing-and-validation/ci-feedback-training', title: 'CI Feedback Training' },
-      ]
-    },
-    {
-      title: 'Submitting Tasks',
-      items: [
-        { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
-        { slug: 'submitting-tasks/github-submission', title: 'GitHub Submission' },
-        { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
-        { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
       ]
     },
     {

@@ -78,7 +78,7 @@ instruction: |
 instruction: |
   Your task is to decompile a Python function in bytecode format,
   compiled in CPython 3.8, and save the function in decompiled.py
-  in the same folder as task.yaml.
+  in the same folder as instruction.md.
   The function name should be "func".
   Note that the function is pickled using dill and serialized
   using base64 in the file called func.serialized.
@@ -172,4 +172,4 @@ Looking for ideas? Consider tasks involving:
 ## Next Steps
 
 - [Learn difficulty guidelines](/portal/docs/understanding-tasks/difficulty-guidelines)
-- [Start creating your task](/portal/docs/creating-tasks/task-creation-wizard)
+- [Start creating your task](/portal/docs/creating-tasks/videos/creating-task)

@@ -4,11 +4,11 @@ Task difficulty is determined by pass rates when run against frontier AI models.
 
 ## Difficulty Levels
 
-| Level | Pass Rate | Payout | Human Time (Expert) | Human Time (Junior) |
-|-------|-----------|--------|---------------------|---------------------|
-| **Hard** | < 40% | $350 | 45-60 min | 2+ hours |
-| **Medium** | < 60% | $245 | 25-45 min | 1-2 hours |
-| **Easy** | < 80% | $140 | 15-25 min | 30-60 min |
+| Level | Pass Rate | Human Time (Expert) | Human Time (Junior) |
+|-------|-----------|---------------------|---------------------|
+| **Hard** | < 40% | 45-60 min | 2+ hours |
+| **Medium** | < 60% | 25-45 min | 1-2 hours |
+| **Easy** | < 80% | 15-25 min | 30-60 min |
 
 > **Important:** Tasks with > 80% pass rate will NOT be accepted.
 
@@ -139,5 +139,5 @@ Bad failures: Ambiguous requirements, environment issues
 
 ## Next Steps
 
-- [Start creating your task](/portal/docs/creating-tasks/task-creation-wizard)
+- [Start creating your task](/portal/docs/creating-tasks/videos/creating-task)
 - [Review CI checks](/portal/docs/testing-and-validation/ci-checks-reference)

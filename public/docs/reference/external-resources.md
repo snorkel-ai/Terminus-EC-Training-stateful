@@ -99,11 +99,13 @@ Reference for writing test cases.
 
 **URL:** [docs.pytest.org](https://docs.pytest.org/)
 
-### YAML Specification
+### Markdown & TOML Documentation
 
-For task.yaml and docker-compose.yaml syntax.
+For `instruction.md` (markdown) and `task.toml` (TOML) syntax.
 
-**URL:** [yaml.org](https://yaml.org/)
+**URLs:**
+- Markdown: [daringfireball.net/projects/markdown](https://daringfireball.net/projects/markdown/)
+- TOML: [toml.io](https://toml.io/)
 
 ---
 

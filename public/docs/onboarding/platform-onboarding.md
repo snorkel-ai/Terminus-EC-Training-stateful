@@ -10,46 +10,18 @@ Get started with TerminalBench using the Snorkel Expert Platform. Watch the onbo
 
 <pdf-download src="/Terminus-EC-Training-stateful/Terminus EC Onboarding - Platform.pdf" title="Platform Onboarding Slides"></pdf-download>
 
-## Key Takeaways
+## What You'll Learn
 
-### What You'll Learn
 - How to navigate the Expert Platform interface
 - Task submission workflow via ZIP upload
 - How to track your submissions and feedback
 
-### Platform Workflow Overview
-
-1. **Download task skeleton** from the training site
-2. **Rename the folder** to match your task name
-3. **Create your task** (instructions, solution, tests)
-4. **Iterate locally** until all checks pass
-5. **Create a ZIP file** of your task folder
-6. **Upload to Platform** in the terminus-project
-
-### Initial Setup (One-Time)
-
-Clone the Terminal-Bench repository to get access to the `tb` commands:
-
-```bash
-git clone https://github.com/laude-institute/terminal-bench.git
-```
-
-This gives you tools for running agents and programmatic checks locally.
-
-## Download Task Skeleton
-
-To get started with a new task, download the template:
-
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton (ZIP)"></pdf-download>
-
 ## Next Steps
 
-After watching the onboarding:
+After watching the onboarding video:
 
 1. [Set up your environment](/portal/docs/getting-started/environment-setup)
-2. [Understand task components](/portal/docs/understanding-tasks/task-components)
-3. [Watch the submission walkthrough](/portal/docs/submitting-tasks/platform-submission)
+2. [Read the complete submission guide](/portal/docs/submitting-tasks/platform-submission) — includes step-by-step instructions for downloading the task skeleton, creating your task, and submitting
+3. [Understand task components](/portal/docs/understanding-tasks/task-components)
 
 ---
-
-> **Prefer Git?** Check out the [GitHub Onboarding](/portal/docs/onboarding/github-onboarding) instead.

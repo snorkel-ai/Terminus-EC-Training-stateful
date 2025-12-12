@@ -40,41 +40,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv --version
 ```
 
-### 3. Git
-
-Git is required for the GitHub workflow and recommended for version control.
-
-**Verify:**
-```bash
-git --version
-```
-
-**Configure (if needed):**
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-```
-
-## Repository Setup
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/snorkel-ai/snorkel-tb-tasks.git
-cd snorkel-tb-tasks
-```
-
-> **Note:** If you don't have access, DM Puyun or Connor on Slack.
-
-### Verify Setup
-
-```bash
-# Check uv works with the project
-uv run stb --help
-```
-
-You should see the CLI help output.
-
 ## API Key Setup
 
 You'll receive an API key via email for running agents against your tasks.
@@ -93,7 +58,8 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 - **Docker** — Manage containers
 - **Python** — Syntax highlighting, linting
-- **YAML** — For task.yaml editing
+- **Markdown** — For instruction.md editing
+- **TOML** — For task.toml editing
 - **GitLens** — Enhanced Git integration
 
 ## Troubleshooting
@@ -122,13 +88,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.cargo/bin:$PATH"
 ```
 
-### Repository Access
-
-**"Permission denied (publickey)"**
-1. [Generate an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
-2. Add it to your GitHub account
-3. Test: `ssh -T git@github.com`
-
 ---
 
 ## Next Steps
@@ -136,4 +95,4 @@ export PATH="$HOME/.cargo/bin:$PATH"
 Once your environment is set up:
 
 - [Watch the onboarding video](/portal/docs/onboarding/platform-onboarding) for a full walkthrough
-- [Create your first task](/portal/docs/creating-tasks/task-creation-wizard)
+- [Create your first task](/portal/docs/creating-tasks/videos/creating-task)

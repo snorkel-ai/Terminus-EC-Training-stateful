@@ -18,11 +18,11 @@ We're not looking for trivia or trick questions. We want genuine engineering cha
 
 **Average pass rate must be < 80%** for GPT-5 or Claude Sonnet 4.5.
 
-| Difficulty | Pass Rate | Payout |
-|------------|-----------|--------|
-| Hard | < 40% | $350 |
-| Medium | < 60% | $245 |
-| Easy | < 80% | $140 |
+| Difficulty | Pass Rate |
+|------------|-----------|
+| Hard | < 40% |
+| Medium | < 60% |
+| Easy | < 80% |
 
 > Tasks with > 80% pass rate will NOT be accepted.
 
@@ -97,7 +97,7 @@ Before submitting, verify:
 - [ ] All constraints explicitly stated
 - [ ] Test cases cover all requirements
 - [ ] No cheating opportunities
-- [ ] Human-written (not LLM-generated task.yaml)
+- [ ] Human-written (not LLM-generated instruction.md)
 
 ---
 

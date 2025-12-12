@@ -28,7 +28,7 @@ This project is currently run primarily through GitHub. Therefore, you may not s
 
 ### How do I get served a task?
 
-You are NOT served tasks like in other Snorkel projects. You will ideate and create tasks completely from scratch. See the [Task Creation Wizard](/portal/docs/creating-tasks/task-creation-wizard) guide.
+You are NOT served tasks like in other Snorkel projects. You will ideate and create tasks completely from scratch. See the [Creating a Task](/portal/docs/creating-tasks/videos/creating-task) guide.
 
 ### How do I get an idea for my task?
 
