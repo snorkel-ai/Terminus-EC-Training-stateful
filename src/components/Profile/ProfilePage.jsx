@@ -17,7 +17,7 @@ const ALL_SPECIALTIES = [
 ];
 
 const ProfilePage = () => {
-  const { user, profile, updateProfile, signOut } = useAuth();
+  const { user, profile, updateProfile, signOut, deleteAccount } = useAuth();
   const navigate = useNavigate();
   const { selectedTasks, loading: tasksLoading } = useMySelectedTasks();
   
@@ -36,6 +36,9 @@ const ProfilePage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState(null);
   const [isDangerZoneOpen, setIsDangerZoneOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const [statusItems, setStatusItems] = useState({
     onboarding_completed: false,
@@ -125,14 +128,37 @@ const ProfilePage = () => {
   };
 
   const handleDeleteAccount = async () => {
-    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      try {
-        // Placeholder for actual deletion logic
-        alert('Please contact support (support@term.inus) to permanently delete your account data.');
-      } catch (error) {
-        console.error('Error deleting account:', error);
-      }
+    if (deleteConfirmation !== 'DELETE') {
+      return;
     }
+    
+    setIsDeleting(true);
+    setMessage(null);
+    
+    try {
+      const { error } = await deleteAccount();
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Redirect to home page after successful deletion
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      setMessage({ 
+        type: 'error', 
+        text: 'Failed to delete account. Please try again or contact support.' 
+      });
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+      setDeleteConfirmation('');
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setDeleteConfirmation('');
   };
 
   if (!profile) return <div className="loading">Loading profile...</div>;
@@ -332,13 +358,73 @@ const ProfilePage = () => {
               
               {isDangerZoneOpen && (
                 <div className="danger-actions" style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255, 68, 68, 0.25)' }}>
-                  <div className="danger-text">
-                    <p>Delete Account</p>
-                    <small>Permanently remove your account and all associated data.</small>
-                  </div>
-                  <Button variant="danger" onClick={handleDeleteAccount}>
-                    Delete Account
-                  </Button>
+                  {!showDeleteConfirm ? (
+                    <>
+                      <div className="danger-text">
+                        <p>Delete Account</p>
+                        <small>Permanently remove your account and all associated data.</small>
+                      </div>
+                      <Button variant="danger" onClick={() => setShowDeleteConfirm(true)}>
+                        Delete Account
+                      </Button>
+                    </>
+                  ) : (
+                    <div className="delete-confirm-flow" style={{ width: '100%' }}>
+                      <div className="danger-warning" style={{ 
+                        backgroundColor: 'rgba(255, 68, 68, 0.1)', 
+                        border: '1px solid rgba(255, 68, 68, 0.3)',
+                        borderRadius: '8px',
+                        padding: '1rem',
+                        marginBottom: '1rem'
+                      }}>
+                        <p style={{ margin: '0 0 0.5rem 0', fontWeight: 600, color: 'var(--color-error)' }}>
+                          This action is irreversible
+                        </p>
+                        <small style={{ color: 'var(--text-secondary)' }}>
+                          Deleting your account will permanently remove all your data including your profile, 
+                          progress, and selected tasks. This cannot be undone.
+                        </small>
+                      </div>
+                      
+                      <div className="form-group" style={{ marginBottom: '1rem' }}>
+                        <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                          Type <strong>DELETE</strong> to confirm:
+                        </label>
+                        <input
+                          type="text"
+                          value={deleteConfirmation}
+                          onChange={(e) => setDeleteConfirmation(e.target.value)}
+                          placeholder="DELETE"
+                          style={{ 
+                            width: '100%',
+                            padding: '0.75rem',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '8px',
+                            backgroundColor: 'var(--bg-primary)'
+                          }}
+                          disabled={isDeleting}
+                        />
+                      </div>
+                      
+                      <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+                        <Button 
+                          variant="secondary" 
+                          onClick={handleCancelDelete}
+                          disabled={isDeleting}
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          variant="danger" 
+                          onClick={handleDeleteAccount}
+                          disabled={deleteConfirmation !== 'DELETE' || isDeleting}
+                          loading={isDeleting}
+                        >
+                          {isDeleting ? 'Deleting...' : 'Permanently Delete Account'}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </section>

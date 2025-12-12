@@ -163,6 +163,33 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const deleteAccount = async () => {
+    try {
+      // Call the edge function to delete the user account
+      // The edge function uses the service role key to call auth.admin.deleteUser()
+      // CASCADE constraints on the database will clean up profiles, user_progress, etc.
+      const { error } = await supabase.functions.invoke('delete-account', {
+        method: 'POST',
+      });
+      
+      if (error) throw error;
+      
+      // Clear local state
+      setUser(null);
+      setProfile(null);
+      
+      // Reset PostHog identity
+      if (posthog) {
+        posthog.reset();
+      }
+      
+      return { error: null };
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      return { error };
+    }
+  };
+
   const completeOnboarding = async (specialties = []) => {
     try {
       const updates = { onboarding_completed: true };
@@ -210,6 +237,7 @@ export const AuthProvider = ({ children }) => {
     signInWithEmail,
     signUpWithEmail,
     signOut,
+    deleteAccount,
     completeOnboarding,
     updateProfile,
   };
