@@ -73,26 +73,6 @@ function Login() {
         <div className="login-card">
           <div className="login-header">
             <div className="logos-container">
-              <div className="tbench-logo">
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                >
-                  <polyline points="4 17 10 11 4 5"></polyline>
-                  <line x1="12" x2="20" y1="19" y2="19"></line>
-                </svg>
-                <span className="logo-text">terminal-bench</span>
-              </div>
-
-              <span className="logo-separator">×</span>
-              
               <img 
                 src="https://s46486.pcdn.co/wp-content/uploads/2023/05/snorkel_logo_header-1.svg" 
                 alt="Snorkel" 
