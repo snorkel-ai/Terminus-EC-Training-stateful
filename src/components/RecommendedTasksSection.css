@@ -9,6 +9,8 @@
   --reel-viewport-height: calc(var(--reel-card-height) + (2 * var(--reel-peek)));
   /* Force TaskCard surface to be white/surface within this section */
   --card-bg: var(--bg-surface);
+  /* Soft edge fade amount */
+  --reel-feather: calc(var(--reel-peek) + 20px);
 }
 
 .recommended-header {
@@ -89,9 +91,9 @@
 .slot-glow.active {
   background: radial-gradient(
     ellipse 60% 50% at 50% 50%,
-    rgba(59, 130, 246, 0.09) 0%,
-    rgba(59, 130, 246, 0.04) 40%,
-    rgba(59, 130, 246, 0) 70%
+    rgba(0, 0, 0, 0.03) 0%,
+    rgba(0, 0, 0, 0.015) 40%,
+    rgba(0, 0, 0, 0) 70%
   );
 }
 
@@ -129,69 +131,30 @@
   border: none;
   background: var(--bg-surface);
   box-shadow: var(--shadow-sm);
-}
 
-/* Feather mask to partially hide prev/next items */
-.reel-viewport::before,
-.reel-viewport::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  /* Only feather the peek area; don't cover winner content */
-  height: calc(var(--reel-peek) + 52px);
-  pointer-events: none;
-  z-index: 6;
-  /* Slight blur to avoid a crisp "cut line" */
-  filter: blur(1px);
-}
-
-.reel-viewport::before {
-  top: 0;
-  background: linear-gradient(
+  /* Feather via mask so we don't "paint over" card content */
+  -webkit-mask-image: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0.98) 14%,
-    rgba(255, 255, 255, 0.82) 42%,
-    rgba(255, 255, 255, 0.35) 78%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.65) 24px,
+    #000 var(--reel-feather),
+    #000 calc(100% - var(--reel-feather)),
+    rgba(0, 0, 0, 0.65) calc(100% - 24px),
+    rgba(0, 0, 0, 0.18) 100%
   );
-}
-
-.reel-viewport::after {
-  bottom: 0;
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0.98) 14%,
-    rgba(255, 255, 255, 0.82) 42%,
-    rgba(255, 255, 255, 0.35) 78%,
-    rgba(255, 255, 255, 0) 100%
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.65) 24px,
+    #000 var(--reel-feather),
+    #000 calc(100% - var(--reel-feather)),
+    rgba(0, 0, 0, 0.65) calc(100% - 24px),
+    rgba(0, 0, 0, 0.18) 100%
   );
-}
-
-/* Prefer a theme-aware feather when supported */
-@supports (background: color-mix(in srgb, white 50%, transparent)) {
-  .reel-viewport::before {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--bg-surface) 100%, transparent) 0%,
-      color-mix(in srgb, var(--bg-surface) 98%, transparent) 14%,
-      color-mix(in srgb, var(--bg-surface) 82%, transparent) 42%,
-      color-mix(in srgb, var(--bg-surface) 35%, transparent) 78%,
-      transparent 100%
-    );
-  }
-  .reel-viewport::after {
-    background: linear-gradient(
-      to top,
-      color-mix(in srgb, var(--bg-surface) 100%, transparent) 0%,
-      color-mix(in srgb, var(--bg-surface) 98%, transparent) 14%,
-      color-mix(in srgb, var(--bg-surface) 82%, transparent) 42%,
-      color-mix(in srgb, var(--bg-surface) 35%, transparent) 78%,
-      transparent 100%
-    );
-  }
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 /* Thin center line to help the "snap to payline" illusion */
@@ -204,18 +167,23 @@
   transform: translateY(-1px);
   background: linear-gradient(
     to right,
-    rgba(59, 130, 246, 0) 0%,
-    rgba(59, 130, 246, 0.35) 20%,
-    rgba(59, 130, 246, 0.35) 80%,
-    rgba(59, 130, 246, 0) 100%
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.10) 20%,
+    rgba(0, 0, 0, 0.10) 80%,
+    rgba(0, 0, 0, 0) 100%
   );
   pointer-events: none;
   z-index: 5;
-  opacity: 0.35;
+  opacity: 0.18;
 }
 
 /* Hide payline once the reel is locked */
 .recommended-reel.locked .reel-payline {
+  opacity: 0;
+}
+
+/* Also hide it during spin (it can read as a blue cast) */
+.slot-machine-viewport.spinning .reel-payline {
   opacity: 0;
 }
 
@@ -234,6 +202,7 @@
   flex: 0 0 auto;
   padding: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .reel-item .task-card {
@@ -241,9 +210,9 @@
 }
 
 .reel-item.peek {
-  opacity: 0.34;
+  opacity: 0.5;
   transform: scale(0.985);
-  filter: saturate(0.8) blur(0.2px);
+  filter: saturate(0.85);
 }
 
 .reel-item.peek .reel-stub {
@@ -277,6 +246,10 @@
 /* Override TaskCard's default min-height in this section */
 .recommended-card.task-card {
   min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+  /* Prevent TaskCard's default "appear" animation from causing a size/scale jump */
+  animation: none;
 }
 
 /* Disable interactions while spinning */
@@ -365,18 +338,7 @@
   background-color: var(--bg-hover);
 }
 
-.btn-icon {
-  font-size: 1.1em;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.reshuffle-btn .btn-icon.spinning {
-  animation: spin 0.6s linear infinite;
-}
+/* Icon removed */
 
 /* Placeholder while empty */
 .recommended-card-placeholder {

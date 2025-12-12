@@ -2,8 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePostHog } from 'posthog-js/react';
 import { useTasks } from '../hooks/useTasks';
-import { Button, TaskWorkflowModal, LoadingState, TaskCard } from './ui';
-import { FiRefreshCw } from 'react-icons/fi';
+import { Button, TaskDetailModal, LoadingState, TaskCard } from './ui';
 import './RecommendedTasksSection.css';
 
 const REEL_COUNT = 3;
@@ -379,7 +378,8 @@ const RecommendedTasksSection = () => {
                         const key = `${index}-${task?.id || 'empty'}-${itemIdx}`;
                         const isCenter = itemIdx === reel.index;
                         const clickable = !isShuffling && isCenter && !!task;
-                        const showFullCard = !!task && isCenter && reel.locked && !isShuffling;
+                        // Show the full winner card as soon as THIS reel locks (even if others are still spinning)
+                        const showFullCard = !!task && isCenter && reel.locked;
                         return (
                           <div
                             key={key}
@@ -415,8 +415,7 @@ const RecommendedTasksSection = () => {
           className="reshuffle-btn"
           disabled={isShuffling}
         >
-          <FiRefreshCw className={`btn-icon ${isShuffling ? 'spinning' : ''}`} />
-          Show me different tasks
+          I'm feeling lucky
         </Button>
         
         <Button 
@@ -428,14 +427,10 @@ const RecommendedTasksSection = () => {
       </div>
 
       {/* Task Detail Modal */}
-      <TaskWorkflowModal
+      <TaskDetailModal
         task={selectedTask}
         isOpen={!!selectedTask}
         onClose={handleCloseModal}
-        onTaskUpdate={() => {
-          refetch();
-          handleReshuffle();
-        }}
       />
     </section>
   );
