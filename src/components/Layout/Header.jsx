@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { usePostHog } from 'posthog-js/react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import UserMenu from './UserMenu';
 import { Logo, Navbar, NavLink } from '../ui';
@@ -8,6 +9,7 @@ import './Header.css';
 
 function Header() {
   const { profile } = useAuth();
+  const posthog = usePostHog();
   const navigate = useNavigate();
   const location = useLocation();
   const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
@@ -55,6 +57,14 @@ function Header() {
     return location.pathname.startsWith(`/portal${path}`);
   };
 
+  const handleTaskGalleryClick = () => {
+    if (posthog) {
+      posthog.capture('browse_tasks_clicked', {
+        source: 'header_nav'
+      });
+    }
+  };
+
   return (
     <header className="app-header">
       <div className="header-content">
@@ -79,6 +89,7 @@ function Header() {
             <NavLink 
               to="/portal/tasks" 
               active={isActive('/tasks')}
+              onClick={handleTaskGalleryClick}
             >
               Task gallery
             </NavLink>
@@ -197,7 +208,7 @@ function Header() {
               <Link to="/portal/overview" className={`mobile-nav-link ${isActive('/overview') ? 'active' : ''}`}>
                 Our mission
               </Link>
-              <Link to="/portal/tasks" className={`mobile-nav-link ${isActive('/tasks') ? 'active' : ''}`}>
+              <Link to="/portal/tasks" className={`mobile-nav-link ${isActive('/tasks') ? 'active' : ''}`} onClick={handleTaskGalleryClick}>
                 Task gallery
               </Link>
               <Link to="/portal/my-tasks" className={`mobile-nav-link ${isActive('/my-tasks') ? 'active' : ''}`}>
