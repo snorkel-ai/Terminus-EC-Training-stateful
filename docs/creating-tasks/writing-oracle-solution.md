@@ -2,6 +2,21 @@
 
 The oracle solution (`solution/solve.sh`) is an expert-authored script that reliably completes the task. It's used to verify that the task is solvable.
 
+## Getting Started
+
+### Video Tutorial
+
+<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh"></video-loom>
+
+### What You'll Learn
+
+- Structure of a good solution.sh file
+- How to transfer commands from interactive testing
+- Best practices for deterministic solutions
+- Common pitfalls to avoid
+
+---
+
 ## Basic Structure
 
 ```bash

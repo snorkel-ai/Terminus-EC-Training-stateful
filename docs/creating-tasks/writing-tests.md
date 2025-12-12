@@ -2,6 +2,21 @@
 
 The `tests/test_outputs.py` file contains pytest tests that verify task completion. Good tests are the foundation of a quality task.
 
+## Getting Started
+
+### Video Tutorial
+
+<video-loom id="a00541ff2787464c84bf4601415ee624" title="Creating Tests for Your Task"></video-loom>
+
+### What You'll Learn
+
+- Structure of test_outputs.py
+- Writing effective test cases
+- Matching tests to task requirements
+- Common testing patterns
+
+---
+
 ## Basic Structure
 
 ```python
@@ -71,9 +86,9 @@ def test_api_returns_json():
 
 ### 3. Match Task Requirements
 
-Every requirement in task.yaml should have a corresponding test:
+Every requirement in `instruction.md` should have a corresponding test:
 
-| task.yaml says... | Test verifies... |
+| instruction.md says... | Test verifies... |
 |-------------------|------------------|
 | "Return empty list for empty input" | `test_empty_input_returns_empty_list` |
 | "Output to /data/result.csv" | `test_output_file_exists` |
@@ -102,9 +117,9 @@ def test_special_characters():
     assert process("héllo 世界") == ["héllo", "世界"]
 ```
 
-## run-tests.sh
+## tests/test.sh
 
-The test runner script sets up the environment and runs pytest:
+The test runner script sets up the environment, runs pytest, and produces a reward file:
 
 ```bash
 #!/bin/bash
@@ -119,9 +134,16 @@ uv pip install pytest requests
 
 # Run tests
 pytest test_outputs.py -v
+
+# Produce reward file (REQUIRED)
+if [ $? -eq 0 ]; then
+  echo 1 > /logs/verifier/reward.txt
+else
+  echo 0 > /logs/verifier/reward.txt
+fi
 ```
 
-> **Note:** Test dependencies should be installed in `run-tests.sh`, NOT in the Dockerfile.
+> **Note:** Test dependencies should be installed in `tests/test.sh`, NOT in the Dockerfile. The script must produce `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`.
 
 ## Common Patterns
 
@@ -246,7 +268,7 @@ Your tests will be validated by:
 | Check | Description |
 |-------|-------------|
 | `behavior_in_tests` | All task requirements have tests |
-| `behavior_in_task_description` | All tested behavior is in task.yaml |
+| `behavior_in_task_description` | All tested behavior is in instruction.md |
 | `informative_test_docstrings` | Each test has a docstring |
 | `ruff` | Code passes linting |
 

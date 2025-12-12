@@ -2,6 +2,28 @@
 
 The Oracle Agent runs your solution.sh in the task environment and verifies it passes all tests. It's the first line of validation for your task.
 
+## Getting Started
+
+### Video Tutorial
+
+<video-loom id="72b70216a5314068823bc6ed0350e672" title="Oracle Training Tutorial"></video-loom>
+
+### Practice Notebook
+
+Download the Jupyter notebook for hands-on practice:
+
+<pdf-download src="/Terminus-EC-Training-stateful/oracle_agent_training.ipynb" title="Download Oracle Training Notebook"></pdf-download>
+
+### What You'll Learn
+
+- What the Oracle Agent is and how it works
+- How to run the Oracle Agent on your task
+- How to interpret Oracle output
+- How to debug failing runs
+- How to iterate and fix issues
+
+---
+
 ## What is the Oracle Agent?
 
 The Oracle Agent is an automated agent that:
@@ -12,18 +34,16 @@ The Oracle Agent is an automated agent that:
 
 If the Oracle Agent can't complete your task, neither can AI agents.
 
+> **Key Concept:** The Oracle Agent verifies that your task is **solvable**. If the Oracle can't solve your task, it's broken.
+
 ## Running the Oracle Agent
 
-### GitHub Workflow
-
 ```bash
-uv run harbor run --agent oracle --path harbor_tasks/<task-name>
-```
+# Basic run
+harbor run --agent oracle --path harbor_tasks/<task-name>
 
-### Platform Workflow
-
-```bash
-tb run --agent oracle --task-id <task-name>
+# With verbose output
+harbor run --agent oracle --path harbor_tasks/<task-name> -v
 ```
 
 ## Expected Output
@@ -60,13 +80,34 @@ Error: Solution did not complete successfully
 
 ## Debugging Failures
 
+### Debugging Workflow
+
+When the Oracle Agent fails, follow this workflow:
+
+**Step 1: Identify the Failure**
+- Read the error message carefully
+- Which step failed?
+- What was the error?
+- What file/command was involved?
+
+**Step 2: Reproduce Interactively**
+```bash
+harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+```
+Inside the container, run commands one by one to find the issue.
+
+**Step 3: Fix and Re-test**
+1. Update `solution/solve.sh` or `environment/Dockerfile`
+2. Run Oracle again
+3. Repeat until passing
+
 ### Solution Fails
 
 If your solution doesn't run:
 
 1. **Enter interactive mode:**
    ```bash
-   uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+   harbor tasks start-env --path harbor_tasks/<task-name> --interactive
    ```
 
 2. **Run commands manually** to find the failing step
@@ -95,7 +136,7 @@ If the solution runs but tests fail:
 
 If the container won't build:
 
-1. **Check Dockerfile syntax**
+1. **Check Dockerfile syntax** in `environment/Dockerfile`
 
 2. **Verify base image** exists and is accessible
 
@@ -103,7 +144,7 @@ If the container won't build:
 
 4. **Try building manually:**
    ```bash
-   cd harbor_tasks/<task-name>
+   cd harbor_tasks/<task-name>/environment
    docker build -t test .
    ```
 
@@ -111,10 +152,36 @@ If the container won't build:
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| "command not found" | Missing dependency | Add to Dockerfile |
+| "command not found" | Missing dependency | Add to environment/Dockerfile |
 | "file not found" | Wrong path | Use absolute paths |
-| "permission denied" | File permissions | Check chmod in Dockerfile |
+| "permission denied" | File permissions | Check chmod in environment/Dockerfile |
 | Tests timeout | Solution too slow | Optimize or increase timeout |
+
+### Common Debugging Scenarios
+
+**Missing File:**
+```
+Error: No such file: /app/data/input.csv
+```
+**Fix:** Check `environment/Dockerfile` COPY commands and file paths
+
+**Command Not Found:**
+```
+Error: grep: command not found
+```
+**Fix:** Add package to `environment/Dockerfile` `apt-get install`
+
+**Test Assertion Failed:**
+```
+AssertionError: Expected 42, got 41
+```
+**Fix:** Debug your solution logic
+
+**Timeout:**
+```
+Error: Task exceeded timeout (1800s)
+```
+**Fix:** Optimize solution or increase timeout in `task.toml` (`[agent].timeout_sec`)
 
 ## Oracle vs Real Agents
 
@@ -137,8 +204,19 @@ If the container won't build:
 
 ---
 
+## Practice Exercise
+
+Using the practice notebook:
+
+1. Load the sample task
+2. Run the Oracle (it will fail)
+3. Identify the issue
+4. Fix the solution
+5. Run Oracle again until passing
+
+---
+
 ## Next Steps
 
-- [Watch Oracle training video](/portal/docs/testing-and-validation/oracle-training)
 - [Run against real agents](/portal/docs/testing-and-validation/running-real-agents)
 - [Review CI checks](/portal/docs/testing-and-validation/ci-checks-reference)

@@ -25,45 +25,16 @@ git clone https://github.com/snorkel-ai/snorkel-tb-tasks.git
 cd snorkel-tb-tasks
 ```
 
-### Step 2: Create Your First Task
+### Step 2: Create and Submit Your First Task
 
-**Option A: Use the task creation wizard (if you have access to the repo)**
+Follow the complete [Platform Submission Guide](/portal/docs/submitting-tasks/platform-submission) for detailed step-by-step instructions on:
 
-```bash
-uv run stb tasks create
-```
-
-Follow the prompts to set up your task structure.
-
-**Option B: Download the task skeleton**
-
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Task Skeleton Template"></pdf-download>
-
-Download and extract to get a pre-configured task structure with all required files.
-
-### Step 3: Develop and Test
-
-1. Edit `task.yaml` with your task instructions
-2. Set up the Docker environment
-3. Write your oracle solution (`solution.sh`)
-4. Create pytest tests (`test_outputs.py`)
-5. Run the oracle agent to verify:
-
-```bash
-uv run harbor run --agent oracle --path harbor_tasks/<task-name>
-```
-
-### Step 4: Submit
-
-**GitHub workflow:**
-```bash
-git checkout -b username/<task-id>
-git add harbor_tasks/<task-id>
-git commit -m "Add task: <task-id>"
-git push origin username/<task-id>
-```
-
-Then create a Pull Request with title starting with "Task:".
+- Downloading the task skeleton template
+- Writing task instructions and configuration
+- Setting up the Docker environment
+- Creating your solution and tests
+- Running local validation
+- Submitting via ZIP upload to the Snorkel Expert Platform
 
 ## What's Next?
 

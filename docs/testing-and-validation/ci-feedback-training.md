@@ -49,7 +49,7 @@ LLMaJ Checks:
 
 ### Step 3: Fix One Issue at a Time
 
-Focus on one failure:
+Focus on one failure at a time. The error message will tell you exactly what's wrong:
 
 ```
 ✗ check_task_absolute_path
@@ -57,11 +57,7 @@ Focus on one failure:
   Use absolute path: /app/config/settings.json
 ```
 
-Fix:
-```yaml
-instruction: |
-  Edit /app/config/settings.json  # Changed from relative
-```
+> **For detailed fix instructions:** See [CI Checks Reference](/portal/docs/testing-and-validation/ci-checks-reference) and [LLMaJ Checks Reference](/portal/docs/testing-and-validation/llmaj-checks-reference)
 
 ### Step 4: Re-run and Verify
 
@@ -71,83 +67,29 @@ uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench
 
 ### Step 5: Repeat
 
-Continue until all checks pass.
+Continue fixing issues one at a time until all checks pass.
 
-## Common Failure Patterns
+## Understanding Error Messages
 
-### Missing Test Docstrings
+Error messages are designed to be helpful. They typically include:
+- **Which check failed** (e.g., `check_task_absolute_path`)
+- **Where the issue is** (file and line number)
+- **What's wrong** (specific problem description)
+- **How to fix it** (suggestion or requirement)
 
-**Error:**
-```
-✗ informative_test_docstrings
-  test_output() - Missing docstring
-  test_format() - Docstring not informative
-```
-
-**Fix:**
-```python
-def test_output():
-    """Verify output.json exists and contains required fields."""
-    ...
-
-def test_format():
-    """Verify JSON output has correct schema with status and items."""
-    ...
-```
-
-### Behavior Mismatch
-
-**Error:**
-```
-✗ behavior_in_task_description
-  test_handles_empty_input tests behavior not in instructions
-```
-
-**Fix:** Add to task.yaml:
-```yaml
-instruction: |
-  ...
-  Handle empty input by returning an empty list.
-```
-
-### Relative Paths
-
-**Error:**
-```
-✗ check_task_absolute_path
-  Found: "./data/input.csv"
-```
-
-**Fix:**
-```yaml
-instruction: |
-  Read from /app/data/input.csv  # Absolute path
-```
-
-### Missing Pinned Versions
-
-**Error:**
-```
-✗ pinned_dependencies
-  Dockerfile:5 - numpy not pinned
-```
-
-**Fix:**
-```dockerfile
-RUN pip install numpy==1.26.4
-```
+Read the error message carefully—it tells you exactly what needs to be fixed.
 
 ## Tips for Efficient Iteration
 
-1. **Fix easy issues first** — Start with CI checks before LLMaJ
+1. **Fix easy issues first** — Start with CI checks (syntax/structure) before LLMaJ (quality)
 
-2. **Run locally before pushing** — Saves CI time
+2. **Run locally before submitting** — Saves time and helps you catch issues early
 
-3. **Read error messages carefully** — They tell you exactly what's wrong
+3. **Read error messages carefully** — They tell you exactly what's wrong and often how to fix it
 
-4. **One fix at a time** — Easier to track what worked
+4. **One fix at a time** — Easier to track what worked and debug if something breaks
 
-5. **Keep a checklist** — Track what you've fixed
+5. **Use the reference guides** — [CI Checks Reference](/portal/docs/testing-and-validation/ci-checks-reference) and [LLMaJ Checks Reference](/portal/docs/testing-and-validation/llmaj-checks-reference) have detailed explanations for each check
 
 ## Checklist Before Final Submission
 
@@ -162,4 +104,4 @@ RUN pip install numpy==1.26.4
 ## Next Steps
 
 - [Submit via Platform](/portal/docs/submitting-tasks/platform-submission)
-- [Submit via GitHub](/portal/docs/submitting-tasks/github-submission)
+

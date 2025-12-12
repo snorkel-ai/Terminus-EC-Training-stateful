@@ -6,23 +6,20 @@ LLM-as-Judge (LLMaJ) checks use GPT-5 to evaluate task quality and correctness. 
 
 ```bash
 # GPT-5 (matches CI)
-uv run harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
-
-# Platform workflow
-tb tasks check <task-id> --model openai/@openai-tbench/gpt-5
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
 ```
 
 ## LLMaJ Checks
 
 ### behavior_in_task_description
 
-**What it checks:** Whether all behavior checked in tests is described in the task.yaml instruction.
+**What it checks:** Whether all behavior checked in tests is described in the `instruction.md` file.
 
 **Why it matters:** Agents can only do what they're told. If tests check for behavior not mentioned in instructions, the task is unfair.
 
 **How to fix:**
 1. Review each test case
-2. Ensure the corresponding behavior is explicitly stated in task.yaml
+2. Ensure the corresponding behavior is explicitly stated in `instruction.md`
 3. Add any missing requirements to instructions
 
 **Example:**
@@ -35,22 +32,22 @@ def test_csv_has_header():
     assert "id,name,value" in first_line
 ```
 
-```yaml
-# task.yaml must mention this!
-instruction: |
-  Output a CSV file with headers: id, name, value
+```markdown
+# instruction.md must mention this!
+
+Output a CSV file with headers: id, name, value
 ```
 
 ---
 
 ### behavior_in_tests
 
-**What it checks:** Whether all behavior described in task.yaml is verified by unit tests.
+**What it checks:** Whether all behavior described in `instruction.md` is verified by unit tests.
 
 **Why it matters:** If instructions say to do something but no test checks it, the task has gaps.
 
 **How to fix:**
-1. Review each requirement in task.yaml
+1. Review each requirement in `instruction.md`
 2. Ensure there's a corresponding test
 3. Add tests for any uncovered requirements
 
@@ -101,16 +98,17 @@ def test_output_file_has_correct_format():
 **Why it matters:** Ambiguous schemas lead to false failures.
 
 **How to fix:**
-```yaml
-instruction: |
-  Output JSON with this structure:
-  {
-    "status": "success" | "error",
-    "count": <integer>,
-    "items": [
-      {"id": <int>, "name": <string>}
-    ]
-  }
+```markdown
+Output JSON with this structure:
+```json
+{
+  "status": "success" | "error",
+  "count": <integer>,
+  "items": [
+    {"id": <int>, "name": <string>}
+  ]
+}
+```
 ```
 
 ---
@@ -135,14 +133,13 @@ python calculate.py input.txt > /output/result.txt
 
 ### file_reference_mentioned
 
-**What it checks:** If tests check for specific files, are those filenames mentioned in task.yaml?
+**What it checks:** If tests check for specific files, are those filenames mentioned in `instruction.md`?
 
 **Why it matters:** Agents can't know to create files they weren't told about.
 
 **How to fix:**
-```yaml
-instruction: |
-  Save your results to /output/analysis.json
+```markdown
+Save your results to /output/analysis.json
 ```
 
 ---
@@ -151,7 +148,7 @@ instruction: |
 
 | Check | What It Validates | Fix Strategy |
 |-------|-------------------|--------------|
-| behavior_in_task_description | Tests match instructions | Add requirements to task.yaml |
+| behavior_in_task_description | Tests match instructions | Add requirements to instruction.md |
 | behavior_in_tests | Instructions have tests | Add tests for requirements |
 | informative_test_docstrings | Tests have docstrings | Add docstrings to all tests |
 | anti_cheating_measures | Hard to cheat | Remove cheating opportunities |
@@ -173,4 +170,5 @@ When LLMaJ checks fail:
 ## Next Steps
 
 - [CI Feedback Training](/portal/docs/testing-and-validation/ci-feedback-training)
+- [CI Checks Reference](/portal/docs/testing-and-validation/ci-checks-reference)
 - [Submit your task](/portal/docs/submitting-tasks/submission-checklist)
