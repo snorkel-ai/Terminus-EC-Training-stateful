@@ -395,7 +395,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
   return (
     <section className="recommended-tasks-section">
       <div className="recommended-header">
-        <h2 className="recommended-title">Task Roulette</h2>
+        <h2 className="recommended-title">Your Task Roulette</h2>
       </div>
 
       {/* Slot Machine Container */}
