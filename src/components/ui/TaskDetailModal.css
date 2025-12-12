@@ -1,5 +1,20 @@
 /* TaskDetailModal - Design System Component */
 
+/* Force a light surface for this modal (even in dark theme). */
+.ui-modal-content.task-detail-modal {
+  background-color: #ffffff;
+  --card-bg: #ffffff;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --border-color: #d1d5db;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+}
+
 /* Modal Header */
 .task-detail-modal .task-detail-modal-header {
   padding-bottom: 0 !important;

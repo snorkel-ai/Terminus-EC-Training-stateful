@@ -131,10 +131,10 @@ const MyTasksSection = () => {
 
   return (
     <section className="task-preview-section my-tasks-section">
-      <div className="my-tasks-header-row">
-        <div className="header-title-group">
-          <h2>My Active Tasks</h2>
-          {activeTasks.length > 0 && (
+      {activeTasks.length > 0 && (
+        <div className="my-tasks-header-row">
+          <div className="header-title-group">
+            <h2>My Active Tasks</h2>
             <Button 
               variant="ghost"
               size="sm"
@@ -143,10 +143,8 @@ const MyTasksSection = () => {
             >
               Show all tasks
             </Button>
-          )}
-        </div>
-        <div className="header-actions">
-          {activeTasks.length > 0 && (
+          </div>
+          <div className="header-actions">
             <div className="search-input-container">
               <FiSearch className="search-icon" />
               <input
@@ -160,9 +158,9 @@ const MyTasksSection = () => {
                 className="task-search-input"
               />
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="my-tasks-content">
          {activeTasks.length > 0 ? (
@@ -273,7 +271,7 @@ const MyTasksSection = () => {
           </>
         ) : (
             /* Only show recommended tasks when user has NO active tasks */
-            <RecommendedTasksSection />
+            <RecommendedTasksSection onTaskUpdate={refetch} />
           )}
         </div>
       

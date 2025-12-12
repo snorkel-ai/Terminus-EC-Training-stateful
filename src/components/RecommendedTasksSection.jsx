@@ -75,7 +75,7 @@ function renderReelStub(task) {
   );
 }
 
-const RecommendedTasksSection = () => {
+const RecommendedTasksSection = ({ onTaskUpdate }) => {
   const navigate = useNavigate();
   const posthog = usePostHog();
   const { tasks, loading, refetch } = useTasks();
@@ -331,6 +331,12 @@ const RecommendedTasksSection = () => {
     refetch(); // Update lists if task was claimed
   };
 
+  const handleTaskUpdate = () => {
+    // Refresh both available-task pool and parent "my tasks" list (if provided)
+    refetch();
+    onTaskUpdate?.();
+  };
+
   if (loading && visibleTasks.length === 0) {
     return <LoadingState message="Finding tasks for you..." />;
   }
@@ -342,7 +348,7 @@ const RecommendedTasksSection = () => {
   return (
     <section className="recommended-tasks-section">
       <div className="recommended-header">
-        <h3 className="recommended-title">Some tasks to get you started</h3>
+        <h2 className="recommended-title">Task Roulette</h2>
       </div>
 
       {/* Slot Machine Container */}
@@ -420,6 +426,7 @@ const RecommendedTasksSection = () => {
         
         <Button 
           variant="primary" 
+          size="lg"
           onClick={handleBrowseTasksClick}
         >
           Browse all tasks →
@@ -431,6 +438,7 @@ const RecommendedTasksSection = () => {
         task={selectedTask}
         isOpen={!!selectedTask}
         onClose={handleCloseModal}
+        onTaskUpdate={handleTaskUpdate}
       />
     </section>
   );

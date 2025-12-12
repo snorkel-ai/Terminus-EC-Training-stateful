@@ -18,10 +18,12 @@
 }
 
 .recommended-title {
-  font-size: var(--font-lg);
-  font-weight: var(--font-bold);
+  /* Match `.section-header` sizing on landing page */
+  font-size: var(--font-2xl);
+  font-weight: 700;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.02em;
 }
 
 /* Slot Machine Container */
