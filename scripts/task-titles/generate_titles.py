@@ -40,7 +40,7 @@ Titles must be:
 3. **Descriptive** - Include enough technical detail to distinguish the task from similar ones
 
 ### Style Guidelines
-- **Length**: 4-8 words typically
+- **Length**: 4-10 words typically (can go slightly longer for complex tasks)
 - **Tone**: Professional and technical, not academic or theoretical
 - **Focus**: Emphasize the implementation/building aspect, not just domain knowledge
 - **Specificity**: Include key technologies, methods, or architectures when relevant
@@ -53,13 +53,56 @@ Titles must be:
 - Optimize, Improve, Refactor (for enhancement tasks)
 - Analyze, Process, Parse (for data transformation)
 - Test, Validate, Verify (for quality assurance)
+- Cross-Compile, Vendor (for specific build operations)
+
+**Use precise verbs:**
+- Use "Cross-Compile" instead of generic "Build" when cross-compilation is required
+- Use "Vendor" when vendoring dependencies is central to the task
+- If description says "Fix and Harden", include both verbs: "Fix and Harden..."
 
 **Avoid:**
 - Generic verbs: "Work on", "Deal with", "Handle"
 - Passive constructions: "Be able to", "Learn about"
 - Academic framing: "Study", "Explore", "Investigate" (unless research-oriented)
 
-### Pattern Examples
+## CRITICAL: Technology & Terminology Rules
+
+### Include Key Technologies
+Always mention technologies that are CENTRAL to the task:
+- **Build tools**: Use "Cargo" not "Rust" for Rust build tasks (e.g., "Cargo Workspace" not "Rust Workspace")
+- **Compilers**: Include compiler name when relevant (e.g., "Clang ftime-trace" not just "ftime-trace")
+- **Languages**: Include the language when it's specific (e.g., "CMake C Shared Library" or "C++17 Filesystem")
+- **Target triples**: Use full form (e.g., "x86_64-unknown-linux-musl" not "x86_64-musl")
+- **Scope**: Include "Multi-Module" or "Workspace" when the task explicitly requires it
+
+### Correct Terminology & Casing
+- **SemVer** (not "Semver")
+- **Peer Dependency** (not "PeerDependency")  
+- **Kotlin DSL** (not "KTS")
+- **JDK 8/17** (with space, not "JDK8/17")
+- **Crate names lowercase**: "serde and serde_json" (not "Serde/serde_json")
+- **Package names lowercase**: "openssl-sys", "rustls"
+
+### Formatting Rules
+- **Avoid slash-separated lists**: Use commas instead
+  - ❌ "PIC/OpenMP/Filesystem/RPATH"
+  - ✅ "PIC, OpenMP, Filesystem, RPATH"
+- **Avoid vague "with X, Y, Z"**: Use explicit actions when possible
+  - ❌ "Fix JNI Build with jni.h, PIC, libjvm"
+  - ✅ "Fix JNI Build: Include jni.h, Enable PIC, Configure libjvm RPATH"
+- **Include prepositions**: Don't omit necessary words
+  - ❌ "Configure GitHub Actions Reproducible Rust Releases"
+  - ✅ "Configure GitHub Actions for Reproducible Rust Releases"
+- **Avoid fragmented semicolon structures**: Prefer a single coherent phrase
+- **Use "CMake-based" not "CMake X"**: e.g., "CMake-based C Builds" not "CMake C Builds"
+
+### Scope Accuracy
+- If description says "Fix and Harden", title must include both: "Fix and Harden..."
+- If description says "build script", don't call it "Pipeline"
+- If description mentions "multi-module" or "workspace", include that scope
+- Match the verification step: "Verify HTTPS" not "Verify TLS" if task tests HTTPS specifically
+
+## Pattern Examples
 
 **Good patterns:**
 - Build [a/an] [technical component] [using/with/for] [method/technology]
@@ -67,6 +110,8 @@ Titles must be:
 - Debug [specific problem] [in] [environment/context]
 - Create [tool] [that does X]
 - Optimize [component] [for] [metric/goal]
+- Configure [tool] for [specific goal] with [key technologies]
+- Cross-Compile [target] [binary type] for [target triple]
 
 **Examples:**
 - Build an Exoplanet Transit Detection Pipeline
@@ -75,7 +120,10 @@ Titles must be:
 - Create a Real-time Log Aggregation System with Kafka
 - Optimize Database Queries for High-Traffic APIs
 - Configure Kubernetes Auto-scaling with Custom Metrics
-- Parse and Transform JSON Logs into Parquet Format
+- Configure sccache-backed Incremental Cargo Workspace Builds and Record Metrics
+- Fix and Harden CMake GitHub Actions Workflow with SHA Pinning and ccache
+- Cross-Compile Static x86_64-unknown-linux-musl Rust CLI with rustls
+- Resolve Cargo Workspace serde and serde_json Version and Feature Conflicts
 
 ### What Makes a Bad Title
 ❌ "Networking Task" - Too vague, no action verb
@@ -83,19 +131,24 @@ Titles must be:
 ❌ "Deal with Authentication Issues" - Weak verb, unclear scope
 ❌ "Advanced Machine Learning Pipeline Development Project" - Too long, buzzword-heavy
 ❌ "Exoplanet Detection" - Missing verb, could be theoretical
+❌ "Configure Rust Workspace Builds" - Should be "Cargo Workspace" not "Rust Workspace"
+❌ "Fix CMake Linking for PIC/OpenMP/RPATH" - Slash list, should use commas
+❌ "Harden GitHub Actions CI" - Missing "Fix" if task says "Fix and Harden"
 
 ### What Makes a Good Title
 ✅ "Build a Docker Network Isolation System"
 ✅ "Debug JWT Authentication Failures in Express API"
 ✅ "Implement Distributed Training Pipeline for BERT"
 ✅ "Detect Exoplanets Using Box Least Squares Analysis"
+✅ "Repair CMake C Shared Library SONAME and Symbol Versioning"
+✅ "Resolve Yarn v3 PnP Peer Dependency Conflicts in React/Webpack Monorepo"
 
 ## Output Format
 Provide only the title, no explanation or additional text."""
 
 
 def generate_title(client: OpenAI, task: dict) -> str:
-    """Generate a title for a single task."""
+    """Generate a title for a single task using GPT-5."""
     # Build context from task metadata
     context_parts = []
     if task.get('category'):
@@ -120,13 +173,20 @@ Task Description:
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Cost-effective for this task
+            model="gpt-5",
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_prompt}
+                {
+                    "role": "developer",
+                    "content": [{"type": "text", "text": SYSTEM_PROMPT}]
+                },
+                {
+                    "role": "user", 
+                    "content": user_prompt
+                }
             ],
-            max_tokens=50,
-            temperature=0.3  # Lower temperature for more consistent output
+            response_format={"type": "text"},
+            reasoning_effort="medium",
+            store=False
         )
         return response.choices[0].message.content.strip().strip('"')
     except Exception as e:
@@ -135,7 +195,7 @@ Task Description:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate titles for tasks using LLM')
+    parser = argparse.ArgumentParser(description='Generate titles for tasks using GPT-5')
     parser.add_argument('--input', '-i', default='tasks_export.csv', 
                         help='Input CSV file (default: tasks_export.csv)')
     parser.add_argument('--output', '-o', default='tasks_with_titles.csv',
@@ -184,19 +244,43 @@ def main():
         print(f"Limited to {len(tasks)} tasks")
     
     # Generate titles
-    print("\nGenerating titles...")
+    print("\nGenerating titles...\n")
+    print("=" * 80)
     results = []
+    errors = 0
+    skipped = 0
     
-    for task in tqdm(tasks, desc="Processing"):
+    for i, task in enumerate(tasks, 1):
+        # Progress header
+        desc_preview = task['description'][:80].replace('\n', ' ') + "..." if len(task['description']) > 80 else task['description'].replace('\n', ' ')
+        print(f"\n[{i}/{len(tasks)}] {task.get('category', 'Unknown')} / {task.get('subcategory', '')}")
+        print(f"    Description: {desc_preview}")
+        sys.stdout.flush()  # Force immediate output
+        
         # Check if we already have a title for this task
         if task['id'] in existing_titles:
             task['title'] = existing_titles[task['id']]
+            print(f"    ⏭️  Skipped (already has title): {task['title']}")
+            skipped += 1
         else:
+            print(f"    ⏳ Generating title...", end='', flush=True)
+            start_time = time.time()
             task['title'] = generate_title(client, task)
+            elapsed = time.time() - start_time
+            if task['title']:
+                print(f" ({elapsed:.1f}s)")
+                print(f"    ✅ Title: {task['title']}")
+            else:
+                print(f" ({elapsed:.1f}s)")
+                print(f"    ❌ Failed to generate title")
+                errors += 1
+            sys.stdout.flush()  # Force immediate output
             # Small delay to avoid rate limits
             time.sleep(0.1)
         
         results.append(task)
+    
+    print("\n" + "=" * 80)
     
     # Write output CSV
     print(f"\nWriting results to: {output_path}")
@@ -211,14 +295,11 @@ def main():
     titles_generated = sum(1 for t in results if t.get('title'))
     print(f"\n✅ Done!")
     print(f"   Tasks processed: {len(results)}")
-    print(f"   Titles generated: {titles_generated}")
+    print(f"   Titles generated: {titles_generated - skipped}")
+    print(f"   Skipped (existing): {skipped}")
+    if errors:
+        print(f"   ❌ Errors: {errors}")
     print(f"   Output file: {output_path}")
-    
-    # Show a few examples
-    print("\n📝 Sample titles:")
-    for task in results[:5]:
-        if task.get('title'):
-            print(f"   • {task['title']}")
 
 
 if __name__ == '__main__':

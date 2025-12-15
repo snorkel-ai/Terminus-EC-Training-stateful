@@ -25,11 +25,11 @@ from tqdm import tqdm
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env.local'))
 
 SUPABASE_URL = os.getenv('VITE_SUPABASE_URL')
-SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
+SUPABASE_SERVICE_KEY = os.getenv('SUPABSE_SERVICE_KEY')
 
 if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
     print("Error: Missing environment variables.")
-    print("Ensure VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set in .env.local")
+    print("Ensure VITE_SUPABASE_URL and SUPABSE_SERVICE_KEY are set in .env.local")
     sys.exit(1)
 
 
