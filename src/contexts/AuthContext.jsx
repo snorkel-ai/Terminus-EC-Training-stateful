@@ -43,7 +43,10 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchUserProfile = async (userId) => {
+  const fetchUserProfile = async (userId, retryCount = 0) => {
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY_MS = 500;
+    
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -51,7 +54,17 @@ export const AuthProvider = ({ children }) => {
         .eq('id', userId)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        // If profile not found and we haven't exhausted retries, wait and retry
+        // This handles the race condition where the database trigger hasn't finished yet
+        if (error.code === 'PGRST116' && retryCount < MAX_RETRIES) {
+          console.log(`Profile not ready yet, retrying in ${RETRY_DELAY_MS}ms... (attempt ${retryCount + 1}/${MAX_RETRIES})`);
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+          return fetchUserProfile(userId, retryCount + 1);
+        }
+        throw error;
+      }
+      
       setProfile(data);
       
       // Identify user in PostHog for analytics
