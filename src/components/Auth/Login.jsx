@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import ParticleCanvas from '../Landing/ParticleCanvas';
 import './Login.css';
 
 function Login() {
@@ -67,8 +66,6 @@ function Login() {
 
   return (
     <div className="login-page">
-      <ParticleCanvas />
-      
       <div className="login-container">
         <div className="login-card">
           <div className="login-header">

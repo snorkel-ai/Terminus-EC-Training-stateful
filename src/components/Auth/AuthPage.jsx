@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import ParticleCanvas from '../Landing/ParticleCanvas';
 import './AuthPage.css';
 
 const AuthPage = () => {
@@ -52,8 +51,6 @@ const AuthPage = () => {
 
   return (
     <div className="auth-page">
-      <ParticleCanvas />
-      
       <div className="auth-container">
         <div className="auth-card">
           <div className="auth-header">

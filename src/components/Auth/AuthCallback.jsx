@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import ParticleCanvas from '../Landing/ParticleCanvas';
 import './AuthCallback.css';
 
 /**
@@ -92,7 +91,6 @@ function AuthCallback() {
   if (processing) {
     return (
       <div className="auth-callback-page">
-        <ParticleCanvas />
         <div className="auth-callback-container">
           <div className="auth-callback-card">
             <div className="loading-state">
@@ -108,7 +106,6 @@ function AuthCallback() {
   if (error) {
     return (
       <div className="auth-callback-page">
-        <ParticleCanvas />
         <div className="auth-callback-container">
           <div className="auth-callback-card">
             <div className="error-state">

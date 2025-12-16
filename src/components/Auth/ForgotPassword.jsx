@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import ParticleCanvas from '../Landing/ParticleCanvas';
 import './ForgotPassword.css';
 
 function ForgotPassword() {
@@ -29,8 +28,6 @@ function ForgotPassword() {
 
   return (
     <div className="forgot-password-page">
-      <ParticleCanvas />
-      
       <div className="forgot-password-container">
         <div className="forgot-password-card">
           <div className="forgot-password-header">

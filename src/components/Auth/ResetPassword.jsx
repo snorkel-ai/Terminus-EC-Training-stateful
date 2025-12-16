@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
-import ParticleCanvas from '../Landing/ParticleCanvas';
 import './ResetPassword.css';
 
 function ResetPassword() {
@@ -85,7 +84,6 @@ function ResetPassword() {
   if (checkingSession) {
     return (
       <div className="reset-password-page">
-        <ParticleCanvas />
         <div className="reset-password-container">
           <div className="reset-password-card">
             <div className="loading-state">
@@ -102,7 +100,6 @@ function ResetPassword() {
   if (!validSession && !user) {
     return (
       <div className="reset-password-page">
-        <ParticleCanvas />
         <div className="reset-password-container">
           <div className="reset-password-card">
             <div className="invalid-link-state">
@@ -130,8 +127,6 @@ function ResetPassword() {
 
   return (
     <div className="reset-password-page">
-      <ParticleCanvas />
-      
       <div className="reset-password-container">
         <div className="reset-password-card">
           <div className="reset-password-header">
