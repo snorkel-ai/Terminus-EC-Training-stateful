@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import './Login.css';
 
 function Login() {
-  const { signInWithGitHub, signInWithEmail, signUpWithEmail, user } = useAuth();
+  const { signInWithGitHub, signInWithEmail, signUpWithEmail, user, profile } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,11 +15,12 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Navigate when both user AND profile are ready (what ProtectedRoute requires)
   useEffect(() => {
-    if (user) {
+    if (user && profile) {
       navigate('/portal');
     }
-  }, [user, navigate]);
+  }, [user, profile, navigate]);
 
   const handleGitHubSignIn = async () => {
     try {
@@ -46,14 +47,16 @@ function Login() {
         if (user) {
           setMessage('Check your email to confirm your account.');
           setIsSignUp(false); // Switch back to login mode
+          setLoading(false);
         }
       } else {
+        // Don't navigate here - let the useEffect handle it once
+        // user AND profile are set (which is what ProtectedRoute requires)
         await signInWithEmail(email, password);
-        navigate('/portal');
+        // Keep loading true - navigation will happen via useEffect
       }
     } catch (error) {
       setError(error.message);
-    } finally {
       setLoading(false);
     }
   };

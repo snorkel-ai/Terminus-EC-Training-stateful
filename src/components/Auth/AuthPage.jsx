@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './AuthPage.css';
@@ -11,8 +11,15 @@ const AuthPage = () => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
   
-  const { signInWithGitHub, signInWithEmail, signUpWithEmail } = useAuth();
+  const { signInWithGitHub, signInWithEmail, signUpWithEmail, user, profile } = useAuth();
   const navigate = useNavigate();
+
+  // Navigate when both user AND profile are ready (what ProtectedRoute requires)
+  useEffect(() => {
+    if (user && profile) {
+      navigate('/portal');
+    }
+  }, [user, profile, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,18 +29,20 @@ const AuthPage = () => {
 
     try {
       if (isLogin) {
+        // Don't navigate here - let the useEffect handle it once
+        // user AND profile are set (which is what ProtectedRoute requires)
         await signInWithEmail(email, password);
-        navigate('/portal');
+        // Keep loading true - navigation will happen via useEffect
       } else {
         const { user } = await signUpWithEmail(email, password);
         if (user) {
           setMessage('Check your email to confirm your account.');
           setIsLogin(true); // Switch back to login
+          setLoading(false);
         }
       }
     } catch (err) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   };
