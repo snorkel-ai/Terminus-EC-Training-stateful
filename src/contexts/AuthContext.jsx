@@ -229,6 +229,48 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const resetPassword = async (email) => {
+    try {
+      // Get the base path for redirect URL
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      let basePath = '';
+      
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        if (pathParts[0] === 'Terminus-EC-Training-stateful') {
+          basePath = '/Terminus-EC-Training-stateful';
+        }
+      } else {
+        basePath = '/Terminus-EC-Training-stateful';
+      }
+      
+      const redirectTo = `${window.location.origin}${basePath}/reset-password`;
+      
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: redirectTo,
+      });
+      
+      if (error) throw error;
+      return { error: null };
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      return { error };
+    }
+  };
+
+  const updatePassword = async (newPassword) => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      
+      if (error) throw error;
+      return { error: null };
+    } catch (error) {
+      console.error('Error updating password:', error);
+      return { error };
+    }
+  };
+
   const value = {
     user,
     profile,
@@ -240,6 +282,8 @@ export const AuthProvider = ({ children }) => {
     deleteAccount,
     completeOnboarding,
     updateProfile,
+    resetPassword,
+    updatePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

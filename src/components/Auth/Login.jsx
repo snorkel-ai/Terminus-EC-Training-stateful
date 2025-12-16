@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ParticleCanvas from '../Landing/ParticleCanvas';
 import './Login.css';
@@ -146,6 +146,12 @@ function Login() {
                     className="form-input"
                   />
                 </div>
+
+                {!isSignUp && (
+                  <div className="forgot-password-link">
+                    <Link to="/forgot-password">Forgot your password?</Link>
+                  </div>
+                )}
 
                 <button
                   type="submit"

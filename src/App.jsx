@@ -6,6 +6,9 @@ import { ProgressProvider } from './contexts/ProgressContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Login from './components/Auth/Login';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPassword from './components/Auth/ResetPassword';
+import AuthCallback from './components/Auth/AuthCallback';
 import PublicLanding from './components/Landing/PublicLanding';
 import Header from './components/Layout/Header';
 import LandingPage from './components/LandingPage'; // This is now the Portal Dashboard
@@ -44,6 +47,9 @@ function App() {
             {/* Public Routes */}
             <Route path="/" element={<PublicLanding />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             
             {/* Protected Portal Routes */}
             <Route 
