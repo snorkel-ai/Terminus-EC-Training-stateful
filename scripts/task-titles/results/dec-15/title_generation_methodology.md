@@ -1,7 +1,8 @@
 # Task Title Generation Methodology
 
 **Date:** December 15, 2025  
-**Batch Size:** 40 tasks (Build & Dependency Management category)
+**Initial Batch:** 40 tasks (Build & Dependency Management category)  
+**Cross-Category Validation:** 45 tasks (5 per category × 9 categories)
 
 ## Summary
 
@@ -21,6 +22,41 @@ We developed an iterative approach to generate high-quality task titles using GP
 2. **Use precise terminology** - "CMake-based C Shared Library" not "CMake Shared Library"
 3. **Accuracy > Brevity** - Complex tasks warrant 12-18 word titles
 4. **Evaluator should focus on substance** - Don't nitpick style, flag genuine ambiguities
+
+---
+
+## Cross-Category Validation
+
+To ensure the prompt generalizes well, we tested on 45 tasks (5 from each of 9 categories).
+
+### Results
+
+| Status | Count | Percentage |
+|--------|-------|------------|
+| ✅ OK | 37 | **82.2%** |
+| ⚠️ Needs Work | 8 | 17.8% |
+| 🚩 Fail | 0 | 0.0% |
+
+### By Category
+
+| Category | Tasks | ✅ OK | ⚠️ Flagged | Notes |
+|----------|-------|-------|-----------|-------|
+| Build & Dependency Management | 5 | 3 | 2 | Debian-specific naming, pkg-config ambiguity |
+| Data Processing & Scripting | 5 | 3 | 2 | "Invalid Logging" ambiguous, gzipped placement |
+| Debugging & Troubleshooting | 5 | 4 | 1 | Toolchain vs dependency mismatch unclear |
+| Interactive Challenges & Games | 5 | 5 | 0 | ✅ Perfect |
+| Machine Learning & AI | 5 | 5 | 0 | ✅ Perfect |
+| Scientific Computing & Analysis | 5 | 5 | 0 | ✅ Perfect |
+| Security & Cryptography | 5 | 4 | 1 | "Auditor" missing remediation action |
+| Software Engineering & Development | 5 | 4 | 1 | "Hedged Jittered" conflates two features |
+| System Setup & Configuration | 5 | 4 | 1 | Minor preposition ambiguity |
+
+### Observations
+
+1. **Zero failures across all categories** - The prompt produces valid, action-driven titles
+2. **ML, Scientific Computing, Interactive Challenges all perfect** - These categories work exceptionally well
+3. **Build/Data Processing slightly lower** - Technical specificity requirements are higher
+4. **All flagged issues are nuanced domain ambiguities** - Not structural problems
 
 ---
 
@@ -261,6 +297,21 @@ python3 generate_titles.py --input tasks_export.csv --output tasks_with_titles.c
 python3 evaluate_titles.py --input tasks_with_titles.csv --output flagged_titles.csv --report evaluation_report.md
 ```
 
+### Generate at Scale (Batch API - 50% cheaper)
+```bash
+# 1. Prepare JSONL batch file
+python3 generate_titles_batch.py prepare --input tasks_export.csv
+
+# 2. Submit to OpenAI
+python3 generate_titles_batch.py submit
+
+# 3. Check status (wait for completion)
+python3 generate_titles_batch.py status
+
+# 4. Download results
+python3 generate_titles_batch.py download --output tasks_with_titles.csv
+```
+
 ---
 
 ## Files
@@ -268,7 +319,11 @@ python3 evaluate_titles.py --input tasks_with_titles.csv --output flagged_titles
 | File | Description |
 |------|-------------|
 | `generate_titles.py` | Title generation using GPT-5 |
+| `generate_titles_batch.py` | Batch API version (50% cheaper) |
 | `evaluate_titles.py` | LLM-as-a-judge evaluation using GPT-5 |
-| `tasks_batch_40_v2.csv` | Generated titles (v2 prompt) |
-| `evaluation_report_v2.md` | Final evaluation report (90% pass) |
-| `flagged_titles_v2.csv` | Only the 4 flagged titles |
+| `tasks_batch_40_v2.csv` | Generated titles (v2 prompt, Build category) |
+| `tasks_mixed_categories_titled.csv` | Generated titles (45 tasks, all categories) |
+| `evaluation_report_v2.md` | Evaluation report for Build category (90% pass) |
+| `evaluation_mixed_categories.md` | Evaluation report for all categories (82.2% pass) |
+| `flagged_titles_v2.csv` | Flagged titles from Build category |
+| `flagged_mixed_categories.csv` | Flagged titles from all categories |

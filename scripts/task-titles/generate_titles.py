@@ -101,6 +101,25 @@ Always mention technologies that are CENTRAL to the task:
 - If description says "build script", don't call it "Pipeline"
 - If description mentions "multi-module" or "workspace", include that scope
 - Match the verification step: "Verify HTTPS" not "Verify TLS" if task tests HTTPS specifically
+- If task has "Audit AND Remediate/Fix", say "Auditor and Hardener" not just "Auditor"
+- Include key scope qualifiers: "per-user", "per-session", "multi-account" when central to task
+
+### Clarity Rules (Avoid Ambiguity)
+- **Modifier placement matters**: Place adjectives next to what they modify
+  - ❌ "gzipped ISO8601 Session Aggregation" (sounds like sessions are gzipped)
+  - ✅ "parse .gz logs, aggregate ISO8601 sessions" (clear that logs are gzipped)
+- **Avoid noun chains**: Break up long compound nouns with prepositions
+  - ❌ "Cargo Workspace rustc cargo Version Incompatibility"
+  - ✅ "Cargo Workspace Build Failure Due to Outdated rustc/cargo Toolchain"
+- **Separate distinct features**: Don't merge unrelated concepts
+  - ❌ "Hedged Jittered Exponential Backoff" (conflates hedging and backoff)
+  - ✅ "Jittered Exponential Backoff, Request Hedging" (two clear features)
+- **Clarify actions on objects**: State what you're doing TO what
+  - ❌ "Invalid Logging" (logging that is invalid, or logging invalid things?)
+  - ✅ "log invalid entries" (clear: logging entries that are invalid)
+- **Use "for" to show relationships**: Connect tool to purpose
+  - ❌ "Configure AWS CLI v2 IAM Identity Center"
+  - ✅ "Configure AWS CLI v2 for IAM Identity Center"
 
 ## Pattern Examples
 
