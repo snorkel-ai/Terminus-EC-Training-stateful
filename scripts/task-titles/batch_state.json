@@ -1,9 +1,0 @@
-{
-  "batch_id": "batch_6940ac25c698819080e2c568d268b41f",
-  "input_file_id": "file-2yq5rUDDPfd5wTnj5UDXqS",
-  "num_requests": 1600,
-  "created_at": "2025-12-15T16:47:34.055886",
-  "input_file": "batch_requests.jsonl",
-  "output_file_id": "file-UpwqGarBYFyeY8ZJDKvRGC",
-  "status": "completed"
-}
