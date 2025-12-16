@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePostHog } from 'posthog-js/react';
 import { useTasks, useMySelectedTasks, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
+import { supabase } from '../../lib/supabase';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Badge } from './Badge';
@@ -34,6 +35,48 @@ export function TaskDetailModal({
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
   const confettiContainerRef = useRef(null);
+  
+  // Lazy-load description when modal opens (to reduce initial task list egress)
+  const [description, setDescription] = useState(task?.description || null);
+  const [loadingDescription, setLoadingDescription] = useState(false);
+  
+  // Fetch description on demand when modal opens
+  useEffect(() => {
+    if (!isOpen || !task?.id) return;
+    
+    // If task already has description (from cache or other source), use it
+    if (task.description) {
+      setDescription(task.description);
+      return;
+    }
+    
+    // Fetch description from database
+    const fetchDescription = async () => {
+      setLoadingDescription(true);
+      try {
+        const { data, error } = await supabase
+          .from('task_inspiration')
+          .select('description')
+          .eq('id', task.id)
+          .single();
+        
+        if (error) throw error;
+        setDescription(data?.description || 'No description available.');
+      } catch (err) {
+        console.error('Error fetching task description:', err);
+        setDescription('Failed to load description.');
+      } finally {
+        setLoadingDescription(false);
+      }
+    };
+    
+    fetchDescription();
+  }, [isOpen, task?.id, task?.description]);
+  
+  // Reset description when task changes
+  useEffect(() => {
+    setDescription(task?.description || null);
+  }, [task?.id]);
 
   // Track when task card is opened
   useEffect(() => {
@@ -247,7 +290,11 @@ export function TaskDetailModal({
           </div>
           
           <div className="task-detail-modal-body">
-            <p>{task.description}</p>
+            {loadingDescription ? (
+              <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Loading description...</p>
+            ) : (
+              <p>{description || 'No description available.'}</p>
+            )}
           </div>
 
           <div className="task-detail-modal-footer">

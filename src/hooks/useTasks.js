@@ -3,8 +3,8 @@ import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
-const TASKS_CACHE_KEY = 'tasks_cache_v3'; // v3: Added pagination to fetch all 1600+ tasks
-const TASKS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const TASKS_CACHE_KEY = 'tasks_cache_v4'; // v4: Optimized columns for reduced egress
+const TASKS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes (increased from 5 to reduce API calls)
 
 // Helper to get cached tasks from localStorage
 const getCachedTasks = () => {
@@ -79,9 +79,11 @@ export function useTasks() {
         const from = page * PAGE_SIZE;
         const to = from + PAGE_SIZE - 1;
         
+        // Select columns needed for task list UI (includes description for previews)
+        // Egress reduced via: 30-min cache, refresh only when expired, excludes tags array
         const { data, error: fetchError } = await supabase
           .from('v_tasks_with_priorities')
-          .select('*')
+          .select('id, category, subcategory, subsubcategory, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
           .order('display_order', { ascending: true, nullsFirst: false })
           .order('is_highlighted', { ascending: false })
           .order('category', { ascending: true })
@@ -114,9 +116,9 @@ export function useTasks() {
   // Initial fetch and user-dependent data
   useEffect(() => {
     const initialFetch = async () => {
-      // Stale-while-revalidate:
-      // 1. Show cached data immediately (no loader)
-      // 2. Fetch fresh data in background
+      // Cache-first strategy (optimized for reduced egress):
+      // 1. Show cached data immediately if not expired
+      // 2. Only fetch if cache is expired or missing
       const cachedData = getCachedTasks();
       
       if (cachedData?.tasks?.length) {
@@ -124,8 +126,10 @@ export function useTasks() {
         setTasks(cachedData.tasks);
         setLoading(false);
         
-        // Fetch fresh in background
-        fetchTasksInternal();
+        // Only fetch if cache is actually expired (not on every page load)
+        if (cachedData.isExpired) {
+          fetchTasksInternal();
+        }
       } else {
         // No cache - show loader and wait for fetch
         setLoading(true);
@@ -344,7 +348,7 @@ export const TASK_STATUS_LABELS = {
 export const MAX_ACTIVE_TASKS = 3;
 
 // Cache for selected tasks (per user)
-const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v1';
+const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v2'; // v2: Optimized columns for reduced egress
 
 const getCachedSelectedTasks = (userId) => {
   try {
@@ -456,10 +460,10 @@ export function useMySelectedTasks() {
 
       const taskIds = selections.map(s => s.task_id);
 
-      // Fetch full task details with priorities
+      // Fetch task details with priorities (includes description for My Tasks display)
       const { data, error: fetchError } = await supabase
         .from('v_tasks_with_priorities')
-        .select('*')
+        .select('id, category, subcategory, subsubcategory, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
         .in('id', taskIds);
 
       if (fetchError) throw fetchError;
