@@ -6,6 +6,7 @@ import './TaskCategorySection.css';
 function TaskCategorySection({ 
   title, 
   tasks = [], 
+  totalCount,  // Total available tasks in category (from server)
   onTaskSelect, 
   onTaskUnselect,
   onTaskComplete,
@@ -45,7 +46,16 @@ function TaskCategorySection({
           <div className="section-title-wrapper">
             <h3>
               {title}
-              <span className="section-count">{tasks.length}</span>
+              <button 
+                className="section-count section-count-link" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onExplore?.(title);
+                }}
+                title="Explore all tasks in this category"
+              >
+                {totalCount ?? tasks.length}
+              </button>
             </h3>
             {isPrioritized && (
               <Badge variant="accent" size="sm" className="double-pay-badge">
@@ -121,6 +131,35 @@ function TaskCategorySection({
                   />
                 </div>
               ))}
+              {/* Show "Explore more" card at end of carousel if there are more tasks */}
+              {totalCount && totalCount > tasks.length && (
+                <div className="carousel-item carousel-explore-more">
+                  <button 
+                    className="explore-more-card"
+                    onClick={() => onExplore?.(title)}
+                  >
+                      <div className="explore-more-content">
+                        <div className="explore-icon-wrapper">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                          </svg>
+                        </div>
+                        <div className="explore-stats">
+                          <span className="explore-more-count">+{totalCount - tasks.length}</span>
+                          <span className="explore-more-label">more tasks</span>
+                        </div>
+                        <div className="explore-more-cta">
+                          <span>View All</span>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

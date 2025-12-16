@@ -26,11 +26,9 @@ dist-ssr
 *.sln
 *.sw?
 
-# Large video files (stored in Supabase Storage)
+# Large video files
 public/*.mp4
 
 # Research findings / generated results
 scripts/
 research-findings/
-
-# Research findings

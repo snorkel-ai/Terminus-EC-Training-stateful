@@ -1,7 +1,7 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePostHog } from 'posthog-js/react';
-import { useTasks } from '../hooks/useTasks';
+import { useRandomTasks } from '../hooks/useRandomTasks';
 import { Button, TaskDetailModal, LoadingState, TaskCard } from './ui';
 import './RecommendedTasksSection.css';
 
@@ -85,7 +85,8 @@ function renderReelStub(task) {
 const RecommendedTasksSection = ({ onTaskUpdate }) => {
   const navigate = useNavigate();
   const posthog = usePostHog();
-  const { tasks, loading, refetch } = useTasks();
+  // Fetch 15 random available tasks from the server (much less egress than fetching all 1600+)
+  const { tasks: availableTasks, loading, refetch } = useRandomTasks(15);
   const [selectedTask, setSelectedTask] = useState(null);
   const [reelCount, setReelCount] = useState(getReelCountForViewport);
   
@@ -131,11 +132,10 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
     };
   }, []);
 
-  // Filter for available tasks
-  const availableTasks = useMemo(() => {
-    if (!tasks || tasks.length === 0) return [];
-    return tasks.filter(t => !t.is_selected);
-  }, [tasks]);
+  // Fetch random tasks on mount
+  useEffect(() => {
+    refetch();
+  }, []);
 
   // Initial population of tasks
   useEffect(() => {
@@ -187,7 +187,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
     setReels(prev => prev.map((r, i) => (i < reelCount ? { ...r, locked: true, justLocked: false } : r)));
   }, [reelCount]);
 
-  const handleReshuffle = () => {
+  const handleReshuffle = async () => {
     if (isShuffling || availableTasks.length < reelCount) return;
     
     clearPending();
@@ -213,15 +213,25 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
         available_tasks_count: availableTasks.length,
       });
     }
-    const currentIds = new Set(currentCenters.map(t => t?.id).filter(Boolean));
-    const winners = pickUnique(availableTasks, reelCount, currentIds);
+
+    // Fetch fresh random tasks from the server (reduces egress vs loading all 1600+ tasks)
+    const newRandomTasks = await refetch(false);
+    
+    // Check if spin was cancelled during fetch
+    if (spinTokenRef.current !== spinToken || !newRandomTasks || newRandomTasks.length === 0) {
+      setIsShuffling(false);
+      return;
+    }
+
+    // Use the first `reelCount` tasks as winners
+    const winners = newRandomTasks.slice(0, reelCount);
 
     if (reduceMotion) {
       setReels(prev => prev.map((r, i) => {
         if (i >= reelCount) return r;
         return {
           ...r,
-          items: defaultReelItems(availableTasks, winners[i]),
+          items: defaultReelItems(newRandomTasks, winners[i]),
           index: 1,
           locked: true,
           justLocked: false,
@@ -242,7 +252,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
     const spinPlans = winners.map((winnerTask, i) => {
       const currentTask = currentCenters[i] || winnerTask;
       return buildSpinReelItems({
-        pool: availableTasks,
+        pool: newRandomTasks,
         currentTask,
         winnerTask,
         minLength: 18 + i * 6,
@@ -326,7 +336,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
               if (idx !== i) return r;
               return {
                 ...r,
-                items: defaultReelItems(availableTasks, winnerTask),
+                items: defaultReelItems(newRandomTasks, winnerTask),
                 index: 1,
                 locked: true,
               };
@@ -468,7 +478,7 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
           className="reshuffle-btn"
           disabled={isShuffling}
         >
-          Not these? Spin again
+          None of these? Spin again
         </Button>
         
         <Button 

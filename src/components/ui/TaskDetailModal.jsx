@@ -50,18 +50,22 @@ export function TaskDetailModal({
       return;
     }
     
-    // Fetch description from database
+    // Fetch description (and title if needed) from database
     const fetchDescription = async () => {
       setLoadingDescription(true);
       try {
         const { data, error } = await supabase
           .from('task_inspiration')
-          .select('description')
+          .select('description, title')
           .eq('id', task.id)
           .single();
         
         if (error) throw error;
         setDescription(data?.description || 'No description available.');
+        // Update task title in parent if it was missing
+        if (data?.title && !task.title) {
+          task.title = data.title;
+        }
       } catch (err) {
         console.error('Error fetching task description:', err);
         setDescription('Failed to load description.');
@@ -259,7 +263,7 @@ export function TaskDetailModal({
                     </div>
                   )}
                 </div>
-                <h2>Your challenge</h2>
+                <h2>{task.title || 'Your challenge'}</h2>
               </div>
 
               {showNavigation && contextTasks.length > 1 && (
