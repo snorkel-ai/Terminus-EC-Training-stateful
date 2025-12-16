@@ -1,9 +1,0 @@
-# Generated CSV files (contain exported data)
-tasks_export.csv
-tasks_with_titles.csv
-
-# Python
-__pycache__/
-*.pyc
-.venv/
-venv/

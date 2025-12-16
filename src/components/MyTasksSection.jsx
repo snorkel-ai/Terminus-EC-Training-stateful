@@ -74,9 +74,9 @@ const MyTasksSection = () => {
     if (searchTerm) {
       const lowerTerm = searchTerm.toLowerCase();
       tasks = tasks.filter(task => 
-        task.description.toLowerCase().includes(lowerTerm) ||
-        task.category.toLowerCase().includes(lowerTerm) ||
-        (task.subcategory && task.subcategory.toLowerCase().includes(lowerTerm))
+        task.description?.toLowerCase().includes(lowerTerm) ||
+        task.category?.toLowerCase().includes(lowerTerm) ||
+        task.subcategory?.toLowerCase().includes(lowerTerm)
       );
     }
 
