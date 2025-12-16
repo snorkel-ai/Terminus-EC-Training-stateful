@@ -586,7 +586,7 @@
 
 .tasks-perspective-grid .task-card {
   height: 100%;
-  min-height: 200px;
+  min-height: 180px;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   background: var(--card-bg);
 }
@@ -598,10 +598,9 @@
   z-index: 10;
 }
 
-/* Compact cards for perspective view */
-.tasks-perspective-grid .task-card-description {
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+/* Compact title for perspective view */
+.tasks-perspective-grid .task-card__title {
+  -webkit-line-clamp: 3;
 }
 
 /* Fade overlay at bottom */
@@ -643,7 +642,7 @@
 
 .task-card-wrapper .task-card {
   height: 100%;
-  min-height: 260px;
+  min-height: 180px;
   transition: all 0.2s ease;
 }
 

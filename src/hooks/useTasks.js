@@ -3,7 +3,7 @@ import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
-const TASKS_CACHE_KEY = 'tasks_cache_v4'; // v4: Optimized columns for reduced egress
+const TASKS_CACHE_KEY = 'tasks_cache_v5'; // v5: Added title field
 const TASKS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes (increased from 5 to reduce API calls)
 
 // Helper to get cached tasks from localStorage
@@ -83,7 +83,7 @@ export function useTasks() {
         // Egress reduced via: 30-min cache, refresh only when expired, excludes tags array
         const { data, error: fetchError } = await supabase
           .from('v_tasks_with_priorities')
-          .select('id, category, subcategory, subsubcategory, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
+          .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
           .order('display_order', { ascending: true, nullsFirst: false })
           .order('is_highlighted', { ascending: false })
           .order('category', { ascending: true })
@@ -348,7 +348,7 @@ export const TASK_STATUS_LABELS = {
 export const MAX_ACTIVE_TASKS = 3;
 
 // Cache for selected tasks (per user)
-const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v2'; // v2: Optimized columns for reduced egress
+const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v3'; // v3: Added title field
 
 const getCachedSelectedTasks = (userId) => {
   try {
@@ -460,10 +460,10 @@ export function useMySelectedTasks() {
 
       const taskIds = selections.map(s => s.task_id);
 
-      // Fetch task details with priorities (includes description for My Tasks display)
+      // Fetch task details with priorities (includes title and description for My Tasks display)
       const { data, error: fetchError } = await supabase
         .from('v_tasks_with_priorities')
-        .select('id, category, subcategory, subsubcategory, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
+        .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
         .in('id', taskIds);
 
       if (fetchError) throw fetchError;
