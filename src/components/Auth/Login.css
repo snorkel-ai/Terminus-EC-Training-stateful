@@ -125,6 +125,24 @@
   height: 24px;
 }
 
+/* GitHub button loading state */
+.github-button-loading {
+  cursor: wait;
+}
+
+.github-button-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: github-spin 0.8s linear infinite;
+}
+
+@keyframes github-spin {
+  to { transform: rotate(360deg); }
+}
+
 .regular-login-section {
   text-align: center;
   margin-top: 16px;
