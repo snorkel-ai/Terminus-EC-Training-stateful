@@ -28,3 +28,9 @@ dist-ssr
 
 # Large video files (stored in Supabase Storage)
 public/*.mp4
+
+# Research findings / generated results
+scripts/
+research-findings/
+
+# Research findings
