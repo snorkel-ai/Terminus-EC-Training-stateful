@@ -67,8 +67,8 @@ Set up metadata and configuration:
 version = "1.0"
 
 [metadata]
-author_name = "Your Name"
-author_email = "your.email@example.com"
+author_name = "anonymous"
+author_email = "anonymous"
 difficulty = "medium"
 category = "debugging"
 tags = ["python", "memory-leak", "debugging"]
@@ -77,7 +77,7 @@ tags = ["python", "memory-leak", "debugging"]
 timeout_sec = 120.0
 
 [agent]
-timeout_sec = 120.0
+timeout_sec = 600.0
 
 [environment]
 build_timeout_sec = 600.0
@@ -142,14 +142,30 @@ Create `tests/test.sh` and test files to verify task completion:
 ```bash
 #!/bin/bash
 
-cd /tests
-uv venv
-source .venv/bin/activate
-uv pip install pytest
+# Install curl
+apt-get update
+apt-get install -y curl
 
-pytest test_outputs.py -v
+# Install uv
+curl -LsSf https://astral.sh/uv/0.9.5/install.sh | sh
 
-# Produce reward file (REQUIRED)
+source $HOME/.local/bin/env
+
+# Check if we're in a valid working directory
+if [ "$PWD" = "/" ]; then
+    echo "Error: No working directory set. Please set a WORKDIR in your Dockerfile before running this script."
+    exit 1
+fi
+
+
+# Don't change anything below this line
+uvx \
+  -p 3.13 \
+  -w pytest==8.4.1 \
+  -w pytest-json-ctrf==0.3.5 \
+  pytest --ctrf /logs/verifier/ctrf.json /tests/test_outputs.py -rA
+
+
 if [ $? -eq 0 ]; then
   echo 1 > /logs/verifier/reward.txt
 else
@@ -213,7 +229,7 @@ All checks should pass before submission.
 Before submitting, verify:
 
 - [ ] Oracle agent passes
-- [ ] All CI/LLMaJ checks pass
+- [ ] All LLMaJ checks pass
 - [ ] Tested against real agents (pass rate < 80%)
 - [ ] All files are present and correct
 
@@ -223,8 +239,8 @@ Run final checks:
 # Oracle agent
 harbor run --agent oracle --path harbor_tasks/<task-name>
 
-# CI/LLMaJ checks
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+# LLMaJ checks
+harbor tasks check -m openai/@openai/gpt-5  harbor_tasks/<task_name>
 ```
 
 ## Step 12: Create ZIP File
@@ -232,7 +248,7 @@ harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-na
 **Important:** Select the individual files inside your task folder, not the folder itself.
 
 ```
-my-task/
+.
 ├── instruction.md   ← Select these
 ├── task.toml       ←
 ├── environment/     ←
@@ -261,16 +277,28 @@ my-task/
 2. Navigate to **terminus-project-v2**
 3. Click **New Submission**
 4. Upload your ZIP file
-5. Fill in any required metadata
+5. Keep "Send to reviewer" unchecked
 6. Submit
 
-## Step 14: Monitor Status
+## Step 14: Check CI results and Iterate until CI looks good  
+1. After email notification, go to Snorkel Expert platform. 
+2. Find your task on homescreen
+3. Click "Revise"
+4. Check CI Results & update task as needed
+5. Re-upload a new .zip file if necessary
+6. Keep "Send to Reviewer" Unchecked 
+7. Submit 
 
-After submission:
+## Step 15: Submit your task to Reviewer
+1. After email notification, go to Snorkel Expert platform. 
+2. Find your task on homescreen
+3. Click "Revise"
+4. Check CI results 
+4. If all good, check "Send to Reviewer"
+5. Submit
 
-1. Check for automated feedback
-2. Review any CI failures
-3. Wait for peer review (1-3 business days)
+## Step 16: Monitor Status
+After submission. wait for peer review (1-3 business days)
 
 ---
 
@@ -278,7 +306,7 @@ After submission:
 
 ### Review Process
 
-1. **Automated checks** run immediately
+1. **Automated checks** runs immediately
 2. **Peer review** within 1-3 business days
 3. **Feedback** provided if changes needed
 4. **Acceptance** when all criteria met
@@ -328,9 +356,9 @@ Watch these step-by-step videos to learn how to create and test your task:
 
 <video-loom id="22449b76123d41e6abff0efb39d0b960" title="Running your task"></video-loom>
 
-### 2. Creating a solution.sh
-
+### 2. Creating a solution/solve.sh
 <video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh"></video-loom>
+The video refers to solution.sh file. Using Harbor, this refers to solution/solve.sh 
 
 ### 3. Creating Tests for Your Task
 

@@ -66,9 +66,8 @@ Each task undergoes:
 
 ## Important Notes
 
-- This project is currently run **outside** the Snorkel Expert Platform UI
-- You will **not** be "served" tasks — you create them from scratch
-- You can take task ideas from the shared sheet or create your own
+- You will **not** be "served" tasks, you create them from scratch. 
+- You can take task ideas from the task gallery or create your own. 
 
 ---
 

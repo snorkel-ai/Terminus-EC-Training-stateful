@@ -21,7 +21,7 @@ function Glossary() {
             <div className="info-box" style={{ marginTop: 0 }}>
               <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>Canary String</h3>
               <p style={{ marginBottom: 0 }}>
-                A special string that must be present at the top of all required files (task.yaml, solution.sh, 
+                A special string that must be present at the top of all required files (task.toml, solution.sh, 
                 Dockerfile, test_outputs.py). Used to verify that these files have been properly reviewed and meet 
                 project standards.
               </p>

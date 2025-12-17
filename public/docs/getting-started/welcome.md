@@ -23,7 +23,7 @@ You will develop tasks, solutions, and associated tests to verify the solution. 
 
 | Difficulty | Pass Rate Target |
 |------------|------------------|
-| Hard | < 40% for GPT-5 or Sonnet 4.5 |
+| Hard | < 40% for GPT-5.x or Sonnet 4.5 |
 | Medium | < 60% for either model |
 | Easy | < 80% for either model |
 
@@ -39,7 +39,6 @@ You will develop tasks, solutions, and associated tests to verify the solution. 
 
 - **Slack Community** — `#ec-terminus-submission` for all project questions
 - **Office Hours** — Weekly sessions to answer questions
-- **Terminal-Bench Site** — [https://www.tbench.ai/](https://www.tbench.ai/)
 
 ---
 

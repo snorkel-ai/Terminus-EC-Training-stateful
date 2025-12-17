@@ -26,20 +26,6 @@ sudo dscl . create /Groups/docker
 sudo dseditgroup -o edit -a $USER -t user docker
 ```
 
-### 2. uv (Package Manager)
-
-uv is used to manage Python dependencies and run commands.
-
-**Install:**
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-**Verify:**
-```bash
-uv --version
-```
-
 ## API Key Setup
 
 You'll receive an API key via email for running agents against your tasks.
@@ -76,18 +62,6 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 ```bash
 sudo chmod 666 /var/run/docker.sock
 ```
-
-### uv Issues
-
-**"Command not found: uv"**
-```bash
-# Re-run the installer
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Or add to PATH manually
-export PATH="$HOME/.cargo/bin:$PATH"
-```
-
 ---
 
 ## Next Steps
