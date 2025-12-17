@@ -182,7 +182,7 @@ do_something
 
 ```bash
 # Enter the container
-uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 
 # Inside container, run your solution steps manually
 # Verify each step works as expected
@@ -191,7 +191,7 @@ uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
 ### Run Oracle Agent
 
 ```bash
-uv run harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path harbor_tasks/<task-name>
 ```
 
 The oracle agent should PASS. If it fails, either:
