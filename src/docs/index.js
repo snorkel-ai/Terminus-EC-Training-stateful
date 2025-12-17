@@ -5,11 +5,9 @@ export const docsConfig = {
       title: 'Getting Started',
       items: [
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
-        { slug: 'onboarding/project-overview', title: 'Project Overview' },
-        { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
-        { slug: 'getting-started/v1-to-v2-changes', title: 'V1 to V2 Changes' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
         { slug: 'getting-started/environment-setup', title: 'Environment Setup' },
+        { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
       ]
     },
     {
@@ -69,6 +67,7 @@ export const docsConfig = {
         { slug: 'reference/troubleshooting', title: 'Troubleshooting' },
         { slug: 'reference/office-hours', title: 'Office Hours' },
         { slug: 'reference/external-resources', title: 'External Resources' },
+        { slug: 'reference/v1-to-v2-changes', title: 'V1 to V2 Changes' },
       ]
     }
   ]

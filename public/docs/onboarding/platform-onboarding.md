@@ -6,9 +6,14 @@ Get started with TerminalBench using the Snorkel Expert Platform. Watch the onbo
 
 <video-embed src="https://snorkel-ai.github.io/Terminus-EC-Training/platform_onboarding_11-25-2025.mp4" title="Platform Onboarding Video"></video-embed>
 
+
+> **Important note with regards to the video above.** 
+> 
+> Note that in the video we reference TerminalBench (v1). There are a few small differences for v2 (current). [Please reference our v1 vs. v2 video](/portal/docs/reference/v1-to-v2-changes)]
+
 ## Onboarding Slides
 
-<pdf-download src="/Terminus-EC-Training-stateful/Terminus EC Onboarding - Platform.pdf" title="Platform Onboarding Slides"></pdf-download>
+<pdf-download src="/Terminus EC Onboarding - Platform.pdf" title="Platform Onboarding Slides"></pdf-download>
 
 ## What You'll Learn
 
