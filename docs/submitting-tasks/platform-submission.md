@@ -208,9 +208,9 @@ harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 
 
 Run each agent 2-3 times to gauge pass rate. Your task should have < 80% pass rate to be accepted.
 
-## Step 10: Run CI/LLMaJ Checks Locally
+## Step 10: Run LLMaJ Checks Locally
 
-Run CI/LLMaJ checks before submitting:
+Run LLMaJ checks before submitting:
 
 **GPT-5:**
 ```bash
