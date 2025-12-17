@@ -49,74 +49,10 @@ docker build -t test . 2>&1 | tail -50
 
 **Enter interactive mode to debug:**
 ```bash
-uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path harbor_tasks/<task-name> --interactive
 ```
 
 Then run commands manually to find the issue.
-
----
-
-## Git & GitHub Issues
-
-### "Permission denied (publickey)"
-
-**Cause:** SSH key not set up or not added to GitHub.
-
-**Fix:**
-1. Generate SSH key:
-```bash
-ssh-keygen -t ed25519 -C "your.email@example.com"
-```
-
-2. Add to SSH agent:
-```bash
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-```
-
-3. Add to GitHub:
-```bash
-cat ~/.ssh/id_ed25519.pub
-# Copy output and add to GitHub → Settings → SSH Keys
-```
-
-4. Test:
-```bash
-ssh -T git@github.com
-```
-
-### Can't push to repository
-
-**Check:**
-1. You have repository access (can view on GitHub)
-2. You're on a feature branch, not main
-3. SSH key is working
-
-**If no access:** DM Puyun or Connor on Slack.
-
-### Merge conflicts
-
-**Fix:**
-```bash
-git fetch origin
-git rebase origin/main
-# Resolve conflicts in your editor
-git add .
-git rebase --continue
-git push --force-with-lease origin your-branch
-```
-
-### Accidentally committed to main
-
-**Fix:**
-```bash
-# Create branch from current state
-git checkout -b task/my-task
-
-# Reset main to remote
-git checkout main
-git reset --hard origin/main
-```
 
 ---
 

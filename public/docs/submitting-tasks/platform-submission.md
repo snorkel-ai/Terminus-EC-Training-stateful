@@ -114,7 +114,7 @@ sudo dseditgroup -o edit -a $USER -t user docker
 Enter your task container interactively to test your solution:
 
 ```bash
-harbor run --agent oracle --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 ```
 
 While in the container, test your solution approach to ensure it works as expected.

@@ -92,7 +92,7 @@ When the Oracle Agent fails, follow this workflow:
 
 **Step 2: Reproduce Interactively**
 ```bash
-harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 ```
 Inside the container, run commands one by one to find the issue.
 
@@ -107,7 +107,7 @@ If your solution doesn't run:
 
 1. **Enter interactive mode:**
    ```bash
-   harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+   harbor tasks start-env --path <task-folder> --interactive
    ```
 
 2. **Run commands manually** to find the failing step

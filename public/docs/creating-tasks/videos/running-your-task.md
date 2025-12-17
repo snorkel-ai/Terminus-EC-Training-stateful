@@ -18,7 +18,7 @@ Learn how to interact with your task environment and test your solution locally.
 ### Start Interactive Mode
 
 ```bash
-harbor run --agent oracle --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 ```
 
 ### Inside the Container
