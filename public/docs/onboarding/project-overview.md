@@ -61,12 +61,11 @@ Each task undergoes:
 |----------|------|
 | Slack Channel | `#ec-terminus-submission` |
 | Terminal-Bench Site | [https://www.tbench.ai/](https://www.tbench.ai/) |
-| GitHub Repository | [https://github.com/snorkel-ai/snorkel-tb-tasks](https://github.com/snorkel-ai/snorkel-tb-tasks) |
 | Support | Expert Support Form (for payments, non-project questions) |
 
 ## Important Notes
 
-- You will **not** be "served" tasks, you create them from scratch. 
+- You will **not** be "served" tasks, you need create them from scratch. 
 - You can take task ideas from the task gallery or create your own. 
 
 ---
