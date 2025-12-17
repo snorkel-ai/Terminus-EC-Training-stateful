@@ -7,6 +7,7 @@ export const docsConfig = {
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
         { slug: 'onboarding/project-overview', title: 'Project Overview' },
         { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
+        { slug: 'getting-started/v1-to-v2-changes', title: 'V1 to V2 Changes' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
         { slug: 'getting-started/environment-setup', title: 'Environment Setup' },
       ]

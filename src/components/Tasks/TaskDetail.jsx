@@ -30,10 +30,10 @@ const TaskDetail = () => {
     try {
       setLoading(true);
       
-      // Fetch task details
+      // Fetch task details - only the columns we need to reduce egress
       const { data: taskData, error: taskError } = await supabase
         .from('task_inspiration')
-        .select('*')
+        .select('id, category, subcategory, subsubcategory, title, description, difficulty, tags')
         .eq('id', taskId)
         .single();
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePostHog } from 'posthog-js/react';
-import { useTasks, useMySelectedTasks, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
+import { useMySelectedTasks, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
 import { supabase } from '../../lib/supabase';
 import { Modal } from './Modal';
 import { Button } from './Button';
@@ -30,8 +30,8 @@ export function TaskDetailModal({
 }) {
   const navigate = useNavigate();
   const posthog = usePostHog();
-  const { selectTask, activeTaskCount, canClaimMore } = useTasks();
-  const { unselectTask } = useMySelectedTasks();
+  // Use useMySelectedTasks for all task operations - avoids loading all 1600+ tasks
+  const { selectTask, unselectTask, activeTaskCount, canClaimMore } = useMySelectedTasks();
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
   const confettiContainerRef = useRef(null);
@@ -155,7 +155,11 @@ export function TaskDetailModal({
 
     setIsSelecting(true);
     try {
-      await selectTask(task.id);
+      // Pass task metadata for analytics tracking
+      await selectTask(task.id, {
+        category: task.category,
+        subcategory: task.subcategory,
+      });
       setShowClaimSuccess(true);
       onTaskUpdate?.();
     } catch (error) {

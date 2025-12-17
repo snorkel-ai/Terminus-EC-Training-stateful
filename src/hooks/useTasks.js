@@ -50,6 +50,14 @@ export const updateTaskCacheSelection = (taskId, isSelected) => {
   }
 };
 
+/**
+ * @deprecated This hook loads ALL 1600+ tasks (~1MB) and should not be used.
+ * Use useMySelectedTasks() instead for task claiming/management.
+ * Use useTasksGallery() for the task gallery with optimized loading.
+ * 
+ * This hook is kept for backwards compatibility but should be removed
+ * once we verify no code paths depend on it.
+ */
 export function useTasks() {
   const { user } = useAuth();
   const posthog = usePostHog();
@@ -684,6 +692,63 @@ export function useMySelectedTasks() {
     }
   };
 
+  // Select/claim a task - moved here to avoid loading all 1600+ tasks via useTasks()
+  const selectTask = async (taskId, taskMetadata = {}) => {
+    if (!user) throw new Error('User not authenticated');
+
+    // Check claim limit before attempting
+    if (activeTaskCount >= MAX_ACTIVE_TASKS) {
+      throw new Error(`You can only have up to ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review or complete them to claim more.`);
+    }
+
+    try {
+      const { error: insertError } = await supabase
+        .from('selected_tasks')
+        .insert({
+          user_id: user.id,
+          task_id: taskId,
+          status: 'claimed'
+        });
+
+      if (insertError) {
+        // Check if it's a unique constraint violation (task already selected)
+        if (insertError.code === '23505') {
+          throw new Error('This task has already been selected by another user');
+        }
+        // Check for claim limit error from database trigger
+        if (insertError.code === 'P0001') {
+          throw new Error(insertError.message);
+        }
+        throw insertError;
+      }
+
+      // Update active task count
+      setActiveTaskCount(prev => prev + 1);
+
+      // Update tasks cache so claimed task shows as selected in gallery
+      updateTaskCacheSelection(taskId, true);
+
+      // Track task claimed event
+      if (posthog) {
+        posthog.capture('task_claimed', {
+          task_id: taskId,
+          category: taskMetadata.category,
+          subcategory: taskMetadata.subcategory,
+        });
+      }
+
+      // Refetch to get the full task data in selectedTasks
+      await fetchMySelectedTasks(false);
+
+      return true;
+    } catch (err) {
+      console.error('Error selecting task:', err);
+      // Refetch to ensure state is accurate
+      await fetchMySelectedTasks(false);
+      throw err;
+    }
+  };
+
   return {
     selectedTasks,
     loading,
@@ -691,6 +756,7 @@ export function useMySelectedTasks() {
     activeTaskCount,
     canClaimMore: activeTaskCount < MAX_ACTIVE_TASKS,
     refetch: fetchMySelectedTasks,
+    selectTask,
     unselectTask,
     markFirstCommit,
     // New workflow methods

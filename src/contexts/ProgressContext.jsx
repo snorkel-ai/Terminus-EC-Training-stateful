@@ -35,9 +35,10 @@ export const ProgressProvider = ({ children }) => {
 
   const fetchProgressItems = async () => {
     try {
+      // Select only needed columns to reduce egress
       const { data, error } = await supabase
         .from('progress_items')
-        .select('*')
+        .select('id, category, title, display_order, is_core')
         .order('display_order');
 
       if (error) throw error;
@@ -50,9 +51,10 @@ export const ProgressProvider = ({ children }) => {
   const fetchUserProgress = async () => {
     try {
       setLoading(true);
+      // Select only needed columns to reduce egress
       const { data, error } = await supabase
         .from('user_progress')
-        .select('*')
+        .select('progress_item_id, completed, completed_at')
         .eq('user_id', user.id);
 
       if (error) throw error;
