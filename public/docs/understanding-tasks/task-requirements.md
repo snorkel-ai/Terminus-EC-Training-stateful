@@ -271,7 +271,7 @@ Before submitting, verify:
 - [ ] All required files present (`instruction.md`, `task.toml`, `environment/Dockerfile`, `solution/solve.sh`, `tests/test.sh`)
 - [ ] `instruction.md` is human-written and clear
 - [ ] `task.toml` has all required fields
-- [ ] `tests/test.sh` produces `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`
+- [ ] `tests/test.sh` produces `/logs/verifier/reward.txt`
 - [ ] solution.sh is deterministic
 - [ ] All tests have docstrings
 - [ ] Dependencies are pinned

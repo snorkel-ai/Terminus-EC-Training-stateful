@@ -133,7 +133,7 @@ See [Writing Oracle Solution](/portal/docs/creating-tasks/writing-oracle-solutio
 
 Create `tests/test.sh` and test files to verify task completion:
 
-- The test script must produce `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`
+- The test script must produce `/logs/verifier/reward.txt`
 - Create pytest unit tests in `tests/test_outputs.py` (or similar)
 - Place any test dependencies in the `tests/` directory
 
