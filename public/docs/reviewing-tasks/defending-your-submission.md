@@ -89,11 +89,10 @@ explaining this, or do you still think I should change it?"
 
 If you can't resolve disagreement with the reviewer:
 
-1. **Document your position** clearly in the PR/submission
-2. **Reach out on Slack** to `#ec-terminus-submission`
-3. **Tag a lead** if needed
+1. **Document your position** clearly in the submission
+2. **Reach out on Slack** to `#ec-terminus-submission`;
 
-Snorkel's in-house experts make final decisions on disputes.
+Snorkel make final decisions on disputes.
 
 ## Appeals
 
