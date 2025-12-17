@@ -17,7 +17,7 @@ Before you begin, make sure you have:
 ### Step 1: Install Harbor
 
 ```bash
-pip install harbor
+pip install harbor==0.1.25
 ```
 
 ### Step 2: Create and Submit Your First Task
