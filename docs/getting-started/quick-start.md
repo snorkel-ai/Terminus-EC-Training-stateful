@@ -14,11 +14,10 @@ Before you begin, make sure you have:
 
 ## 5-Minute Setup Checklist
 
-### Step 1: Install Dependencies
+### Step 1: Install Harbor
 
 ```bash
-# Install uv (package manager)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+pip install harbor
 ```
 
 ### Step 2: Create and Submit Your First Task
