@@ -6,9 +6,9 @@ Get up and running with TerminalBench in just a few minutes. This guide covers t
 
 Before you begin, make sure you have:
 
-- ✅ A GitHub account
-- ✅ Access to the Snorkel Expert Platform (or GitHub repo)
+- ✅ Access to the Snorkel Expert Platform
 - ✅ Joined the Slack channel `#ec-terminus-submission`
+- ✅ Joined the Notification channel `#ec-terminus-announcements`
 - ✅ Docker Desktop installed
 - ✅ Received your API key via email
 
@@ -19,10 +19,6 @@ Before you begin, make sure you have:
 ```bash
 # Install uv (package manager)
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Optional: clone the repository (if you have access to the repo)
-git clone https://github.com/snorkel-ai/snorkel-tb-tasks.git
-cd snorkel-tb-tasks
 ```
 
 ### Step 2: Create and Submit Your First Task
