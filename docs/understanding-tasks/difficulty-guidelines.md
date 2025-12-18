@@ -91,7 +91,7 @@ Before submitting, verify difficulty by:
 ### 1. Run Against Oracle Agent
 
 ```bash
-uv run harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path harbor_tasks/<task-name>
 ```
 
 This should PASS. If it doesn't, your task may have issues.
@@ -100,10 +100,10 @@ This should PASS. If it doesn't, your task may have issues.
 
 ```bash
 # GPT-5
-uv run harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
 
 # Claude Sonnet 4.5
-uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
 ```
 
 Run at least 2-3 times to gauge pass rate.

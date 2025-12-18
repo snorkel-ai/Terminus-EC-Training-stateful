@@ -100,10 +100,10 @@ export OPENAI_API_KEY=<your-key>
 export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 # GPT-5
-uv run harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task>
 
 # Claude
-uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task>
 ```
 
 ### Portkey / API key issues — agent won't connect

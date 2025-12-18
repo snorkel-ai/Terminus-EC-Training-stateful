@@ -196,7 +196,7 @@ Include:
 > "It's not working"
 
 **Good:**
-> "When I run `uv run harbor run --agent oracle`, I get `FileNotFoundError: /app/data/input.csv`. The file exists in my task folder and is included in the Dockerfile COPY command. Full error: [paste]"
+> "When I run `harbor run --agent oracle`, I get `FileNotFoundError: /app/data/input.csv`. The file exists in my task folder and is included in the Dockerfile COPY command. Full error: [paste]"
 
 ### Where to ask:
 

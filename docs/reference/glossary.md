@@ -70,11 +70,6 @@ The verified correct solution for a task. In TerminalBench, this is the oracle s
 
 ---
 
-## H
-
-### Harbor
-The CLI tool used in the GitHub workflow for running tasks, agents, and checks. Commands start with `uv run harbor`.
-
 ---
 
 ## L
@@ -157,13 +152,6 @@ The pytest file containing tests that verify task completion. Must have informat
 
 ### Timeout
 Maximum time (in seconds) allowed for an agent to complete a task. Specified in `task.toml` under `[agent].timeout_sec`.
-
----
-
-## U
-
-### UV
-A fast Python package manager. Used for dependency management and running commands (`uv run`).
 
 ---
 
