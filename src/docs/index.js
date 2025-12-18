@@ -6,7 +6,6 @@ export const docsConfig = {
       items: [
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
-        { slug: 'getting-started/environment-setup', title: 'Environment Setup' },
         { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
       ]
     },

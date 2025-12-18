@@ -24,7 +24,6 @@ import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
 import LocalTestingInfo from './components/LocalTestingInfo';
-import EnvironmentSetup from './components/EnvironmentSetup';
 import { trainingSections } from './data/trainingData';
 
 // Import backend components
@@ -75,7 +74,7 @@ function App() {
                       <Route path="/workbook" element={<Workbook />} />
                       <Route path="/oracle" element={<OracleTraining />} />
                       <Route path="/onboarding" element={<OnboardingMaterials />} />
-                      <Route path="/environment-setup" element={<EnvironmentSetup />} />
+                      <Route path="/environment-setup" element={<Navigate to="/portal/docs/getting-started/quick-start" replace />} />
                       <Route path="/local-testing" element={<LocalTestingInfo />} />
                       <Route path="/expert-platform-onboarding" element={<ExpertPlatformOnboarding />} />
                       <Route path="/expert-platform-walkthrough" element={<Navigate to="/portal/docs/submitting-tasks/platform-submission" replace />} />

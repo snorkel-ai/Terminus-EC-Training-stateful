@@ -7,6 +7,7 @@ function TaskCategorySection({
   title, 
   tasks = [], 
   totalCount,  // Total available tasks in category (from server)
+  totalInCategory = 0,  // Total tasks (including claimed) for empty state
   onTaskSelect, 
   onTaskUnselect,
   onTaskComplete,
@@ -32,7 +33,40 @@ function TaskCategorySection({
 
   const isPrioritized = tasks.some(t => t.is_special || t.priority_tag);
 
-  if (tasks.length === 0) return null;
+  // Show empty state when no available tasks but category has claimed tasks
+  if (tasks.length === 0) {
+    // Only show empty state if there are actually tasks in this category (just all claimed)
+    if (totalInCategory === 0) return null;
+    
+    return (
+      <div className="task-category-section">
+        <div className="section-header">
+          <div className="section-title-group">
+            <div className="section-title-wrapper">
+              <h3>
+                {title}
+                <span className="section-count section-count-empty">0</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        
+        <div className="section-content">
+          <div className="category-empty-state">
+            <div className="empty-state-icon">🔥</div>
+            <div className="empty-state-text">
+              <h4>All Claimed!</h4>
+              <p>
+                All {totalInCategory} task{totalInCategory !== 1 ? 's' : ''} in this category {totalInCategory !== 1 ? 'have' : 'has'} been claimed.
+                <br />
+                <span className="empty-state-hint">Tasks may become available if contributors release them.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`task-category-section ${isPrioritized ? 'prioritized-section' : ''}`}>

@@ -364,6 +364,9 @@
   margin: var(--space-4) 0;
   overflow: hidden;
   transition: box-shadow 0.2s ease;
+}
+
+.docs-content details[open] {
   padding-bottom: var(--space-4);
 }
 

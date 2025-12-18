@@ -25,6 +25,7 @@ function TasksView() {
     fetchCategory,
     loadingCategory,
     getCategoryCount,
+    categoryCounts,
   } = useTasksGallery();
   
   // Keep myTasks for potential future use
@@ -125,6 +126,7 @@ function TasksView() {
   }, [filters]);
 
   // Group filtered tasks by category for "grouped" view
+  // Also include empty categories (all tasks claimed) when not filtering
   const groupedTasks = useMemo(() => {
     const groups = {};
     filteredTasks.forEach(task => {
@@ -135,8 +137,28 @@ function TasksView() {
       groups[category].push(task);
     });
     
-    // Sort groups: Prioritized categories first, then by number of tasks
+    // Add empty categories (all tasks claimed) when no search/filters active
+    const hasActiveFilters = filters.search || 
+      filters.categories.length > 0 || 
+      filters.subcategories.length > 0 || 
+      filters.difficulties.length > 0 || 
+      filters.priorityOnly;
+    
+    if (!hasActiveFilters) {
+      // Add categories where available === 0 but total > 0
+      Object.entries(categoryCounts).forEach(([category, counts]) => {
+        if (counts.available === 0 && counts.total > 0 && !groups[category]) {
+          groups[category] = []; // Empty array triggers empty state
+        }
+      });
+    }
+    
+    // Sort groups: Prioritized categories first, then by number of tasks, empty categories last
     return Object.entries(groups).sort((a, b) => {
+      // Empty categories go to the bottom
+      if (a[1].length === 0 && b[1].length > 0) return 1;
+      if (a[1].length > 0 && b[1].length === 0) return -1;
+      
       const aHasPriority = a[1].some(t => t.is_special || t.priority_tag);
       const bHasPriority = b[1].some(t => t.is_special || t.priority_tag);
       
@@ -145,7 +167,7 @@ function TasksView() {
       
       return b[1].length - a[1].length;
     });
-  }, [filteredTasks]);
+  }, [filteredTasks, filters, categoryCounts]);
 
   const handleViewDetails = (task, contextTasks = []) => {
     setSelectedTaskForModal(task);
@@ -320,6 +342,7 @@ function TasksView() {
                     title={category}
                     tasks={categoryTasks}
                     totalCount={counts.available}
+                    totalInCategory={counts.total}
                     onTaskSelect={handleViewDetails}
                     onTaskUnselect={() => {}}
                     onExplore={handleExplore}

@@ -6,7 +6,7 @@ Test your task against real AI agents to validate difficulty and ensure your tas
 
 **Get your API key from Snorkel via email.** If you haven't received one, DM Puyun or Alejandro on Slack.
 
-> **Note:** You'll need Harbor CLI installed to run agents locally. See [Environment Setup](/portal/docs/getting-started/environment-setup) for installation instructions.
+> **Note:** You'll need Harbor CLI installed to run agents locally. See [Quick Start Guide](/portal/docs/getting-started/quick-start) for installation instructions.
 
 ## Environment Setup
 
