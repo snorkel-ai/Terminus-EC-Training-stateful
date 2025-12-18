@@ -4,9 +4,7 @@ Get started with TerminalBench using the Snorkel Expert Platform. Watch the onbo
 
 ## Onboarding Video
 
- **[Watch the Platform Onboarding Video](https://snorkel-ai.zoom.us/rec/play/Sxq6vNe4Ft7k8tr17pHOYdcq0vDRKkw_cUt9QCpcwv0_1fWAxT1jW7eGznGIZEImHQK-BRjJvVMq4IR-.daJQ6yeLrZYWkrdS?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https://snorkel-ai.zoom.us/rec/share/YLO_JBRW9taj7vg5Em2Xdn9hit1I9Fe-pF5jjTvJ9_nJAi4y_raH2S-A42UOOIhb.Md9Rf2sxZD55rX0P)**
-
-> **Passcode:** `N%s90j$r`
+<video-embed src="/GMT20251218-190403_Recording_3440x1440.mp4" title="Platform Onboarding Video"></video-embed>
 
 ## Onboarding Slides
 

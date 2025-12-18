@@ -28,6 +28,11 @@ dist-ssr
 
 # Large video files
 public/*.mp4
+# Allow specific onboarding videos
+!public/GMT20251218-190403_Recording_3440x1440.mp4
+!public/Onboarding_*.mp4
+!public/onboarding_*.mp4
+!public/video*.mp4
 
 # Research findings / generated results
 scripts/
