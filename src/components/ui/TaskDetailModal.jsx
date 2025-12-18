@@ -306,43 +306,48 @@ export function TaskDetailModal({
           </div>
 
           <div className="task-detail-modal-footer">
-            {/* Left side: badges and claim limit */}
-            <div style={{ marginRight: 'auto', display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+            {/* Info row: badges and claim limit */}
+            <div className="modal-footer-info">
               {(task.is_special || task.priority_tag || task.is_highlighted) && (
                 <Badge variant="accent">Double Pay</Badge>
               )}
-              <span style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
-                Active: <strong style={{ color: canClaimMore ? 'var(--text-primary)' : 'var(--color-warning)' }}>
+              <span className="active-task-count">
+                Your Active Tasks: <strong style={{ color: canClaimMore ? 'var(--text-primary)' : 'var(--color-warning)' }}>
                   {activeTaskCount}/{MAX_ACTIVE_TASKS}
                 </strong>
               </span>
             </div>
-            <Button 
-              variant="ghost" 
-              onClick={handleClose}
-              disabled={isSelecting}
-            >
-              Cancel
-            </Button>
-            <Button 
-              variant="secondary" 
-              onClick={() => {
-                handleClose();
-                navigate('/portal/tasks');
-              }}
-              disabled={isSelecting}
-            >
-              Browse All Tasks
-            </Button>
-            <Button 
-              variant="primary" 
-              onClick={handleClaimTask}
-              loading={isSelecting}
-              disabled={!canClaimMore}
-              title={!canClaimMore ? `You can only have ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review to free up slots.` : ''}
-            >
-              {canClaimMore ? 'Claim Task' : 'Active Task Limit Reached'}
-            </Button>
+            
+            {/* Button row */}
+            <div className="footer-buttons">
+              <Button 
+                variant="ghost" 
+                onClick={handleClose}
+                disabled={isSelecting}
+                className="modal-cancel-btn"
+              >
+                Cancel
+              </Button>
+              <Button 
+                variant="secondary" 
+                onClick={() => {
+                  handleClose();
+                  navigate('/portal/tasks');
+                }}
+                disabled={isSelecting}
+              >
+                Browse Tasks
+              </Button>
+              <Button 
+                variant="primary" 
+                onClick={handleClaimTask}
+                loading={isSelecting}
+                disabled={!canClaimMore}
+                title={!canClaimMore ? `You can only have ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review to free up slots.` : ''}
+              >
+                {canClaimMore ? 'Claim Task' : 'Limit Reached'}
+              </Button>
+            </div>
           </div>
         </>
       )}

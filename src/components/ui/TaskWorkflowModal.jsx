@@ -213,7 +213,7 @@ export function TaskWorkflowModal({
         <div className="task-detail-modal-footer">
           {/* Double Pay badge if applicable */}
           {(displayTask.is_special || displayTask.priority_tag || displayTask.is_highlighted) && (
-            <div style={{ marginRight: 'auto' }}>
+            <div className="modal-footer-info">
               <Badge variant="accent">Double Pay</Badge>
             </div>
           )}
@@ -224,6 +224,7 @@ export function TaskWorkflowModal({
               variant="danger" 
               onClick={handleAbandon}
               disabled={isActioning}
+              className="modal-abandon-btn"
             >
               Abandon Task
             </Button>

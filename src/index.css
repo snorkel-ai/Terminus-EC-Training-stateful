@@ -25,6 +25,15 @@ body {
   color: var(--text-primary);
 }
 
+/* Prevent horizontal overflow on mobile */
+@media (max-width: 480px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+}
+
 #root {
   min-height: 100vh;
 }
