@@ -284,6 +284,7 @@ Before submitting, verify:
 
 ## Next Steps
 
+- [Quality Guidelines](/portal/docs/reference/quality-guidelines) — Required quality standards for TBench 2.0
 - [Submission Checklist](/portal/docs/submitting-tasks/submission-checklist) — Final pre-submission verification
 - [CI Checks Reference](/portal/docs/testing-and-validation/ci-checks-reference) — Detailed check explanations
 - [Common Errors](/portal/docs/reviewing-tasks/common-errors) — Avoid these mistakes

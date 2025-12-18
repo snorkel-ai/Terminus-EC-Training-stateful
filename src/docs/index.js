@@ -60,6 +60,7 @@ export const docsConfig = {
     {
       title: 'Reference',
       items: [
+        { slug: 'reference/quality-guidelines', title: 'Quality Guidelines' },
         { slug: 'reference/faq', title: 'FAQ' },
         { slug: 'reference/glossary', title: 'Glossary' },
         { slug: 'reference/rate-schedule', title: 'Rate Schedule' },

@@ -195,5 +195,6 @@ ruff check --fix tests/test_outputs.py
 
 ## Next Steps
 
+- [Quality Guidelines](/portal/docs/reference/quality-guidelines) — Additional quality standards
 - [Review LLMaJ checks](/portal/docs/testing-and-validation/llmaj-checks-reference)
 - [Submit your task](/portal/docs/submitting-tasks/submission-checklist)
