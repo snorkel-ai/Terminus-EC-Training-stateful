@@ -32,6 +32,7 @@ Use this checklist before every submission to ensure your task is complete and w
 - [ ] All tests verify described requirements
 - [ ] Anti-cheating measures in place (canary strings)
 - [ ] Tests check behavior, not implementation
+- [ ] Complies with [Quality Guidelines](/portal/docs/reference/quality-guidelines)
 
 ---
 
