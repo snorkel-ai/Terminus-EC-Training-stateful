@@ -114,9 +114,14 @@ function DocsContent({ content, loading, title, prevDoc, nextDoc, onPaginationCl
           code: CodeBlock,
           
           // Images
-          img: ({ src, alt }) => (
-            <figure className="docs-figure">
-              <img src={src} alt={alt} className="docs-image" loading="lazy" />
+          img: ({ src, alt, className }) => (
+            <figure className={`docs-figure ${className || ''}`}>
+              <img 
+                src={src} 
+                alt={alt} 
+                className={`docs-image ${className || ''}`} 
+                loading="lazy" 
+              />
               {alt && <figcaption className="docs-figcaption">{alt}</figcaption>}
             </figure>
           ),
