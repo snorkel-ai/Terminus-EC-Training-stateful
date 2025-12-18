@@ -61,7 +61,7 @@ tags = ["python", "error-handling", "bugfix"]
 timeout_sec = 120.0
 
 [agent]
-timeout_sec = 120.0
+timeout_sec = 600.0
 
 [environment]
 build_timeout_sec = 600.0
@@ -80,7 +80,6 @@ The environment definition must be placed in an `environment/` folder. This prev
 
 **Required files depend on environment type:**
 - For Docker: `environment/Dockerfile` OR `environment/docker-compose.yaml`
-- For other runtimes: Different files may be required (e.g., `image.def` for Apptainer)
 
 **Example Dockerfile:**
 
