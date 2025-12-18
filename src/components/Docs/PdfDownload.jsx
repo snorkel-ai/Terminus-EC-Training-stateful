@@ -10,6 +10,13 @@ import './PdfDownload.css';
 
 function PdfDownload({ src, title }) {
   const posthog = usePostHog();
+  
+  // Handle absolute paths by prepending the base URL
+  const basePath = import.meta.env.BASE_URL || '/';
+  const fileSrc = src?.startsWith('/') && !src?.startsWith(basePath) 
+    ? `${basePath.replace(/\/$/, '')}${src}` 
+    : src;
+  
   const fileName = src.split('/').pop();
   const isNotebook = fileName.endsWith('.ipynb');
   const isZip = fileName.endsWith('.zip');
@@ -39,7 +46,7 @@ function PdfDownload({ src, title }) {
         <span className="pdf-download-type">{label}</span>
       </div>
       <a 
-        href={src}
+        href={fileSrc}
         target="_blank"
         rel="noopener noreferrer"
         className="pdf-download-button"

@@ -15,6 +15,12 @@ export function VideoEmbed({ src, title }) {
   const hasTrackedStart = useRef(false);
   const hasTrackedComplete = useRef(false);
 
+  // Handle absolute paths by prepending the base URL
+  const basePath = import.meta.env.BASE_URL || '/';
+  const videoSrc = src?.startsWith('/') && !src?.startsWith(basePath) 
+    ? `${basePath.replace(/\/$/, '')}${src}` 
+    : src;
+
   const handlePlay = useCallback(() => {
     if (posthog && !hasTrackedStart.current) {
       posthog.capture('docs_video_started', {
@@ -49,7 +55,7 @@ export function VideoEmbed({ src, title }) {
           onPlay={handlePlay}
           onEnded={handleEnded}
         >
-          <source src={src} type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
