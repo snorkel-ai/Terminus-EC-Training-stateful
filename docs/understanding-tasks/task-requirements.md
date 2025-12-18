@@ -57,14 +57,14 @@ version = "1.0"
 difficulty = "medium"
 category = "debugging"
 tags = ["category", "type", "difficulty"]
-author_name = "Your Name"
-author_email = "your.email@example.com"
+author_name = "anonymous"
+author_email = "anonymous"
 
 [verifier]
 timeout_sec = 120.0
 
 [agent]
-timeout_sec = 120.0
+timeout_sec = 600.
 
 [environment]
 build_timeout_sec = 600.0
