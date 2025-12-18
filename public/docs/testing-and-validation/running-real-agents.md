@@ -31,7 +31,7 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 ### GPT-5
 
 ```bash
-uv run harbor run \
+harbor run \
   -a terminus-2 \
   -m openai/@openai-tbench/gpt-5 \
   -p harbor_tasks/<task-name>
@@ -40,7 +40,7 @@ uv run harbor run \
 ### Claude Sonnet 4.5
 
 ```bash
-uv run harbor run \
+harbor run \
   -a terminus-2 \
   -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 \
   -p harbor_tasks/<task-name>

@@ -110,7 +110,7 @@ COPY app/ /app/
 - `/oracle/` - Solution folder copied here at runtime
 - `/tests/` - Tests folder copied here at runtime
 
-### 4. Oracle Solution (solution/solve.sh) - Optional
+### 4. Oracle Solution (solution/solve.sh)
 
 Expert-authored step-by-step solution that reliably completes the task. The solution folder is copied to `/oracle/` at runtime and executed from the working directory.
 

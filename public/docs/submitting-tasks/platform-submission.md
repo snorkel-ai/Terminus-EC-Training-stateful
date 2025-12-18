@@ -12,19 +12,20 @@ Tasking is performed through the **terminus-project-v2** project on the Snorkel 
 4. Set up the Docker environment
 5. Create and test your solution
 6. Write and verify tests
-7. Run agents and CI checks locally
-8. Create ZIP file and submit
-9. Monitor status and respond to feedback
+7. Run agents 
+8. Create ZIP file and Submit on platform
+9. Review CI feedback and iterate
+10. When CI is passing, submit on platform to a reviewer
 
 ---
 
 ## Prerequisites
 
 Before starting, ensure you have:
-- [ ] Docker Desktop installed and running
-- [ ] Harbor CLI installed (or access to Harbor commands)
-- [ ] API key for running agents (received via email)
-- [ ] Access to the Snorkel Expert Platform
+- Docker Desktop installed and running
+- Harbor CLI installed (or access to Harbor commands)
+- API key for running agents (received via email)
+- Access to the Snorkel Expert Platform
 
 ---
 
@@ -228,10 +229,10 @@ All checks should pass before submission.
 
 Before submitting, verify:
 
-- [ ] Oracle agent passes
-- [ ] All LLMaJ checks pass
-- [ ] Tested against real agents (pass rate < 80%)
-- [ ] All files are present and correct
+- Oracle agent passes
+- All LLMaJ checks pass
+- Tested against real agents (pass rate < 80%)
+- All files are present and correct
 
 Run final checks:
 
