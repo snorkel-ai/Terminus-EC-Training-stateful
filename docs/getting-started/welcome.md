@@ -12,20 +12,19 @@ Unlike simple code completion benchmarks, TerminalBench tests:
 - **Environment interaction** — Agents work in real Docker containers
 - **Practical skills** — Real debugging, configuration, and development tasks
 
-> **Your work matters.** 
-> 
+> **Your work matters.**
+>
 > Every accepted task directly advances the development of AI coding agents by revealing their current limitations and pushing them to improve.
 
 > **Explore existing tasks:** [Browse our Task Gallery](https://snorkel-ai.github.io/Terminus-EC-Training-stateful/portal/tasks)
 >
-> While this project is NOT affiliated with the official Terminal-Bench project, we closely mimic its style.
+> *Note: While this project is NOT affiliated with the official Terminal-Bench project, we closely mimic its style.*
 
-## How This Works
+---
 
-1. **You create tasks** — Engineering challenges that test AI capabilities
-2. **AI agents attempt them** — We run frontier models against your tasks
-3. **Results inform development** — Tasks that stump AI guide future improvements
-4. **You get paid** — Accepted tasks earn payouts based on difficulty
+## How does TerminalBench Work? 
+
+<img src="/images/docs/tbench_process_explained.jpg" alt="TerminalBench Process Explained" class="no-shadow" />
 
 ## Your Role as a Coding Expert
 
@@ -36,50 +35,58 @@ As a Coding Expert, you will:
 3. **Create tests** that verify task completion
 4. **Iterate on feedback** from automated checks and peer review
 
+<details>
+<summary>Task Difficulty Targets</summary>
+
 Tasks should target **< 80% accuracy** for GPT-5 or Claude Sonnet 4.5:
 
 | Difficulty | Pass Rate | Description |
 |------------|-----------|-------------|
-| Hard | < 40% | Requires deep expertise, multi-step reasoning |
-| Medium | < 60% | Moderate complexity, some domain knowledge |
-| Easy | < 80% | Straightforward but still challenging |
+| **Hard** | < 40% | Requires deep expertise, multi-step reasoning |
+| **Medium** | < 60% | Moderate complexity, some domain knowledge |
+| **Easy** | < 80% | Straightforward but still challenging |
 
-> **Important:** Tasks with > 80% pass rate will NOT be accepted.
+> **Important:** Tasks with a > 80% pass rate will **NOT** be accepted.
 
-**Important Notes:**
-- You will **not** be "served" tasks—you need to create them from scratch
-- You can take task ideas from the task gallery or create your own
+</details>
 
-## Evaluation Process
+<details>
+<summary>Evaluation Process</summary>
 
-Each task undergoes:
+Each task undergoes a rigorous 4-step review:
 
 1. **Automated CI checks** — Technical requirements (syntax, structure, etc.)
 2. **LLM-as-Judge (LLMaJ)** — Quality evaluation using GPT-5
 3. **Peer review** — Human expert verification
 4. **Agent evaluation** — Run against GPT-5 and Claude Sonnet 4.5 (5 times each)
 
-## Estimated Time
+</details>
 
-- **Per task:** 2-5 hours
-- **Includes:** Design, development, testing, iteration
+<details>
+<summary>Estimated Time</summary>
+
+*   **Per task:** 2-5 hours
+*   **Includes:** Design, development, testing, and iteration
+
+</details>
 
 ## Quick Links
 
 | Resource | Description |
 |----------|-------------|
-| [Quick Start Guide](/portal/docs/getting-started/quick-start) | Get up and running in 10 minutes |
-| [What Makes a Good Task](/portal/docs/understanding-tasks/what-makes-a-good-task) | Learn to create high-quality tasks |
-| [Task Components](/portal/docs/understanding-tasks/task-components) | Understand task structure |
-| [FAQ](/portal/docs/reference/faq) | Common questions answered |
+| **[Quick Start Guide](/portal/docs/getting-started/quick-start)** | Get up and running in 10 minutes |
+| **[What Makes a Good Task](/portal/docs/understanding-tasks/what-makes-a-good-task)** | Learn to create high-quality tasks |
+| **[Task Components](/portal/docs/understanding-tasks/task-components)** | Understand the required files and structure |
+| **[FAQ](/portal/docs/reference/faq)** | Common questions answered |
 
 ## Need Help?
 
 | Resource | Link |
 |----------|------|
-| Slack Channel | `#ec-terminus-submission` |
-| Office Hours | Weekly sessions to answer questions |
+| **Slack Channel** | `#ec-terminus-submission` |
+| **Office Hours** | Weekly sessions to answer questions |
 
 ---
 
-Ready to dive in? Start with the [Quick Start Guide](/portal/docs/getting-started/quick-start).
+**Ready to dive in?**
+**[Start with the Quick Start Guide](/portal/docs/getting-started/quick-start)**
