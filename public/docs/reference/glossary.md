@@ -94,9 +94,6 @@ The expert-authored step-by-step solution contained in `solution/solve.sh`. Must
 ### Pass Rate
 The percentage of times an agent successfully completes a task. Calculated from multiple runs (typically 5) against each model.
 
-### PR (Pull Request)
-A request to merge changes from your branch into the main branch. In GitHub workflow, tasks are submitted via PRs.
-
 ### Privileged Mode
 A Docker setting that gives containers root-level access. **Not allowed** in TerminalBench tasks.
 

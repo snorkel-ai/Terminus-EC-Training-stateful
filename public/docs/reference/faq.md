@@ -18,10 +18,6 @@ No, there is currently no assessment for this project. You can start familiarizi
 
 You should receive an email with your API key shortly after joining. If you haven't received it within a day or two, please reach out to Puyun Tafreshi or Alejandro Sanchez on Slack. You only need the OpenAI key—our infrastructure allows you to run Anthropic models using this key.
 
-### Why don't I see anything in the Snorkel Expert Platform?
-
-This project is currently run primarily through GitHub. Therefore, you may not see project-related content on the platform interface. Everything is done through the GitHub repo.
-
 ---
 
 ## Task Creation

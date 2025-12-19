@@ -4,14 +4,6 @@ Links to external tools, documentation, and communities.
 
 ## Project Resources
 
-### GitHub Repository
-
-The main repository for task submissions.
-
-**URL:** [github.com/snorkel-ai/snorkel-tb-tasks](https://github.com/snorkel-ai/snorkel-tb-tasks)
-
-> Request access via Slack if you can't view the repository.
-
 ### Slack Community
 
 Primary communication channel for the project.
