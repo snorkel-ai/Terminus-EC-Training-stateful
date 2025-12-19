@@ -118,7 +118,7 @@ The web-based platform for managing tasks and submissions. Alternative to the Gi
 The oracle solution script that demonstrates how to complete the task. Located in `solution/solve.sh`.
 
 ### Harbor
-The CLI tool (`harbor`) used for running agents and validating tasks. Run `harbor run --agent oracle --path harbor_tasks/<task-name>` to test your task.
+The CLI tool (`harbor`) used for running agents and validating tasks. Run `harbor run --agent oracle --path <task-folder>` to test your task.
 
 ---
 

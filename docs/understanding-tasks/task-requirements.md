@@ -202,10 +202,10 @@ Run your task against real agents (minimum 2-3 times each):
 
 ```bash
 # GPT-5
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
 
 # Claude Sonnet 4.5
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
 ```
 
 ---

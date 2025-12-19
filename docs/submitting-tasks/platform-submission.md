@@ -181,7 +181,7 @@ See [Writing Tests](/portal/docs/creating-tasks/writing-tests) for detailed guid
 Verify your solution passes all tests:
 
 ```bash
-harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path <task-folder>
 ```
 
 This should **PASS**. If it doesn't, fix issues before proceeding.
@@ -198,13 +198,13 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 2. Run with GPT-5:
 
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
 ```
 
 3. Run with Claude Sonnet 4.5:
 
 ```bash
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
 ```
 
 Run each agent 2-3 times to gauge pass rate. Your task should have < 80% pass rate to be accepted.
@@ -215,12 +215,12 @@ Run LLMaJ checks before submitting:
 
 **GPT-5:**
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
 ```
 
 **Claude Sonnet 4.5:**
 ```bash
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
 ```
 
 All checks should pass before submission.
@@ -238,7 +238,7 @@ Run final checks:
 
 ```bash
 # Oracle agent
-harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path <task-folder>
 
 # LLMaJ checks
 harbor tasks check -m openai/@openai/gpt-5  harbor_tasks/<task_name>

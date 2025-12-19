@@ -1,15 +1,15 @@
-# CI Checks Reference
+# CI Checks
 
-All submissions must pass these automated CI checks. This reference explains each check and how to fix failures.
+All submissions must pass these automated Agent-checks. This reference explains each check and how to fix failures.
 
-## Running CI Locally
+## Running Agents Locally
 
 ```bash
 # Using GPT-5 (recommended - matches CI)
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
 ```
 
-## CI Checks
+## Static Checks
 
 ### pinned_dependencies
 

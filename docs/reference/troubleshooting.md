@@ -41,7 +41,7 @@ sudo usermod -aG docker $USER
 
 **Debug:**
 ```bash
-cd harbor_tasks/<task-name>
+cd <task-folder>
 docker build -t test . 2>&1 | tail -50
 ```
 
@@ -49,7 +49,7 @@ docker build -t test . 2>&1 | tail -50
 
 **Enter interactive mode to debug:**
 ```bash
-harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 ```
 
 Then run commands manually to find the issue.
