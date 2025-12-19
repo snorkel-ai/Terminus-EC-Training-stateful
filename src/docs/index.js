@@ -10,6 +10,14 @@ export const docsConfig = {
       ]
     },
     {
+      title: 'Submission Process',
+      items: [
+        { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
+        { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
+        { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
+      ]
+    },
+    {
       title: 'Understanding Tasks',
       items: [
         { slug: 'understanding-tasks/what-makes-a-good-task', title: 'What Makes a Good Task' },
@@ -18,14 +26,6 @@ export const docsConfig = {
         { slug: 'understanding-tasks/task-taxonomy', title: 'Task Taxonomy' },
         { slug: 'understanding-tasks/example-tasks', title: 'Example Tasks' },
         { slug: 'understanding-tasks/difficulty-guidelines', title: 'Difficulty Guidelines' },
-      ]
-    },
-    {
-      title: 'Tasking Overview',
-      items: [
-        { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
-        { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
-        { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
       ]
     },
     {
