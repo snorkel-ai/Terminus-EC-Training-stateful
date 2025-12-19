@@ -201,5 +201,4 @@ Include:
 ### Where to ask:
 
 - **Slack:** `#ec-terminus-submission`
-- **GitHub:** Comment on your PR
 - **Payment issues:** Reach out to Snorkel
