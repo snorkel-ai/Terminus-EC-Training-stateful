@@ -22,7 +22,7 @@ INSERT INTO progress_items (id, category, title, display_order, is_core) VALUES
 INSERT INTO progress_items (id, category, title, display_order, is_core) VALUES
 ('video-creating-task', 'video', 'Creating a Task', 10, true),
 ('video-running-task', 'video', 'Running Your Task', 11, true),
-('video-solution', 'video', 'Creating a solution.sh', 12, true),
+('video-solution', 'video', 'Creating a solution/solve.sh', 12, true),
 ('video-tests', 'video', 'Creating Tests', 13, true);
 
 -- Resources (6 items) - Optional content

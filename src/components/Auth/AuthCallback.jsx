@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useAuthTracking } from '../../hooks/useAuthTracking';
 import './AuthCallback.css';
 
 /**
@@ -10,11 +11,18 @@ import './AuthCallback.css';
 function AuthCallback() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { trackAuthCallback } = useAuthTracking();
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(true);
 
   useEffect(() => {
     const handleAuthCallback = async () => {
+      // Track callback started
+      trackAuthCallback('started', {
+        has_hash: !!location.hash,
+        callback_type: 'oauth',
+      });
+      
       // Parse the URL hash for errors or tokens
       const hashParams = new URLSearchParams(location.hash.substring(1));
       const errorCode = hashParams.get('error_code');
@@ -26,6 +34,13 @@ function AuthCallback() {
         const decodedDescription = errorDescription 
           ? decodeURIComponent(errorDescription.replace(/\+/g, ' '))
           : 'An error occurred';
+        
+        // Track callback error
+        trackAuthCallback('error', {
+          error_code: errorCode,
+          error_description: decodedDescription,
+          callback_type: type || 'unknown',
+        });
         
         setError({
           code: errorCode,
@@ -42,6 +57,12 @@ function AuthCallback() {
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
+          // Track session error
+          trackAuthCallback('error', {
+            error_code: 'session_error',
+            error_description: sessionError.message,
+          });
+          
           setError({
             code: 'session_error',
             description: sessionError.message,
@@ -49,6 +70,12 @@ function AuthCallback() {
           setProcessing(false);
           return;
         }
+
+        // Track callback success
+        trackAuthCallback('success', {
+          callback_type: type || 'oauth',
+          has_session: !!session,
+        });
 
         // Check if this is a password recovery flow
         if (type === 'recovery' || session) {
@@ -65,15 +92,22 @@ function AuthCallback() {
       // No error and no token - check if we have a session already
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
+        trackAuthCallback('success', {
+          callback_type: 'existing_session',
+        });
         navigate('/portal', { replace: true });
       } else {
         // No session and no tokens - redirect to login
+        trackAuthCallback('error', {
+          error_code: 'no_session',
+          error_description: 'No session found after callback',
+        });
         navigate('/login', { replace: true });
       }
     };
 
     handleAuthCallback();
-  }, [location, navigate]);
+  }, [location, navigate, trackAuthCallback]);
 
   const getErrorMessage = () => {
     if (!error) return '';

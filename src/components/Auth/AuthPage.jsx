@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useAuthTracking } from '../../hooks/useAuthTracking';
 import './AuthPage.css';
 
 const AuthPage = () => {
@@ -13,6 +14,18 @@ const AuthPage = () => {
   
   const { signInWithGitHub, signInWithEmail, signUpWithEmail, user, profile } = useAuth();
   const navigate = useNavigate();
+  const { 
+    trackAuthAttemptStarted, 
+    trackAuthFailed, 
+    trackLoginPageView,
+    AUTH_METHODS,
+    AUTH_SOURCES,
+  } = useAuthTracking();
+
+  // Track login page view for redirect loop detection (on mount)
+  useEffect(() => {
+    trackLoginPageView();
+  }, [trackLoginPageView]);
 
   // Navigate when both user AND profile are ready (what ProtectedRoute requires)
   useEffect(() => {
@@ -26,6 +39,11 @@ const AuthPage = () => {
     setError(null);
     setMessage(null);
     setLoading(true);
+
+    // Track auth attempt started
+    trackAuthAttemptStarted(AUTH_METHODS.EMAIL, AUTH_SOURCES.AUTH_PAGE, {
+      is_signup: !isLogin,
+    });
 
     try {
       if (isLogin) {
@@ -42,6 +60,8 @@ const AuthPage = () => {
         }
       }
     } catch (err) {
+      // Track auth failure
+      trackAuthFailed(AUTH_METHODS.EMAIL, err, { is_signup: !isLogin });
       setError(err.message);
       setLoading(false);
     }
@@ -51,11 +71,17 @@ const AuthPage = () => {
     try {
       setLoading(true);
       setError(null);
+      
+      // Track auth attempt started
+      trackAuthAttemptStarted(AUTH_METHODS.GITHUB, AUTH_SOURCES.AUTH_PAGE);
+      
       // Small delay to show loading state before redirect
       await new Promise(resolve => setTimeout(resolve, 300));
       await signInWithGitHub();
       // Don't reset loading - we're redirecting to GitHub OAuth
     } catch (err) {
+      // Track auth failure
+      trackAuthFailed(AUTH_METHODS.GITHUB, err);
       setError(err.message);
       setLoading(false);
     }

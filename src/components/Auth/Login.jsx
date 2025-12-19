@@ -1,11 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useAuthTracking } from '../../hooks/useAuthTracking';
 import './Login.css';
 
 function Login() {
   const { signInWithGitHub, signInWithEmail, signUpWithEmail, user, profile } = useAuth();
   const navigate = useNavigate();
+  const { 
+    trackAuthAttemptStarted, 
+    trackAuthFailed, 
+    trackLoginPageView,
+    AUTH_METHODS,
+    AUTH_SOURCES,
+  } = useAuthTracking();
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
@@ -14,6 +23,11 @@ function Login() {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // Track login page view for redirect loop detection (on mount)
+  useEffect(() => {
+    trackLoginPageView();
+  }, [trackLoginPageView]);
 
   // Navigate when both user AND profile are ready (what ProtectedRoute requires)
   useEffect(() => {
@@ -27,11 +41,17 @@ function Login() {
       setLoading(true);
       setError(null);
       setMessage(null);
+      
+      // Track auth attempt started
+      trackAuthAttemptStarted(AUTH_METHODS.GITHUB, AUTH_SOURCES.LOGIN_PAGE);
+      
       // Small delay to show loading state before redirect
       await new Promise(resolve => setTimeout(resolve, 300));
       await signInWithGitHub();
       // Don't reset loading - we're redirecting to GitHub OAuth
     } catch (error) {
+      // Track auth failure
+      trackAuthFailed(AUTH_METHODS.GITHUB, error);
       setError(error.message);
       setLoading(false);
     }
@@ -43,6 +63,11 @@ function Login() {
       setLoading(true);
       setError(null);
       setMessage(null);
+      
+      // Track auth attempt started
+      trackAuthAttemptStarted(AUTH_METHODS.EMAIL, AUTH_SOURCES.LOGIN_PAGE, {
+        is_signup: isSignUp,
+      });
       
       if (isSignUp) {
         const { user } = await signUpWithEmail(email, password);
@@ -58,6 +83,8 @@ function Login() {
         // Keep loading true - navigation will happen via useEffect
       }
     } catch (error) {
+      // Track auth failure
+      trackAuthFailed(AUTH_METHODS.EMAIL, error, { is_signup: isSignUp });
       setError(error.message);
       setLoading(false);
     }

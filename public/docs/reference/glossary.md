@@ -82,7 +82,7 @@ Using a language model (GPT-5) to evaluate task quality. LLMaJ checks assess thi
 ## O
 
 ### Oracle Agent
-A special agent that runs your `solution.sh` script to verify the task is solvable. If the Oracle can't complete your task, it's broken.
+A special agent that runs your `solution/solve.sh` script to verify the task is solvable. If the Oracle can't complete your task, it's broken.
 
 ### Oracle Solution
 The expert-authored step-by-step solution contained in `solution/solve.sh`. Must reliably complete the task when executed.
@@ -114,7 +114,7 @@ A fast Python linter. All Python code in tasks must pass Ruff checks.
 ### Snorkel Expert Platform
 The web-based platform for managing tasks and submissions. Alternative to the GitHub workflow.
 
-### solve.sh / solution.sh
+### solve.sh / solution/solve.sh
 The oracle solution script that demonstrates how to complete the task. Located in `solution/solve.sh`.
 
 ### Harbor

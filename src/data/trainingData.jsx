@@ -78,7 +78,7 @@ export const trainingSections = [
         </div>
 
         <div className="info-box">
-          <strong>Oracle Solution (solution.sh)</strong>
+          <strong>Oracle Solution (solution/solve.sh)</strong>
           <p>
             Expert-authored step-by-step solution contained within a shell script that reliably and 
             accurately completes the task.
@@ -281,7 +281,7 @@ export const trainingSections = [
           </li>
           <li>While interacting with your task container, test your solution idea to make sure it works as expected</li>
           <li>Once solution is verified, record it and exit the container</li>
-          <li>Modify the solution file (solution.sh) with the verified commands
+          <li>Modify the solution file (solution/solve.sh) with the verified commands
             <ul>
               <li>This file will be used by the OracleAgent to ensure the task is solvable</li>
               <li>If you need to run commands that are not possible with a bash script (e.g. vim), use a solution.yaml file</li>
@@ -336,7 +336,7 @@ export const trainingSections = [
           <div className="checklist-item">Test cases have informative docstrings that describe which behavior they check</div>
           <div className="checklist-item">Hard for agent to cheat (e.g. by editing data files or looking inside files for solutions)</div>
           <div className="checklist-item">task.yaml was written by a human</div>
-          <div className="checklist-item">solution.sh was written by a human (with minimal LLM help)</div>
+          <div className="checklist-item">solution/solve.sh was written by a human (with minimal LLM help)</div>
           <div className="checklist-item">If agent produces structured data, exact schema is described in task.yaml or separate file</div>
           <div className="checklist-item">External dependencies have pinned versions for reproducibility</div>
           <div className="checklist-item">Ran task using agent with powerful model and analyzed failing runs to confirm task validity</div>

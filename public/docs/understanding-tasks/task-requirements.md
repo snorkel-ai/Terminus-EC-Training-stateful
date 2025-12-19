@@ -272,7 +272,7 @@ Before submitting, verify:
 - [ ] `instruction.md` is human-written and clear
 - [ ] `task.toml` has all required fields
 - [ ] `tests/test.sh` produces `/logs/verifier/reward.txt`
-- [ ] solution.sh is deterministic
+- [ ] solution/solve.sh is deterministic
 - [ ] All tests have docstrings
 - [ ] Dependencies are pinned
 - [ ] Canary strings included

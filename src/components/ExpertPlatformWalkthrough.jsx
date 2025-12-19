@@ -164,7 +164,7 @@ sudo dseditgroup -o edit -a $USER -t user docker</code></pre>
                 <li>Once solution is verified, record it and exit the container</li>
               </ul>
             </li>
-            <li>Modify the solution file (solution.sh) with the verified commands from the previous step
+            <li>Modify the solution file (solution/solve.sh) with the verified commands from the previous step
               <ul>
                 <li>This file will be used by the OracleAgent to ensure the task is solvable</li>
                 <li>If you need to run commands that are not possible to run with a bash script (e.g. vim), use a solution.yaml file to configure interactive commands</li>
@@ -235,14 +235,14 @@ tb tasks check &lt;task_id&gt; --model openai/@anthropic-tbench/claude-sonnet-4-
             </div>
             
             <div className="video-card">
-              <h3 className="video-card-title">2. Creating a solution.sh</h3>
+              <h3 className="video-card-title">2. Creating a solution/solve.sh</h3>
               <div className="video-wrapper">
                 <iframe
                   src="https://www.loom.com/embed/140f2cf8f16d404abf5cbd7dcc66b7cb?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true"
                   frameBorder="0"
                   allowFullScreen
                   className="video-iframe"
-                  title="2. Creating a solution.sh"
+                  title="2. Creating a solution/solve.sh"
                 ></iframe>
               </div>
             </div>

@@ -94,7 +94,7 @@ function Workbook() {
               <tr>
                 <td><code>hardcoded_solution</code></td>
                 <td>Solution should demonstrate command sequence, not just output answer</td>
-                <td>Ensure your solution.sh demonstrates a sequence of commands that derive the answer, rather than directly outputting the final answer with echo/cat. Using echo/cat to write source files or scripts that are then executed is acceptable</td>
+                <td>Ensure your solution/solve.sh demonstrates a sequence of commands that derive the answer, rather than directly outputting the final answer with echo/cat. Using echo/cat to write source files or scripts that are then executed is acceptable</td>
               </tr>
               <tr>
                 <td><code>file_reference_mentioned</code></td>
@@ -139,12 +139,12 @@ function Workbook() {
               <tr>
                 <td><code>check_canary</code></td>
                 <td>Checks if canary string is present at top of required files</td>
-                <td>Add the canary string to the top of all required files (task.yaml, solution.sh, Dockerfile, test_outputs.py)</td>
+                <td>Add the canary string to the top of all required files (task.yaml, solution/solve.sh, Dockerfile, test_outputs.py)</td>
               </tr>
               <tr>
                 <td><code>check_dockerfile_references</code></td>
                 <td>Ensure solution/test files not referenced in Dockerfile</td>
-                <td>Remove any references to "solution.yaml", "solution.sh", "run-tests.sh", or "test_outputs.py" from your Dockerfile</td>
+                <td>Remove any references to "solution.yaml", "solution/solve.sh", "run-tests.sh", or "test_outputs.py" from your Dockerfile</td>
               </tr>
               <tr>
                 <td><code>check_run-tests_sh</code></td>

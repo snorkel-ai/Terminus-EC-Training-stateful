@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
+import { AUTH_EVENTS, AUTH_METHODS, SESSION_TYPES, AUTH_STORAGE_KEYS } from '../utils/authEvents';
 
 const AuthContext = createContext({});
 
@@ -43,7 +44,31 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchUserProfile = async (userId, retryCount = 0) => {
+  /**
+   * Clear auth tracking storage after successful login
+   */
+  const clearAuthTracking = useCallback(() => {
+    try {
+      sessionStorage.removeItem(AUTH_STORAGE_KEYS.LOGIN_PAGE_VIEWS);
+      sessionStorage.removeItem(AUTH_STORAGE_KEYS.LOGIN_PAGE_TRACKED);
+      sessionStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_ATTEMPT_ID);
+    } catch {
+      // Storage may be unavailable
+    }
+  }, []);
+
+  /**
+   * Get the stored auth attempt ID for correlating events
+   */
+  const getAttemptId = useCallback(() => {
+    try {
+      return sessionStorage.getItem(AUTH_STORAGE_KEYS.AUTH_ATTEMPT_ID);
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const fetchUserProfile = async (userId, retryCount = 0, authMethod = null) => {
     const MAX_RETRIES = 3;
     const RETRY_DELAY_MS = 500;
     
@@ -61,21 +86,43 @@ export const AuthProvider = ({ children }) => {
         if (error.code === 'PGRST116' && retryCount < MAX_RETRIES) {
           console.log(`Profile not ready yet, retrying in ${RETRY_DELAY_MS}ms... (attempt ${retryCount + 1}/${MAX_RETRIES})`);
           await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
-          return fetchUserProfile(userId, retryCount + 1);
+          return fetchUserProfile(userId, retryCount + 1, authMethod);
         }
         throw error;
       }
       
       setProfile(data);
       
-      // Identify user in PostHog for analytics
+      // Identify user in PostHog for analytics and track auth success
       if (posthog && data) {
+        // Determine auth method from profile if not provided
+        const method = authMethod || (data.github_username ? AUTH_METHODS.GITHUB : AUTH_METHODS.EMAIL);
+        
+        // Determine session type (new vs returning)
+        const sessionType = posthog.get_distinct_id() === userId 
+          ? SESSION_TYPES.RETURNING 
+          : SESSION_TYPES.NEW;
+        
+        // Track auth success event
+        posthog.capture(AUTH_EVENTS.AUTH_SUCCESS, {
+          method,
+          session_type: sessionType,
+          attempt_id: getAttemptId(),
+        });
+        
+        // Identify user with auth properties
         posthog.identify(userId, {
           email: data.email,
           github_username: data.github_username,
           name: [data.first_name, data.last_name].filter(Boolean).join(' ') || undefined,
           created_at: data.created_at,
+          is_authenticated: true,
+          auth_method: method,
+          last_auth_at: new Date().toISOString(),
         });
+        
+        // Clear login page tracking on success
+        clearAuthTracking();
       }
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -163,6 +210,11 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = async () => {
     try {
+      // Track logout event before signing out
+      if (posthog) {
+        posthog.capture(AUTH_EVENTS.AUTH_LOGOUT);
+      }
+      
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       setProfile(null);
