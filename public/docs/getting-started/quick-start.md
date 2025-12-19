@@ -12,7 +12,40 @@ Before you begin, make sure you have:
 - Received your API key via email
 
 ## Environment Setup
-Once you have the prerequisites taken care of, follow the following steps: 
+
+Once you have the prerequisites taken care of, choose your setup path:
+
+### Option A: Quick Setup with uv (Recommended)
+
+For the fastest setup experience, use [uv](https://github.com/astral-sh/uv), a modern Python package manager:
+
+**1. Install uv:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**2. Install Harbor (Python 3.12 and 3.13 are supported):**
+```bash
+uv tool install harbor==0.1.25 --python 3.13
+```
+
+**3. Configure your API keys:**
+```bash
+export OPENAI_API_KEY=<your-portkey-api-key>
+export OPENAI_BASE_URL=https://api.portkey.ai/v1
+```
+
+> **Tip:** Add these to your `~/.bashrc` or `~/.zshrc` for persistence.
+
+**4. You're ready!** Start using harbor commands.
+
+> **Note:** You still need [Docker Desktop](https://www.docker.com/products/docker-desktop/) (v24.0.0+) installed and running.
+
+---
+
+### Option B: Manual Setup
+
+If you prefer a traditional pip installation or need more control, follow these steps:
 
 <details>
 <summary><strong>Windows Users: Install WSL2 First</strong></summary>
