@@ -15,6 +15,39 @@ Before you begin, make sure you have:
 Once you have the prerequisites taken care of, follow the following steps: 
 
 <details>
+<summary><strong>Windows Users: Install WSL2 First</strong></summary>
+
+If you're on Windows, you need to set up WSL2 before installing Docker.
+
+**1. Install WSL2**
+
+Open PowerShell as Administrator and run:
+```powershell
+wsl --install
+```
+
+When prompted, choose **Ubuntu 22.04** as your Linux distribution.
+
+**2. Install Docker Desktop with WSL2 Integration**
+
+- [Download Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+During installation, make sure to:
+- Enable **"Use WSL 2 based engine"**
+- Enable **"Integrate with WSL"** → check Ubuntu
+
+**3. Verify Docker in Ubuntu**
+
+Open your Ubuntu terminal and run:
+```bash
+docker ps
+```
+
+This should run without errors. If you see a permissions error, you may need to restart Docker Desktop or your WSL session.
+
+</details>
+
+<details>
 <summary><strong>Step 1: Install Docker Desktop</strong></summary>
 
 Docker is required to run task environments. Note that you need to have at least version 24.0.0 or higher. 
@@ -115,7 +148,6 @@ For more help, see the [Troubleshooting Guide](/portal/docs/reference/troublesho
 
 Now that you're set up:
 
-- 📺 Watch the [Onboarding Videos](/portal/docs/onboarding/platform-onboarding) for detailed walkthroughs
-- 📖 Read [What Makes a Good Task](/portal/docs/understanding-tasks/what-makes-a-good-task) for quality guidelines
-- 📋 Check the [Task Components](/portal/docs/understanding-tasks/task-components) reference
-- ✅ Review the [Submission Checklist](/portal/docs/submitting-tasks/submission-checklist) before submitting
+- Read [What Makes a Good Task](/portal/docs/understanding-tasks/what-makes-a-good-task) for quality guidelines
+- Check the [Task Components](/portal/docs/understanding-tasks/task-components) reference
+- Review the [Submission Checklist](/portal/docs/submitting-tasks/submission-checklist) before submitting your tasks
