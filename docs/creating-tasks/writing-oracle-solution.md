@@ -6,11 +6,11 @@ The oracle solution (`solution/solve.sh`) is an expert-authored script that reli
 
 ### Video Tutorial
 
-<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh"></video-loom>
+<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution/solve.sh"></video-loom>
 
 ### What You'll Learn
 
-- Structure of a good solution.sh file
+- Structure of a good solution/solve.sh file
 - How to transfer commands from interactive testing
 - Best practices for deterministic solutions
 - Common pitfalls to avoid

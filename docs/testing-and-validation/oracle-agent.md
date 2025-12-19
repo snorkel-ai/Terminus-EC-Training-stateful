@@ -1,6 +1,6 @@
 # Oracle Agent
 
-The Oracle Agent runs your solution.sh in the task environment and verifies it passes all tests. It's the first line of validation for your task.
+The Oracle Agent runs your solution/solve.sh in the task environment and verifies it passes all tests. It's the first line of validation for your task.
 
 ## Getting Started
 

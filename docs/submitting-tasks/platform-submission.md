@@ -358,8 +358,8 @@ Watch these step-by-step videos to learn how to create and test your task:
 <video-loom id="22449b76123d41e6abff0efb39d0b960" title="Running your task"></video-loom>
 
 ### 2. Creating a solution/solve.sh
-<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh"></video-loom>
-The video refers to solution.sh file. Using Harbor, this refers to solution/solve.sh 
+<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution/solve.sh"></video-loom>
+The video refers to solution/solve.sh file. Using Harbor, this refers to solution/solve.sh 
 
 ### 3. Creating Tests for Your Task
 

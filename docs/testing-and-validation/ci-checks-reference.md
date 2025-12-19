@@ -81,7 +81,7 @@ RUN pip install pytest requests
 **What it checks:** Solution/test files not referenced in Dockerfile.
 
 **How to fix:** Remove references from `environment/Dockerfile`:
-- `solution.sh`
+- `solution/solve.sh`
 - `tests/test.sh`
 - `test_outputs.py`
 
