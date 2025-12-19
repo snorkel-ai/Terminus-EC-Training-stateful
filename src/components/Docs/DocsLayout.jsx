@@ -65,9 +65,10 @@ function DocsLayout() {
     }
   };
 
-  // Close sidebar when route changes (mobile)
+  // Close sidebar when route changes (mobile) and scroll to top
   useEffect(() => {
     setSidebarOpen(false);
+    window.scrollTo(0, 0);
   }, [slug]);
 
   // Find current doc info
