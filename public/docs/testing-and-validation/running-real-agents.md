@@ -6,7 +6,7 @@ Test your task against real AI agents to validate difficulty and ensure your tas
 
 **Get your API key from Snorkel via email.** If you haven't received one, DM Puyun or Alejandro on Slack.
 
-> **Note:** You'll need Harbor CLI installed to run agents locally. See [Quick Start Guide](/portal/docs/getting-started/quick-start) for installation instructions.
+> **Note:** You'll need Harbor CLI installed to run agents locally. See [Environment Setup](/portal/docs/getting-started/environment-setup) for installation instructions.
 
 ## Environment Setup
 
@@ -34,7 +34,7 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 harbor run \
   -a terminus-2 \
   -m openai/@openai-tbench/gpt-5 \
-  -p harbor_tasks/<task-name>
+  -p <task-folder>
 ```
 
 ### Claude Sonnet 4.5
@@ -43,7 +43,7 @@ harbor run \
 harbor run \
   -a terminus-2 \
   -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 \
-  -p harbor_tasks/<task-name>
+  -p <task-folder>
 ```
 
 ---

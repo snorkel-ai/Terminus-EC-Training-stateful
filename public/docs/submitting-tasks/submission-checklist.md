@@ -41,7 +41,7 @@ Use this checklist before every submission to ensure your task is complete and w
 ### Oracle Agent
 
 ```bash
-harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path <task-folder>
 ```
 
 - [ ] Oracle agent PASSES
@@ -49,7 +49,7 @@ harbor run --agent oracle --path harbor_tasks/<task-name>
 ### CI Checks
 
 ```bash
-harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
+harbor tasks check <task-folder> --model openai/@openai-tbench/gpt-5
 ```
 
 - [ ] pinned_dependencies ✓
@@ -82,7 +82,7 @@ harbor tasks check harbor_tasks/<task-name> --model openai/@openai-tbench/gpt-5
 ### Run Against GPT-5
 
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
 ```
 
 - [ ] Run 1: PASS / FAIL
@@ -92,7 +92,7 @@ harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-na
 ### Run Against Claude
 
 ```bash
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
 ```
 
 - [ ] Run 1: PASS / FAIL

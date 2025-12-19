@@ -191,7 +191,7 @@ harbor tasks start-env --path <task-folder> --interactive
 ### Run Oracle Agent
 
 ```bash
-harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path <task-folder>
 ```
 
 The oracle agent should PASS. If it fails, either:
