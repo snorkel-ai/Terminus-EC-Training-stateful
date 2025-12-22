@@ -54,6 +54,7 @@ export const docsConfig = {
       items: [
         { slug: 'reviewing-tasks/review-guidelines', title: 'Review Guidelines' },
         { slug: 'reviewing-tasks/rubrics', title: 'Rubrics' },
+        { slug: 'reviewing-tasks/reviewer-training', title: 'Reviewer Training' },
         { slug: 'reviewing-tasks/common-errors', title: 'Common Errors' },
         { slug: 'reviewing-tasks/defending-your-submission', title: 'Defending Your Submission' },
       ]
