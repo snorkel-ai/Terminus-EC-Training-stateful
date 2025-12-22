@@ -2,10 +2,6 @@
 
 Resources for onboarding and training as a reviewer.
 
-## Training Materials
-
-- [Terminus Training Materials](https://snorkel-ai.github.io/Terminus-EC-Training/) — Comprehensive training documentation
-
 ## Videos
 
 - [Reviewer Onboarding Video](https://www.loom.com/share/d74d243d4df0480e9d0d2a78df07bdd8) — Terminal reviewer onboarding walkthrough
