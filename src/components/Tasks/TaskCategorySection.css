@@ -388,6 +388,31 @@
   padding-left: 0;
 }
 
+/* Promoted Section Styles */
+.promoted-section .section-header {
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: var(--space-2);
+}
+
+.promo-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+  animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 768px) {
   .tasks-grid-row {

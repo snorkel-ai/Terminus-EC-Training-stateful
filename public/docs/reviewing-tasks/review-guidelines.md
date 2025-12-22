@@ -150,5 +150,6 @@ Explain clearly why, and whether revision could salvage it.
 
 ## Next Steps
 
+- [Rubrics](/portal/docs/reviewing-tasks/rubrics) — How to write and review rubrics for evaluating agent traces
 - [Quality Guidelines](/portal/docs/reference/quality-guidelines) — Required quality standards for all tasks
 - [Common errors to watch for](/portal/docs/reviewing-tasks/common-errors)

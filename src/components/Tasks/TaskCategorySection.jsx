@@ -32,6 +32,8 @@ function TaskCategorySection({
   };
 
   const isPrioritized = tasks.some(t => t.is_special || t.priority_tag);
+  const promotedTask = tasks.find(t => t.is_promoted);
+  const isPromoted = !!promotedTask;
 
   // Show empty state when no available tasks but category has claimed tasks
   if (tasks.length === 0) {
@@ -76,7 +78,7 @@ function TaskCategorySection({
   }
 
   return (
-    <div className={`task-category-section ${isPrioritized ? 'prioritized-section' : ''}`}>
+    <div className={`task-category-section ${isPrioritized ? 'prioritized-section' : ''} ${isPromoted ? 'promoted-section' : ''}`}>
       <div className="section-header">
         <div className="section-title-group" onClick={() => setIsCollapsed(!isCollapsed)}>
           <button className={`collapse-btn ${isCollapsed ? 'collapsed' : ''}`}>
@@ -98,7 +100,12 @@ function TaskCategorySection({
                 {totalCount ?? tasks.length}
               </button>
             </h3>
-            {isPrioritized && (
+            {isPromoted && (
+              <Badge variant="accent" size="sm" className="promo-badge">
+                🔥 {promotedTask.promo_multiplier}x Rewards
+              </Badge>
+            )}
+            {isPrioritized && !isPromoted && (
               <Badge variant="accent" size="sm" className="double-pay-badge">
                 💰💰 Double Pay
               </Badge>

@@ -9,6 +9,7 @@ import OverviewStats from './OverviewStats';
 import UserStatsTable from './UserStatsTable';
 import SectionStats from './SectionStats';
 import TaskPriorities from './TaskPriorities';
+import PromoManager from './PromoManager';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
@@ -139,6 +140,12 @@ function AdminDashboard() {
         >
           Task Priorities
         </button>
+        <button
+          className={`admin-tab ${activeTab === 'promotions' ? 'active' : ''}`}
+          onClick={() => setActiveTab('promotions')}
+        >
+          Promotions
+        </button>
       </div>
 
       <div className="admin-content">
@@ -146,6 +153,7 @@ function AdminDashboard() {
         {activeTab === 'users' && <UserStatsTable users={users} />}
         {activeTab === 'sections' && <SectionStats sections={sections} />}
         {activeTab === 'priorities' && <TaskPriorities />}
+        {activeTab === 'promotions' && <PromoManager />}
       </div>
     </div>
   );
