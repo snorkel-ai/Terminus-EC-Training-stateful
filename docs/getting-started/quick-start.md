@@ -37,7 +37,7 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 > **Tip:** Add these to your `~/.bashrc` or `~/.zshrc` for persistence.
 
-**4. You're ready!** Start using harbor commands.
+**4. You're ready!** to start working and submitting your tasks! 
 
 > **Note:** You still need [Docker Desktop](https://www.docker.com/products/docker-desktop/) (v24.0.0+) installed and running.
 
