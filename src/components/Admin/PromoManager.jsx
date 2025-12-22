@@ -31,6 +31,8 @@ function PromoManager() {
   // Drag and Drop State
   const [draggedId, setDraggedId] = useState(null);
   const [dragOverId, setDragOverId] = useState(null);
+  // Display Mode State: 'both' | 'banner_only' | 'card_only'
+  const [displayMode, setDisplayMode] = useState('both');
 
   useEffect(() => {
     fetchData();
@@ -158,6 +160,15 @@ function PromoManager() {
       setStartsAt('');
       setEndsAt('');
     }
+    
+    // Determine display mode from flags
+    if (promo.disable_card && !promo.disable_banner) {
+      setDisplayMode('banner_only');
+    } else if (promo.disable_banner && !promo.disable_card) {
+      setDisplayMode('card_only');
+    } else {
+      setDisplayMode('both');
+    }
 
     setCurrentStep(1);
     setIsModalOpen(true);
@@ -173,6 +184,7 @@ function PromoManager() {
     setUseSchedule(false);
     setStartsAt('');
     setEndsAt('');
+    setDisplayMode('both');
   };
 
   const handleSave = async () => {
@@ -193,7 +205,9 @@ function PromoManager() {
         variant,
         starts_at: useSchedule ? pstInputToUtc(startsAt) : null,
         ends_at: useSchedule ? pstInputToUtc(endsAt) : null,
-        display_order: editingId ? undefined : promos.length // New promos go to end
+        display_order: editingId ? undefined : promos.length, // New promos go to end
+        disable_card: displayMode === 'banner_only',
+        disable_banner: displayMode === 'card_only'
       };
 
       let error;
@@ -326,6 +340,7 @@ function PromoManager() {
 
   const steps = [
     { title: 'Basics' },
+    { title: 'Appearance' },
     { title: 'Details' },
     { title: 'Targeting' },
     { title: 'Review' }
@@ -336,7 +351,7 @@ function PromoManager() {
       alert("Please enter a title");
       return;
     }
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    if (currentStep < 5) setCurrentStep(currentStep + 1);
   };
 
   const handleBack = () => {
@@ -385,6 +400,12 @@ function PromoManager() {
                         </span>
                       );
                     })()}
+                    {promo.disable_card && !promo.disable_banner && (
+                      <span className="promo-status-badge banner-only">Banner Only</span>
+                    )}
+                    {promo.disable_banner && !promo.disable_card && (
+                      <span className="promo-status-badge card-only">Card Only</span>
+                    )}
                   </div>
                   <div className="promo-actions">
                     <Button 
@@ -467,7 +488,7 @@ function PromoManager() {
                     <div className="wizard-step">
                       <div className="promo-step-header">
                         <h2 className="promo-step-title">Basics</h2>
-                        <p className="promo-step-description">Set up the core information for your promotion card.</p>
+                        <p className="promo-step-description">Set up the core information for your promotion.</p>
                       </div>
                       
                       <div className="wizard-form-group">
@@ -491,6 +512,47 @@ function PromoManager() {
                           rows={3}
                         />
                       </div>
+
+                      <div className="wizard-form-group">
+                        <label className="wizard-label">Display Mode</label>
+                        <p className="wizard-label-hint">Where should this promotion appear?</p>
+                        <div className="display-mode-selector">
+                          <div 
+                            className={`display-mode-option ${displayMode === 'both' ? 'selected' : ''}`}
+                            onClick={() => setDisplayMode('both')}
+                          >
+                            <div className="display-mode-icon">📢</div>
+                            <div className="display-mode-label">Both</div>
+                            <div className="display-mode-desc">Banner + Card</div>
+                          </div>
+                          <div 
+                            className={`display-mode-option ${displayMode === 'banner_only' ? 'selected' : ''}`}
+                            onClick={() => setDisplayMode('banner_only')}
+                          >
+                            <div className="display-mode-icon">🔔</div>
+                            <div className="display-mode-label">Banner Only</div>
+                            <div className="display-mode-desc">Top announcement</div>
+                          </div>
+                          <div 
+                            className={`display-mode-option ${displayMode === 'card_only' ? 'selected' : ''}`}
+                            onClick={() => setDisplayMode('card_only')}
+                          >
+                            <div className="display-mode-icon">🎴</div>
+                            <div className="display-mode-label">Card Only</div>
+                            <div className="display-mode-desc">Incentives section</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {currentStep === 2 && (
+                    <div className="wizard-step">
+                      <div className="promo-step-header">
+                        <h2 className="promo-step-title">Appearance</h2>
+                        <p className="promo-step-description">Choose a color theme for your promotion.</p>
+                      </div>
+                      
                       <div className="wizard-form-group">
                         <label className="wizard-label">Color Variant</label>
                         <div className="variant-selector">
@@ -514,7 +576,7 @@ function PromoManager() {
                     </div>
                   )}
 
-                  {currentStep === 2 && (
+                  {currentStep === 3 && (
                     <div className="wizard-step">
                       <div className="promo-step-header">
                         <h2 className="promo-step-title">Detailed Content</h2>
@@ -537,7 +599,7 @@ Write your announcement here. You can use:
                     </div>
                   )}
 
-                  {currentStep === 3 && (
+                  {currentStep === 4 && (
                     <div className="wizard-step">
                       <div className="promo-step-header">
                         <h2 className="promo-step-title">Targeting</h2>
@@ -631,7 +693,7 @@ Write your announcement here. You can use:
                     </div>
                   )}
 
-                  {currentStep === 4 && (
+                  {currentStep === 5 && (
                     <div className="wizard-step">
                       <div className="promo-step-header">
                         <h2 className="promo-step-title">Review</h2>
@@ -641,6 +703,9 @@ Write your announcement here. You can use:
                       <div className="review-summary">
                         <div className="review-item">
                           <strong>Title:</strong> {title}
+                        </div>
+                        <div className="review-item">
+                          <strong>Display Mode:</strong> {displayMode === 'both' ? 'Banner + Card' : displayMode === 'banner_only' ? 'Banner Only' : 'Card Only'}
                         </div>
                         <div className="review-item">
                           <strong>Target Audience:</strong> {selectedCategories.includes('ALL') ? 'All Categories' : selectedCategories.length === 0 ? 'Global Announcement' : `${selectedCategories.length} Categories`}
@@ -659,10 +724,10 @@ Write your announcement here. You can use:
                 {/* RIGHT PANEL: LIVE PREVIEW */}
                 <div className="wizard-right-panel">
                   <div className="preview-label">
-                    {currentStep === 2 ? 'Live Modal Preview' : 'Live Card Preview'}
+                    {currentStep === 3 ? 'Live Modal Preview' : 'Live Preview'}
                   </div>
-                  <div className="card-preview-wrapper" style={{width: currentStep === 2 ? '100%' : undefined}}>
-                    {currentStep === 2 ? (
+                  <div className="card-preview-wrapper" style={{width: currentStep === 3 ? '100%' : undefined}}>
+                    {currentStep === 3 ? (
                       /* Inline Modal Preview to prevent scroll reset */
                       <div className="fake-modal-preview">
                         <div className="fake-modal-header">
@@ -683,45 +748,84 @@ Write your announcement here. You can use:
                         </div>
                       </div>
                     ) : (
-                      /* Inline Card Preview */
-                      <div className="incentive-card" style={{width: '100%'}}>
-                        <div className="incentive-card-content">
-                          <div className="incentive-top-row">
-                            {parseFloat(rewardMultiplier) > 1 && (
-                              <span className="incentive-badge">
-                                {formatBoost(parseFloat(rewardMultiplier))} Boost
-                              </span>
-                            )}
-                            {endsAt && useSchedule && (
-                              <span className="incentive-date">
-                                Ends {formatCompactDate(pstInputToUtc(endsAt))}
-                              </span>
-                            )}
+                      /* Banner + Card Preview Based on Display Mode */
+                      <div className="dual-preview-container">
+                        {/* Banner Preview */}
+                        {(displayMode === 'both' || displayMode === 'banner_only') && (
+                          <div className="preview-section">
+                            <div className="preview-section-label">
+                              <span className="preview-section-icon">🔔</span> Banner Preview
+                            </div>
+                            <div className={`mini-banner-preview ${variant}`}>
+                              <div className="mini-banner-emoji">💸</div>
+                              <div className="mini-banner-text">
+                                <strong>{title || 'Promo Title'}</strong>
+                                {message && <span> — {message}</span>}
+                              </div>
+                              <div className="mini-banner-dismiss">✕</div>
+                            </div>
                           </div>
-                          <h3 className="incentive-title">{title || 'Promo Title'}</h3>
-                          {message && <p className="incentive-description">{message}</p>}
-                          {longDescription && (
-                            <button className="incentive-read-more" type="button">Read more →</button>
-                          )}
-                          {currentStep === 3 && !selectedCategories.includes('ALL') && selectedCategories.length > 0 && (
-                            <div className="incentive-footer" style={{marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border-color)'}}>
-                              <div className="incentive-categories-wrapper">
-                                <span className="incentive-label">Applies to:</span>
-                                <div className="incentive-categories-list">
-                                  {selectedCategories.slice(0, 3).map(cat => (
-                                    <span key={cat} className="category-pill">{cat}</span>
-                                  ))}
-                                  {selectedCategories.length > 3 && (
-                                    <span className="category-pill more">+{selectedCategories.length - 3}</span>
+                        )}
+
+                        {/* Card Preview */}
+                        {(displayMode === 'both' || displayMode === 'card_only') && (
+                          <div className="preview-section">
+                            <div className="preview-section-label">
+                              <span className="preview-section-icon">🎴</span> Card Preview
+                            </div>
+                            <div className="incentive-card" style={{width: '100%'}}>
+                              <div className="incentive-card-content">
+                                <div className="incentive-top-row">
+                                  {parseFloat(rewardMultiplier) > 1 && (
+                                    <span className="incentive-badge">
+                                      {formatBoost(parseFloat(rewardMultiplier))} Boost
+                                    </span>
+                                  )}
+                                  {endsAt && useSchedule && (
+                                    <span className="incentive-date">
+                                      Ends {formatCompactDate(pstInputToUtc(endsAt))}
+                                    </span>
                                   )}
                                 </div>
+                                <h3 className="incentive-title">{title || 'Promo Title'}</h3>
+                                {message && <p className="incentive-description">{message}</p>}
+                                {longDescription && (
+                                  <button className="incentive-read-more" type="button">Read more →</button>
+                                )}
+                                {currentStep === 4 && !selectedCategories.includes('ALL') && selectedCategories.length > 0 && (
+                                  <div className="incentive-footer" style={{marginTop: 'auto', paddingTop: '16px'}}>
+                                    <div className="incentive-categories-wrapper">
+                                      <span className="incentive-label">Applies to:</span>
+                                      <div className="incentive-categories-list">
+                                        {selectedCategories.slice(0, 3).map(cat => (
+                                          <span key={cat} className="category-pill">{cat}</span>
+                                        ))}
+                                        {selectedCategories.length > 3 && (
+                                          <span className="category-pill more">+{selectedCategories.length - 3}</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="incentive-bg-icon">
+                                {variant === 'warning' ? '🔥' : variant === 'success' ? '💰' : '🚀'}
                               </div>
                             </div>
-                          )}
-                        </div>
-                        <div className="incentive-bg-icon">
-                          {variant === 'warning' ? '🔥' : variant === 'success' ? '💰' : '🚀'}
-                        </div>
+                          </div>
+                        )}
+
+                        {/* Message when nothing is displayed */}
+                        {displayMode === 'banner_only' && currentStep === 1 && (
+                          <div className="preview-note">
+                            <span>ℹ️</span> This promo will only appear in the top banner
+                          </div>
+                        )}
+                        {displayMode === 'card_only' && currentStep === 1 && (
+                          <div className="preview-note">
+                            <span>ℹ️</span> This promo will only appear as an incentive card
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -738,7 +842,7 @@ Write your announcement here. You can use:
                   {currentStep === 1 ? 'Cancel' : 'Back'}
                 </Button>
                 <div className="nav-buttons">
-                  {currentStep < 4 ? (
+                  {currentStep < 5 ? (
                     <Button variant="primary" onClick={handleNext} size="lg">
                       Next Step
                     </Button>

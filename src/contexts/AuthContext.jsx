@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       // Select only needed columns to reduce egress
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, email, github_username, github_avatar_url, first_name, last_name, bio, linkedin_url, website_url, specialties, onboarding_completed, slack_joined, payments_setup, dev_env_setup, is_admin, created_at')
+        .select('id, email, github_username, github_avatar_url, first_name, last_name, bio, linkedin_url, website_url, specialties, onboarding_completed, slack_joined, payments_setup, dev_env_setup, is_admin, can_see_incentives, created_at')
         .eq('id', userId)
         .single();
 
