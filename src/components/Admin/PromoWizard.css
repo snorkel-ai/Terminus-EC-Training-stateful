@@ -284,9 +284,12 @@
   padding: 24px;
   max-height: 280px;
   overflow-y: auto;
+  overflow-x: hidden;
   font-size: 14px;
   line-height: 1.6;
   color: var(--text-primary);
+  overscroll-behavior: contain;
+  scroll-behavior: auto;
 }
 
 .fake-modal-body .markdown-content h1,
@@ -304,6 +307,36 @@
 .fake-modal-body .markdown-content ol {
   padding-left: 20px;
   margin-bottom: 12px;
+}
+
+.fake-modal-body .markdown-content em {
+  font-style: italic;
+}
+
+.fake-modal-body .markdown-content strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.fake-modal-body .markdown-content a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.fake-modal-body .markdown-content blockquote {
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-secondary);
+  border-radius: 0 6px 6px 0;
+}
+
+.fake-modal-body .markdown-content code {
+  background: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 0.9em;
 }
 
 /* Markdown Editor */

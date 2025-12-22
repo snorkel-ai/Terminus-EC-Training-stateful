@@ -113,6 +113,24 @@ function PromoManager() {
     return `${month}/${day}/${year} ${hours}:${minutes}`;
   };
 
+  const getPromoStatus = (promo) => {
+    const now = new Date();
+    
+    if (!promo.is_active) {
+      return { status: 'inactive', label: 'Inactive' };
+    }
+    
+    if (promo.ends_at && new Date(promo.ends_at) < now) {
+      return { status: 'expired', label: 'Expired' };
+    }
+    
+    if (promo.starts_at && new Date(promo.starts_at) > now) {
+      return { status: 'scheduled', label: 'Scheduled' };
+    }
+    
+    return { status: 'active', label: 'Active' };
+  };
+
   // --- Actions ---
 
   const openCreateModal = () => {
@@ -304,79 +322,6 @@ function PromoManager() {
     setDragOverId(null);
   };
 
-  // --- Components ---
-
-  const CardPreview = () => (
-    <div className="incentive-card" style={{width: '100%'}}>
-      <div className="incentive-card-content">
-        <div className="incentive-top-row">
-          {parseFloat(rewardMultiplier) > 1 && (
-            <span className="incentive-badge">
-              {formatBoost(parseFloat(rewardMultiplier))} Boost
-            </span>
-          )}
-          {endsAt && useSchedule && (
-            <span className="incentive-date">
-              Ends {formatCompactDate(pstInputToUtc(endsAt))}
-            </span>
-          )}
-        </div>
-        <h3 className="incentive-title">
-          {title || 'Promo Title'}
-        </h3>
-        {message && (
-          <p className="incentive-description">{message}</p>
-        )}
-        {longDescription && (
-          <button className="incentive-read-more" type="button">
-            Read more →
-          </button>
-        )}
-        
-        {/* Footer Preview (only show if not Step 1, to simulate targeting) */}
-        {currentStep === 3 && !selectedCategories.includes('ALL') && selectedCategories.length > 0 && (
-           <div className="incentive-footer" style={{marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border-color)'}}>
-             <div className="incentive-categories-wrapper">
-               <span className="incentive-label">Applies to:</span>
-               <div className="incentive-categories-list">
-                 {selectedCategories.slice(0, 3).map(cat => (
-                   <span key={cat} className="category-pill">{cat}</span>
-                 ))}
-                 {selectedCategories.length > 3 && (
-                   <span className="category-pill more">+{selectedCategories.length - 3}</span>
-                 )}
-               </div>
-             </div>
-           </div>
-        )}
-      </div>
-      <div className="incentive-bg-icon">
-        {variant === 'warning' ? '🔥' : variant === 'success' ? '💰' : '🚀'}
-      </div>
-    </div>
-  );
-
-  const ModalPreview = () => (
-    <div className="fake-modal-preview">
-      <div className="fake-modal-header">
-        <h3>{title || 'Promo Title'}</h3>
-        <span className="fake-modal-close">✕</span>
-      </div>
-      <div className="fake-modal-body">
-        {longDescription ? (
-          <div className="markdown-content">
-            <ReactMarkdown>{longDescription}</ReactMarkdown>
-          </div>
-        ) : (
-          <div className="empty-preview">
-            <div className="empty-preview-icon">📝</div>
-            <p>Start typing in the editor to see your content preview</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
   // --- Steps Logic ---
 
   const steps = [
@@ -432,9 +377,14 @@ function PromoManager() {
                   <div className="promo-card-title">
                     <span className="drag-handle" title="Drag to reorder">⋮⋮</span>
                     <h4>{promo.title}</h4>
-                    <span className={`promo-status-badge ${promo.is_active ? 'active' : 'inactive'}`}>
-                      {promo.is_active ? 'Active' : 'Inactive'}
-                    </span>
+                    {(() => {
+                      const { status, label } = getPromoStatus(promo);
+                      return (
+                        <span className={`promo-status-badge ${status}`}>
+                          {label}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <div className="promo-actions">
                     <Button 
@@ -708,21 +658,73 @@ Write your announcement here. You can use:
 
                 {/* RIGHT PANEL: LIVE PREVIEW */}
                 <div className="wizard-right-panel">
-                  {currentStep === 2 ? (
-                    <>
-                      <div className="preview-label">Live Modal Preview</div>
-                      <div className="card-preview-wrapper" style={{width: '100%'}}>
-                        <ModalPreview />
+                  <div className="preview-label">
+                    {currentStep === 2 ? 'Live Modal Preview' : 'Live Card Preview'}
+                  </div>
+                  <div className="card-preview-wrapper" style={{width: currentStep === 2 ? '100%' : undefined}}>
+                    {currentStep === 2 ? (
+                      /* Inline Modal Preview to prevent scroll reset */
+                      <div className="fake-modal-preview">
+                        <div className="fake-modal-header">
+                          <h3>{title || 'Promo Title'}</h3>
+                          <span className="fake-modal-close">✕</span>
+                        </div>
+                        <div className="fake-modal-body">
+                          {longDescription ? (
+                            <div className="markdown-content">
+                              <ReactMarkdown>{longDescription}</ReactMarkdown>
+                            </div>
+                          ) : (
+                            <div className="empty-preview">
+                              <div className="empty-preview-icon">📝</div>
+                              <p>Start typing to see preview</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="preview-label">Live Card Preview</div>
-                      <div className="card-preview-wrapper">
-                        <CardPreview />
+                    ) : (
+                      /* Inline Card Preview */
+                      <div className="incentive-card" style={{width: '100%'}}>
+                        <div className="incentive-card-content">
+                          <div className="incentive-top-row">
+                            {parseFloat(rewardMultiplier) > 1 && (
+                              <span className="incentive-badge">
+                                {formatBoost(parseFloat(rewardMultiplier))} Boost
+                              </span>
+                            )}
+                            {endsAt && useSchedule && (
+                              <span className="incentive-date">
+                                Ends {formatCompactDate(pstInputToUtc(endsAt))}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="incentive-title">{title || 'Promo Title'}</h3>
+                          {message && <p className="incentive-description">{message}</p>}
+                          {longDescription && (
+                            <button className="incentive-read-more" type="button">Read more →</button>
+                          )}
+                          {currentStep === 3 && !selectedCategories.includes('ALL') && selectedCategories.length > 0 && (
+                            <div className="incentive-footer" style={{marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border-color)'}}>
+                              <div className="incentive-categories-wrapper">
+                                <span className="incentive-label">Applies to:</span>
+                                <div className="incentive-categories-list">
+                                  {selectedCategories.slice(0, 3).map(cat => (
+                                    <span key={cat} className="category-pill">{cat}</span>
+                                  ))}
+                                  {selectedCategories.length > 3 && (
+                                    <span className="category-pill more">+{selectedCategories.length - 3}</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <div className="incentive-bg-icon">
+                          {variant === 'warning' ? '🔥' : variant === 'success' ? '💰' : '🚀'}
+                        </div>
                       </div>
-                    </>
-                  )}
+                    )}
+                  </div>
                 </div>
 
               </div>

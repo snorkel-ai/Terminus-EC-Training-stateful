@@ -21,10 +21,10 @@
   align-items: center;
   justify-content: center;
   gap: 1.25rem;
-  padding: 0.75rem 4rem 0.75rem 2rem; /* Increased right padding to clear button */
+  padding: 0.5rem 3rem 0.5rem 1.5rem; /* Reduced padding */
   position: relative;
   z-index: 2;
-  min-height: 60px;
+  min-height: 44px; /* Reduced height */
   max-width: 100%;
 }
 
@@ -58,19 +58,19 @@
 }
 
 .promo-title {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 0.95rem; /* Slightly smaller */
+  font-weight: 600; /* Less heavy (was 700) */
   line-height: 1.2;
   letter-spacing: -0.01em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Lighter shadow */
   font-family: var(--font-sans);
   white-space: nowrap;
   flex-shrink: 0; /* Always show full title */
 }
 
 .promo-message {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.95rem; /* Match title size */
+  font-weight: 400; /* Lighter weight (was 500) */
   opacity: 0.95;
   line-height: 1.4;
   /* Replaced display: flex with block to enable text-overflow */
