@@ -267,6 +267,18 @@
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
+.promo-status-badge.banner-only {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.promo-status-badge.card-only {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
 .promo-actions {
   display: flex;
   gap: var(--space-2);
@@ -368,4 +380,161 @@
 /* Make the card position relative for the drop indicator */
 .promo-card {
   position: relative;
+}
+
+/* ======================================
+   DISPLAY MODE SELECTOR
+   ====================================== */
+
+.wizard-label-hint {
+  font-size: var(--font-sm);
+  color: var(--text-tertiary);
+  margin-top: -4px;
+  margin-bottom: var(--space-3);
+}
+
+.display-mode-selector {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.display-mode-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.display-mode-option:hover {
+  border-color: var(--text-tertiary);
+  background: var(--card-bg);
+}
+
+.display-mode-option.selected {
+  border-color: var(--accent);
+  background: rgba(0, 113, 227, 0.05);
+}
+
+.display-mode-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.display-mode-label {
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.display-mode-desc {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* ======================================
+   DUAL PREVIEW (Banner + Card)
+   ====================================== */
+
+.dual-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.preview-section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+
+.preview-section-icon {
+  font-size: var(--font-base);
+}
+
+/* Mini Banner Preview */
+.mini-banner-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-banner-preview.accent {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border: 1px solid rgba(0, 113, 227, 0.3);
+  color: var(--accent);
+}
+
+.mini-banner-preview.warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(252, 211, 77, 0.1) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+
+.mini-banner-preview.success {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.1) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.mini-banner-preview.info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 197, 253, 0.1) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+}
+
+.mini-banner-emoji {
+  font-size: 1.25rem;
+}
+
+.mini-banner-text {
+  flex: 1;
+  font-size: var(--font-sm);
+  line-height: 1.4;
+}
+
+.mini-banner-text strong {
+  font-weight: var(--font-semibold);
+}
+
+.mini-banner-dismiss {
+  font-size: var(--font-xs);
+  opacity: 0.6;
+  padding: 4px;
+}
+
+/* Preview Note */
+.preview-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
 }

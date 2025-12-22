@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { usePromotions } from '../../hooks/usePromotions';
+import { useAuth } from '../../contexts/AuthContext';
 import './PromoBanner.css';
 
 export default function PromoBanner({ children }) {
+  const { profile } = useAuth();
   const { promotions, loading } = usePromotions();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dismissedIds, setDismissedIds] = useState(() => {
@@ -19,7 +21,10 @@ export default function PromoBanner({ children }) {
     return dismissed;
   });
 
-  const activePromos = promotions.filter(p => !dismissedIds.includes(p.id));
+  // Filter out dismissed promos and promos that are card-only (disable_banner)
+  const activePromos = promotions.filter(p => 
+    !dismissedIds.includes(p.id) && !p.disable_banner
+  );
 
   useEffect(() => {
     if (activePromos.length <= 1) return;
@@ -37,6 +42,11 @@ export default function PromoBanner({ children }) {
     setCurrentIndex(0); // Reset index to avoid bounds issues
   };
 
+  // Don't show banner if user can't see incentives
+  if (!profile?.can_see_incentives) {
+    return <>{children}</>;
+  }
+
   if (loading) return null;
   
   if (activePromos.length === 0) {
@@ -50,15 +60,6 @@ export default function PromoBanner({ children }) {
   return (
     <div className={`global-promo-banner promo-banner--${variant}`}>
       <div className="promo-bg-decoration">
-        {/* Falling Particles */}
-        <div className="promo-particle">💸</div>
-        <div className="promo-particle">💲</div>
-        <div className="promo-particle">💸</div>
-        <div className="promo-particle">💰</div>
-        <div className="promo-particle">💸</div>
-        <div className="promo-particle">💲</div>
-        <div className="promo-particle">💸</div>
-        <div className="promo-particle">💰</div>
         {/* Background Circles */}
         <div className="promo-bg-circle" />
         <div className="promo-bg-circle" />

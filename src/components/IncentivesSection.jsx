@@ -1,15 +1,22 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { usePromotions } from '../hooks/usePromotions';
+import { useAuth } from '../contexts/AuthContext';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from './ui';
 import './IncentivesSection.css';
 
 function IncentivesSection() {
+  const { profile } = useAuth();
   const { promotions, loading } = usePromotions();
   const [selectedPromo, setSelectedPromo] = useState(null);
 
-  // Only show active promos
-  const activePromos = promotions.filter(p => p.is_active);
+  // Don't show incentives if user doesn't have the flag
+  if (!profile?.can_see_incentives) {
+    return null;
+  }
+
+  // Only show active promos that aren't disabled for card display
+  const activePromos = promotions.filter(p => p.is_active && !p.disable_card);
 
   if (loading || activePromos.length === 0) {
     return null;
