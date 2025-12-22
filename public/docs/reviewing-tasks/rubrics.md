@@ -77,30 +77,26 @@ Rubrics are used to grade agent traces for task quality beyond unit/functional t
 
 ---
 
-## Points & Weights
+## Points & Weights (how to assign values)
 
-### Importance Tiers
+### Choose an importance tier for each check
 
-| Tier | Points | Use For |
-|------|--------|---------|
-| **Critical** | ±5 | Safety, core correctness behaviors (running tests, avoiding destructive ops), key steps without which success is unreliable |
-| **Major** | ±3 | Strongly recommended steps that materially affect solution reliability/quality (verification, recovery) |
-| **Minor** | ±1 to ±2 | Good practice and hygiene (inspection before transform, showing outputs, using appropriate tooling) |
+- **Critical (±5)**: Safety, core correctness behaviors (running tests, avoiding destructive ops), key steps without which success is unreliable.
+- **Major (±3)**: Strongly recommended steps that materially affect solution reliability/quality (verification, recovery).
+- **Minor (±1 to ±2)**: Good practice and hygiene (inspection before transform, showing outputs, using appropriate tooling).
 
 Use **negative values** for undesirable events; **positive values** for desirable events. Keep sentences **positive** in form.
 
-### Coverage & Balance
+### Coverage & balance
 
-- Ensure **every essential step** required to solve the task is represented by at least one **positive** check
-- **Include at least five checks** for a task
-- Include **edge-case & safety** penalties where relevant
-- Avoid double-counting (one behavior → one check, unless there are clearly distinct aspects)
+- Ensure **every essential step** required to solve the task is represented by at least one **positive** check. [Include at least five checks for a task]
+- Include **edge-case & safety** penalties where relevant.
+- Avoid double-counting (one behavior → one check, unless there are clearly distinct aspects).
 
-### Score Shape
+### Score shape
 
-- Target a **max process score** around **10–20 points** per task (enough granularity without noise)
-- Ensure scores reflect trace quality:
-  - Score(optimal correct trace) > Score(correct but sub-optimal trace) >> Score(incorrect or unsafe trace)
+- Target a **max process score** around **10–20 points** per task (enough granularity without noise).
+- Ensure that scores reflect the quality of an agent's trace. For example, Score(optimal correct trace) > Score(correct but sub-optimal trace) >> Score(incorrect or unsafe trace)
 
 ---
 
