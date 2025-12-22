@@ -91,7 +91,8 @@ export function useTasks() {
         // Egress reduced via: 30-min cache, refresh only when expired, excludes tags array
         const { data, error: fetchError } = await supabase
           .from('v_tasks_with_priorities')
-          .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
+          .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order, is_promoted, promo_multiplier, promo_title')
+          .order('is_promoted', { ascending: false })
           .order('display_order', { ascending: true, nullsFirst: false })
           .order('is_highlighted', { ascending: false })
           .order('category', { ascending: true })
@@ -471,7 +472,7 @@ export function useMySelectedTasks() {
       // Fetch task details with priorities (includes title and description for My Tasks display)
       const { data, error: fetchError } = await supabase
         .from('v_tasks_with_priorities')
-        .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order')
+        .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order, is_promoted, promo_multiplier, promo_title')
         .in('id', taskIds);
 
       if (fetchError) throw fetchError;

@@ -35,6 +35,7 @@ import MySelectedTasks from './components/Tasks/MySelectedTasks';
 import TaskDetail from './components/Tasks/TaskDetail';
 import OnboardingModal from './components/Onboarding/OnboardingModal';
 import { AnnouncementBanner } from './components/ui';
+import PromoBanner from './components/ui/PromoBanner';
 
 function App() {
   return (
@@ -58,12 +59,14 @@ function App() {
                   <div className="app">
                     <OnboardingModal />
                     <Header />
-                    <AnnouncementBanner 
-                      variant="subtle"
-                      title="Please do not reach out to reviewers directly; "
-                    >
-                      messaging them will not speed up your review.
-                    </AnnouncementBanner>
+                    <PromoBanner>
+                      <AnnouncementBanner 
+                        variant="subtle"
+                        title="Please do not reach out to reviewers directly; "
+                      >
+                        messaging them will not speed up your review.
+                      </AnnouncementBanner>
+                    </PromoBanner>
                     <Routes>
                       <Route path="/" element={<LandingPage />} />
                       <Route path="/overview" element={<MissionPage />} />

@@ -1,0 +1,268 @@
+/* PromoWizard.css */
+.promo-wizard-modal {
+  /* Inherit some base modal styles but override for wizard look */
+}
+
+.promo-wizard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 600px;
+}
+
+.promo-step-content {
+  flex: 1;
+  animation: fadeSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  height: 100%;
+}
+
+.wizard-split-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px; /* Form takes more space, preview fixed width */
+  gap: 48px;
+  height: 100%;
+}
+
+.wizard-left-panel {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-right: 16px; /* Space for scrollbar */
+}
+
+.wizard-right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 24px;
+  position: relative;
+}
+
+.preview-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.preview-container {
+  width: 100%;
+  position: sticky;
+  top: 0;
+}
+
+.promo-step-header {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.promo-step-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.promo-step-description {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 600px;
+}
+
+/* Form Styles */
+.wizard-form-group {
+  margin-bottom: 24px;
+}
+
+.wizard-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.wizard-input,
+.wizard-textarea,
+.wizard-select {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  transition: all 0.2s;
+}
+
+.wizard-input:focus,
+.wizard-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background-color: var(--bg-primary);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+}
+
+/* Variant Selection Grid - Updated for Banners */
+.variant-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.variant-banner-option {
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.variant-banner-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.variant-banner-option.selected {
+  border-color: var(--text-primary); /* High contrast border for selection */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+.variant-banner-option.variant-accent { background: linear-gradient(135deg, #0e3c8e 0%, #0071e3 100%); }
+.variant-banner-option.variant-warning { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); }
+.variant-banner-option.variant-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+.variant-banner-option.variant-info { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+
+/* Markdown Editor Area - Adjusted for split layout */
+.markdown-editor-container {
+  height: 100%;
+}
+
+.preview-pane {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 24px;
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+}
+
+/* Fake Modal Preview */
+.fake-modal-preview {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  width: 100%;
+}
+
+.fake-modal-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.fake-modal-body {
+  padding: 24px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Review Step */
+.review-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.review-details {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.review-row:last-child {
+  border-bottom: none;
+}
+
+/* Multiplier Input */
+.multiplier-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.multiplier-input-wrapper input {
+  width: 120px;
+}
+
+.multiplier-preview {
+  font-weight: var(--font-bold);
+  color: var(--color-success);
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+/* Navigation Footer */
+.onboarding-nav {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wizard-split-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .wizard-right-panel {
+    display: none; /* Hide side preview on smaller screens */
+  }
+}
