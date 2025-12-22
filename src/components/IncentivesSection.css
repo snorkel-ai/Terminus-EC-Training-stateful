@@ -66,8 +66,8 @@
 }
 
 .incentive-badge {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
+  background: rgba(0, 113, 227, 0.1);
+  color: var(--accent);
   padding: 6px 12px;
   border-radius: 8px;
   font-weight: 700;
@@ -75,25 +75,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid var(--border-color);
-}
-
-.variant-accent .incentive-badge {
-  background: rgba(0, 113, 227, 0.1);
-  color: var(--accent);
-  border-color: rgba(0, 113, 227, 0.2);
-}
-
-.variant-warning .incentive-badge {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--color-warning);
-  border-color: rgba(245, 158, 11, 0.2);
-}
-
-.variant-success .incentive-badge {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--color-success);
-  border-color: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(0, 113, 227, 0.2);
 }
 
 .incentive-date {
@@ -241,24 +223,6 @@
 
 .incentive-modal-header .incentive-badge {
   align-self: flex-start;
-}
-
-.incentive-modal-header .incentive-badge.variant-accent {
-  background: rgba(0, 113, 227, 0.1);
-  color: var(--accent);
-  border-color: rgba(0, 113, 227, 0.2);
-}
-
-.incentive-modal-header .incentive-badge.variant-warning {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--color-warning);
-  border-color: rgba(245, 158, 11, 0.2);
-}
-
-.incentive-modal-header .incentive-badge.variant-success {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--color-success);
-  border-color: rgba(16, 185, 129, 0.2);
 }
 
 .incentive-modal-date {

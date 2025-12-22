@@ -40,11 +40,10 @@ function IncentivesSection() {
         {activePromos.map(promo => {
           const isGlobal = promo.categories.includes('ALL');
           const isBannerOnly = promo.categories.length === 0;
-          const variant = promo.variant || 'accent';
           const hasLongDescription = !!promo.long_description;
 
           return (
-            <div key={promo.id} className={`incentive-card variant-${variant}`}>
+            <div key={promo.id} className="incentive-card">
               <div className="incentive-card-content">
                 <div className="incentive-top-row">
                   {promo.reward_multiplier > 1 && (
@@ -99,7 +98,7 @@ function IncentivesSection() {
               
               {/* Decorative background icon */}
               <div className="incentive-bg-icon">
-                {variant === 'warning' ? '🔥' : variant === 'success' ? '💰' : '🚀'}
+                {promo.variant === 'warning' ? '🔥' : promo.variant === 'success' ? '💰' : '🚀'}
               </div>
             </div>
           );
@@ -112,7 +111,7 @@ function IncentivesSection() {
           <ModalHeader onClose={() => setSelectedPromo(null)}>
             <div className="incentive-modal-header">
               {selectedPromo.reward_multiplier > 1 && (
-                <span className={`incentive-badge variant-${selectedPromo.variant || 'accent'}`}>
+                <span className="incentive-badge">
                   {formatBoost(selectedPromo.reward_multiplier)} Boost
                 </span>
               )}

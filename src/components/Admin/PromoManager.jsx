@@ -28,7 +28,9 @@ function PromoManager() {
   const [useSchedule, setUseSchedule] = useState(false);
   const [startsAt, setStartsAt] = useState('');
   const [endsAt, setEndsAt] = useState('');
-  const [displayOrder, setDisplayOrder] = useState(0);
+  // Drag and Drop State
+  const [draggedId, setDraggedId] = useState(null);
+  const [dragOverId, setDragOverId] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -100,6 +102,17 @@ function PromoManager() {
     return localString + ':00-08:00';
   };
 
+  const formatCompactDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${month}/${day}/${year} ${hours}:${minutes}`;
+  };
+
   // --- Actions ---
 
   const openCreateModal = () => {
@@ -117,7 +130,6 @@ function PromoManager() {
     setSelectedCategories(promo.categories || []);
     setRewardMultiplier(promo.reward_multiplier || 1.0);
     setVariant(promo.variant || 'accent');
-    setDisplayOrder(promo.display_order || 0);
     
     if (promo.starts_at || promo.ends_at) {
       setUseSchedule(true);
@@ -143,7 +155,6 @@ function PromoManager() {
     setUseSchedule(false);
     setStartsAt('');
     setEndsAt('');
-    setDisplayOrder(0);
   };
 
   const handleSave = async () => {
@@ -164,7 +175,7 @@ function PromoManager() {
         variant,
         starts_at: useSchedule ? pstInputToUtc(startsAt) : null,
         ends_at: useSchedule ? pstInputToUtc(endsAt) : null,
-        display_order: parseInt(displayOrder)
+        display_order: editingId ? undefined : promos.length // New promos go to end
       };
 
       let error;
@@ -231,10 +242,72 @@ function PromoManager() {
     }
   };
 
+  // Drag and Drop Handlers
+  const handleDragStart = (e, id) => {
+    setDraggedId(id);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e, id) => {
+    e.preventDefault();
+    if (id !== draggedId) {
+      setDragOverId(id);
+    }
+  };
+
+  const handleDragLeave = () => {
+    setDragOverId(null);
+  };
+
+  const handleDrop = async (e, targetId) => {
+    e.preventDefault();
+    setDragOverId(null);
+    
+    if (draggedId === targetId) {
+      setDraggedId(null);
+      return;
+    }
+
+    // Reorder locally first for immediate feedback
+    const draggedIndex = promos.findIndex(p => p.id === draggedId);
+    const targetIndex = promos.findIndex(p => p.id === targetId);
+    
+    const newPromos = [...promos];
+    const [draggedItem] = newPromos.splice(draggedIndex, 1);
+    newPromos.splice(targetIndex, 0, draggedItem);
+    
+    setPromos(newPromos);
+    setDraggedId(null);
+
+    // Update display_order in database
+    try {
+      const updates = newPromos.map((promo, index) => ({
+        id: promo.id,
+        display_order: index
+      }));
+
+      for (const update of updates) {
+        await supabase
+          .from('promotions')
+          .update({ display_order: update.display_order })
+          .eq('id', update.id);
+      }
+    } catch (error) {
+      console.error('Error updating order:', error);
+      // Refetch to get correct order on error
+      await fetchPromos();
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
   // --- Components ---
 
   const CardPreview = () => (
-    <div className={`incentive-card variant-${variant}`} style={{width: '100%'}}>
+    <div className="incentive-card" style={{width: '100%'}}>
       <div className="incentive-card-content">
         <div className="incentive-top-row">
           {parseFloat(rewardMultiplier) > 1 && (
@@ -244,7 +317,7 @@ function PromoManager() {
           )}
           {endsAt && useSchedule && (
             <span className="incentive-date">
-              Ends {new Date(pstInputToUtc(endsAt)).toLocaleString()}
+              Ends {formatCompactDate(pstInputToUtc(endsAt))}
             </span>
           )}
         </div>
@@ -284,30 +357,22 @@ function PromoManager() {
   );
 
   const ModalPreview = () => (
-    <div className="modal-preview-wrapper">
-      <div className="modal-preview-header">
-        <div className="incentive-modal-header">
-          {parseFloat(rewardMultiplier) > 1 && (
-            <span className={`incentive-badge variant-${variant}`} style={{alignSelf: 'flex-start'}}>
-              {formatBoost(parseFloat(rewardMultiplier))} Boost
-            </span>
-          )}
-          <h2 style={{fontSize: '24px', margin: '12px 0 0'}}>{title || 'Promo Title'}</h2>
-        </div>
+    <div className="fake-modal-preview">
+      <div className="fake-modal-header">
+        <h3>{title || 'Promo Title'}</h3>
+        <span className="fake-modal-close">✕</span>
       </div>
-      <div className="modal-preview-body">
+      <div className="fake-modal-body">
         {longDescription ? (
-          <div className="incentive-full-message markdown-content">
+          <div className="markdown-content">
             <ReactMarkdown>{longDescription}</ReactMarkdown>
           </div>
         ) : (
-          <p style={{color: 'var(--text-tertiary)', textAlign: 'center', marginTop: '40px'}}>
-            Content will appear here...
-          </p>
+          <div className="empty-preview">
+            <div className="empty-preview-icon">📝</div>
+            <p>Start typing in the editor to see your content preview</p>
+          </div>
         )}
-      </div>
-      <div className="modal-preview-footer">
-        <Button variant="secondary" size="sm">Close</Button>
       </div>
     </div>
   );
@@ -353,9 +418,19 @@ function PromoManager() {
             <p className="text-secondary">No promotions found.</p>
           ) : (
             promos.map(promo => (
-              <div key={promo.id} className={`promo-card ${!promo.is_active ? 'inactive' : ''}`}>
+              <div 
+                key={promo.id} 
+                className={`promo-card ${!promo.is_active ? 'inactive' : ''} ${draggedId === promo.id ? 'dragging' : ''} ${dragOverId === promo.id ? 'drag-over' : ''} variant-${promo.variant || 'accent'}`}
+                draggable
+                onDragStart={(e) => handleDragStart(e, promo.id)}
+                onDragOver={(e) => handleDragOver(e, promo.id)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, promo.id)}
+                onDragEnd={handleDragEnd}
+              >
                 <div className="promo-card-header">
                   <div className="promo-card-title">
+                    <span className="drag-handle" title="Drag to reorder">⋮⋮</span>
                     <h4>{promo.title}</h4>
                     <span className={`promo-status-badge ${promo.is_active ? 'active' : 'inactive'}`}>
                       {promo.is_active ? 'Active' : 'Inactive'}
@@ -468,15 +543,19 @@ function PromoManager() {
                       </div>
                       <div className="wizard-form-group">
                         <label className="wizard-label">Color Variant</label>
-                        <div className="banner-variant-grid">
+                        <div className="variant-selector">
                           {['accent', 'warning', 'success', 'info'].map(v => (
                             <div
                               key={v}
-                              className={`banner-variant-option ${variant === v ? 'selected' : ''}`}
+                              className={`variant-option ${variant === v ? 'selected' : ''}`}
                               onClick={() => setVariant(v)}
                             >
-                              <div className={`mini-banner-preview promo-banner--${v}`}>
-                                {v.charAt(0).toUpperCase() + v.slice(1)} Theme
+                              <div className={`mini-banner ${v}`}>
+                                <span>💸</span>
+                                <span className="mini-banner-title">
+                                  {title || 'Your Promo Title'} — {message || 'Short description here...'}
+                                </span>
+                                <span className="check-indicator">✓</span>
                               </div>
                             </div>
                           ))}

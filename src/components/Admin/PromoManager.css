@@ -198,6 +198,24 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  border-left: 4px solid var(--border-color);
+}
+
+/* Variant Color Indicators */
+.promo-card.variant-accent {
+  border-left-color: var(--accent);
+}
+
+.promo-card.variant-warning {
+  border-left-color: var(--color-warning);
+}
+
+.promo-card.variant-success {
+  border-left-color: var(--color-success);
+}
+
+.promo-card.variant-info {
+  border-left-color: #3b82f6;
 }
 
 .promo-card-header {
@@ -289,4 +307,53 @@
   color: var(--text-tertiary);
   font-size: var(--font-xs);
   margin: 0;
+}
+
+/* Drag and Drop Styles */
+.drag-handle {
+  cursor: grab;
+  color: var(--text-tertiary);
+  font-size: 14px;
+  letter-spacing: -2px;
+  padding: 4px;
+  margin-left: -8px;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.drag-handle:hover {
+  color: var(--text-secondary);
+}
+
+.promo-card {
+  cursor: default;
+  transition: all 0.2s ease;
+}
+
+.promo-card.dragging {
+  opacity: 0.5;
+  transform: scale(0.98);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.promo-card.drag-over {
+  border-color: var(--accent);
+  background: rgba(0, 113, 227, 0.02);
+  transform: translateY(4px);
+}
+
+.promo-card.drag-over::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+/* Make the card position relative for the drop indicator */
+.promo-card {
+  position: relative;
 }
