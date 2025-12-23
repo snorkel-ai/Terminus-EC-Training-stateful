@@ -127,6 +127,81 @@
   margin: 0;
 }
 
+/* Footer Task ID */
+.task-detail-modal .footer-task-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  user-select: none;
+  max-width: 100%; /* Prevent overflow */
+  overflow: hidden;
+}
+
+.task-detail-modal .footer-task-id:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.task-detail-modal .footer-task-id.copied {
+  color: var(--color-success);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.task-detail-modal .footer-task-id .id-value {
+  font-family: 'SF Mono', 'Fira Code', 'Monaco', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0; /* Flexbox truncation fix */
+}
+
+.task-detail-modal .footer-task-id .id-icon {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+  flex-shrink: 0; /* Prevent icon from squishing */
+}
+
+.task-detail-modal .footer-task-id:hover .id-icon,
+.task-detail-modal .footer-task-id.copied .id-icon {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Tooltip */
+.task-detail-modal .footer-task-id .id-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: var(--text-primary);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.task-detail-modal .footer-task-id:hover .id-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-8px);
+}
+
+.task-detail-modal .footer-task-id.copied .id-tooltip {
+  display: none; /* Hide tooltip when showing success state via color/icon */
+}
+
 /* Modal Footer */
 .task-detail-modal .task-detail-modal-footer {
   display: flex;
@@ -352,6 +427,8 @@
     margin-bottom: 4px;
     margin-right: 0;
     border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap; /* Allow wrapping if ID is long */
+    gap: 8px;
   }
   
   /* Hide cancel */
