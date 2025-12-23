@@ -33,6 +33,8 @@ function PromoManager() {
   const [dragOverId, setDragOverId] = useState(null);
   // Display Mode State: 'both' | 'banner_only' | 'card_only'
   const [displayMode, setDisplayMode] = useState('both');
+  // Rain animation toggle
+  const [showRainAnimation, setShowRainAnimation] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -169,6 +171,9 @@ function PromoManager() {
     } else {
       setDisplayMode('both');
     }
+    
+    // Load rain animation setting (default to true for existing promos)
+    setShowRainAnimation(promo.show_rain_animation !== false);
 
     setCurrentStep(1);
     setIsModalOpen(true);
@@ -185,6 +190,7 @@ function PromoManager() {
     setStartsAt('');
     setEndsAt('');
     setDisplayMode('both');
+    setShowRainAnimation(true);
   };
 
   const handleSave = async () => {
@@ -207,7 +213,8 @@ function PromoManager() {
         ends_at: useSchedule ? pstInputToUtc(endsAt) : null,
         display_order: editingId ? undefined : promos.length, // New promos go to end
         disable_card: displayMode === 'banner_only',
-        disable_banner: displayMode === 'card_only'
+        disable_banner: displayMode === 'card_only',
+        show_rain_animation: showRainAnimation
       };
 
       let error;
@@ -573,6 +580,18 @@ function PromoManager() {
                           ))}
                         </div>
                       </div>
+
+                      <div className="wizard-form-group">
+                        <label className="wizard-label">Banner Effects</label>
+                        <label className="checkbox-label">
+                          <input 
+                            type="checkbox"
+                            checked={showRainAnimation}
+                            onChange={e => setShowRainAnimation(e.target.checked)}
+                          />
+                          Show falling money animation (💵💰💸)
+                        </label>
+                      </div>
                     </div>
                   )}
 
@@ -729,22 +748,51 @@ Write your announcement here. You can use:
                   <div className="card-preview-wrapper" style={{width: currentStep === 3 ? '100%' : undefined}}>
                     {currentStep === 3 ? (
                       /* Inline Modal Preview to prevent scroll reset */
-                      <div className="fake-modal-preview">
-                        <div className="fake-modal-header">
-                          <h3>{title || 'Promo Title'}</h3>
-                          <span className="fake-modal-close">✕</span>
+                      <div className="incentive-modal-preview-wrapper" style={{background: 'var(--bg-primary)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-color)', width: '100%', maxWidth: '100%'}}>
+                        <div className="modal-header" style={{padding: 'var(--space-6)', borderBottom: '1px solid var(--border-color)'}}>
+                           <div className="incentive-modal-header">
+                             {parseFloat(rewardMultiplier) > 1 && (
+                               <span className="incentive-badge">
+                                 {formatBoost(parseFloat(rewardMultiplier))} Boost
+                               </span>
+                             )}
+                             <h2 style={{fontSize: '1.5rem', marginBottom: '8px'}}>{title || 'Promo Title'}</h2>
+                             {endsAt && useSchedule && (
+                               <p className="incentive-modal-date">Ends {formatCompactDate(pstInputToUtc(endsAt))}</p>
+                             )}
+                           </div>
                         </div>
-                        <div className="fake-modal-body">
-                          {longDescription ? (
-                            <div className="markdown-content">
-                              <ReactMarkdown>{longDescription}</ReactMarkdown>
-                            </div>
-                          ) : (
-                            <div className="empty-preview">
-                              <div className="empty-preview-icon">📝</div>
-                              <p>Start typing to see preview</p>
-                            </div>
-                          )}
+                        <div className="modal-body" style={{padding: 'var(--space-6)', maxHeight: '400px', overflowY: 'auto'}}>
+                          <div className="incentive-modal-content" style={{gap: 'var(--space-6)'}}>
+                             {longDescription ? (
+                                <div className="incentive-full-message markdown-content">
+                                   <ReactMarkdown>{longDescription}</ReactMarkdown>
+                                </div>
+                             ) : (
+                                <div className="empty-preview">
+                                  <div className="empty-preview-icon">📝</div>
+                                  <p>Start typing to see preview</p>
+                                </div>
+                             )}
+                             
+                             {/* Categories Preview */}
+                             {currentStep === 3 && selectedCategories.length > 0 && !selectedCategories.includes('ALL') && (
+                               <div className="incentive-modal-categories">
+                                 <span className="incentive-label">Applies to:</span>
+                                 <div className="incentive-categories-list">
+                                   {selectedCategories.map(cat => (
+                                     <span key={cat} className="category-pill">{cat}</span>
+                                   ))}
+                                 </div>
+                               </div>
+                             )}
+
+                             {currentStep === 3 && selectedCategories.includes('ALL') && (
+                               <div className="incentive-modal-categories">
+                                 <span className="category-pill global">All categories</span>
+                               </div>
+                             )}
+                          </div>
                         </div>
                       </div>
                     ) : (
@@ -756,13 +804,39 @@ Write your announcement here. You can use:
                             <div className="preview-section-label">
                               <span className="preview-section-icon">🔔</span> Banner Preview
                             </div>
-                            <div className={`mini-banner-preview ${variant}`}>
-                              <div className="mini-banner-emoji">💸</div>
-                              <div className="mini-banner-text">
-                                <strong>{title || 'Promo Title'}</strong>
-                                {message && <span> — {message}</span>}
+                            <div className={`global-promo-banner promo-banner--${variant}`} style={{position: 'relative', margin: 0, width: '100%', borderRadius: 'var(--radius-md)'}}>
+                              <div className="promo-bg-decoration">
+                                <div className="promo-bg-circle" />
+                                <div className="promo-bg-circle" />
+                                {showRainAnimation && (
+                                  <>
+                                    <span className="promo-rain promo-rain-1">💵</span>
+                                    <span className="promo-rain promo-rain-2">💰</span>
+                                    <span className="promo-rain promo-rain-3">💸</span>
+                                    <span className="promo-rain promo-rain-4">🤑</span>
+                                    <span className="promo-rain promo-rain-5">💵</span>
+                                    <span className="promo-rain promo-rain-6">💰</span>
+                                    <span className="promo-rain promo-rain-7">💸</span>
+                                    <span className="promo-rain promo-rain-8">💵</span>
+                                    <span className="promo-rain promo-rain-9">🤑</span>
+                                    <span className="promo-rain promo-rain-10">💰</span>
+                                    <span className="promo-rain promo-rain-11">💵</span>
+                                    <span className="promo-rain promo-rain-12">💸</span>
+                                  </>
+                                )}
                               </div>
-                              <div className="mini-banner-dismiss">✕</div>
+                              <div className="promo-banner-content" style={{width: '100%'}}>
+                                <div className="promo-text-content">
+                                  <span className="promo-title">{title || 'Promo Title'}</span>
+                                  {message && <span className="promo-message">{message}</span>}
+                                </div>
+                                <button className="promo-dismiss-btn">
+                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                  </svg>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         )}
@@ -773,7 +847,7 @@ Write your announcement here. You can use:
                             <div className="preview-section-label">
                               <span className="preview-section-icon">🎴</span> Card Preview
                             </div>
-                            <div className="incentive-card" style={{width: '100%'}}>
+                            <div className="incentive-card" style={{width: '100%', maxWidth: '400px', margin: '0 auto'}}>
                               <div className="incentive-card-content">
                                 <div className="incentive-top-row">
                                   {parseFloat(rewardMultiplier) > 1 && (
@@ -788,12 +862,18 @@ Write your announcement here. You can use:
                                   )}
                                 </div>
                                 <h3 className="incentive-title">{title || 'Promo Title'}</h3>
-                                {message && <p className="incentive-description">{message}</p>}
-                                {longDescription && (
-                                  <button className="incentive-read-more" type="button">Read more →</button>
+                                
+                                {(message || longDescription) && (
+                                  <div className="incentive-description-wrapper">
+                                    {message && <p className="incentive-description">{message}</p>}
+                                    {longDescription && (
+                                      <button className="incentive-read-more" type="button">Read more →</button>
+                                    )}
+                                  </div>
                                 )}
+
                                 {currentStep === 4 && !selectedCategories.includes('ALL') && selectedCategories.length > 0 && (
-                                  <div className="incentive-footer" style={{marginTop: 'auto', paddingTop: '16px'}}>
+                                  <div className="incentive-footer" style={{marginTop: 'auto'}}>
                                     <div className="incentive-categories-wrapper">
                                       <span className="incentive-label">Applies to:</span>
                                       <div className="incentive-categories-list">

@@ -6,8 +6,26 @@
   overflow: hidden;
   position: relative;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  /* Color transition via custom properties */
+  --gradient-start: #0e3c8e;
+  --gradient-end: #0071e3;
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
   background-size: 200% 200%;
   animation: gradientAnimation 15s ease infinite;
+  transition: --gradient-start 0.5s ease-in-out, --gradient-end 0.5s ease-in-out;
+}
+
+@property --gradient-start {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #0e3c8e;
+}
+
+@property --gradient-end {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #0071e3;
 }
 
 @keyframes gradientAnimation {
@@ -42,6 +60,37 @@
 
 .promo-animate-enter {
   animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fade transitions for promo rotation */
+.promo-fade-in {
+  animation: promoFadeIn 0.4s ease-out forwards;
+}
+
+.promo-fade-out {
+  animation: promoFadeOut 0.3s ease-in forwards;
+}
+
+@keyframes promoFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes promoFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
 
 .promo-text-content {
@@ -119,21 +168,25 @@
   height: 18px;
 }
 
-/* Variants */
+/* Variants - using custom properties for smooth transitions */
 .promo-banner--accent {
-  background: linear-gradient(135deg, #0e3c8e 0%, #0071e3 100%);
+  --gradient-start: #0e3c8e;
+  --gradient-end: #0071e3;
 }
 
 .promo-banner--warning {
-  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  --gradient-start: #f59e0b;
+  --gradient-end: #ea580c;
 }
 
 .promo-banner--success {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-start: #10b981;
+  --gradient-end: #059669;
 }
 
 .promo-banner--info {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --gradient-start: #3b82f6;
+  --gradient-end: #2563eb;
 }
 
 /* Decorative background elements */
@@ -167,6 +220,46 @@
   height: 100px;
   bottom: -20px;
   left: 20%;
+}
+
+/* Raining Money Icons */
+.promo-rain {
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  animation: moneyRain 2s linear infinite;
+  top: -20px;
+}
+
+.promo-rain-1  { left: 5%;  animation-delay: 0s;    animation-duration: 1.8s; }
+.promo-rain-2  { left: 12%; animation-delay: -0.3s; animation-duration: 2.2s; font-size: 0.9rem; }
+.promo-rain-3  { left: 22%; animation-delay: -0.7s; animation-duration: 1.6s; }
+.promo-rain-4  { left: 32%; animation-delay: -1.1s; animation-duration: 2s;   font-size: 1.1rem; }
+.promo-rain-5  { left: 42%; animation-delay: -0.2s; animation-duration: 1.9s; }
+.promo-rain-6  { left: 52%; animation-delay: -0.9s; animation-duration: 2.1s; font-size: 0.85rem; }
+.promo-rain-7  { left: 62%; animation-delay: -0.5s; animation-duration: 1.7s; }
+.promo-rain-8  { left: 72%; animation-delay: -1.3s; animation-duration: 2.3s; font-size: 0.95rem; }
+.promo-rain-9  { left: 80%; animation-delay: -0.4s; animation-duration: 1.5s; }
+.promo-rain-10 { left: 88%; animation-delay: -0.8s; animation-duration: 2s;   font-size: 1rem; }
+.promo-rain-11 { left: 95%; animation-delay: -1.0s; animation-duration: 1.8s; font-size: 0.9rem; }
+.promo-rain-12 { left: 8%;  animation-delay: -1.5s; animation-duration: 2.2s; }
+
+@keyframes moneyRain {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.35;
+  }
+  90% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateY(70px) rotate(25deg);
+    opacity: 0;
+  }
 }
 
 /* Progress Bar */

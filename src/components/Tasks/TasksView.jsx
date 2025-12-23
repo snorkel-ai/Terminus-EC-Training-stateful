@@ -2,6 +2,8 @@ import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { usePostHog } from 'posthog-js/react';
 import { useMySelectedTasks } from '../../hooks/useTasks';
 import { useTasksGallery } from '../../hooks/useTasksGallery';
+import { usePromotions } from '../../hooks/usePromotions';
+import { useAuth } from '../../contexts/AuthContext';
 import { useLoadingMessage } from '../../hooks/useLoadingMessage';
 import { TASK_LOADING_MESSAGES } from '../../utils/loadingMessages';
 import { Button, LoadingState, TaskDetailModal } from '../ui';
@@ -30,6 +32,9 @@ function TasksView() {
   
   // Keep myTasks for potential future use
   useMySelectedTasks();
+  const { promotions } = usePromotions();
+  const { profile } = useAuth();
+  
   const posthog = usePostHog();
   const hasTrackedView = useRef(false);
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
@@ -336,6 +341,10 @@ function TasksView() {
             <div className="tasks-grouped-layout">
               {groupedTasks.map(([category, categoryTasks]) => {
                 const counts = getCategoryCount(category);
+                
+                // Filter promotions visible to user
+                const userPromotions = profile?.can_see_incentives ? promotions : [];
+                
                 return (
                   <TaskCategorySection
                     key={category}
@@ -348,6 +357,7 @@ function TasksView() {
                     onExplore={handleExplore}
                     searchQuery={filters.search}
                     showAll={filters.categories?.includes(category)}
+                    activePromotions={userPromotions}
                   />
                 );
               })}

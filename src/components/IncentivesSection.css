@@ -82,7 +82,7 @@
 }
 
 .incentive-date {
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   font-weight: 500;
   background: var(--bg-secondary);
   padding: 4px 10px;
@@ -158,7 +158,7 @@
 }
 
 .incentive-label {
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   text-transform: uppercase;
   font-weight: 600;
   font-size: 11px;
@@ -184,7 +184,7 @@
 }
 
 .category-pill.more {
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   border-style: dashed;
 }
 
@@ -246,19 +246,13 @@
 
 .incentive-modal-date {
   font-size: var(--font-sm);
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   margin: 0;
   display: flex;
   align-items: center;
   gap: var(--space-2);
 }
 
-.incentive-modal-date::before {
-  content: '🕒';
-  font-size: 1.1em;
-  filter: grayscale(1);
-  opacity: 0.7;
-}
 
 .incentive-modal-content {
   display: flex;
@@ -267,9 +261,9 @@
 }
 
 .incentive-full-message {
-  font-size: 1.125rem; /* Larger base font for modal */
-  color: var(--text-secondary);
-  line-height: 1.75;
+  font-size: var(--font-base); /* Larger base font for modal */
+  color: var(--text-primary);
+  line-height: var(--leading-relaxed);
 }
 
 .incentive-full-message p {
@@ -293,7 +287,7 @@
 .incentive-modal-categories .incentive-label {
   font-size: var(--font-xs);
   letter-spacing: 0.05em;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
 }
 
 .incentive-modal-categories .category-pill {
@@ -306,9 +300,9 @@
 
 /* Markdown Content Styling */
 .markdown-content {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
+  font-size: var(--font-base);
+  color: var(--text-primary);
+  line-height: var(--leading-relaxed);
 }
 
 .markdown-content h1,
@@ -328,17 +322,18 @@
 .markdown-content h3 { font-size: 1.25rem; }
 
 .markdown-content p {
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
 }
 
 .markdown-content ul,
 .markdown-content ol {
-  margin-bottom: 1.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
   padding-left: 1.5em;
 }
 
 .markdown-content li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.25em;
   position: relative;
 }
 

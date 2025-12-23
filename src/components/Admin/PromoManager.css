@@ -64,7 +64,8 @@
   border-radius: var(--radius-md);
   background: var(--bg-secondary);
   color: var(--text-primary);
-  font-size: var(--font-base);
+  font-size: var(--font-sm);
+  transition: all 0.2s;
 }
 
 .form-group input:focus,
@@ -75,119 +76,79 @@
   box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.1);
 }
 
-.hint-text {
-  color: var(--text-tertiary);
-  font-size: var(--font-xs);
-  margin-top: var(--space-1);
-}
-
-/* Variant Options */
-.variant-options {
+/* Variant Selector */
+.variant-selector {
   display: flex;
+  flex-direction: column;
   gap: var(--space-3);
 }
 
 .variant-option {
-  padding: var(--space-2) var(--space-4);
   border: 2px solid transparent;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  padding: 2px;
   cursor: pointer;
-  font-weight: var(--font-medium);
   transition: all 0.2s;
-  opacity: 0.7;
-}
-
-.variant-option:hover {
-  opacity: 1;
-  transform: translateY(-1px);
 }
 
 .variant-option.selected {
-  opacity: 1;
-  border-color: currentColor;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent);
 }
 
-.variant-option.variant-accent { background: rgba(0, 113, 227, 0.1); color: var(--accent); }
-.variant-option.variant-warning { background: rgba(245, 158, 11, 0.1); color: var(--color-warning); }
-.variant-option.variant-success { background: rgba(16, 185, 129, 0.1); color: var(--color-success); }
-.variant-option.variant-info { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-
-/* Multiplier Input */
-.multiplier-input-wrapper {
+.mini-banner {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-}
-
-.multiplier-input-wrapper input {
-  width: 120px;
-}
-
-.multiplier-preview {
-  font-weight: var(--font-bold);
-  color: var(--color-success);
-}
-
-/* Checkbox Group */
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  max-height: 250px;
-  overflow-y: auto;
-  padding: var(--space-3);
-  border: 1px solid var(--border-color);
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
-  background: var(--bg-secondary);
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  cursor: pointer;
-  padding: var(--space-1) 0;
-}
-
-.checkbox-label.highlight {
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: var(--space-2);
-  margin-bottom: var(--space-2);
-  font-weight: var(--font-bold);
-}
-
-/* Preview Box */
-.preview-box {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  max-height: 200px;
-  overflow-y: auto;
-  margin-top: var(--space-4);
-}
-
-/* Review Step */
-.review-summary {
-  margin-top: var(--space-6);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.review-item {
   font-size: var(--font-sm);
-  color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Promo List Card Styles */
-.promos-grid {
+.mini-banner.accent {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border: 1px solid rgba(0, 113, 227, 0.3);
+  color: var(--accent);
+}
+
+.mini-banner.warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(252, 211, 77, 0.1) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+
+.mini-banner.success {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.1) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.mini-banner.info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 197, 253, 0.1) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+}
+
+.mini-banner-title {
+  flex: 1;
+  font-weight: var(--font-semibold);
+}
+
+.check-indicator {
+  display: none;
+  font-weight: bold;
+}
+
+.variant-option.selected .check-indicator {
+  display: block;
+}
+
+/* Drag and Drop List */
+.promo-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .promo-card {
@@ -198,30 +159,14 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  border-left: 4px solid var(--border-color);
-}
-
-/* Variant Color Indicators */
-.promo-card.variant-accent {
-  border-left-color: var(--accent);
-}
-
-.promo-card.variant-warning {
-  border-left-color: var(--color-warning);
-}
-
-.promo-card.variant-success {
-  border-left-color: var(--color-success);
-}
-
-.promo-card.variant-info {
-  border-left-color: #3b82f6;
+  position: relative;
 }
 
 .promo-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  width: 100%;
 }
 
 .promo-card-title {
@@ -231,40 +176,49 @@
 }
 
 .promo-card-title h4 {
-  font-size: var(--font-lg);
+  font-size: var(--font-base);
   font-weight: var(--font-semibold);
   margin: 0;
+  color: var(--text-primary);
+}
+
+.promo-card-message {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.promo-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .promo-status-badge {
-  font-size: var(--font-xs);
   padding: 2px 8px;
   border-radius: 12px;
+  font-size: var(--font-xs);
   font-weight: var(--font-medium);
+  text-transform: uppercase;
 }
 
 .promo-status-badge.active {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--color-success);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.promo-status-badge.inactive {
-  background: var(--bg-secondary);
-  color: var(--text-tertiary);
-  border: 1px solid var(--border-color);
-}
-
-.promo-status-badge.expired {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .promo-status-badge.scheduled {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.promo-status-badge.ended {
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-color);
 }
 
 .promo-status-badge.banner-only {
@@ -318,63 +272,6 @@
   padding: 2px 6px;
   border-radius: 4px;
   font-size: var(--font-xs);
-  border: 1px solid var(--border-color);
-}
-
-.promo-card-message {
-  color: var(--text-secondary);
-  font-size: var(--font-sm);
-  margin: 0;
-}
-
-.promo-card-has-details {
-  color: var(--text-tertiary);
-  font-size: var(--font-xs);
-  margin: 0;
-}
-
-/* Drag and Drop Styles */
-.drag-handle {
-  cursor: grab;
-  color: var(--text-tertiary);
-  font-size: 14px;
-  letter-spacing: -2px;
-  padding: 4px;
-  margin-left: -8px;
-  user-select: none;
-  transition: color 0.2s;
-}
-
-.drag-handle:hover {
-  color: var(--text-secondary);
-}
-
-.promo-card {
-  cursor: default;
-  transition: all 0.2s ease;
-}
-
-.promo-card.dragging {
-  opacity: 0.5;
-  transform: scale(0.98);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-.promo-card.drag-over {
-  border-color: var(--accent);
-  background: rgba(0, 113, 227, 0.02);
-  transform: translateY(4px);
-}
-
-.promo-card.drag-over::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--accent);
-  border-radius: 3px;
 }
 
 /* Make the card position relative for the drop indicator */
@@ -409,7 +306,7 @@
   border: 2px solid var(--border-color);
   border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .display-mode-option:hover {
@@ -471,61 +368,7 @@
   font-size: var(--font-base);
 }
 
-/* Mini Banner Preview */
-.mini-banner-preview {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  font-size: var(--font-sm);
-  position: relative;
-  overflow: hidden;
-}
-
-.mini-banner-preview.accent {
-  background: linear-gradient(135deg, rgba(0, 113, 227, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
-  border: 1px solid rgba(0, 113, 227, 0.3);
-  color: var(--accent);
-}
-
-.mini-banner-preview.warning {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(252, 211, 77, 0.1) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  color: #f59e0b;
-}
-
-.mini-banner-preview.success {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.1) 100%);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #22c55e;
-}
-
-.mini-banner-preview.info {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 197, 253, 0.1) 100%);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #3b82f6;
-}
-
-.mini-banner-emoji {
-  font-size: 1.25rem;
-}
-
-.mini-banner-text {
-  flex: 1;
-  font-size: var(--font-sm);
-  line-height: 1.4;
-}
-
-.mini-banner-text strong {
-  font-weight: var(--font-semibold);
-}
-
-.mini-banner-dismiss {
-  font-size: var(--font-xs);
-  opacity: 0.6;
-  padding: 4px;
-}
+/* Mini Banner Preview styles removed - using actual component styles */
 
 /* Preview Note */
 .preview-note {
