@@ -40,7 +40,7 @@ function IncentivesSection() {
   return (
     <section className="incentives-section">
       <div className="incentives-header">
-        <h2>Active Incentives & Promos</h2>
+        <h2>Active Incentives</h2>
       </div>
 
       <div className="incentives-grid">

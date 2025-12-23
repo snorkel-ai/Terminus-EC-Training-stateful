@@ -2,7 +2,8 @@
 
 /* Override onboarding modal for promo wizard */
 .promo-wizard-modal {
-  max-width: 1100px !important;
+  max-width: 1300px !important;
+  width: 90vw !important;
   height: 85vh !important;
   max-height: 800px !important;
   min-height: auto !important;
@@ -19,8 +20,8 @@
 /* Split Layout */
 .wizard-split-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 400px 1fr;
+  gap: 64px;
   flex: 1;
   min-height: 0;
 }
@@ -240,105 +241,7 @@
   margin-bottom: 24px;
 }
 
-/* Fake Modal Preview for Step 2 */
-.fake-modal-preview {
-  width: 100%;
-  max-width: 420px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
-
-.fake-modal-header {
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--bg-primary);
-}
-
-.fake-modal-header h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.fake-modal-close {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--bg-secondary);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-tertiary);
-  font-size: 14px;
-}
-
-.fake-modal-body {
-  padding: 24px;
-  max-height: 280px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-primary);
-  overscroll-behavior: contain;
-  scroll-behavior: auto;
-}
-
-.fake-modal-body .markdown-content h1,
-.fake-modal-body .markdown-content h2,
-.fake-modal-body .markdown-content h3 {
-  margin-top: 16px;
-  margin-bottom: 8px;
-}
-
-.fake-modal-body .markdown-content p {
-  margin-bottom: 12px;
-}
-
-.fake-modal-body .markdown-content ul,
-.fake-modal-body .markdown-content ol {
-  padding-left: 20px;
-  margin-bottom: 12px;
-}
-
-.fake-modal-body .markdown-content em {
-  font-style: italic;
-}
-
-.fake-modal-body .markdown-content strong {
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.fake-modal-body .markdown-content a {
-  color: var(--accent);
-  text-decoration: underline;
-}
-
-.fake-modal-body .markdown-content blockquote {
-  margin: 12px 0;
-  padding: 12px 16px;
-  border-left: 3px solid var(--accent);
-  background: var(--bg-secondary);
-  border-radius: 0 6px 6px 0;
-}
-
-.fake-modal-body .markdown-content code {
-  background: var(--bg-secondary);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: 'SF Mono', Menlo, monospace;
-  font-size: 0.9em;
-}
+/* Fake Modal Preview styles removed - now using actual component styles */
 
 /* Markdown Editor */
 .markdown-editor-wrapper {
@@ -444,7 +347,7 @@
 /* Card Preview Wrapper */
 .card-preview-wrapper {
   width: 100%;
-  max-width: 360px;
+  max-width: 100%;
   position: relative;
   z-index: 1;
 }
