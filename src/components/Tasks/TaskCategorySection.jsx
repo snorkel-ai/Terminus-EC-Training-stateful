@@ -15,7 +15,8 @@ function TaskCategorySection({
   onExplore,
   searchQuery,
   showAll = false,
-  isMine = false
+  isMine = false,
+  activePromotions = []
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const scrollContainerRef = useRef(null);
@@ -34,6 +35,11 @@ function TaskCategorySection({
   const isPrioritized = tasks.some(t => t.is_special || t.priority_tag);
   const promotedTask = tasks.find(t => t.is_promoted);
   const isPromoted = !!promotedTask;
+
+  // Check if this category has an active incentive
+  const hasActiveIncentive = activePromotions.some(p => 
+    p.is_active && (p.categories.includes('ALL') || p.categories.includes(title))
+  );
 
   // Show empty state when no available tasks but category has claimed tasks
   if (tasks.length === 0) {
@@ -89,6 +95,9 @@ function TaskCategorySection({
           <div className="section-title-wrapper">
             <h3>
               {title}
+              {hasActiveIncentive && (
+                <span className="category-incentive-icon" title="This category is currently incentivized! Check the active promotions for details.">🔥</span>
+              )}
               <button 
                 className="section-count section-count-link" 
                 onClick={(e) => {
