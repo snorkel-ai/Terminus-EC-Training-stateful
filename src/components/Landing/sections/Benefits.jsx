@@ -6,7 +6,7 @@ const Benefits = () => {
     {
       icon: <IconImpact />,
       title: 'Real Impact',
-      description: 'Your work directly benchmarks and improves the capabilities of next-gen AI models.'
+      description: 'Your work helps evaluate and push the boundaries of next-gen AI models.'
     },
     {
       icon: <IconPay />,

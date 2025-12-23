@@ -33,7 +33,6 @@ const MissionPage = () => {
           </div>
 
           <div className="mission-section contributions">
-            <h3>Your contributions directly shape this benchmark.</h3>
             <p className="mission-text">
               By designing tasks that expose failure modes in frontier models, you help generate the empirical signal needed to:
             </p>
