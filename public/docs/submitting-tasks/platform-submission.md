@@ -241,7 +241,8 @@ Run final checks:
 harbor run --agent oracle --path <task-folder>
 
 # LLMaJ checks
-harbor tasks check -m openai/@openai/gpt-5  harbor_tasks/<task_name>
+# harbor tasks check -m openai/@openai/gpt-5  harbor_tasks/<task_name>
+uv run harbor tasks check harbor_tasks/<task_name> --model openai/@openai-tbench/gpt-5
 ```
 
 ## Step 12: Create ZIP File
