@@ -133,7 +133,7 @@ function TaskCard({
       {/* Corner ribbon for completed/accepted tasks */}
       {isCompleted && (
         <div className="task-card__ribbon">
-          <span>Accepted</span>
+          <span>Marked as Accepted</span>
         </div>
       )}
       
@@ -176,7 +176,7 @@ function TaskCard({
                 </svg>
               )}
               {isCompleted && completedAt 
-                ? `Accepted ${formatTimeSince(completedAt)}`
+                ? `Marked as accepted ${formatTimeSince(completedAt)}`
                 : `Claimed ${formatTimeSince(claimedAt)}`
               }
             </span>

@@ -567,8 +567,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   overflow: hidden;
   pointer-events: none;
   z-index: 10;
@@ -577,18 +577,18 @@
 .modal-ribbon span {
   position: absolute;
   display: block;
-  width: 150px;
+  width: 190px;
   padding: 6px 0;
   background: var(--color-success, #10b981);
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   text-align: center;
   transform: rotate(-45deg);
-  top: 22px;
-  left: -38px;
+  top: 32px;
+  left: -48px;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
@@ -605,15 +605,15 @@
 /* Modal ribbon responsive */
 @media (max-width: 480px) {
   .modal-ribbon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
   }
   
   .modal-ribbon span {
-    width: 120px;
+    width: 160px;
     padding: 4px 0;
-    font-size: 0.6rem;
-    top: 16px;
-    left: -32px;
+    font-size: 0.5rem;
+    top: 24px;
+    left: -40px;
   }
 }

@@ -29,3 +29,4 @@ WHERE is_active = true
   AND (ends_at IS NULL OR ends_at >= now())
 ORDER BY display_order ASC;
 
+

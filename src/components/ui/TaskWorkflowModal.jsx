@@ -3,6 +3,7 @@ import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS, MAX_ACTIVE_TASKS }
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Badge } from './Badge';
+import { Note } from './Note';
 import { DifficultyRating } from './TaskCard';
 import { FiCopy, FiCheck } from 'react-icons/fi';
 import './TaskDetailModal.css';
@@ -164,7 +165,7 @@ export function TaskWorkflowModal({
         {/* Corner ribbon for accepted tasks only */}
         {isTaskAccepted && (
           <div className="modal-ribbon">
-            <span>Accepted</span>
+            <span>Marked as Accepted</span>
           </div>
         )}
         
@@ -223,7 +224,7 @@ export function TaskWorkflowModal({
               })}</div>
             )}
             {isTaskAccepted && displayTask.completed_at && (
-              <div>🎉 Accepted on {new Date(displayTask.completed_at).toLocaleDateString('en-US', { 
+              <div>🎉 You marked this as accepted on {new Date(displayTask.completed_at).toLocaleDateString('en-US', { 
                 month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
               })}</div>
             )}
@@ -231,6 +232,12 @@ export function TaskWorkflowModal({
           
           {/* Task ID section - removed as moved to header */}
           
+          {/* Note for tasks in review */}
+          {isTaskInReview && (
+            <Note title="Important" variant="info" className="modal-note">
+              Only mark as accepted once confirmed on the Snorkel Expert platform.
+            </Note>
+          )}
         </div>
 
         <div className="task-detail-modal-footer">

@@ -127,6 +127,12 @@
   margin: 0;
 }
 
+/* Note inside modal */
+.task-detail-modal .modal-note {
+  margin-top: var(--space-4);
+  text-align: left;
+}
+
 /* Footer Task ID */
 .task-detail-modal .footer-task-id {
   display: inline-flex;
