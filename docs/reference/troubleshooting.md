@@ -132,12 +132,13 @@ echo $OPENAI_BASE_URL
 - Task timeout too short (increase in task.toml)
 - Solution is inefficient
 - Environment is slow to start
+- Task is too complicated
 
 **Fix:**
 ```toml
 # In task.toml
 [agent]
-timeout_sec = 3600.0  # Increase from default
+timeout_sec = 1200.0  # Increase from default
 ```
 
 ### Agent passes too often (> 80%)
