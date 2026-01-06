@@ -13,6 +13,7 @@ export const docsConfig = {
       title: 'Submission Process',
       items: [
         { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
+        { slug: 'submitting-tasks/cli-user-guide', title: 'CLI User Guide' },
         { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
         { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
       ]
