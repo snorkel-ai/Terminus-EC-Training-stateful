@@ -124,23 +124,19 @@ The test runner script sets up the environment, runs pytest, and produces a rewa
 ```bash
 #!/bin/bash
 cd /tests
-
 # Set up virtual environment
 uv venv
 source .venv/bin/activate
-
 # Install test dependencies
-uv pip install pytest requests
-
+uv pip install pytest==8.4.1 requests==2.32.2
 # Run tests
-pytest test_outputs.py -v
-
+pytest test_outputs.py --rA
 # Produce reward file (REQUIRED)
 if [ $? -eq 0 ]; then
   echo 1 > /logs/verifier/reward.txt
 else
   echo 0 > /logs/verifier/reward.txt
-fi
+fi 
 ```
 
 > **Note:** Test dependencies should be installed in `tests/test.sh`, NOT in the Dockerfile. The script must produce `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`.
