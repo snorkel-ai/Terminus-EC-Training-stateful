@@ -144,11 +144,11 @@ privileged: true
 
 **How to fix:**
 ```bash
-# Check locally
-ruff check tests/test_outputs.py
+# Check locally - run your task folder
+ruff check <task-folder>
 
 # Auto-fix
-ruff check --fix tests/test_outputs.py
+ruff check --fix <task-folder>
 ```
 
 ---
