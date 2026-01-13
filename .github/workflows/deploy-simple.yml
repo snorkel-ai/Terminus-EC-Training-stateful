@@ -1,14 +1,9 @@
-name: Deploy Simple (DISABLED)
+name: Deploy to GitHub Pages (Fallback)
 
-# DISABLED: Using deploy.yml with GitHub Actions Pages deployment instead
-# on:
-#   push:
-#     branches:
-#       - main
-#   workflow_dispatch:
-
+# FALLBACK: Use this if the primary deploy.yml workflow fails
+# Trigger manually from Actions tab → "Deploy to GitHub Pages (Fallback)" → "Run workflow"
 on:
-  workflow_dispatch:  # Only allow manual trigger if needed for testing
+  workflow_dispatch:
 
 permissions:
   contents: write
