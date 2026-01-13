@@ -35,7 +35,7 @@ You can either:
 
 ### How do I claim an existing task idea?
 
-DM Puyun Tafreshi or Alejandro Sanchez on Slack with the line number of the task you want to claim. Don't request more than 2-3 tasks at once—you'll be capped until you complete some.
+Go to the "Task Gallery" tab, search for the desired task, click on the task card and click "Claim Task".
 
 ### How do I make a hard task?
 
