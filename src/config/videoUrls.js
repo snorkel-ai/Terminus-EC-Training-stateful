@@ -1,5 +1,6 @@
 /**
  * Video URLs configuration
+ * Updated: 2026-01-13
  * 
  * Videos are hosted on Supabase Storage in the 'documentation-videos' bucket.
  * 
