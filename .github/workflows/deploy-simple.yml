@@ -1,10 +1,14 @@
-name: Deploy Simple
+name: Deploy Simple (DISABLED)
+
+# DISABLED: Using deploy.yml with GitHub Actions Pages deployment instead
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_dispatch:  # Only allow manual trigger if needed for testing
 
 permissions:
   contents: write
