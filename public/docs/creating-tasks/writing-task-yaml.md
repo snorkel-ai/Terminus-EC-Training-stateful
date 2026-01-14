@@ -37,8 +37,8 @@ The `task.toml` file contains configuration and metadata:
 version = "1.0"
 
 [metadata]
-author_name = "Your Name"
-author_email = "your.email@example.com"
+author_name = "anonymous"
+author_email = "anonymous"
 difficulty = "medium"
 category = "debugging"
 tags = ["python", "memory-leak", "debugging"]
@@ -47,7 +47,7 @@ tags = ["python", "memory-leak", "debugging"]
 timeout_sec = 120.0
 
 [agent]
-timeout_sec = 120.0
+timeout_sec = 600.0
 
 [environment]
 build_timeout_sec = 600.0

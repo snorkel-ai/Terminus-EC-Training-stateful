@@ -57,14 +57,14 @@ version = "1.0"
 difficulty = "medium"
 category = "debugging"
 tags = ["category", "type", "difficulty"]
-author_name = "Your Name"
-author_email = "your.email@example.com"
+author_name = "anonymous"
+author_email = "anonymous"
 
 [verifier]
 timeout_sec = 120.0
 
 [agent]
-timeout_sec = 120.0
+timeout_sec = 600.
 
 [environment]
 build_timeout_sec = 600.0
@@ -202,10 +202,10 @@ Run your task against real agents (minimum 2-3 times each):
 
 ```bash
 # GPT-5
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
 
 # Claude Sonnet 4.5
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
 ```
 
 ---
@@ -271,8 +271,8 @@ Before submitting, verify:
 - [ ] All required files present (`instruction.md`, `task.toml`, `environment/Dockerfile`, `solution/solve.sh`, `tests/test.sh`)
 - [ ] `instruction.md` is human-written and clear
 - [ ] `task.toml` has all required fields
-- [ ] `tests/test.sh` produces `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`
-- [ ] solution.sh is deterministic
+- [ ] `tests/test.sh` produces `/logs/verifier/reward.txt`
+- [ ] solution/solve.sh is deterministic
 - [ ] All tests have docstrings
 - [ ] Dependencies are pinned
 - [ ] Canary strings included
@@ -284,6 +284,7 @@ Before submitting, verify:
 
 ## Next Steps
 
+- [Quality Guidelines](/portal/docs/reference/quality-guidelines) — Required quality standards for TBench 2.0
 - [Submission Checklist](/portal/docs/submitting-tasks/submission-checklist) — Final pre-submission verification
 - [CI Checks Reference](/portal/docs/testing-and-validation/ci-checks-reference) — Detailed check explanations
 - [Common Errors](/portal/docs/reviewing-tasks/common-errors) — Avoid these mistakes

@@ -88,17 +88,11 @@ Don't rewrite everything. Fix only what's needed.
 ### Explain Your Changes
 
 When you resubmit:
-
-**GitHub:** Reply to each comment explaining what you changed.
-
 **Platform:** Add a note with your revision summary.
 
 ### Re-request Review
 
 After pushing changes, let the reviewer know:
-
-**GitHub:** Click "Re-request review"
-
 **Platform:** Update submission status
 
 ## Disagreements

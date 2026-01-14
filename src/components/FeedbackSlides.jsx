@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { VIDEO_URLS } from '../config/videoUrls';
 import './Videos.css';
 import './Workbook.css';
 
@@ -40,7 +41,7 @@ function FeedbackSlides() {
                   objectFit: 'contain'
                 }}
               >
-                <source src="/Terminus-EC-Training/video1344882306.mp4" type="video/mp4" />
+                <source src={VIDEO_URLS.officeHours1112} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>

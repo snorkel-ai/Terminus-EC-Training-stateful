@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
+import { AUTH_EVENTS, AUTH_METHODS, SESSION_TYPES, AUTH_STORAGE_KEYS } from '../utils/authEvents';
 
 const AuthContext = createContext({});
 
@@ -43,25 +44,85 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchUserProfile = async (userId) => {
+  /**
+   * Clear auth tracking storage after successful login
+   */
+  const clearAuthTracking = useCallback(() => {
     try {
+      sessionStorage.removeItem(AUTH_STORAGE_KEYS.LOGIN_PAGE_VIEWS);
+      sessionStorage.removeItem(AUTH_STORAGE_KEYS.LOGIN_PAGE_TRACKED);
+      sessionStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_ATTEMPT_ID);
+    } catch {
+      // Storage may be unavailable
+    }
+  }, []);
+
+  /**
+   * Get the stored auth attempt ID for correlating events
+   */
+  const getAttemptId = useCallback(() => {
+    try {
+      return sessionStorage.getItem(AUTH_STORAGE_KEYS.AUTH_ATTEMPT_ID);
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const fetchUserProfile = async (userId, retryCount = 0, authMethod = null) => {
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY_MS = 500;
+    
+    try {
+      // Select only needed columns to reduce egress
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, email, github_username, github_avatar_url, first_name, last_name, bio, linkedin_url, website_url, specialties, onboarding_completed, slack_joined, payments_setup, dev_env_setup, is_admin, can_see_incentives, created_at')
         .eq('id', userId)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        // If profile not found and we haven't exhausted retries, wait and retry
+        // This handles the race condition where the database trigger hasn't finished yet
+        if (error.code === 'PGRST116' && retryCount < MAX_RETRIES) {
+          console.log(`Profile not ready yet, retrying in ${RETRY_DELAY_MS}ms... (attempt ${retryCount + 1}/${MAX_RETRIES})`);
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+          return fetchUserProfile(userId, retryCount + 1, authMethod);
+        }
+        throw error;
+      }
+      
       setProfile(data);
       
-      // Identify user in PostHog for analytics
+      // Identify user in PostHog for analytics and track auth success
       if (posthog && data) {
+        // Determine auth method from profile if not provided
+        const method = authMethod || (data.github_username ? AUTH_METHODS.GITHUB : AUTH_METHODS.EMAIL);
+        
+        // Determine session type (new vs returning)
+        const sessionType = posthog.get_distinct_id() === userId 
+          ? SESSION_TYPES.RETURNING 
+          : SESSION_TYPES.NEW;
+        
+        // Track auth success event
+        posthog.capture(AUTH_EVENTS.AUTH_SUCCESS, {
+          method,
+          session_type: sessionType,
+          attempt_id: getAttemptId(),
+        });
+        
+        // Identify user with auth properties
         posthog.identify(userId, {
           email: data.email,
           github_username: data.github_username,
           name: [data.first_name, data.last_name].filter(Boolean).join(' ') || undefined,
           created_at: data.created_at,
+          is_authenticated: true,
+          auth_method: method,
+          last_auth_at: new Date().toISOString(),
         });
+        
+        // Clear login page tracking on success
+        clearAuthTracking();
       }
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -149,6 +210,11 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = async () => {
     try {
+      // Track logout event before signing out
+      if (posthog) {
+        posthog.capture(AUTH_EVENTS.AUTH_LOGOUT);
+      }
+      
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       setProfile(null);
@@ -229,6 +295,48 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const resetPassword = async (email) => {
+    try {
+      // Get the base path for redirect URL
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      let basePath = '';
+      
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        if (pathParts[0] === 'Terminus-EC-Training-stateful') {
+          basePath = '/Terminus-EC-Training-stateful';
+        }
+      } else {
+        basePath = '/Terminus-EC-Training-stateful';
+      }
+      
+      const redirectTo = `${window.location.origin}${basePath}/reset-password`;
+      
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: redirectTo,
+      });
+      
+      if (error) throw error;
+      return { error: null };
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      return { error };
+    }
+  };
+
+  const updatePassword = async (newPassword) => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      
+      if (error) throw error;
+      return { error: null };
+    } catch (error) {
+      console.error('Error updating password:', error);
+      return { error };
+    }
+  };
+
   const value = {
     user,
     profile,
@@ -240,6 +348,8 @@ export const AuthProvider = ({ children }) => {
     deleteAccount,
     completeOnboarding,
     updateProfile,
+    resetPassword,
+    updatePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import ParticleCanvas from '../Landing/ParticleCanvas';
+import { useAuthTracking } from '../../hooks/useAuthTracking';
 import './Login.css';
 
 function Login() {
-  const { signInWithGitHub, signInWithEmail, signUpWithEmail, user } = useAuth();
+  const { signInWithGitHub, signInWithEmail, signUpWithEmail, user, profile } = useAuth();
   const navigate = useNavigate();
+  const { 
+    trackAuthAttemptStarted, 
+    trackAuthFailed, 
+    trackLoginPageView,
+    AUTH_METHODS,
+    AUTH_SOURCES,
+  } = useAuthTracking();
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
@@ -16,21 +24,35 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Track login page view for redirect loop detection (on mount)
   useEffect(() => {
-    if (user) {
+    trackLoginPageView();
+  }, [trackLoginPageView]);
+
+  // Navigate when both user AND profile are ready (what ProtectedRoute requires)
+  useEffect(() => {
+    if (user && profile) {
       navigate('/portal');
     }
-  }, [user, navigate]);
+  }, [user, profile, navigate]);
 
   const handleGitHubSignIn = async () => {
     try {
       setLoading(true);
       setError(null);
       setMessage(null);
+      
+      // Track auth attempt started
+      trackAuthAttemptStarted(AUTH_METHODS.GITHUB, AUTH_SOURCES.LOGIN_PAGE);
+      
+      // Small delay to show loading state before redirect
+      await new Promise(resolve => setTimeout(resolve, 300));
       await signInWithGitHub();
+      // Don't reset loading - we're redirecting to GitHub OAuth
     } catch (error) {
+      // Track auth failure
+      trackAuthFailed(AUTH_METHODS.GITHUB, error);
       setError(error.message);
-    } finally {
       setLoading(false);
     }
   };
@@ -42,19 +64,28 @@ function Login() {
       setError(null);
       setMessage(null);
       
+      // Track auth attempt started
+      trackAuthAttemptStarted(AUTH_METHODS.EMAIL, AUTH_SOURCES.LOGIN_PAGE, {
+        is_signup: isSignUp,
+      });
+      
       if (isSignUp) {
         const { user } = await signUpWithEmail(email, password);
         if (user) {
           setMessage('Check your email to confirm your account.');
           setIsSignUp(false); // Switch back to login mode
+          setLoading(false);
         }
       } else {
+        // Don't navigate here - let the useEffect handle it once
+        // user AND profile are set (which is what ProtectedRoute requires)
         await signInWithEmail(email, password);
-        navigate('/portal');
+        // Keep loading true - navigation will happen via useEffect
       }
     } catch (error) {
+      // Track auth failure
+      trackAuthFailed(AUTH_METHODS.EMAIL, error, { is_signup: isSignUp });
       setError(error.message);
-    } finally {
       setLoading(false);
     }
   };
@@ -67,8 +98,6 @@ function Login() {
 
   return (
     <div className="login-page">
-      <ParticleCanvas />
-      
       <div className="login-container">
         <div className="login-card">
           <div className="login-header">
@@ -100,17 +129,26 @@ function Login() {
                 <button
                   onClick={handleGitHubSignIn}
                   disabled={loading}
-                  className="github-button"
+                  className={`github-button ${loading ? 'github-button-loading' : ''}`}
                 >
-                  <svg
-                    className="github-icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                  </svg>
-                  {loading ? 'Signing in...' : 'Login with GitHub'}
+                  {loading ? (
+                    <>
+                      <span className="github-button-spinner" />
+                      Opening GitHub...
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="github-icon"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                      </svg>
+                      Login with GitHub
+                    </>
+                  )}
                 </button>
 
                 <div className="regular-login-section">
@@ -146,6 +184,12 @@ function Login() {
                     className="form-input"
                   />
                 </div>
+
+                {!isSignUp && (
+                  <div className="forgot-password-link">
+                    <Link to="/forgot-password">Forgot your password?</Link>
+                  </div>
+                )}
 
                 <button
                   type="submit"

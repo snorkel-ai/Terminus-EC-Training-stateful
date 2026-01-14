@@ -41,7 +41,7 @@ sudo usermod -aG docker $USER
 
 **Debug:**
 ```bash
-cd harbor_tasks/<task-name>
+cd <task-folder>
 docker build -t test . 2>&1 | tail -50
 ```
 
@@ -49,74 +49,10 @@ docker build -t test . 2>&1 | tail -50
 
 **Enter interactive mode to debug:**
 ```bash
-uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 ```
 
 Then run commands manually to find the issue.
-
----
-
-## Git & GitHub Issues
-
-### "Permission denied (publickey)"
-
-**Cause:** SSH key not set up or not added to GitHub.
-
-**Fix:**
-1. Generate SSH key:
-```bash
-ssh-keygen -t ed25519 -C "your.email@example.com"
-```
-
-2. Add to SSH agent:
-```bash
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-```
-
-3. Add to GitHub:
-```bash
-cat ~/.ssh/id_ed25519.pub
-# Copy output and add to GitHub → Settings → SSH Keys
-```
-
-4. Test:
-```bash
-ssh -T git@github.com
-```
-
-### Can't push to repository
-
-**Check:**
-1. You have repository access (can view on GitHub)
-2. You're on a feature branch, not main
-3. SSH key is working
-
-**If no access:** DM Puyun or Connor on Slack.
-
-### Merge conflicts
-
-**Fix:**
-```bash
-git fetch origin
-git rebase origin/main
-# Resolve conflicts in your editor
-git add .
-git rebase --continue
-git push --force-with-lease origin your-branch
-```
-
-### Accidentally committed to main
-
-**Fix:**
-```bash
-# Create branch from current state
-git checkout -b task/my-task
-
-# Reset main to remote
-git checkout main
-git reset --hard origin/main
-```
 
 ---
 
@@ -196,12 +132,13 @@ echo $OPENAI_BASE_URL
 - Task timeout too short (increase in task.toml)
 - Solution is inefficient
 - Environment is slow to start
+- Task is too complicated
 
 **Fix:**
 ```toml
 # In task.toml
 [agent]
-timeout_sec = 3600.0  # Increase from default
+timeout_sec = 1200.0  # Increase from default
 ```
 
 ### Agent passes too often (> 80%)
@@ -260,10 +197,9 @@ Include:
 > "It's not working"
 
 **Good:**
-> "When I run `uv run harbor run --agent oracle`, I get `FileNotFoundError: /app/data/input.csv`. The file exists in my task folder and is included in the Dockerfile COPY command. Full error: [paste]"
+> "When I run `harbor run --agent oracle`, I get `FileNotFoundError: /app/data/input.csv`. The file exists in my task folder and is included in the Dockerfile COPY command. Full error: [paste]"
 
 ### Where to ask:
 
 - **Slack:** `#ec-terminus-submission`
-- **GitHub:** Comment on your PR
 - **Payment issues:** Reach out to Snorkel

@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { Card } from './Card';
+import { Badge } from './Badge';
 import './TaskCard.css';
 
 // Helper to highlight search matches in text
@@ -59,8 +61,9 @@ export const DifficultyRating = ({ difficulty }) => {
 
 /**
  * TaskCard - Reusable task card component for displaying task information
+ * Built on top of the Card design system component
  * 
- * @param {Object} task - Task object with description, subcategory, difficulty, etc.
+ * @param {Object} task - Task object with title, category, subcategory, difficulty, etc.
  * @param {boolean} isCompleted - Whether the task is marked as completed
  * @param {boolean} isHighlighted - Whether to show highlighted/priority styling
  * @param {string} searchQuery - Search query for highlighting matches
@@ -83,24 +86,45 @@ function TaskCard({
   statusBadge,
   className = ''
 }) {
-  // Search highlighting for description
-  const displayedDesc = useMemo(() => {
-    if (!searchQuery || !task?.description) return task?.description;
-    return highlightMatches(task.description, searchQuery);
-  }, [task?.description, searchQuery]);
-
   // Search highlighting for title
   const displayedTitle = useMemo(() => {
-    const title = task?.subcategory || task?.subsubcategory || 'Task';
+    const title = task?.title || 'Task';
     if (!searchQuery) return title;
     return highlightMatches(title, searchQuery);
+  }, [task?.title, searchQuery]);
+
+  // Search highlighting for category breadcrumb
+  const displayedSubcategory = useMemo(() => {
+    const subcategory = task?.subcategory || task?.subsubcategory;
+    if (!searchQuery || !subcategory) return subcategory;
+    return highlightMatches(subcategory, searchQuery);
   }, [task?.subcategory, task?.subsubcategory, searchQuery]);
 
   const isClickable = !!onClick;
 
+  // Build class names for task-specific styling
+  const taskClasses = [
+    'task-card',
+    isCompleted && 'task-card--completed',
+    isHighlighted && 'task-card--highlighted',
+    className
+  ].filter(Boolean).join(' ');
+
+  // Map status badge to Badge variant
+  const getStatusBadgeVariant = (status) => {
+    const normalized = status?.toLowerCase().replace(/\s+/g, '-');
+    if (normalized === 'in-progress') return 'info';
+    if (normalized === 'waiting-on-review') return 'warning';
+    if (normalized === 'accepted') return 'success';
+    return 'default';
+  };
+
   return (
-    <div 
-      className={`task-card ${isCompleted ? 'completed' : ''} ${isHighlighted ? 'highlighted' : ''} ${isClickable ? 'clickable' : ''} ${className}`}
+    <Card 
+      variant="bordered"
+      padding="sm"
+      hoverable={isClickable}
+      className={taskClasses}
       onClick={onClick}
       role={isClickable ? "button" : undefined}
       tabIndex={isClickable ? 0 : undefined}
@@ -108,57 +132,51 @@ function TaskCard({
     >
       {/* Corner ribbon for completed/accepted tasks */}
       {isCompleted && (
-        <div className="task-card-ribbon">
-          <span>Accepted</span>
+        <div className="task-card__ribbon">
+          <span>Marked as Accepted</span>
         </div>
       )}
       
-      <div className="task-card-header">
-        <div className="task-card-header-content">
-          <div className="task-card-title-row">
-            <span className="task-card-title" title={task?.subcategory || task?.subsubcategory || 'Task'}>
-              {displayedTitle}
-            </span>
-            <div className="task-card-title-right">
-              {task?.difficulty && (
-                <DifficultyRating difficulty={task.difficulty} />
-              )}
-            </div>
-          </div>
-        </div>
+      {/* Subcategory label */}
+      <div className="task-card__subcategory">
+        {displayedSubcategory || task?.category}
       </div>
-
-      <div className="task-card-separator" />
-
-      <div className="task-card-body">
-        <span className="task-card-label">Goal</span>
-        <div className="task-card-description" title={task?.description}>
-          {displayedDesc}
-        </div>
+      
+      <div className="task-card__divider" />
+      
+      {/* Task label */}
+      <span className="task-card__label">Task</span>
+      
+      {/* Title row with difficulty */}
+      <div className="task-card__title-row">
+        <h3 className="task-card__title" title={task?.title || 'Task'}>
+          {displayedTitle}
+        </h3>
+        {task?.difficulty && (
+          <DifficultyRating difficulty={task.difficulty} />
+        )}
       </div>
 
       {/* Meta info (claim/completion date and status) */}
       {(claimedAt || completedAt || statusBadge) && (
-        <div className="task-card-meta">
+        <div className="task-card__meta">
           {statusBadge && (
-            <span className={`task-card-status-badge ${statusBadge.toLowerCase().replace(/\s+/g, '-')}`}>
+            <Badge variant={getStatusBadgeVariant(statusBadge)} size="sm">
               {statusBadge}
-            </span>
+            </Badge>
           )}
           {(claimedAt || completedAt) && (
-            <span className={`task-card-claimed ${isCompleted && completedAt ? 'accepted' : ''}`}>
+            <span className={`task-card__timestamp ${isCompleted && completedAt ? 'task-card__timestamp--accepted' : ''}`}>
               {isCompleted && completedAt ? (
-                // Party/celebration icon for accepted
-                <span className="accepted-icon">🎉</span>
+                <span className="task-card__timestamp-icon">🎉</span>
               ) : (
-                // Clock icon for claimed
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
               )}
               {isCompleted && completedAt 
-                ? `Accepted ${formatTimeSince(completedAt)}`
+                ? `Marked as accepted ${formatTimeSince(completedAt)}`
                 : `Claimed ${formatTimeSince(claimedAt)}`
               }
             </span>
@@ -167,13 +185,12 @@ function TaskCard({
       )}
 
       {footer && (
-        <div className="task-card-footer">
+        <div className="task-card__footer">
           {footer}
         </div>
       )}
-    </div>
+    </Card>
   );
 }
 
 export default TaskCard;
-

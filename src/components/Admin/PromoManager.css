@@ -1,0 +1,383 @@
+/* PromoManager.css */
+.promo-manager {
+  padding: var(--space-6);
+}
+
+.promo-manager-header {
+  margin-bottom: var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.promo-manager-header h2 {
+  font-size: var(--font-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.promo-manager-header p {
+  color: var(--text-secondary);
+}
+
+/* Wizard Styles */
+.promo-wizard {
+  min-height: 400px;
+}
+
+.wizard-content {
+  padding: var(--space-4) 0;
+}
+
+.wizard-step h3 {
+  font-size: var(--font-xl);
+  margin-bottom: var(--space-6);
+  color: var(--text-primary);
+}
+
+.wizard-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Form Elements */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.form-group label {
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: var(--space-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.1);
+}
+
+/* Variant Selector */
+.variant-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.variant-option {
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.variant-option.selected {
+  border-color: var(--accent);
+}
+
+.mini-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-banner.accent {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border: 1px solid rgba(0, 113, 227, 0.3);
+  color: var(--accent);
+}
+
+.mini-banner.warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(252, 211, 77, 0.1) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+
+.mini-banner.success {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.1) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.mini-banner.info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 197, 253, 0.1) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+}
+
+.mini-banner-title {
+  flex: 1;
+  font-weight: var(--font-semibold);
+}
+
+.check-indicator {
+  display: none;
+  font-weight: bold;
+}
+
+.variant-option.selected .check-indicator {
+  display: block;
+}
+
+/* Drag and Drop List */
+.promo-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.promo-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+}
+
+.promo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.promo-card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.promo-card-title h4 {
+  font-size: var(--font-base);
+  font-weight: var(--font-semibold);
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.promo-card-message {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.promo-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.promo-status-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: var(--font-xs);
+  font-weight: var(--font-medium);
+  text-transform: uppercase;
+}
+
+.promo-status-badge.active {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.promo-status-badge.scheduled {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.promo-status-badge.ended {
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+.promo-status-badge.banner-only {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.promo-status-badge.card-only {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.promo-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.promo-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-4);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-color);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.category-tag {
+  background: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: var(--font-xs);
+}
+
+/* Make the card position relative for the drop indicator */
+.promo-card {
+  position: relative;
+}
+
+/* ======================================
+   DISPLAY MODE SELECTOR
+   ====================================== */
+
+.wizard-label-hint {
+  font-size: var(--font-sm);
+  color: var(--text-tertiary);
+  margin-top: -4px;
+  margin-bottom: var(--space-3);
+}
+
+.display-mode-selector {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.display-mode-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.display-mode-option:hover {
+  border-color: var(--text-tertiary);
+  background: var(--card-bg);
+}
+
+.display-mode-option.selected {
+  border-color: var(--accent);
+  background: rgba(0, 113, 227, 0.05);
+}
+
+.display-mode-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.display-mode-label {
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.display-mode-desc {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* ======================================
+   DUAL PREVIEW (Banner + Card)
+   ====================================== */
+
+.dual-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.preview-section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+
+.preview-section-icon {
+  font-size: var(--font-base);
+}
+
+/* Mini Banner Preview styles removed - using actual component styles */
+
+/* Preview Note */
+.preview-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+}

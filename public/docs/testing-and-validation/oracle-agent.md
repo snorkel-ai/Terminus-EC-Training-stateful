@@ -1,6 +1,6 @@
 # Oracle Agent
 
-The Oracle Agent runs your solution.sh in the task environment and verifies it passes all tests. It's the first line of validation for your task.
+The Oracle Agent runs your solution/solve.sh in the task environment and verifies it passes all tests. It's the first line of validation for your task.
 
 ## Getting Started
 
@@ -28,7 +28,7 @@ Download the Jupyter notebook for hands-on practice:
 
 The Oracle Agent is an automated agent that:
 1. Starts your Docker environment
-2. Executes your solution.sh commands
+2. Executes your solution/solve.sh commands
 3. Runs your tests to verify completion
 4. Reports pass/fail results
 
@@ -40,10 +40,10 @@ If the Oracle Agent can't complete your task, neither can AI agents.
 
 ```bash
 # Basic run
-harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path <task-folder>
 
 # With verbose output
-harbor run --agent oracle --path harbor_tasks/<task-name> -v
+harbor run --agent oracle --path <task-folder> -v
 ```
 
 ## Expected Output
@@ -92,7 +92,7 @@ When the Oracle Agent fails, follow this workflow:
 
 **Step 2: Reproduce Interactively**
 ```bash
-harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 ```
 Inside the container, run commands one by one to find the issue.
 
@@ -107,7 +107,7 @@ If your solution doesn't run:
 
 1. **Enter interactive mode:**
    ```bash
-   harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+   harbor tasks start-env --path <task-folder> --interactive
    ```
 
 2. **Run commands manually** to find the failing step
@@ -144,7 +144,7 @@ If the container won't build:
 
 4. **Try building manually:**
    ```bash
-   cd harbor_tasks/<task-name>/environment
+   cd <task-folder>/environment
    docker build -t test .
    ```
 
@@ -187,7 +187,7 @@ Error: Task exceeded timeout (1800s)
 
 | Oracle Agent | Real Agents (GPT-5, etc.) |
 |--------------|---------------------------|
-| Runs your solution.sh | Generate their own solution |
+| Runs your solution/solve.sh | Generate their own solution |
 | Always deterministic | May vary between runs |
 | Tests task validity | Tests task difficulty |
 | Must always pass | May fail (that's the goal!) |

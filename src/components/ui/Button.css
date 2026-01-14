@@ -121,3 +121,22 @@
     transform: rotate(360deg);
   }
 }
+
+/* Mobile - reduce visual effects that can cause overflow */
+@media (max-width: 480px) {
+  .ui-btn {
+    /* Reduce padding for tighter fit */
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  .ui-btn-primary {
+    /* Remove box-shadow that extends beyond button */
+    box-shadow: none;
+  }
+  
+  .ui-btn-primary:hover:not(:disabled) {
+    transform: none;
+    box-shadow: none;
+  }
+}

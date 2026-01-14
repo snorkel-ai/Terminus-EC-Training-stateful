@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import CompletionToggle from './Progress/CompletionToggle';
+import { VIDEO_URLS } from '../config/videoUrls';
 import './Videos.css';
 
 const baseUrl = import.meta.env.BASE_URL;
@@ -91,7 +92,7 @@ function ExpertPlatformOnboarding() {
                     objectFit: 'contain'
                   }}
                 >
-                  <source src={`${baseUrl}platform_onboarding_11-25-2025.mp4`} type="video/mp4" />
+                  <source src={VIDEO_URLS.platformOnboarding} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>

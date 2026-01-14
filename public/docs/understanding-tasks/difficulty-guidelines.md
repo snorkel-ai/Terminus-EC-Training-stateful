@@ -1,14 +1,14 @@
 # Difficulty Guidelines
 
-Task difficulty is determined by pass rates when run against frontier AI models. This guide helps you design tasks at the right difficulty level.
+Task difficulty is determined by accuracy when run against frontier AI models. This guide helps you design tasks at the right difficulty level.
 
 ## Difficulty Levels
 
-| Level | Pass Rate | Human Time (Expert) | Human Time (Junior) |
-|-------|-----------|---------------------|---------------------|
-| **Hard** | < 40% | 45-60 min | 2+ hours |
-| **Medium** | < 60% | 25-45 min | 1-2 hours |
-| **Easy** | < 80% | 15-25 min | 30-60 min |
+| Level | Accuracy 
+|-------|-----------
+| **Hard** | < 40% 
+| **Medium** | < 60%
+| **Easy** | < 80%
 
 > **Important:** Tasks with > 80% pass rate will NOT be accepted.
 
@@ -17,7 +17,7 @@ Task difficulty is determined by pass rates when run against frontier AI models.
 Each task is evaluated against:
 - **GPT-5** with Codex agent
 - **Claude Sonnet 4.5** with Claude Code agent
-- **5 runs each** to determine average pass rate
+- **5 runs each** to determine average accuracy
 
 The difficulty is based on whichever model performs better.
 
@@ -91,7 +91,7 @@ Before submitting, verify difficulty by:
 ### 1. Run Against Oracle Agent
 
 ```bash
-uv run harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path <task-folder>
 ```
 
 This should PASS. If it doesn't, your task may have issues.
@@ -100,10 +100,10 @@ This should PASS. If it doesn't, your task may have issues.
 
 ```bash
 # GPT-5
-uv run harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
 
 # Claude Sonnet 4.5
-uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task-name>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
 ```
 
 Run at least 2-3 times to gauge pass rate.

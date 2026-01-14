@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useMySelectedTasks } from '../../hooks/useTasks';
 import { Button } from '../ui';
 import './ProfilePage.css';
-import { FaGithub, FaLinkedin, FaSlack, FaEnvelope, FaCheck } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaSlack, FaEnvelope, FaCheck, FaLock } from 'react-icons/fa';
 
 const ALL_SPECIALTIES = [
   "Machine Learning", "Data Science", "Cyber Security", "Full Stack Web", 
@@ -17,7 +17,7 @@ const ALL_SPECIALTIES = [
 ];
 
 const ProfilePage = () => {
-  const { user, profile, updateProfile, signOut, deleteAccount } = useAuth();
+  const { user, profile, updateProfile, signOut, deleteAccount, updatePassword } = useAuth();
   const navigate = useNavigate();
   const { selectedTasks, loading: tasksLoading } = useMySelectedTasks();
   
@@ -39,6 +39,18 @@ const ProfilePage = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  
+  // Password change state
+  const [isPasswordSectionOpen, setIsPasswordSectionOpen] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState(null);
+  
+  // Check if user authenticated via email (not OAuth)
+  const isEmailAuth = user?.app_metadata?.provider === 'email';
 
   const [statusItems, setStatusItems] = useState({
     onboarding_completed: false,
@@ -159,6 +171,40 @@ const ProfilePage = () => {
   const handleCancelDelete = () => {
     setShowDeleteConfirm(false);
     setDeleteConfirmation('');
+  };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordMessage(null);
+
+    // Validate passwords match
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordMessage({ type: 'error', text: 'Passwords do not match' });
+      return;
+    }
+
+    // Validate password strength
+    if (passwordData.newPassword.length < 6) {
+      setPasswordMessage({ type: 'error', text: 'Password must be at least 6 characters long' });
+      return;
+    }
+
+    setIsChangingPassword(true);
+
+    try {
+      const { error } = await updatePassword(passwordData.newPassword);
+      if (error) throw error;
+      
+      setPasswordMessage({ type: 'success', text: 'Password updated successfully' });
+      setPasswordData({ newPassword: '', confirmPassword: '' });
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setPasswordMessage(null), 3000);
+    } catch (err) {
+      setPasswordMessage({ type: 'error', text: err.message || 'Failed to update password' });
+    } finally {
+      setIsChangingPassword(false);
+    }
   };
 
   if (!profile) return <div className="loading">Loading profile...</div>;
@@ -345,6 +391,74 @@ const ProfilePage = () => {
                 </div>
               </form>
             </section>
+
+            {/* Password Change Section - Only for email auth users */}
+            {isEmailAuth && (
+              <section className="profile-card password-section">
+                <div 
+                  className="password-header" 
+                  onClick={() => setIsPasswordSectionOpen(!isPasswordSectionOpen)}
+                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                >
+                  <h2 style={{ margin: 0, border: 'none', padding: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <FaLock style={{ fontSize: '1rem' }} /> Change Password
+                  </h2>
+                  <span style={{ transform: isPasswordSectionOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>▼</span>
+                </div>
+                
+                {isPasswordSectionOpen && (
+                  <div className="password-content" style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+                    {passwordMessage && (
+                      <div className={`password-message ${passwordMessage.type}`} style={{
+                        padding: '0.75rem 1rem',
+                        borderRadius: '8px',
+                        marginBottom: '1rem',
+                        fontSize: '0.9rem',
+                        backgroundColor: passwordMessage.type === 'error' ? 'rgba(255, 68, 68, 0.1)' : 'rgba(76, 175, 80, 0.1)',
+                        border: `1px solid ${passwordMessage.type === 'error' ? 'rgba(255, 68, 68, 0.3)' : 'rgba(76, 175, 80, 0.3)'}`,
+                        color: passwordMessage.type === 'error' ? '#ff4444' : '#4CAF50'
+                      }}>
+                        {passwordMessage.text}
+                      </div>
+                    )}
+                    
+                    <form onSubmit={handlePasswordChange}>
+                      <div className="form-group">
+                        <label>New Password</label>
+                        <input
+                          type="password"
+                          value={passwordData.newPassword}
+                          onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                          placeholder="••••••••"
+                          required
+                          minLength={6}
+                        />
+                        <small style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+                          Must be at least 6 characters
+                        </small>
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Confirm New Password</label>
+                        <input
+                          type="password"
+                          value={passwordData.confirmPassword}
+                          onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                          placeholder="••••••••"
+                          required
+                        />
+                      </div>
+                      
+                      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Button type="submit" variant="primary" loading={isChangingPassword}>
+                          Update Password
+                        </Button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </section>
+            )}
 
             <section className="profile-card danger-zone">
               <div 

@@ -61,7 +61,7 @@ tags = ["python", "error-handling", "bugfix"]
 timeout_sec = 120.0
 
 [agent]
-timeout_sec = 120.0
+timeout_sec = 600.0
 
 [environment]
 build_timeout_sec = 600.0
@@ -80,7 +80,6 @@ The environment definition must be placed in an `environment/` folder. This prev
 
 **Required files depend on environment type:**
 - For Docker: `environment/Dockerfile` OR `environment/docker-compose.yaml`
-- For other runtimes: Different files may be required (e.g., `image.def` for Apptainer)
 
 **Example Dockerfile:**
 
@@ -110,7 +109,7 @@ COPY app/ /app/
 - `/oracle/` - Solution folder copied here at runtime
 - `/tests/` - Tests folder copied here at runtime
 
-### 4. Oracle Solution (solution/solve.sh) - Optional
+### 4. Oracle Solution (solution/solve.sh)
 
 Expert-authored step-by-step solution that reliably completes the task. The solution folder is copied to `/oracle/` at runtime and executed from the working directory.
 
@@ -150,7 +149,11 @@ source .venv/bin/activate
 uv pip install pytest
 
 # Run tests
-uvx pytest test_outputs.py -v
+uvx \
+  -p 3.13 \
+  -w pytest==8.4.1 \
+  -w pytest-json-ctrf==0.3.5 \
+  pytest --ctrf /logs/verifier/ctrf.json /tests/test_outputs.py -rA
 
 # Produce reward file (REQUIRED)
 if [ $? -eq 0 ]; then
@@ -196,7 +199,6 @@ def test_normal_input_unchanged():
 | Component | Use Case |
 |-----------|----------|
 | Data files | Input data, config files, sample databases |
-| solution.yaml | For interactive commands (vim, etc.) |
 | Custom tools | Additional scripts or binaries |
 | Multiple containers | Complex multi-service environments |
 

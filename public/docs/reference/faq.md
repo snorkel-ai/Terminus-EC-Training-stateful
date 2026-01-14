@@ -18,10 +18,6 @@ No, there is currently no assessment for this project. You can start familiarizi
 
 You should receive an email with your API key shortly after joining. If you haven't received it within a day or two, please reach out to Puyun Tafreshi or Alejandro Sanchez on Slack. You only need the OpenAI key—our infrastructure allows you to run Anthropic models using this key.
 
-### Why don't I see anything in the Snorkel Expert Platform?
-
-This project is currently run primarily through GitHub. Therefore, you may not see project-related content on the platform interface. Everything is done through the GitHub repo.
-
 ---
 
 ## Task Creation
@@ -39,7 +35,7 @@ You can either:
 
 ### How do I claim an existing task idea?
 
-DM Puyun Tafreshi or Alejandro Sanchez on Slack with the line number of the task you want to claim. Don't request more than 2-3 tasks at once—you'll be capped until you complete some.
+Go to the "Task Gallery" tab, search for the desired task, click on the task card and click "Claim Task".
 
 ### How do I make a hard task?
 
@@ -100,10 +96,10 @@ export OPENAI_API_KEY=<your-key>
 export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 # GPT-5
-uv run harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task>
 
 # Claude
-uv run harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task>
 ```
 
 ### Portkey / API key issues — agent won't connect

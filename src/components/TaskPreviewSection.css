@@ -189,9 +189,8 @@
   box-shadow: 0 8px 40px rgba(139, 92, 246, 0.2), 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.task-preview-card-wrapper .task-card-description {
+.task-preview-card-wrapper .task-card__title {
   -webkit-line-clamp: 3;
-  line-clamp: 3;
 }
 
 /* Skeleton loading state */

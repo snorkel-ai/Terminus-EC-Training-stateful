@@ -235,13 +235,45 @@
 
 @media (max-width: 480px) {
   .announcement-banner {
-    flex-direction: column;
+    flex-direction: row; /* Keep horizontal on mobile for compactness */
+    align-items: center;
     gap: 0.75rem;
-    padding: 1.25rem 1.5rem; /* Standardize left/right padding to 1.5rem */
+    padding: 0.875rem 1rem;
+  }
+
+  .announcement-banner:hover {
+    transform: none; /* Disable hover lift on mobile */
   }
 
   .announcement-banner__icon {
-    align-self: flex-start;
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+  }
+
+  .announcement-banner__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .announcement-banner__title {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+  }
+
+  /* Hide secondary text on mobile to save space */
+  .announcement-banner__body {
+    display: none;
+  }
+
+  .announcement-banner__dismiss {
+    width: 28px;
+    height: 28px;
+  }
+
+  .announcement-banner__dismiss svg {
+    width: 14px;
+    height: 14px;
   }
 }
 
@@ -256,6 +288,9 @@
   gap: 0.75rem;
   box-shadow: none;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .announcement-banner--subtle:hover {
@@ -346,6 +381,10 @@
   .announcement-banner--subtle {
     flex-direction: row;
     text-align: center;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
   }
   
   .announcement-banner--subtle .announcement-banner__icon {
@@ -354,5 +393,20 @@
   
   .announcement-banner--subtle .announcement-banner__content {
     justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Hide body on mobile, show only title for subtle variant */
+  .announcement-banner--subtle .announcement-banner__body {
+    display: none;
+  }
+  
+  .announcement-banner--subtle .announcement-banner__title {
+    font-size: 0.75rem;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.4;
   }
 }

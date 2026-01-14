@@ -21,7 +21,7 @@ function Glossary() {
             <div className="info-box" style={{ marginTop: 0 }}>
               <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>Canary String</h3>
               <p style={{ marginBottom: 0 }}>
-                A special string that must be present at the top of all required files (task.yaml, solution.sh, 
+                A special string that must be present at the top of all required files (task.toml, solution/solve.sh, 
                 Dockerfile, test_outputs.py). Used to verify that these files have been properly reviewed and meet 
                 project standards.
               </p>
@@ -32,7 +32,7 @@ function Glossary() {
               <p style={{ marginBottom: 0 }}>
                 Automated checks that validate technical requirements for submissions. Include checks for pinned 
                 dependencies, typos, canary strings, Dockerfile references, absolute paths, privileged containers, 
-                linting (ruff), file sizes, and required task.yaml fields. All CI checks must pass before a submission 
+                linting (ruff), file sizes, and required task.toml fields. All CI checks must pass before a submission 
                 can be accepted.
               </p>
             </div>
@@ -68,7 +68,7 @@ function Glossary() {
             <div className="info-box" style={{ marginTop: 0 }}>
               <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>Oracle Agent</h3>
               <p style={{ marginBottom: 0 }}>
-                Agent that is run in created environment to check the solution implemented in the solution.sh file. 
+                Agent that is run in created environment to check the solution implemented in the solution/solve.sh file. 
                 Checks that the solution runs correctly and without bugs, and tests the output of the solution against 
                 the created pytests to ensure that the solution passes.
               </p>
@@ -94,7 +94,7 @@ function Glossary() {
             </div>
 
             <div className="info-box" style={{ marginTop: 0 }}>
-              <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>solution.sh</h3>
+              <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>solution/solve.sh</h3>
               <p style={{ marginBottom: 0 }}>
                 Expert-authored step-by-step solution contained within a shell script that reliably and accurately 
                 completes the task. Must demonstrate a sequence of commands that derive the answer, rather than 
@@ -111,7 +111,7 @@ function Glossary() {
             </div>
 
             <div className="info-box" style={{ marginTop: 0 }}>
-              <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>task.yaml</h3>
+              <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>task.toml</h3>
               <p style={{ marginBottom: 0 }}>
                 Clear and self-contained description of the task to be accomplished by the agent. Includes references 
                 to relevant resources, rules and constraints, success criteria, and task metadata. Must be written by 
@@ -132,7 +132,7 @@ function Glossary() {
               <p style={{ marginBottom: 0 }}>
                 Series of deterministic Python scripts containing unit tests that check task completion based on the 
                 final state of the environment. Each test should have informative docstrings describing which behavior 
-                or requirement the test is checking. All behavior described in task.yaml should have corresponding tests.
+                or requirement the test is checking. All behavior described in task.toml should have corresponding tests.
               </p>
             </div>
 

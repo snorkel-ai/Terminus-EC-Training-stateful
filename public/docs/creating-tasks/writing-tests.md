@@ -153,7 +153,7 @@ if [ $? -eq 0 ]; then
   echo 1 > /logs/verifier/reward.txt
 else
   echo 0 > /logs/verifier/reward.txt
-fi
+fi 
 ```
 
 > **Note:** Test dependencies should be installed in `tests/test.sh`, NOT in the Dockerfile. The script must produce `/logs/verifier/reward.txt` or `/logs/verifier/reward.json`.

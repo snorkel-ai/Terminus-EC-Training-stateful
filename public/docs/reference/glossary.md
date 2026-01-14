@@ -70,11 +70,6 @@ The verified correct solution for a task. In TerminalBench, this is the oracle s
 
 ---
 
-## H
-
-### Harbor
-The CLI tool used in the GitHub workflow for running tasks, agents, and checks. Commands start with `uv run harbor`.
-
 ---
 
 ## L
@@ -87,7 +82,7 @@ Using a language model (GPT-5) to evaluate task quality. LLMaJ checks assess thi
 ## O
 
 ### Oracle Agent
-A special agent that runs your `solution.sh` script to verify the task is solvable. If the Oracle can't complete your task, it's broken.
+A special agent that runs your `solution/solve.sh` script to verify the task is solvable. If the Oracle can't complete your task, it's broken.
 
 ### Oracle Solution
 The expert-authored step-by-step solution contained in `solution/solve.sh`. Must reliably complete the task when executed.
@@ -98,9 +93,6 @@ The expert-authored step-by-step solution contained in `solution/solve.sh`. Must
 
 ### Pass Rate
 The percentage of times an agent successfully completes a task. Calculated from multiple runs (typically 5) against each model.
-
-### PR (Pull Request)
-A request to merge changes from your branch into the main branch. In GitHub workflow, tasks are submitted via PRs.
 
 ### Privileged Mode
 A Docker setting that gives containers root-level access. **Not allowed** in TerminalBench tasks.
@@ -122,11 +114,11 @@ A fast Python linter. All Python code in tasks must pass Ruff checks.
 ### Snorkel Expert Platform
 The web-based platform for managing tasks and submissions. Alternative to the GitHub workflow.
 
-### solve.sh / solution.sh
+### solve.sh / solution/solve.sh
 The oracle solution script that demonstrates how to complete the task. Located in `solution/solve.sh`.
 
 ### Harbor
-The CLI tool (`harbor`) used for running agents and validating tasks. Run `harbor run --agent oracle --path harbor_tasks/<task-name>` to test your task.
+The CLI tool (`harbor`) used for running agents and validating tasks. Run `harbor run --agent oracle --path <task-folder>` to test your task.
 
 ---
 
@@ -157,13 +149,6 @@ The pytest file containing tests that verify task completion. Must have informat
 
 ### Timeout
 Maximum time (in seconds) allowed for an agent to complete a task. Specified in `task.toml` under `[agent].timeout_sec`.
-
----
-
-## U
-
-### UV
-A fast Python package manager. Used for dependency management and running commands (`uv run`).
 
 ---
 

@@ -24,7 +24,12 @@ function UserMenu() {
   }, []);
 
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out error:', error);
+      // Still navigate to login even if sign out had an error
+    }
     navigate('/login');
   };
 

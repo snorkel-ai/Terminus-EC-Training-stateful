@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { usePostHog } from 'posthog-js/react';
 import { useAuth } from '../contexts/AuthContext';
 import MyTasksSection from './MyTasksSection';
+import IncentivesSection from './IncentivesSection';
 import { OnboardingResources } from './ui';
 import './LandingPage.css';
 import './Content.css';
@@ -33,6 +34,8 @@ function LandingPage() {
           </section>
 
         <MyTasksSection />
+
+        <IncentivesSection />
 
         <OnboardingResources />
       </main>

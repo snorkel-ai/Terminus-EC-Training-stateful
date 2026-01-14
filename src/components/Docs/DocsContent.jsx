@@ -113,13 +113,26 @@ function DocsContent({ content, loading, title, prevDoc, nextDoc, onPaginationCl
           // Code blocks
           code: CodeBlock,
           
-          // Images
-          img: ({ src, alt }) => (
-            <figure className="docs-figure">
-              <img src={src} alt={alt} className="docs-image" loading="lazy" />
-              {alt && <figcaption className="docs-figcaption">{alt}</figcaption>}
-            </figure>
-          ),
+          // Images - prepend base URL for absolute paths in production
+          img: ({ src, alt, className }) => {
+            // Handle absolute paths by prepending the base URL
+            const basePath = import.meta.env.BASE_URL || '/';
+            const imageSrc = src?.startsWith('/') && !src?.startsWith(basePath) 
+              ? `${basePath.replace(/\/$/, '')}${src}` 
+              : src;
+            
+            return (
+              <figure className={`docs-figure ${className || ''}`}>
+                <img 
+                  src={imageSrc} 
+                  alt={alt} 
+                  className={`docs-image ${className || ''}`} 
+                  loading="lazy" 
+                />
+                {alt && <figcaption className="docs-figcaption">{alt}</figcaption>}
+              </figure>
+            );
+          },
           
           // Links
           a: ({ href, children }) => {

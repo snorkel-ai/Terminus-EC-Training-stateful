@@ -81,7 +81,7 @@ Tasks that require identifying, diagnosing, and fixing errors in scripts, codeba
 
 ---
 
-### security
+### Security
 
 Tasks related to cryptography, authentication, permissions, penetration-style tests, exploit, validate vulnerabilities, reverse engineering or security configuration.
 

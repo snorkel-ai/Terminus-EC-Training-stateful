@@ -1,9 +1,8 @@
-name: Deploy Simple
+name: Deploy to GitHub Pages (Fallback)
 
+# FALLBACK: Use this if the primary deploy.yml workflow fails
+# Trigger manually from Actions tab → "Deploy to GitHub Pages (Fallback)" → "Run workflow"
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:

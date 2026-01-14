@@ -3,37 +3,123 @@ alwaysApply: true
 ---
 # Design System Guidelines
 
-## Shared UI Components
+## CRITICAL: Component Reuse Policy
 
-Before creating custom UI elements, use components from `src/components/ui/`:
+**BEFORE creating ANY UI element, you MUST:**
 
-| Component | Import | Use For |
-|-----------|--------|---------|
-| `Button` | `{ Button }` | All clickable actions (variants: primary, secondary, danger, ghost) |
-| `Tabs, Tab` | `{ Tabs, Tab }` | Tab navigation between views |
-| `Alert` | `{ Alert }` | Error, success, warning, info messages |
-| `Badge` | `{ Badge }` | Tags, labels, status indicators, categories |
-| `Card` | `{ Card }` | Content containers |
-| `Modal` | `{ Modal }` | Dialog overlays |
-| `Input, TextArea, SearchInput` | `{ Input }` | Form fields |
-| `Spinner, LoadingState` | `{ LoadingState }` | Loading states |
-| `EmptyState` | `{ EmptyState }` | Empty list placeholders |
-| `Avatar` | `{ Avatar }` | User profile images |
-| `Divider, LogoSeparator` | `{ Divider }` | Visual separators |
-| `StepIndicator` | `{ StepIndicator }` | Multi-step progress dots |
+1. **Search `src/components/ui/`** for existing components
+2. **Check `src/components/ui/index.js`** for the full export list
+3. **Review the component's props** to see if it supports your use case via variants/props
+
+**If no existing component fits:**
+- **STOP and inform the user**: "I couldn't find an existing component for [X]. The closest options are [Y, Z]. Should I extend an existing component or create a new one in the design system?"
+- **Never create one-off styled elements** that duplicate design system functionality
+- **Propose adding to the design system** if the pattern will be reused
+
+## Available UI Components
+
+All imports: `import { ComponentName } from '../ui'` or `'@/components/ui'`
+
+### Core Components
+| Component | Use For | Key Props |
+|-----------|---------|-----------|
+| `Button` | All clickable actions | `variant`: primary, secondary, danger, ghost; `size`: sm, md, lg; `loading` |
+| `Card, CardHeader, CardBody, CardFooter` | Content containers | `variant`: default, elevated, bordered, flat, minimal; `padding`: none, sm, md, lg; `hoverable` |
+| `Badge` | Tags, labels, status indicators | `variant`: default, primary, success, warning, error, info, accent; `size`: sm, md, lg |
+| `Input, TextArea, SearchInput` | Form fields | Standard input props |
+| `Checkbox` | Boolean inputs | `checked`, `onChange`, `label` |
+| `Modal, ModalHeader, ModalBody, ModalFooter` | Dialog overlays | `isOpen`, `onClose`, `size` |
+| `Tabs, Tab` | Tab navigation | `activeTab`, `onChange` |
+
+### Feedback Components
+| Component | Use For |
+|-----------|---------|
+| `Alert` | Error, success, warning, info messages |
+| `Spinner, LoadingState` | Loading indicators |
+| `EmptyState` | Empty list placeholders |
+| `Toast` | Temporary notifications |
+| `Note` | Inline callouts/tips |
+| `ProgressBar` | Progress indicators |
+
+### Display Components
+| Component | Use For |
+|-----------|---------|
+| `Avatar` | User profile images |
+| `Divider, LogoSeparator` | Visual separators |
+| `StepIndicator` | Multi-step progress dots |
+| `CodeBlock, CommandBox` | Code/command display |
+| `Timer, TimerCompact` | Countdown/elapsed time |
+
+### Task-Specific Components
+| Component | Use For |
+|-----------|---------|
+| `TaskCard` | Displaying task cards (built on Card) |
+| `TaskDetailModal` | Task detail view modal |
+| `TaskWorkflowModal` | Task status workflow |
+| `DifficultyRating` | Task difficulty indicator (💪) |
 
 ## Theme Variables
 
-Use CSS variables from `src/styles/theme.css` instead of hardcoded values:
+**ALWAYS use CSS variables from `src/styles/theme.css`** - never hardcode values:
 
-- **Colors**: `--bg-primary`, `--text-primary`, `--accent`, `--color-success`, `--color-error`
-- **Typography**: `--font-sm`, `--font-lg`, `--font-2xl`, `--font-bold`, `--leading-tight`
-- **Spacing**: `--space-2`, `--space-4`, `--space-8`
-- **Borders**: `--radius-md`, `--radius-lg`, `--border-color`
+### Colors
+```css
+--bg-primary, --bg-secondary    /* Backgrounds */
+--text-primary, --text-secondary, --text-tertiary  /* Text */
+--accent, --accent-hover        /* Brand/interactive */
+--color-success, --color-warning, --color-error, --color-info  /* Status */
+--border-color, --card-bg       /* UI elements */
+```
 
-## Rules
+### Typography
+```css
+--font-xs (12px), --font-sm (14px), --font-base (16px), --font-lg (18px)
+--font-xl (20px), --font-2xl (24px), --font-3xl (32px)
+--font-normal (400), --font-medium (500), --font-semibold (600), --font-bold (700)
+--leading-tight (1.2), --leading-normal (1.5), --leading-relaxed (1.625)
+```
 
-1. **Check existing components first** before writing custom buttons, alerts, badges, etc.
-2. **Use theme variables** for colors, font sizes, spacing, and border radius
-3. **Ask before creating new UI components** - it may already exist or should be added to the library
-4. **Import from '../ui'** not individual component files
+### Spacing
+```css
+--space-1 (4px), --space-2 (8px), --space-3 (12px), --space-4 (16px)
+--space-5 (20px), --space-6 (24px), --space-8 (32px)
+```
+
+### Borders
+```css
+--radius-sm (4px), --radius-md (8px), --radius-lg (12px), --radius-xl (16px)
+```
+
+## ❌ Anti-Patterns to Avoid
+
+1. **Creating custom buttons** → Use `<Button variant="..." />`
+2. **Custom modal implementations** → Use `<Modal />`
+3. **Inline styled badges/tags** → Use `<Badge variant="..." />`
+4. **Hardcoded colors** like `#3b82f6` → Use `var(--accent)`
+5. **Hardcoded spacing** like `padding: 16px` → Use `var(--space-4)`
+6. **One-off card styles** → Use `<Card variant="..." />` or extend TaskCard
+7. **Custom loading spinners** → Use `<Spinner />` or `<LoadingState />`
+
+## ✅ When to Create New Components
+
+Only create new UI components when:
+1. The pattern will be **reused 3+ times** across the codebase
+2. No existing component can be **extended via props/variants**
+3. The user has **explicitly approved** creating a new component
+
+When creating new components:
+1. Add to `src/components/ui/`
+2. Export from `src/components/ui/index.js`
+3. Use BEM naming: `.component-name__element--modifier`
+4. Use theme variables exclusively
+5. Add JSDoc comments for props
+
+## Import Convention
+
+```javascript
+// ✅ Correct - import from the index
+import { Button, Card, Badge, Modal } from '../ui';
+
+// ❌ Wrong - don't import from individual files
+import { Button } from '../ui/Button';
+```

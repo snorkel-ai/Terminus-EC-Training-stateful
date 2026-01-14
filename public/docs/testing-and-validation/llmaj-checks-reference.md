@@ -6,7 +6,7 @@ LLM-as-Judge (LLMaJ) checks use GPT-5 to evaluate task quality and correctness. 
 
 ```bash
 # GPT-5 (matches CI)
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task-name>
+harbor tasks check -m openai/@openai-tbench/gpt-5 --output-path output.json harbor_tasks/<task_name>
 ```
 
 ## LLMaJ Checks

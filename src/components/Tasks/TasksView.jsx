@@ -1,7 +1,9 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { usePostHog } from 'posthog-js/react';
-import { useTasks, useMySelectedTasks } from '../../hooks/useTasks';
-import { useTaskSearch } from '../../hooks/useTaskSearch';
+import { useMySelectedTasks } from '../../hooks/useTasks';
+import { useTasksGallery } from '../../hooks/useTasksGallery';
+import { usePromotions } from '../../hooks/usePromotions';
+import { useAuth } from '../../contexts/AuthContext';
 import { useLoadingMessage } from '../../hooks/useLoadingMessage';
 import { TASK_LOADING_MESSAGES } from '../../utils/loadingMessages';
 import { Button, LoadingState, TaskDetailModal } from '../ui';
@@ -13,8 +15,26 @@ import './Tasks.css';
 import './TasksViewLayout.css';
 
 function TasksView() {
-  const { tasks, loading, error } = useTasks();
-  const { selectedTasks: myTasks } = useMySelectedTasks();
+  // Use optimized gallery hook (loads 15 tasks per category instead of all 1600+)
+  const { 
+    previewTasks, 
+    loading, 
+    error,
+    searchResults,
+    searchLoading,
+    searchTasks,
+    clearSearch: clearServerSearch,
+    fetchCategory,
+    loadingCategory,
+    getCategoryCount,
+    categoryCounts,
+  } = useTasksGallery();
+  
+  // Keep myTasks for potential future use
+  useMySelectedTasks();
+  const { promotions } = usePromotions();
+  const { profile } = useAuth();
+  
   const posthog = usePostHog();
   const hasTrackedView = useRef(false);
   const [selectedTaskForModal, setSelectedTaskForModal] = useState(null);
@@ -25,26 +45,85 @@ function TasksView() {
   
   // Filter Modal State
   const [filtersModalOpen, setFiltersModalOpen] = useState(false);
+  
+  // Local filter state (for category/difficulty filters applied client-side)
+  const [filters, setFilters] = useState({
+    categories: [],
+    subcategories: [],
+    difficulties: [],
+    priorityOnly: false,
+    search: ''
+  });
 
   // Track gallery view once when tasks load
   useEffect(() => {
-    if (posthog && tasks.length > 0 && !hasTrackedView.current) {
+    if (posthog && previewTasks.length > 0 && !hasTrackedView.current) {
       posthog.capture('gallery_viewed', {
-        total_tasks: tasks.length,
-        available_tasks: tasks.filter(t => !t.is_selected).length,
+        total_tasks: previewTasks.length,
+        available_tasks: previewTasks.filter(t => !t.is_selected).length,
       });
       hasTrackedView.current = true;
     }
-  }, [posthog, tasks]);
+  }, [posthog, previewTasks]);
 
-  // Use the search hook - simplified, no controlled input state
-  const {
-    filters,
-    setFilters,
-    filteredTasks,
-    applySearch,
-    clearSearch
-  } = useTaskSearch(tasks);
+  // Handle search - uses server-side search
+  const applySearch = useCallback(async (searchValue) => {
+    setFilters(prev => ({ ...prev, search: searchValue || '' }));
+    if (searchValue && searchValue.trim()) {
+      await searchTasks(searchValue);
+    } else {
+      clearServerSearch();
+    }
+  }, [searchTasks, clearServerSearch]);
+
+  // Clear search
+  const clearSearch = useCallback(() => {
+    setFilters(prev => ({ ...prev, search: '' }));
+    clearServerSearch();
+  }, [clearServerSearch]);
+
+  // Determine which tasks to display
+  const displayTasks = useMemo(() => {
+    // If searching, use search results
+    if (filters.search && searchResults) {
+      return searchResults;
+    }
+    // Otherwise use preview tasks
+    return previewTasks;
+  }, [filters.search, searchResults, previewTasks]);
+
+  // Apply client-side filters (category, difficulty, priority)
+  const filteredTasks = useMemo(() => {
+    return displayTasks.filter(task => {
+      // Always hide already selected tasks
+      if (task.is_selected) return false;
+      
+      // Filter by priority
+      if (filters.priorityOnly && !task.is_highlighted) {
+        return false;
+      }
+      
+      // Filter by categories
+      if (filters.categories.length > 0 && !filters.categories.includes(task.category)) {
+        return false;
+      }
+      
+      // Filter by subcategories
+      if (filters.subcategories.length > 0 && !filters.subcategories.includes(task.subcategory)) {
+        return false;
+      }
+      
+      // Filter by difficulty
+      if (filters.difficulties.length > 0) {
+        const taskDifficulty = task.difficulty?.toLowerCase() || 'unknown';
+        if (!filters.difficulties.includes(taskDifficulty)) {
+          return false;
+        }
+      }
+      
+      return true;
+    });
+  }, [displayTasks, filters]);
 
   // Scroll to top when filters change (only when search is applied, not on every keystroke)
   useEffect(() => {
@@ -52,6 +131,7 @@ function TasksView() {
   }, [filters]);
 
   // Group filtered tasks by category for "grouped" view
+  // Also include empty categories (all tasks claimed) when not filtering
   const groupedTasks = useMemo(() => {
     const groups = {};
     filteredTasks.forEach(task => {
@@ -62,8 +142,28 @@ function TasksView() {
       groups[category].push(task);
     });
     
-    // Sort groups: Prioritized categories first, then by number of tasks
+    // Add empty categories (all tasks claimed) when no search/filters active
+    const hasActiveFilters = filters.search || 
+      filters.categories.length > 0 || 
+      filters.subcategories.length > 0 || 
+      filters.difficulties.length > 0 || 
+      filters.priorityOnly;
+    
+    if (!hasActiveFilters) {
+      // Add categories where available === 0 but total > 0
+      Object.entries(categoryCounts).forEach(([category, counts]) => {
+        if (counts.available === 0 && counts.total > 0 && !groups[category]) {
+          groups[category] = []; // Empty array triggers empty state
+        }
+      });
+    }
+    
+    // Sort groups: Prioritized categories first, then by number of tasks, empty categories last
     return Object.entries(groups).sort((a, b) => {
+      // Empty categories go to the bottom
+      if (a[1].length === 0 && b[1].length > 0) return 1;
+      if (a[1].length > 0 && b[1].length === 0) return -1;
+      
       const aHasPriority = a[1].some(t => t.is_special || t.priority_tag);
       const bHasPriority = b[1].some(t => t.is_special || t.priority_tag);
       
@@ -72,11 +172,7 @@ function TasksView() {
       
       return b[1].length - a[1].length;
     });
-  }, [filteredTasks]);
-
-  // Count total available and claimed tasks (before filtering)
-  const totalAvailable = tasks.filter(t => !t.is_selected).length;
-  const totalClaimed = tasks.filter(t => t.is_selected).length;
+  }, [filteredTasks, filters, categoryCounts]);
 
   const handleViewDetails = (task, contextTasks = []) => {
     setSelectedTaskForModal(task);
@@ -94,15 +190,25 @@ function TasksView() {
 
   // Track which category is being explored (for drill-down view)
   const [exploringCategory, setExploringCategory] = useState(null);
+  const [exploreCategoryTasks, setExploreCategoryTasks] = useState([]);
 
-  const handleExplore = (category) => {
+  const handleExplore = async (category) => {
     setExploringCategory(category);
     // Scroll to top when exploring
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Fetch all tasks for this category
+    try {
+      const tasks = await fetchCategory(category);
+      setExploreCategoryTasks(tasks);
+    } catch (err) {
+      console.error('Error loading category:', err);
+    }
   };
 
   const handleBackFromExplore = () => {
     setExploringCategory(null);
+    setExploreCategoryTasks([]);
   };
 
   const activeFilterCount = 
@@ -188,13 +294,23 @@ function TasksView() {
 
           {/* Category Explore View or Grouped Sections */}
           {exploringCategory ? (
-            <CategoryExploreView
-              category={exploringCategory}
-              tasks={filteredTasks.filter(t => t.category === exploringCategory)}
-              onTaskSelect={handleViewDetails}
-              onBack={handleBackFromExplore}
-              searchQuery={filters.search}
-            />
+            loadingCategory === exploringCategory ? (
+              <div className="tasks-loading">
+                <LoadingState size="lg" message={`Loading ${exploringCategory}...`} />
+              </div>
+            ) : (
+              <CategoryExploreView
+                category={exploringCategory}
+                tasks={exploreCategoryTasks.filter(t => !t.is_selected)}
+                onTaskSelect={handleViewDetails}
+                onBack={handleBackFromExplore}
+                searchQuery={filters.search}
+              />
+            )
+          ) : (searchLoading) ? (
+            <div className="tasks-loading">
+              <LoadingState size="lg" message="Searching..." />
+            </div>
           ) : filteredTasks.length === 0 ? (
             <div className="tasks-empty">
               <div className="empty-icon">
@@ -223,18 +339,28 @@ function TasksView() {
             </div>
           ) : (
             <div className="tasks-grouped-layout">
-              {groupedTasks.map(([category, categoryTasks]) => (
-                <TaskCategorySection
-                  key={category}
-                  title={category}
-                  tasks={categoryTasks}
-                  onTaskSelect={handleViewDetails}
-                  onTaskUnselect={() => {}}
-                  onExplore={handleExplore}
-                  searchQuery={filters.search}
-                  showAll={filters.categories?.includes(category)}
-                />
-              ))}
+              {groupedTasks.map(([category, categoryTasks]) => {
+                const counts = getCategoryCount(category);
+                
+                // Filter promotions visible to user
+                const userPromotions = profile?.can_see_incentives ? promotions : [];
+                
+                return (
+                  <TaskCategorySection
+                    key={category}
+                    title={category}
+                    tasks={categoryTasks}
+                    totalCount={counts.available}
+                    totalInCategory={counts.total}
+                    onTaskSelect={handleViewDetails}
+                    onTaskUnselect={() => {}}
+                    onExplore={handleExplore}
+                    searchQuery={filters.search}
+                    showAll={filters.categories?.includes(category)}
+                    activePromotions={userPromotions}
+                  />
+                );
+              })}
             </div>
           )}
         </div>
@@ -244,7 +370,7 @@ function TasksView() {
       <TaskFiltersModal
         isOpen={filtersModalOpen}
         onClose={() => setFiltersModalOpen(false)}
-        tasks={tasks}
+        tasks={previewTasks}
         filters={filters}
         onFilterChange={setFilters}
       />

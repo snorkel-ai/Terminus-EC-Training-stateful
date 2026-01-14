@@ -5,10 +5,17 @@ export const docsConfig = {
       title: 'Getting Started',
       items: [
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
-        { slug: 'onboarding/project-overview', title: 'Project Overview' },
-        { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
-        { slug: 'getting-started/environment-setup', title: 'Environment Setup' },
+        { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
+      ]
+    },
+    {
+      title: 'Submission Process',
+      items: [
+        { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
+        { slug: 'submitting-tasks/cli-user-guide', title: 'CLI User Guide' },
+        { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
+        { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
       ]
     },
     {
@@ -20,14 +27,6 @@ export const docsConfig = {
         { slug: 'understanding-tasks/task-taxonomy', title: 'Task Taxonomy' },
         { slug: 'understanding-tasks/example-tasks', title: 'Example Tasks' },
         { slug: 'understanding-tasks/difficulty-guidelines', title: 'Difficulty Guidelines' },
-      ]
-    },
-    {
-      title: 'Tasking Overview',
-      items: [
-        { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
-        { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
-        { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
       ]
     },
     {
@@ -55,6 +54,8 @@ export const docsConfig = {
       title: 'Reviewing Tasks',
       items: [
         { slug: 'reviewing-tasks/review-guidelines', title: 'Review Guidelines' },
+        { slug: 'reviewing-tasks/rubrics', title: 'Rubrics' },
+        { slug: 'reviewing-tasks/reviewer-training', title: 'Reviewer Training' },
         { slug: 'reviewing-tasks/common-errors', title: 'Common Errors' },
         { slug: 'reviewing-tasks/defending-your-submission', title: 'Defending Your Submission' },
       ]
@@ -62,12 +63,14 @@ export const docsConfig = {
     {
       title: 'Reference',
       items: [
+        { slug: 'reference/quality-guidelines', title: 'Quality Guidelines' },
         { slug: 'reference/faq', title: 'FAQ' },
         { slug: 'reference/glossary', title: 'Glossary' },
         { slug: 'reference/rate-schedule', title: 'Rate Schedule' },
         { slug: 'reference/troubleshooting', title: 'Troubleshooting' },
         { slug: 'reference/office-hours', title: 'Office Hours' },
         { slug: 'reference/external-resources', title: 'External Resources' },
+        { slug: 'reference/v1-to-v2-changes', title: 'V1 to V2 Changes' },
       ]
     }
   ]

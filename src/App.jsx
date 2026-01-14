@@ -6,6 +6,9 @@ import { ProgressProvider } from './contexts/ProgressContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Login from './components/Auth/Login';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPassword from './components/Auth/ResetPassword';
+import AuthCallback from './components/Auth/AuthCallback';
 import PublicLanding from './components/Landing/PublicLanding';
 import Header from './components/Layout/Header';
 import LandingPage from './components/LandingPage'; // This is now the Portal Dashboard
@@ -21,7 +24,6 @@ import FeedbackSlides from './components/FeedbackSlides';
 import FAQ from './components/FAQ';
 import Glossary from './components/Glossary';
 import LocalTestingInfo from './components/LocalTestingInfo';
-import EnvironmentSetup from './components/EnvironmentSetup';
 import { trainingSections } from './data/trainingData';
 
 // Import backend components
@@ -33,6 +35,7 @@ import MySelectedTasks from './components/Tasks/MySelectedTasks';
 import TaskDetail from './components/Tasks/TaskDetail';
 import OnboardingModal from './components/Onboarding/OnboardingModal';
 import { AnnouncementBanner } from './components/ui';
+import PromoBanner from './components/ui/PromoBanner';
 
 function App() {
   return (
@@ -44,6 +47,9 @@ function App() {
             {/* Public Routes */}
             <Route path="/" element={<PublicLanding />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             
             {/* Protected Portal Routes */}
             <Route 
@@ -53,12 +59,14 @@ function App() {
                   <div className="app">
                     <OnboardingModal />
                     <Header />
-                    <AnnouncementBanner 
-                      variant="subtle"
-                      title="Please do not reach out to reviewers directly; "
-                    >
-                      messaging them will not speed up your review.
-                    </AnnouncementBanner>
+                    <PromoBanner>
+                      <AnnouncementBanner 
+                        variant="subtle"
+                        title="Please do not reach out to reviewers directly; "
+                      >
+                        messaging them will not speed up your review.
+                      </AnnouncementBanner>
+                    </PromoBanner>
                     <Routes>
                       <Route path="/" element={<LandingPage />} />
                       <Route path="/overview" element={<MissionPage />} />
@@ -69,7 +77,7 @@ function App() {
                       <Route path="/workbook" element={<Workbook />} />
                       <Route path="/oracle" element={<OracleTraining />} />
                       <Route path="/onboarding" element={<OnboardingMaterials />} />
-                      <Route path="/environment-setup" element={<EnvironmentSetup />} />
+                      <Route path="/environment-setup" element={<Navigate to="/portal/docs/getting-started/quick-start" replace />} />
                       <Route path="/local-testing" element={<LocalTestingInfo />} />
                       <Route path="/expert-platform-onboarding" element={<ExpertPlatformOnboarding />} />
                       <Route path="/expert-platform-walkthrough" element={<Navigate to="/portal/docs/submitting-tasks/platform-submission" replace />} />

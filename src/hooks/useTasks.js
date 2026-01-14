@@ -3,8 +3,8 @@ import { usePostHog } from 'posthog-js/react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
-const TASKS_CACHE_KEY = 'tasks_cache_v3'; // v3: Added pagination to fetch all 1600+ tasks
-const TASKS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const TASKS_CACHE_KEY = 'tasks_cache_v5'; // v5: Added title field
+const TASKS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes (increased from 5 to reduce API calls)
 
 // Helper to get cached tasks from localStorage
 const getCachedTasks = () => {
@@ -50,6 +50,14 @@ export const updateTaskCacheSelection = (taskId, isSelected) => {
   }
 };
 
+/**
+ * @deprecated This hook loads ALL 1600+ tasks (~1MB) and should not be used.
+ * Use useMySelectedTasks() instead for task claiming/management.
+ * Use useTasksGallery() for the task gallery with optimized loading.
+ * 
+ * This hook is kept for backwards compatibility but should be removed
+ * once we verify no code paths depend on it.
+ */
 export function useTasks() {
   const { user } = useAuth();
   const posthog = usePostHog();
@@ -79,9 +87,12 @@ export function useTasks() {
         const from = page * PAGE_SIZE;
         const to = from + PAGE_SIZE - 1;
         
+        // Select columns needed for task list UI (includes description for previews)
+        // Egress reduced via: 30-min cache, refresh only when expired, excludes tags array
         const { data, error: fetchError } = await supabase
           .from('v_tasks_with_priorities')
-          .select('*')
+          .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order, is_promoted, promo_multiplier, promo_title')
+          .order('is_promoted', { ascending: false })
           .order('display_order', { ascending: true, nullsFirst: false })
           .order('is_highlighted', { ascending: false })
           .order('category', { ascending: true })
@@ -114,9 +125,9 @@ export function useTasks() {
   // Initial fetch and user-dependent data
   useEffect(() => {
     const initialFetch = async () => {
-      // Stale-while-revalidate:
-      // 1. Show cached data immediately (no loader)
-      // 2. Fetch fresh data in background
+      // Cache-first strategy (optimized for reduced egress):
+      // 1. Show cached data immediately if not expired
+      // 2. Only fetch if cache is expired or missing
       const cachedData = getCachedTasks();
       
       if (cachedData?.tasks?.length) {
@@ -124,8 +135,10 @@ export function useTasks() {
         setTasks(cachedData.tasks);
         setLoading(false);
         
-        // Fetch fresh in background
-        fetchTasksInternal();
+        // Only fetch if cache is actually expired (not on every page load)
+        if (cachedData.isExpired) {
+          fetchTasksInternal();
+        }
       } else {
         // No cache - show loader and wait for fetch
         setLoading(true);
@@ -344,7 +357,7 @@ export const TASK_STATUS_LABELS = {
 export const MAX_ACTIVE_TASKS = 3;
 
 // Cache for selected tasks (per user)
-const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v1';
+const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v3'; // v3: Added title field
 
 const getCachedSelectedTasks = (userId) => {
   try {
@@ -456,10 +469,10 @@ export function useMySelectedTasks() {
 
       const taskIds = selections.map(s => s.task_id);
 
-      // Fetch full task details with priorities
+      // Fetch task details with priorities (includes title and description for My Tasks display)
       const { data, error: fetchError } = await supabase
         .from('v_tasks_with_priorities')
-        .select('*')
+        .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order, is_promoted, promo_multiplier, promo_title')
         .in('id', taskIds);
 
       if (fetchError) throw fetchError;
@@ -680,6 +693,63 @@ export function useMySelectedTasks() {
     }
   };
 
+  // Select/claim a task - moved here to avoid loading all 1600+ tasks via useTasks()
+  const selectTask = async (taskId, taskMetadata = {}) => {
+    if (!user) throw new Error('User not authenticated');
+
+    // Check claim limit before attempting
+    if (activeTaskCount >= MAX_ACTIVE_TASKS) {
+      throw new Error(`You can only have up to ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review or complete them to claim more.`);
+    }
+
+    try {
+      const { error: insertError } = await supabase
+        .from('selected_tasks')
+        .insert({
+          user_id: user.id,
+          task_id: taskId,
+          status: 'claimed'
+        });
+
+      if (insertError) {
+        // Check if it's a unique constraint violation (task already selected)
+        if (insertError.code === '23505') {
+          throw new Error('This task has already been selected by another user');
+        }
+        // Check for claim limit error from database trigger
+        if (insertError.code === 'P0001') {
+          throw new Error(insertError.message);
+        }
+        throw insertError;
+      }
+
+      // Update active task count
+      setActiveTaskCount(prev => prev + 1);
+
+      // Update tasks cache so claimed task shows as selected in gallery
+      updateTaskCacheSelection(taskId, true);
+
+      // Track task claimed event
+      if (posthog) {
+        posthog.capture('task_claimed', {
+          task_id: taskId,
+          category: taskMetadata.category,
+          subcategory: taskMetadata.subcategory,
+        });
+      }
+
+      // Refetch to get the full task data in selectedTasks
+      await fetchMySelectedTasks(false);
+
+      return true;
+    } catch (err) {
+      console.error('Error selecting task:', err);
+      // Refetch to ensure state is accurate
+      await fetchMySelectedTasks(false);
+      throw err;
+    }
+  };
+
   return {
     selectedTasks,
     loading,
@@ -687,6 +757,7 @@ export function useMySelectedTasks() {
     activeTaskCount,
     canClaimMore: activeTaskCount < MAX_ACTIVE_TASKS,
     refetch: fetchMySelectedTasks,
+    selectTask,
     unselectTask,
     markFirstCommit,
     // New workflow methods

@@ -69,12 +69,12 @@ function Workbook() {
               <tr>
                 <td><code>behavior_in_task_description</code></td>
                 <td>Whether all behavior checked in tests is described in the task</td>
-                <td>Review your test cases and ensure all tested behaviors are explicitly described in the task.yaml instructions</td>
+                <td>Review your test cases and ensure all tested behaviors are explicitly described in the task.toml instructions</td>
               </tr>
               <tr>
                 <td><code>behavior_in_tests</code></td>
                 <td>Whether all behavior described in task is checked in unit tests</td>
-                <td>Review your task.yaml instructions and ensure each requirement has a corresponding test case in test_outputs.py</td>
+                <td>Review your task.toml instructions and ensure each requirement has a corresponding test case in test_outputs.py</td>
               </tr>
               <tr>
                 <td><code>informative_test_docstrings</code></td>
@@ -89,17 +89,17 @@ function Workbook() {
               <tr>
                 <td><code>structured_data_schema</code></td>
                 <td>If agent produces structured data, is exact schema described?</td>
-                <td>If the agent produces structured data (e.g., API responses), describe the exact schema in task.yaml or a separate file</td>
+                <td>If the agent produces structured data (e.g., API responses), describe the exact schema in task.toml or a separate file</td>
               </tr>
               <tr>
                 <td><code>hardcoded_solution</code></td>
                 <td>Solution should demonstrate command sequence, not just output answer</td>
-                <td>Ensure your solution.sh demonstrates a sequence of commands that derive the answer, rather than directly outputting the final answer with echo/cat. Using echo/cat to write source files or scripts that are then executed is acceptable</td>
+                <td>Ensure your solution/solve.sh demonstrates a sequence of commands that derive the answer, rather than directly outputting the final answer with echo/cat. Using echo/cat to write source files or scripts that are then executed is acceptable</td>
               </tr>
               <tr>
                 <td><code>file_reference_mentioned</code></td>
-                <td>If agent needs to produce a file, is filename mentioned in task.yaml?</td>
-                <td>If tests check for specific files, ensure those filenames are explicitly mentioned in the task.yaml instructions</td>
+                <td>If agent needs to produce a file, is filename mentioned in task.toml?</td>
+                <td>If tests check for specific files, ensure those filenames are explicitly mentioned in the task.toml instructions</td>
               </tr>
             </tbody>
           </table>
@@ -139,22 +139,22 @@ function Workbook() {
               <tr>
                 <td><code>check_canary</code></td>
                 <td>Checks if canary string is present at top of required files</td>
-                <td>Add the canary string to the top of all required files (task.yaml, solution.sh, Dockerfile, test_outputs.py)</td>
+                <td>Add the canary string to the top of all required files (task.yaml, solution/solve.sh, Dockerfile, test_outputs.py)</td>
               </tr>
               <tr>
                 <td><code>check_dockerfile_references</code></td>
                 <td>Ensure solution/test files not referenced in Dockerfile</td>
-                <td>Remove any references to "solution.yaml", "solution.sh", "run-tests.sh", or "test_outputs.py" from your Dockerfile</td>
+                <td>Remove any references to "solution.yaml", "solution/solve.sh", "run-tests.sh", or "test_outputs.py" from your Dockerfile</td>
               </tr>
               <tr>
                 <td><code>check_run-tests_sh</code></td>
-                <td>Verifies run-tests.sh uses uv init or has proper task.yaml keywords</td>
-                <td>Update run-tests.sh to contain uv init or uv venv, or add global or system-wide keywords to task.yaml</td>
+                <td>Verifies run-tests.sh uses uv init or has proper task.toml keywords</td>
+                <td>Update run-tests.sh to contain uv init or uv venv, or add global or system-wide keywords to task.toml</td>
               </tr>
               <tr>
                 <td><code>check_task_absolute_path</code></td>
                 <td>Task instructions use absolute paths rather than relative paths</td>
-                <td>Update all file paths in task.yaml instructions to use absolute paths (starting with /) instead of relative paths</td>
+                  <td>Update all file paths in task.toml instructions to use absolute paths (starting with /) instead of relative paths</td>
               </tr>
               <tr>
                 <td><code>check_privileged_containers</code></td>
@@ -173,8 +173,8 @@ function Workbook() {
               </tr>
               <tr>
                 <td><code>validate_task_fields</code></td>
-                <td>All required fields are present in task.yaml</td>
-                <td>Add any missing required fields to your task.yaml file</td>
+                <td>All required fields are present in task.toml</td>
+                <td>Add any missing required fields to your task.toml file</td>
               </tr>
             </tbody>
           </table>

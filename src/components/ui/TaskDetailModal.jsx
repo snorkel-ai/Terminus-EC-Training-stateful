@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePostHog } from 'posthog-js/react';
-import { useTasks, useMySelectedTasks, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
+import { useMySelectedTasks, MAX_ACTIVE_TASKS } from '../../hooks/useTasks';
+import { supabase } from '../../lib/supabase';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Badge } from './Badge';
@@ -29,11 +30,57 @@ export function TaskDetailModal({
 }) {
   const navigate = useNavigate();
   const posthog = usePostHog();
-  const { selectTask, activeTaskCount, canClaimMore } = useTasks();
-  const { unselectTask } = useMySelectedTasks();
+  // Use useMySelectedTasks for all task operations - avoids loading all 1600+ tasks
+  const { selectTask, unselectTask, activeTaskCount, canClaimMore } = useMySelectedTasks();
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
   const confettiContainerRef = useRef(null);
+  
+  // Lazy-load description when modal opens (to reduce initial task list egress)
+  const [description, setDescription] = useState(task?.description || null);
+  const [loadingDescription, setLoadingDescription] = useState(false);
+  
+  // Fetch description on demand when modal opens
+  useEffect(() => {
+    if (!isOpen || !task?.id) return;
+    
+    // If task already has description (from cache or other source), use it
+    if (task.description) {
+      setDescription(task.description);
+      return;
+    }
+    
+    // Fetch description (and title if needed) from database
+    const fetchDescription = async () => {
+      setLoadingDescription(true);
+      try {
+        const { data, error } = await supabase
+          .from('task_inspiration')
+          .select('description, title')
+          .eq('id', task.id)
+          .single();
+        
+        if (error) throw error;
+        setDescription(data?.description || 'No description available.');
+        // Update task title in parent if it was missing
+        if (data?.title && !task.title) {
+          task.title = data.title;
+        }
+      } catch (err) {
+        console.error('Error fetching task description:', err);
+        setDescription('Failed to load description.');
+      } finally {
+        setLoadingDescription(false);
+      }
+    };
+    
+    fetchDescription();
+  }, [isOpen, task?.id, task?.description]);
+  
+  // Reset description when task changes
+  useEffect(() => {
+    setDescription(task?.description || null);
+  }, [task?.id]);
 
   // Track when task card is opened
   useEffect(() => {
@@ -108,7 +155,11 @@ export function TaskDetailModal({
 
     setIsSelecting(true);
     try {
-      await selectTask(task.id);
+      // Pass task metadata for analytics tracking
+      await selectTask(task.id, {
+        category: task.category,
+        subcategory: task.subcategory,
+      });
       setShowClaimSuccess(true);
       onTaskUpdate?.();
     } catch (error) {
@@ -216,7 +267,7 @@ export function TaskDetailModal({
                     </div>
                   )}
                 </div>
-                <h2>Your challenge</h2>
+                <h2>{task.title || 'Your challenge'}</h2>
               </div>
 
               {showNavigation && contextTasks.length > 1 && (
@@ -247,47 +298,56 @@ export function TaskDetailModal({
           </div>
           
           <div className="task-detail-modal-body">
-            <p>{task.description}</p>
+            {loadingDescription ? (
+              <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Loading description...</p>
+            ) : (
+              <p>{description || 'No description available.'}</p>
+            )}
           </div>
 
           <div className="task-detail-modal-footer">
-            {/* Left side: badges and claim limit */}
-            <div style={{ marginRight: 'auto', display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+            {/* Info row: badges and claim limit */}
+            <div className="modal-footer-info">
               {(task.is_special || task.priority_tag || task.is_highlighted) && (
                 <Badge variant="accent">Double Pay</Badge>
               )}
-              <span style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
-                Active: <strong style={{ color: canClaimMore ? 'var(--text-primary)' : 'var(--color-warning)' }}>
+              <span className="active-task-count">
+                Your Active Tasks: <strong style={{ color: canClaimMore ? 'var(--text-primary)' : 'var(--color-warning)' }}>
                   {activeTaskCount}/{MAX_ACTIVE_TASKS}
                 </strong>
               </span>
             </div>
-            <Button 
-              variant="ghost" 
-              onClick={handleClose}
-              disabled={isSelecting}
-            >
-              Cancel
-            </Button>
-            <Button 
-              variant="secondary" 
-              onClick={() => {
-                handleClose();
-                navigate('/portal/tasks');
-              }}
-              disabled={isSelecting}
-            >
-              Browse All Tasks
-            </Button>
-            <Button 
-              variant="primary" 
-              onClick={handleClaimTask}
-              loading={isSelecting}
-              disabled={!canClaimMore}
-              title={!canClaimMore ? `You can only have ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review to free up slots.` : ''}
-            >
-              {canClaimMore ? 'Claim Task' : 'Active Task Limit Reached'}
-            </Button>
+            
+            {/* Button row */}
+            <div className="footer-buttons">
+              <Button 
+                variant="ghost" 
+                onClick={handleClose}
+                disabled={isSelecting}
+                className="modal-cancel-btn"
+              >
+                Cancel
+              </Button>
+              <Button 
+                variant="secondary" 
+                onClick={() => {
+                  handleClose();
+                  navigate('/portal/tasks');
+                }}
+                disabled={isSelecting}
+              >
+                Browse Tasks
+              </Button>
+              <Button 
+                variant="primary" 
+                onClick={handleClaimTask}
+                loading={isSelecting}
+                disabled={!canClaimMore}
+                title={!canClaimMore ? `You can only have ${MAX_ACTIVE_TASKS} active tasks. Submit tasks for review to free up slots.` : ''}
+              >
+                {canClaimMore ? 'Claim Task' : 'Limit Reached'}
+              </Button>
+            </div>
           </div>
         </>
       )}

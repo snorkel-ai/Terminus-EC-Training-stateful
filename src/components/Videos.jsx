@@ -15,7 +15,7 @@ function Videos() {
     },
     {
       id: '140f2cf8f16d404abf5cbd7dcc66b7cb',
-      title: '3. Creating a solution.sh',
+      title: '3. Creating a solution/solve.sh',
     },
     {
       id: 'a00541ff2787464c84bf4601415ee624',

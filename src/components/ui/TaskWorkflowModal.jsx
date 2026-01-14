@@ -3,7 +3,9 @@ import { useMySelectedTasks, TASK_STATUS, TASK_STATUS_LABELS, MAX_ACTIVE_TASKS }
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Badge } from './Badge';
+import { Note } from './Note';
 import { DifficultyRating } from './TaskCard';
+import { FiCopy, FiCheck } from 'react-icons/fi';
 import './TaskDetailModal.css';
 
 /**
@@ -31,12 +33,27 @@ export function TaskWorkflowModal({
   } = useMySelectedTasks();
   const [isActioning, setIsActioning] = useState(false);
   const [localTask, setLocalTask] = useState(null);
+  const [copiedTaskId, setCopiedTaskId] = useState(false);
+
+  // Handle copying task ID to clipboard
+  const handleCopyTaskId = async () => {
+    if (!displayTask?.id) return;
+    
+    try {
+      await navigator.clipboard.writeText(displayTask.id);
+      setCopiedTaskId(true);
+      setTimeout(() => setCopiedTaskId(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy task ID:', err);
+    }
+  };
 
   // Use localTask if available (for optimistic updates), otherwise use prop
   const displayTask = localTask?.id === task?.id ? localTask : task;
 
   const handleClose = () => {
     setLocalTask(null);
+    setCopiedTaskId(false);
     onClose?.();
   };
 
@@ -134,6 +151,9 @@ export function TaskWorkflowModal({
   const isTaskInReview = taskStatus === TASK_STATUS.WAITING_REVIEW;
   const isTaskAccepted = taskStatus === TASK_STATUS.ACCEPTED;
 
+  // Show Task ID for any claimed/in-progress/review/accepted task
+  const shouldShowTaskId = isTaskActive || isTaskInReview || isTaskAccepted;
+
   return (
     <Modal
       isOpen={isOpen}
@@ -145,13 +165,13 @@ export function TaskWorkflowModal({
         {/* Corner ribbon for accepted tasks only */}
         {isTaskAccepted && (
           <div className="modal-ribbon">
-            <span>Accepted</span>
+            <span>Marked as Accepted</span>
           </div>
         )}
         
         <div className="task-detail-modal-header">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
-            <div>
+            <div style={{ flex: 1 }}>
               <div className="modal-badges" style={{ alignItems: 'center' }}>
                 <div className="task-breadcrumb">
                   <span className="breadcrumb-segment parent">{displayTask.category}</span>
@@ -166,6 +186,7 @@ export function TaskWorkflowModal({
                   </div>
                 )}
               </div>
+              
               <h2>Your challenge</h2>
             </div>
             {/* Top right status badge */}
@@ -203,20 +224,44 @@ export function TaskWorkflowModal({
               })}</div>
             )}
             {isTaskAccepted && displayTask.completed_at && (
-              <div>🎉 Accepted on {new Date(displayTask.completed_at).toLocaleDateString('en-US', { 
+              <div>🎉 You marked this as accepted on {new Date(displayTask.completed_at).toLocaleDateString('en-US', { 
                 month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
               })}</div>
             )}
           </div>
+          
+          {/* Task ID section - removed as moved to header */}
+          
+          {/* Note for tasks in review */}
+          {isTaskInReview && (
+            <Note title="Important" variant="info" className="modal-note">
+              Only mark as accepted once confirmed on the Snorkel Expert platform.
+            </Note>
+          )}
         </div>
 
         <div className="task-detail-modal-footer">
-          {/* Double Pay badge if applicable */}
-          {(displayTask.is_special || displayTask.priority_tag || displayTask.is_highlighted) && (
-            <div style={{ marginRight: 'auto' }}>
+          {/* Footer Info (Double Pay + Task ID) */}
+          <div className="modal-footer-info">
+            {(displayTask.is_special || displayTask.priority_tag || displayTask.is_highlighted) && (
               <Badge variant="accent">Double Pay</Badge>
-            </div>
-          )}
+            )}
+            
+            {shouldShowTaskId && displayTask.id && (
+              <div 
+                className={`footer-task-id ${copiedTaskId ? 'copied' : ''}`}
+                onClick={handleCopyTaskId}
+                role="button"
+                title="Click to copy Task ID"
+              >
+                <code className="id-value">#{displayTask.id}</code>
+                <span className="id-icon">
+                  {copiedTaskId ? <FiCheck size={12} /> : <FiCopy size={12} />}
+                </span>
+                <span className="id-tooltip">{copiedTaskId ? 'Copied!' : 'Copy ID'}</span>
+              </div>
+            )}
+          </div>
           
           {/* Abandon button - only show for active tasks (claimed or in_progress) */}
           {isTaskActive && (
@@ -224,6 +269,7 @@ export function TaskWorkflowModal({
               variant="danger" 
               onClick={handleAbandon}
               disabled={isActioning}
+              className="modal-abandon-btn"
             >
               Abandon Task
             </Button>

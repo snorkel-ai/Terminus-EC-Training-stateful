@@ -6,11 +6,11 @@ The oracle solution (`solution/solve.sh`) is an expert-authored script that reli
 
 ### Video Tutorial
 
-<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution.sh"></video-loom>
+<video-loom id="140f2cf8f16d404abf5cbd7dcc66b7cb" title="Creating a solution/solve.sh"></video-loom>
 
 ### What You'll Learn
 
-- Structure of a good solution.sh file
+- Structure of a good solution/solve.sh file
 - How to transfer commands from interactive testing
 - Best practices for deterministic solutions
 - Common pitfalls to avoid
@@ -182,7 +182,7 @@ do_something
 
 ```bash
 # Enter the container
-uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
+harbor tasks start-env --path <task-folder> --interactive
 
 # Inside container, run your solution steps manually
 # Verify each step works as expected
@@ -191,7 +191,7 @@ uv run harbor tasks start-env --path harbor_tasks/<task-name> --interactive
 ### Run Oracle Agent
 
 ```bash
-uv run harbor run --agent oracle --path harbor_tasks/<task-name>
+harbor run --agent oracle --path <task-folder>
 ```
 
 The oracle agent should PASS. If it fails, either:
