@@ -119,6 +119,19 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 > **Note:** The same API key works for both GPT-5 and Claude models through Portkey.
 
+### Are the quality checks on the platform using different models or prompts than what is used on GitHub?
+
+No, Snorkel is not doing anything differently on the platform compared to GitHub. The system uses the following configuration:
+- Total Agents: There are 10 agents in total.
+- Claude Agents: 5 agents use Claude Sonnet 4.5 via Claude Code.
+- GPT Agents: 5 agents use GPT 4.5 via Codex.
+
+For more detailed information on running agents, please refer to the [Testing Agent Performance](/portal/docs/testing-and-validation/running-real-agents) guide.
+
+### How should I handle Provider List error appearing in my logs for GPT agents?
+
+The Provider List output is just a warning message. It is not an indication of a task failure and should be ignored during troubleshooting.
+
 ### Docker won't start. What do I do?
 
 1. Ensure Docker Desktop is running
