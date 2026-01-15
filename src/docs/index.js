@@ -48,6 +48,7 @@ export const docsConfig = {
         { slug: 'testing-and-validation/ci-feedback-training', title: 'CI Feedback Training' },
         { slug: 'testing-and-validation/ci-checks-reference', title: 'CI Checks Reference' },
         { slug: 'testing-and-validation/llmaj-checks-reference', title: 'LLMaJ Checks Reference' },
+        { slug: 'testing-and-validation/agent-review-reference', title: 'Agent Review Reference' },
       ]
     },
     {

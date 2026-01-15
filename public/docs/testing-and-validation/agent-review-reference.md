@@ -1,4 +1,4 @@
-# Agent Review
+# Agent Review Reference
 
 Agent Review uses Claude Code to comprehensively evaluate Terminal-Bench tasks for compliance with format requirements, best practices, and quality standards. This automated review provides detailed feedback on task structure, correctness, and potential issues.
 
