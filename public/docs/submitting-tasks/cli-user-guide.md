@@ -100,7 +100,7 @@ stb submissions list --project-id YOUR_PROJECT_ID
 
 The list command displays a formatted table with submission details including:
 - Submission ID
-- Assignment State (e.g., NEEDS_REVISION, SUBMITTED, APPROVED)
+- Assignment State (e.g., NEEDS_REVISION, EVALUATION_PENDING, REVIEW_PENDING, ACCEPTED, OFFERED, REJECTED, SKIPPED)
 - Payment Status (e.g., PENDING, PAID)
 - Project ID (when viewing multiple projects)
 
@@ -114,7 +114,11 @@ stb submissions list --project-id proj-456
 Assignment States:
 - `EVALUATION_PENDING` - Waiting for system evaluation
 - `NEEDS_REVISION` - Reviewer requested changes (can update)
-- `COMPLETED` - Task accepted, waiting for reviewers' review
+- `REVIEW_PENDING` - Waiting for reviewers' review
+- `ACCEPTED` - Task accepted
+- `OFFERED` - Offer made
+- `REJECTED` - Task rejected
+- `SKIPPED` - Task skipped
 
 ### 4. Portkey API Access
 
