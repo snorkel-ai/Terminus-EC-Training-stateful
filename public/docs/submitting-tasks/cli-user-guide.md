@@ -4,11 +4,10 @@ A command-line tool for submitting and managing your Snorkel Terminal-Bench assi
 ### Prerequisites
 - Python 3.10 or higher
 ### Install from Wheel File
-**Option 1: Download and Install (Recommended)**
-1. Download the wheel file: <a href="https://snorkel-python-wheels.s3.us-west-2.amazonaws.com/stb/snorkelai_stb-1.1.1-py3-none-any.whl" target="_blank" rel="noopener noreferrer" download>snorkelai_stb-1.1.1-py3-none-any.whl</a>
-2. Install using pip:
+**Option 1: Install Directly from URL (Recommended)**
+Install using pip directly from the wheel URL:
   ```bash
-  pip install snorkelai_stb-1.1.1-py3-none-any.whl
+  pip install https://snorkel-python-wheels.s3.us-west-2.amazonaws.com/stb/snorkelai_stb-1.1.1-py3-none-any.whl
   ```
 **Option 2: Install from Local File Path**
 If you have the wheel file saved locally:
@@ -98,10 +97,20 @@ Or filter by project:
 ```bash
 stb submissions list --project-id YOUR_PROJECT_ID
 ```
+
+The list command displays a formatted table with submission details including:
+- Submission ID
+- Assignment State (e.g., NEEDS_REVISION, SUBMITTED, APPROVED)
+- Payment Status (e.g., PENDING, PAID)
+- Project ID (when viewing multiple projects)
+
+When filtering by a single project ID, the project ID is shown as a header instead of a column for cleaner output.
+
 Example:
 ```bash
 stb submissions list --project-id proj-456
 ```
+
 Assignment States:
 - `EVALUATION_PENDING` - Waiting for system evaluation
 - `NEEDS_REVISION` - Reviewer requested changes (can update)
