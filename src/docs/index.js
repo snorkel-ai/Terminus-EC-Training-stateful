@@ -44,6 +44,7 @@ export const docsConfig = {
       title: 'Testing & Validation',
       items: [
         { slug: 'testing-and-validation/oracle-agent', title: 'Oracle Agent' },
+        { slug: 'testing-and-validation/nop-agent', title: 'NOP Agent' },
         { slug: 'testing-and-validation/running-real-agents', title: 'Testing Agent Performance' },
         { slug: 'testing-and-validation/ci-feedback-training', title: 'CI Feedback Training' },
         { slug: 'testing-and-validation/ci-checks-reference', title: 'CI Checks Reference' },
