@@ -274,3 +274,36 @@ stb harbor --help
 ```
 
 For issues, contact your project administrator.
+
+
+## Uninstallation
+
+### Uninstall snorkelai-stb
+
+```bash
+uv tool uninstall snorkelai-stb
+```
+
+### Remove Configuration Files (Optional)
+
+The CLI stores configuration and credentials in your system. To completely remove all data:
+
+**Linux/macOS:**
+```bash
+rm -rf ~/.config/stb/
+```
+
+**Windows (PowerShell):**
+```powershell
+Remove-Item -Recurse -Force "$env:LOCALAPPDATA\stb"
+```
+
+### Remove Task-Specific Files (Optional)
+
+Each task folder contains a `.snorkel_config` file tracking submission IDs. To remove these from your task folders:
+
+```bash
+find . -name '.snorkel_config' -delete
+```
+
+**Note:** You may want to keep `.snorkel_config` files if you plan to reinstall the CLI and continue working with existing submissions.
