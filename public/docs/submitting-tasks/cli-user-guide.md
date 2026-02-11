@@ -276,6 +276,20 @@ stb harbor --help
 For issues, contact your project administrator.
 
 
+## Upgrading
+
+The CLI automatically checks for updates once per day. When an update is available, you'll see a message like:
+
+```
+⚠️  Update available: 1.1.0 → 1.2.0
+   Run: uv tool upgrade snorkelai-stb --find-links https://snorkel-python-wheels.s3.us-west-2.amazonaws.com/stb/index.html --python ">=3.12"
+```
+
+To upgrade, please run the command manually.
+
+Your configuration and credentials are preserved during upgrades.
+
+
 ## Uninstallation
 
 ### Uninstall snorkelai-stb
