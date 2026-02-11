@@ -1,5 +1,7 @@
 # Snorkel Terminal-Bench CLI - User Guide
 
+A command-line tool for submitting and managing your Snorkel Terminal-Bench assignments.
+
 ## Installation
 
 ### Prerequisites
@@ -15,7 +17,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ### Install stb
 
 ```bash
-uv tool install snorkelai-stb --find-links https://snorkel-python-wheels.s3.us-west-2.amazonaws.com/stb/index.html
+uv tool install snorkelai-stb --find-links https://snorkel-python-wheels.s3.us-west-2.amazonaws.com/stb/index.html --python >= "3.12"
 ```
 
 The `stb` command will be available globally (you may need to restart your terminal).
@@ -52,7 +54,7 @@ This creates a new folder with the required task structure:
 
 ```
 my-task-name/
-├── instruction.md      # Task instructions
+├── instruction.md     # Task instructions
 ├── task.toml          # Task configuration
 ├── environment/
 │   └── Dockerfile     # Docker environment setup
