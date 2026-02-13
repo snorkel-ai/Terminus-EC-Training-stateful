@@ -14,6 +14,8 @@ As a reviewer, you're ensuring quality for the benchmark. Your goal is to:
 ### 1. Read the Task Description
 
 - [ ] Instructions look human-written (not LLM-generated)
+- [ ] Limit of 1-2 paragraphs for the problem description and a maximum of 2 paragraphs/20 bullet points for requirements. 
+    * Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling)
 - [ ] Requirements are clear and unambiguous
 - [ ] All constraints are explicitly stated
 - [ ] Absolute paths used throughout

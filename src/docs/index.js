@@ -7,6 +7,7 @@ export const docsConfig = {
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
         { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
+        { slug: 'getting-started/edition1-to-edition2-changes', title: 'NEW in Terminus Edition 2' },
       ]
     },
     {
@@ -25,8 +26,12 @@ export const docsConfig = {
         { slug: 'understanding-tasks/task-components', title: 'Task Components' },
         { slug: 'understanding-tasks/task-requirements', title: 'Task Requirements' },
         { slug: 'understanding-tasks/task-taxonomy', title: 'Task Taxonomy' },
-        { slug: 'understanding-tasks/example-tasks', title: 'Example Tasks' },
+        { slug: 'understanding-tasks/milestones', title: 'NEW: Milestones' },
+        { slug: 'understanding-tasks/task-subtypes', title: 'NEW: Task Sub-types' },
+        { slug: 'understanding-tasks/rubrics', title: 'NEW: Rubrics' },
+        { slug: 'understanding-tasks/prompt-styling', title: 'Instruction Prompt Styling' },
         { slug: 'understanding-tasks/difficulty-guidelines', title: 'Difficulty Guidelines' },
+        { slug: 'understanding-tasks/example-tasks', title: 'Example Tasks' },
       ]
     },
     {
@@ -72,7 +77,6 @@ export const docsConfig = {
         { slug: 'reference/troubleshooting', title: 'Troubleshooting' },
         { slug: 'reference/office-hours', title: 'Office Hours' },
         { slug: 'reference/external-resources', title: 'External Resources' },
-        { slug: 'reference/v1-to-v2-changes', title: 'V1 to V2 Changes' },
       ]
     }
   ]

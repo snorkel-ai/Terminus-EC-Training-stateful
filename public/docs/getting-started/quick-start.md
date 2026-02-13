@@ -6,10 +6,17 @@ Get up and running with TerminalBench in just a few minutes. This guide covers e
 
 Before you begin, make sure you have:
 
-- Access to the Snorkel Expert Platform
-- Joined the Slack channel `#ec-terminus-submission`
-- Joined the Notification channel `#ec-terminus-announcements`
-- Received your API key via email
+- Access to the **[Snorkel Expert Platform](https://experts.snorkel-ai.com/)** 
+- Joined the **Slack channel** `#ec-terminus-submission`
+- Joined the **Notification channel** `#ec-terminus-announcements`
+- Set up the **Snorkel CLI** tool
+    - Read [Snorkel CLI user guide](/portal/docs/submitting-tasks/cli-user-guide)
+    - Using the Snorkel CLI you can:
+        - Check submission status
+        - Generate your API key
+        - Refresh your API key
+        - Submit your tasks via CLI instead of platform _(optional)_
+        - _and much more!_
 
 ## Environment Setup
 
