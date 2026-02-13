@@ -16,6 +16,11 @@
   z-index: 1;
 }
 
+.login-connectivity-banner {
+  margin-bottom: 16px;
+  border-radius: 12px;
+}
+
 .login-card {
   background: white;
   border-radius: 24px;
