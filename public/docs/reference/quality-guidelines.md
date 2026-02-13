@@ -250,6 +250,31 @@ fi
 # ❌ Bad - No default provided
 python -m pytest "$TEST_DIR/test_outputs.py" -rA -v
 ```
+## 8. Avoid Oracle-Replication Performance Thresholds
+
+**Rule:** Performance thresholds must not be set so tightly relative to the oracle (e.g., within ~5% of oracle performance) that the task effectively becomes “replicate the oracle.” Thresholds should evaluate whether the agent meaningfully solves the problem — not whether it nearly matches a specific implementation.
+
+**Why:** Extremely tight margins turn optimization tasks into imitation exercises rather than problem-solving evaluations. This discourages diverse, valid solution strategies and rewards oracle mimicry over genuine capability.
+
+**Example of what to avoid:**
+```bash
+# ❌ Bad — Threshold set to near-oracle performance
+
+oracle_score = 0.92
+required_score = oracle_score * 0.95   # ~5% margin
+
+agent_score = evaluate_agent()
+
+assert agent_score >= required_score
+```
+This structure effectively requires the agent to nearly replicate the oracle’s performance rather than demonstrate a strong, valid solution.
+
+**Instead:**
+- Set thresholds that reflect meaningful task completion, not oracle proximity.
+- Ensure multiple solution strategies could reasonably pass.
+- Validate that the task measures true problem-solving ability rather than implementation similarity.
+- Ask: *“Would a fundamentally different but correct approach be able to pass this threshold?”*
+    - If the answer is no, the threshold is likely too tight and should be loosened.
 
 ---
 
