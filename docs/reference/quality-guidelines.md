@@ -1,8 +1,27 @@
 # Quality Guidelines
 
-These quality control guidelines define the quality bar for TBench 2.0 formatted tasks. All tasks must comply with these standards to pass review.
+These quality control guidelines define the quality bar for TBench Edition 2 formatted tasks. All tasks must comply with these standards to pass review.
 
 ---
+
+## High Level Requirements
+
+### **All tasks must align with these 6 core tenants:**
+
+**Instruction Prompt Styling**: Each task will be equipped with an instruction.md which outlines the task to be completed. These task prompts will describe the problem in 1-2 paragraphs and the requirements in no more than 2 paragraphs of 20 bullets. Prompts should not be LLM generated and should read in a way that is reflective of how users interact with coding agents.
+
+**Multi-Step**: Tasks should require chaining multiple commands (5 minimum terminal commands), handling intermediate states, and some reasoning (like error recovery or branching), and avoid being solvable with a single command or a single episode of commands.
+
+**Testable**: Each task must be fully specified and self-contained for the agent to solve without ambiguity and should be accompanied by a sufficient set of tests that can be used to deterministically measure the final state of the environment and determine if the task has been completed correctly.
+
+**Novel**: Avoid ANY variations of existing tasks in TerminalBench Repository; each task should introduce a new task setup, definition, and data used to solve the task. Tasks should also be novel with respect to tasks included in Snorkel’s Terminal Bench Edition 1 dataset. 
+
+**No Privileged Ops**: Tasks must not require root-level privileges or unsafe Docker settings like --privileged.
+
+**Standalone**: The task must run to completion without human input after start; all parameters are provided via files, flags, or environment variables. To validate this, we run and validate all tasks using the harbor framework. Single-container tasks are validated in Daytona, while multi-container tasks are validated in a Docker environment. We use CI/CD infrastructure to support the running of multi-container tasks at scale.
+
+
+## Specific Scenarios to Avoid
 
 ## 1. No Latency-Based Tests
 
