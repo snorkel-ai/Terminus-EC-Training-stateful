@@ -17,7 +17,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ### Install stb
 
 ```bash
-uv tool install snorkelai-stb --find-links https://snorkel-python-wheels.s3.us-west-2.amazonaws.com/stb/index.html --python >= "3.12"
+uv tool install snorkelai-stb -f https://snorkel-python-wheels.s3.us-west-2.amazonaws.com/stb/index.html -p 3.12 -U
 ```
 
 The `stb` command will be available globally (you may need to restart your terminal).
@@ -195,16 +195,54 @@ Note: Updates automatically send the submission to a reviewer. You can only upda
 
 ## For Reviewers
 
+### Get the Current Review or Request a New Review Assignment if There Are No Ongoing Reviews
+
+```bash
+stb reviews get -p PROJECT_ID
+```
+
 ### List Review Assignments
 
 ```bash
 stb reviews list
 ```
 
-### Download Submission for Review
+### Download a Submission for Review
 
 ```bash
-stb reviews download -s SUBMISSION_ID
+stb reviews download REVIEW_ID
+```
+
+### Accept a Submission You Reviewed
+```bash
+stb reviews accept REVIEW_ID
+```
+
+### Reject a Submission You Reviewed
+```bash
+stb reviews reject REVIEW_ID
+```
+
+### Request Revision for a Submission You Reviewed
+```bash
+stb reviews revise REVIEW_ID
+```
+
+### Skip a Submission You Don't Want to Review
+```bash
+stb reviews skip REVIEW_ID --reason REASON --rationale RATIONALE
+```
+The reason for skipping is required, and must be one of the following:
+- outside_expertise
+- unclear_or_ambiguous
+- too_time_consuming
+- invalid_input
+- other
+
+
+### View an Ongoing Review in the Browser
+```bash
+stb reviews view REVIEW_ID
 ```
 
 ---
@@ -222,9 +260,15 @@ stb reviews download -s SUBMISSION_ID
 | `stb submissions create <folder>` | Create and upload a new submission |
 | `stb submissions update <folder>` | Update an existing submission |
 | `stb submissions list` | List your submissions |
-| `stb submissions download -s ID` | Download your submission |
+| `stb submissions download ID` | Download your submission |
+| `stb submissions view ID` | Open the submission review page in the browser |
+| `stb reviews get -p ID` | Request a new review assignment |
 | `stb reviews list` | List review assignments |
-| `stb reviews download -s ID` | Download submission for review |
+| `stb reviews download ID` | Download a submission you are assigned to review |
+| `stb reviews accept ID` | Accept a submission you reviewed |
+| `stb reviews reject ID` | Reject a submission you reviewed |
+| `stb reviews revise ID` | Request revision for a submission you reviewed |
+| `stb reviews skip ID --reason <REASON>` | Skip a review assignment you don't want to do |
 
 ---
 
@@ -270,6 +314,7 @@ Use `stb reviews download` instead of `stb submissions download` when downloadin
 ```bash
 stb --help
 stb submissions --help
+stb reviews --help
 stb harbor --help
 ```
 
