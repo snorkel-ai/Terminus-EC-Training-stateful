@@ -40,6 +40,12 @@ stb login
 
 This opens the Experts platform website. Click the email dropdown in the top-right corner, select 'New API Key', copy it, and paste it in your terminal.
 
+If you need to use AI tools for your task, request new AI credentials with:
+
+```bash
+stb keys refresh
+```
+
 ---
 
 ## Task Creation Workflow
@@ -155,7 +161,7 @@ This should **PASS**. Fix any issues before proceeding.
 Run with GPT-5:
 
 ```bash
-stb harbor run -m gpt-5 -p ./my-task-name
+stb harbor run -m @openai/gpt-5 -p ./my-task-name
 ```
 
 Run with Claude Sonnet 4.5:
@@ -179,11 +185,13 @@ This automatically:
 
 ### Step 11: Check Submission Results and Update
 
+List all your past submissions and check your submission status with:
+
 ```bash
 stb submissions list
 ```
 
-Assignment States:
+Submission statuses:
 - `EVALUATION_PENDING` - Waiting for system evaluation
 - `NEEDS_REVISION` - Reviewer requested changes (can update)
 - `REVIEW_PENDING` - Waiting for reviewers' review
@@ -192,19 +200,36 @@ Assignment States:
 - `REJECTED` - Task rejected
 - `SKIPPED` - Task skipped
 
-Check your submission status. If changes are needed, fix issues and update:
+For a given submission, you can download the submission to a local zip file with:
+```bash
+stb submissions download SUBMISSION_ID -o OUTPUT_DIRECTORY
+```
+
+### Step 12: Update a submission if it needs revision
+
+If a submission is in the `NEEDS_REVISION` status, you can update it either in the Platform UI or through the CLI.
+
+To open the submission in the browser:
+```bash
+stb submissions view SUBMISSION_ID
+```
+
+Alternatively, update the submission directly in the CLI:
 
 ```bash
+# If the submission was created through the UI, you must provide a SUBMISSION_ID
+stb submissions update ./my-task-name -s SUBMISSION_ID
+# If updating a submission previously created through the local CLI, you can skip the SUBMISSION_ID
 stb submissions update ./my-task-name
 ```
 
-Note: Updates automatically send the submission to a reviewer. You can only update submissions in "NEEDS_REVISION" state.
+Note: Updates automatically send the submission to a reviewer. You can only update submissions in `NEEDS_REVISION` state.
 
 ---
 
 ## For Reviewers
 
-This section covers CLI commands for reviewing submissions. For resources for onboarding and training as a reviewer, see [Reviewer Training](/portal/docs/reviewing-tasks/reviewer-training).
+This section covers CLI commands for reviewing submissions. For onboarding resources and training as a reviewer, see [Reviewer Training](/portal/docs/reviewing-tasks/reviewer-training).
 
 ### Get the Current Review or Request a New Review Assignment if There Are No Ongoing Reviews
 
@@ -222,6 +247,11 @@ stb reviews list
 
 ```bash
 stb reviews download REVIEW_ID
+```
+
+### View an Ongoing Review in the Browser
+```bash
+stb reviews view REVIEW_ID
 ```
 
 ### Accept a Submission You Reviewed
@@ -251,11 +281,6 @@ The reason for skipping is required, and must be one of the following:
 - other
 
 
-### View an Ongoing Review in the Browser
-```bash
-stb reviews view REVIEW_ID
-```
-
 ---
 
 ## Troubleshooting
@@ -266,7 +291,7 @@ Use `stb submissions update` instead of `create` for existing submissions.
 
 ### "Cannot update: submission is in X state (must be NEEDS_REVISION)"
 
-You can only update submissions in "NEEDS_REVISION" state. Check status with `stb submissions list`.
+You can only update submissions in `NEEDS_REVISION` state. Check status with `stb submissions list`.
 
 ### "Feedback did not pass"
 
@@ -284,6 +309,13 @@ Run `stb login` to authenticate and store your API key.
 ### AI Credentials Issues
 
 Run `stb keys refresh` to generate new credentials.
+
+### Model Issues
+
+The following is a known issue that does not affect your work. If you see this warning message, please ignore it.
+```bash
+Failed to retrieve model info for '@anthropic-tbench/claude-sonnet-4-5 (from 'openai/@anthropic-tbench/claude-sonnet-4-5')': This model isn't mapped yet.
+```
 
 ### "You are not assigned to review submission"
 
@@ -331,7 +363,7 @@ Your configuration and credentials are preserved during upgrades.
 uv tool uninstall snorkelai-stb
 ```
 
-If you installed in a virtual environment:
+**If you installed in a virtual environment:**
 
 ```bash
 # Replace .venv with your virtual environment directory name
