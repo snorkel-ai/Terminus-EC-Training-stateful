@@ -161,7 +161,7 @@ stb harbor run -m gpt-5 -p ./my-task-name
 Run with Claude Sonnet 4.5:
 
 ```bash
-stb harbor run -m claude-sonnet-4-5 -p ./my-task-name
+stb harbor run -m @anthropic-tbench/claude-sonnet-4-5 -p ./my-task-name
 ```
 
 Run each agent 2-3 times to gauge pass rate. Tasks should be challenging enough that agents don't pass every time (< 80% pass rate).
@@ -169,7 +169,7 @@ Run each agent 2-3 times to gauge pass rate. Tasks should be challenging enough 
 ### Step 10: Submit to Platform
 
 ```bash
-stb submissions create ./my-task-name
+stb submissions create ./my-task-name -p PROJECT_ID
 ```
 
 This automatically:
@@ -177,11 +177,20 @@ This automatically:
 - Uploads to the platform
 - Runs automated checks
 
-### Step 11: Check CI Results and Update
+### Step 11: Check Submission Results and Update
 
 ```bash
 stb submissions list
 ```
+
+Assignment States:
+- `EVALUATION_PENDING` - Waiting for system evaluation
+- `NEEDS_REVISION` - Reviewer requested changes (can update)
+- `REVIEW_PENDING` - Waiting for reviewers' review
+- `ACCEPTED` - Task accepted
+- `OFFERED` - Offer made
+- `REJECTED` - Task rejected
+- `SKIPPED` - Task skipped
 
 Check your submission status. If changes are needed, fix issues and update:
 
@@ -194,6 +203,8 @@ Note: Updates automatically send the submission to a reviewer. You can only upda
 ---
 
 ## For Reviewers
+
+This section covers CLI commands for reviewing submissions. For resources for onboarding and training as a reviewer, see [Reviewer Training](/portal/docs/reviewing-tasks/reviewer-training).
 
 ### Get the Current Review or Request a New Review Assignment if There Are No Ongoing Reviews
 
@@ -244,31 +255,6 @@ The reason for skipping is required, and must be one of the following:
 ```bash
 stb reviews view REVIEW_ID
 ```
-
----
-
-## Command Reference
-
-| Command | Description |
-|---------|-------------|
-| `stb login` | Authenticate with the platform |
-| `stb keys refresh` | Refresh AI credentials if you run out of credits |
-| `stb keys show` | Show current AI credentials |
-| `stb init [name]` | Download task skeleton template |
-| `stb harbor <cmd>` | Run harbor commands with AI credentials |
-| `stb claude` | Run Claude Code with AI credentials |
-| `stb submissions create <folder>` | Create and upload a new submission |
-| `stb submissions update <folder>` | Update an existing submission |
-| `stb submissions list` | List your submissions |
-| `stb submissions download ID` | Download your submission |
-| `stb submissions view ID` | Open the submission review page in the browser |
-| `stb reviews get -p ID` | Request a new review assignment |
-| `stb reviews list` | List review assignments |
-| `stb reviews download ID` | Download a submission you are assigned to review |
-| `stb reviews accept ID` | Accept a submission you reviewed |
-| `stb reviews reject ID` | Reject a submission you reviewed |
-| `stb reviews revise ID` | Request revision for a submission you reviewed |
-| `stb reviews skip ID --reason <REASON>` | Skip a review assignment you don't want to do |
 
 ---
 
@@ -339,8 +325,17 @@ Your configuration and credentials are preserved during upgrades.
 
 ### Uninstall snorkelai-stb
 
+**If you installed using `uv tool install` (recommended method):**
+
 ```bash
 uv tool uninstall snorkelai-stb
+```
+
+If you installed in a virtual environment:
+
+```bash
+# Replace .venv with your virtual environment directory name
+rm -rf .venv
 ```
 
 ### Remove Configuration Files (Optional)
@@ -356,13 +351,3 @@ rm -rf ~/.config/stb/
 ```powershell
 Remove-Item -Recurse -Force "$env:LOCALAPPDATA\stb"
 ```
-
-### Remove Task-Specific Files (Optional)
-
-Each task folder contains a `.snorkel_config` file tracking submission IDs. To remove these from your task folders:
-
-```bash
-find . -name '.snorkel_config' -delete
-```
-
-**Note:** You may want to keep `.snorkel_config` files if you plan to reinstall the CLI and continue working with existing submissions.
