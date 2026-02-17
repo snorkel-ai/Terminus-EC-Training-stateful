@@ -10,26 +10,24 @@ This edition represents a significant leap in complexity and realism, moving awa
 The core architecture of a submission has been refined to improve clarity and testing breadth.
 
 ### Testing & Environment
-* **Testing Frameworks:** Historically limited to Python; Edition 2 now encourages the inclusion of **Playwright tests** for browser-based tasks.
 * **Directory Hygiene:** Ensure the parent directory remains clean. Move all non-essential files to relevant subdirectories.
 * **Containerization:** Avoid over-indexing on multi-container setups. Directionally, we are funneling contributors toward **single-container cases** unless the task explicitly requires an orchestrated environment.
 
 ### Task Metadata (`task.toml`)
 The metadata file has been expanded to support more granular agent routing.
 * **NEW: Task Subtypes:** Specific classification within the broader taxonomy.
-* **NEW: Number of Milestones:** Total count of milestones within the task.
-* **NEW: Milestone Descriptions:** The size of the environment with regards to the number of files in the project.
 * **NEW: Codebase Context Scale:** Defined as **None**, **Small**, or **Large**.
 
-> Learn below about _Milestones_ and _Task-subtypes_
+> Learn more below about _Milestones_ and _Task-subtypes_
 
 ### Authentic Prompt Styling
 
-We have overhauled the way instructions are written. In Edition 2, the `instruction.md` file must strictly move away from "LLM-generated" verbosity.
+We have overhauled the way instructions are written. In Edition 2, the `instruction.md` file should index more on **realistic prompts** that users would use when interacting with coding agents in the real world.
 
-* **Human-Centric:** Prompts should reflect the precise, concise language real engineers use when talking to agents. 
+* **Human-Centric:** Prompts should reflect the real language that engineers use when interacting with coding agents. 
 * **Strict Prompt Constraints:** We now enforce a limit of 1-2 paragraphs for the problem description and a maximum of 2 paragraphs/20 bullet points for requirements. 
-* **Authenticity:** Avoid "flowery" AI transitions. While you should aim for the style in the [Prompt Styling Guide](/portal/docs/reference/prompt-styling), the priority is professional, human-to-peer communication.
+
+**[Learn about the Prompt Styling requirements](/portal/docs/understanding-tasks/prompt-styling)**
 
 
 ## Expanding the Scope: Milestones & Task Subtypes
@@ -48,15 +46,20 @@ Milestones divide a complex, multi-step engineering task into standalone, sequen
 
 
 
-**[Learn About Milestones](/portal/docs/reference/milestones)**
+**[Learn about Milestones](/portal/docs/understanding-tasks/milestones)**
 
 ### 2. Task Subtypes
-A subset of the tasks will be aligned to subtypes that target key challenge areas. Tasks can be aligned with multi subtypes if they span multiple challenge areas. These subtypes are defined as:
+A subset of tasks should be aligned to the following subtypes that target key challenge areas. Tasks can be aligned with multiple subtypes if they span multiple challenge areas. These subtypes are defined as:
 
-* **Stress Testing:** Subtypes include **Long Context** (50k+ tokens), **Tool Specific** (niche SDKs like FFmpeg or Blender), **DB Interaction** (SQL/NoSQL), and **API Integration**.
-* **Novelty:** These ensure the benchmark tests an agent's ability to navigate blind spots in their training data where models typically underperform.
+#### Subtype Taxonomy:
+* **Long Context**: Tasks that require models to test their context windows by reading large documents.
+* **Tool Specific**: Tasks that target tools that provide SDK & APIs where models generally underperform.
+* **API Integration**: Tasks that involve building, interacting with, or debugging APIs to solve a task.
+* **DB Interaction**: Tasks that involve gathering context and/or problem solving through interacting with a database.
+* **UI Building**: Tasks that create, edit, or update a user interface. 
 
-**[Learn about Task Subtypes](/portal/docs/reference/task-subtypes)**
+
+**[Learn about Task Subtypes](/portal/docs/understanding-tasks/task-subtypes)**
 
 
 
@@ -69,7 +72,7 @@ Perhaps the biggest shift from Edition 1 is the introduction of **Rubrics**. In 
 * **Trajectory Grading:** You will author a `rubrics.txt` file that awards points for "good" engineering behaviors (like inspecting a file before editing) and penalizes "bad" ones (like destructive root searches or repetitive failures).
 * **Trace-Only Evaluation:** These are objective, binary checks that determine *how* an agent solved a problem based purely on the evidence left in the terminal trace.
 
-**[Learn to Master  Rubrics](/portal/docs/reference/rubrics)**
+**[Learn about Rubrics](/portal/docs/understanding-tasks/rubrics)**
 
 ---
 

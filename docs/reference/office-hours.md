@@ -1,14 +1,11 @@
 # Office Hours & Recordings
 
-Access recordings and slides from past office hours sessions.
-
-## What Are Office Hours?
 
 Office hours are open forums scheduled regularly where you can:
 - Ask questions about your tasks
 - Get help with technical issues
 - Learn from others' questions
-- Hear project updates
+- Anything else you may need help with regarding Project Terminus
 
 **Attendance is optional** but encouraged, especially when you're stuck.
 

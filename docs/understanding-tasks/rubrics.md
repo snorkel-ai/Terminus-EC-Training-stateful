@@ -19,8 +19,8 @@ To keep rubrics objective and focused on the **process**, avoid these common pit
 
 ---
 
-## 3. The Power of Negative Penalties
-We have noticed a trend of removing negative penalties. **This is a mistake.** A mix of positive rewards and negative penalties is essential for "shaping" the score.
+## 3.  Negative Penalties
+Begative penalties should be included where appropriate (e.g., a score of -1). A mix of positive rewards and negative penalties is essential for "shaping" the score.
 
 
 
@@ -61,12 +61,9 @@ Every line in your `rubrics.txt` must follow these syntax rules for CI validatio
 
 ## Authoring Summary Checklist
 - [ ] Every line starts with "Agent" and ends with ", [Score]".
-- [ ] Only uses +/- 1, 2, 3, 5 (No 4s).
+- [ ] Only uses +/- 1, 2, 3, 5 (**No 4s**).
 - [ ] Includes significant negative penalties for unsafe/redundant behavior.
 - [ ] Focuses on trace-evidenced actions, not the final pytest result.
 - [ ] Rephrased synthetic checks to be task-specific and non-generic.
 
 ---
-
-**Ready to finalize your rubric?**
-**[Submit for SME Review](/portal/docs/getting-started/submission)**
