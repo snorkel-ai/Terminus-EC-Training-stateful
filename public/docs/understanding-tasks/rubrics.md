@@ -2,6 +2,9 @@
 
 The pre-generated synthetic rubrics provided in your workbench are merely a baseline. To meet the Terminal Bench Edition 2 standards, you must refine these drafts into a thorough, diagnostic tool that accurately separates elite engineering from "shotgun" coding.
 
+For further detailed guidelines on Rubrics, visit this guidelines document: **[Go to Rubrics Guidelines](https://docs.google.com/document/d/1HUFv8fUu3zy4aLUC9oBtH6xZgmu44R7zlMRUl22UT1U/edit?tab=t.0#heading=h.2m2fq7otru3u)**
+
+
 ---
 
 ## 1. The "Starting Point" Philosophy
