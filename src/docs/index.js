@@ -29,7 +29,7 @@ export const docsConfig = {
         { slug: 'understanding-tasks/milestones', title: 'NEW: Milestones' },
         { slug: 'understanding-tasks/task-subtypes', title: 'NEW: Task Sub-types' },
         { slug: 'understanding-tasks/rubrics', title: 'NEW: Rubrics' },
-        { slug: 'understanding-tasks/prompt-styling', title: 'Instruction Prompt Styling' },
+        { slug: 'understanding-tasks/prompt-styling', title: 'NEW: Instruction Prompt Styling' },
         { slug: 'understanding-tasks/difficulty-guidelines', title: 'Difficulty Guidelines' },
         { slug: 'understanding-tasks/example-tasks', title: 'Example Tasks' },
       ]

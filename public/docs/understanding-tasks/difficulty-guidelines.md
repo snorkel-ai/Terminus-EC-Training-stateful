@@ -15,8 +15,8 @@ Task difficulty is determined by accuracy when run against frontier AI models. T
 ## Evaluation Process
 
 Each task is evaluated against:
-- **GPT-5** with Codex agent
-- **Claude Sonnet 4.5** with Claude Code agent
+- **GPT-5.2** with Codex agent
+- **Claude Opus 4.6** with Claude Code agent
 - **5 runs each** to determine average accuracy
 
 The difficulty is based on whichever model performs better.

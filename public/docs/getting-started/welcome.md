@@ -83,7 +83,7 @@ Each task undergoes a rigorous 4-step review:
 
 | Resource | Link |
 |----------|------|
-| **Slack Channel** | `#ec-terminus-submission` |
+| **Slack Channel** | `#terminus-2nd-edition-submission` |
 | **Office Hours** | Weekly sessions to answer questions |
 
 ---

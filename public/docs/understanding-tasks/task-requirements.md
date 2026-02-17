@@ -16,8 +16,6 @@ All task submissions must include and be organized within a single directory con
 | ↳ `task_subtypes` | ✅ | List of challenge areas (e.g., Long Context, DB Interaction). |
 | ↳ `difficulty` | ✅ | Tier based on frontier model pass rates. |
 | ↳ `codebase_scale` | ✅ | Size of environment context (None, Small, Large). |
-| ↳ `number_of_milestones` | ✅ | Total checkpoints (use `0` if not a milestone task). |
-| ↳ `milestone_descriptions` | ✅ | Detailed success criteria for each phase. |
 | ↳ `relevant_languages` | ✅ | List of programming languages used in the task. |
 | ↳ `tags` | ✅ | 3-6 free-form keywords for tools/libraries (e.g., FFmpeg, Redis). |
 | ↳ `runtime_limits` | ✅ | Defined timeouts for agent, verifier, and build. |
@@ -78,14 +76,12 @@ Clear, unambiguous instructions for the agent.
 ## task.toml Requirements
 
 **Task Metadata:** A task.toml file that contains required metadata such as:
-* Difficulty: The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
-* Task Type: Each task must have exactly one task type from the list of tasks defined in the Task Type section.
-* Task Subtypes: Each task will have a list of subtypes that apply to specific challenge areas. See the Task Subtypes section for more information.
-* Number of Milestones: The number of milestones present in the task.
-* Milestone Descriptions: Full text descriptions of what was accomplished at each milestone.
-* Codebase Context Scale: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
-* Runtime Limits: Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
-* Tags: Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
+* **Difficulty:** The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
+* **Task Type:** Each task must have exactly one task type from the list of tasks defined in the Task Type section.
+* **Task Subtypes:** Each task will have a list of subtypes that apply to specific challenge areas. See the Task Subtypes section for more information.
+* **Codebase Context Scale:** The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Runtime Limits:** Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
+* **Tags:** Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
 ```toml
 version = "1.0"

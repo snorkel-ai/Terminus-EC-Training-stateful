@@ -1,10 +1,10 @@
 # Understanding Task Subtypes
 
-A subset of the tasks will be aligned to subtypes that target key challenge areas. Tasks can be aligned with multi subtypes if they span multiple challenge areas. These subtypes are defined as:
+A subset of the tasks should be aligned to subtypes that target key challenge areas. Tasks can be aligned with multiple subtypes if they span multiple challenge areas. These subtypes are defined as:
 
 
 ## 1. Long Context
-These tasks are designed to exhaust and test the reasoning capabilities of large context windows. A "Long Context" task is not just about a large file—it's about information density and non-linear retrieval.
+Tasks that require models to test their context windows by reading large documents. File must be at least 50k tokens and cannot simply be parsed programmatically or through keyword search by the agent.
 
 ### Supported Formats & Examples
 * **Text-Heavy Formats:**
@@ -24,38 +24,33 @@ These tasks are designed to exhaust and test the reasoning capabilities of large
 
 
 ## 2. Tool Specific
-Targeting tools that provide SDKs and APIs where models typically underperform due to less training data or high syntax specificity. 
+Tasks that target tools that provide SDK & APIs where models generally underperform.
 * **Examples:** Blender, FFmpeg, ImageMagick, Graphviz, MLFlow, WandB, Prefect, Superset, GIMP, QGIS, etc.
 * **Goal:** Providing exercises for these tools is highly useful for identifying agent blindspots in specialized workflows.
 
 
 
-## 4. API Integration
-Simulates real-world agent workflows. 
+## 3. API Integration
+Tasks that involve building, interacting with, or debugging APIs to solve a task. These are specifically tasks where the API source code is included in the environment.
 * **Implementation:** APIs must be mocked within the Docker environment without external dependencies. 
 * **Interaction:** The agent interacts strictly via the terminal (no MCP). Source code for the API must be included in the environment.
-* **Frameworks:** Flask, Ruby on Rails, Django, Express.js, etc. (**FastAPI** must be minority of total API tasks).
+* **Frameworks:** Flask, Ruby on rails, Rustapi, spring boot, django, express js, fastify, play, gin and more. 
+    * Avoid using FastAPI too much. This is used heavily throughout other datasets and risk oversaturation of the use of this framework if not avoided.
 
 
 
-## 5. DB Interaction
-Directly addresses high demand for agents capable of complex data engineering.
-* **Tech Stack:** Uses SQLite or similar DB tools (Postgres, Parquet, Arrow) in Docker.
+
+## 4. DB Interaction
+Tasks that involve gathering context and/or problem solving through interacting with a database. This will avoid tasks where the agent can read the underlying data without directly interacting with the DB. 
+* **DB Types:** SQL, NoSQL, Vector Databases, In Memory Databases, and more.
 * **The "Flat-File" Limit:** DBs represented purely as CSVs should make up minority of DB-based tasks to ensure agents are actually interacting with database engines.
 
+## 4. User Interface Building
+Tasks that create, edit, or update a user interface.
+* **Verification:** UI tasks will be tested in playwright, and not with the usual pytest validators.
+
+
 
 ---
 
-## Summary Table: Subtype Constraints
-
-| Subtype | Key Requirement | Success Metric |
-| :--- | :--- | :--- |
-| **Long Context** | Min 50k tokens | Cannot be solved via simple `grep` |
-| **Tool Specific** | Specialized SDK use | Correct output from complex CLI |
-| **API Integration** | Source code included | Successful mock-service interaction |
-| **DB Interaction** | <20% CSV-based | Correct SQL/Query execution |
-
----
-
-**Ready to build?**
-**[View the Task Authoring Templates](/portal/docs/getting-started/templates)**
+**Ready to build?** **[View the Task Authoring Templates](/portal/docs/getting-started/templates)**

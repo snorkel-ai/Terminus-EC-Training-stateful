@@ -28,9 +28,9 @@ Unlike standard tasks with a single test script, milestone tasks use unit test v
 You must provide individual rubric files (e.g., `rubrics_1.txt`, `rubrics_2.txt`) for every milestone. These rubrics define the criteria for a **LLM-as-a-Judge (LLMaJ)** to evaluate the agent's "trace" or "thinking" during that specific phase.
 
 ### 4. Metadata (`task.toml`)
-You must specify the total count and provide a text description for every stage:
+You must specify the total count and provide a text description for every stage. Include these 2 fields if your task has Milestones:
 * `number_of_milestones`: Total count (integer).
-* `milestone_descriptions`: A list of strings describing the desired outcome of each stage.
+* `milestone_descriptions`: A string describing the desired outcome of each stage.
 
 
 
@@ -40,8 +40,6 @@ You must specify the total count and provide a text description for every stage:
 
 * **No "Leaky" Milestones:** Ensure Milestone 2 cannot be completed if Milestone 1 fails.
 * **Clear Boundaries:** An agent should know exactly when they have finished a milestone based on your `instruction.md`.
-* **Balance:** Avoid over-segmenting. Most milestone tasks should have between 2 and 5 milestones. If a task requires 10 milestones, it may be too large for a single container environment.
+* **Balance:** Avoid over-segmenting. Most milestone tasks should have between 2 and 5 milestones. If a task requires 10 milestones, attempt to combine milestones that are closely related or index on challenging parts of the task.
 
 ---
-
-**Want to see a reference implementation?** **[Check out the Milestone Task Template](/portal/docs/reference/milestone-template)**
