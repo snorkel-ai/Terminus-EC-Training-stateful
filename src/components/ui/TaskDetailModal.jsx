@@ -6,18 +6,10 @@ import { supabase } from '../../lib/supabase';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Badge } from './Badge';
-import { DifficultyRating } from './TaskCard';
 import './TaskDetailModal.css';
 
 /**
- * TaskDetailModal - Reusable modal for viewing task details and claiming tasks
- * 
- * @param {Object} task - The task to display
- * @param {boolean} isOpen - Whether the modal is open
- * @param {function} onClose - Callback when modal closes
- * @param {Array} contextTasks - Optional array of tasks for navigation (prev/next)
- * @param {function} onNavigate - Optional callback when navigating to another task
- * @param {boolean} showNavigation - Whether to show prev/next navigation arrows
+ * TaskDetailModal - Modal for viewing v2 task details and claiming tasks
  */
 export function TaskDetailModal({ 
   task, 
@@ -30,39 +22,33 @@ export function TaskDetailModal({
 }) {
   const navigate = useNavigate();
   const posthog = usePostHog();
-  // Use useMySelectedTasks for all task operations - avoids loading all 1600+ tasks
   const { selectTask, unselectTask, activeTaskCount, canClaimMore } = useMySelectedTasks();
   const [isSelecting, setIsSelecting] = useState(false);
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
   const confettiContainerRef = useRef(null);
   
-  // Lazy-load description when modal opens (to reduce initial task list egress)
   const [description, setDescription] = useState(task?.description || null);
   const [loadingDescription, setLoadingDescription] = useState(false);
   
-  // Fetch description on demand when modal opens
   useEffect(() => {
     if (!isOpen || !task?.id) return;
     
-    // If task already has description (from cache or other source), use it
     if (task.description) {
       setDescription(task.description);
       return;
     }
     
-    // Fetch description (and title if needed) from database
     const fetchDescription = async () => {
       setLoadingDescription(true);
       try {
         const { data, error } = await supabase
-          .from('task_inspiration')
+          .from('task_inspiration_v2')
           .select('description, title')
           .eq('id', task.id)
           .single();
         
         if (error) throw error;
         setDescription(data?.description || 'No description available.');
-        // Update task title in parent if it was missing
         if (data?.title && !task.title) {
           task.title = data.title;
         }
@@ -77,32 +63,29 @@ export function TaskDetailModal({
     fetchDescription();
   }, [isOpen, task?.id, task?.description]);
   
-  // Reset description when task changes
   useEffect(() => {
     setDescription(task?.description || null);
   }, [task?.id]);
 
-  // Track when task card is opened
   useEffect(() => {
     if (isOpen && task && posthog) {
       posthog.capture('task_card_viewed', {
         task_id: task.id,
-        task_category: task.category,
-        task_subcategory: task.subcategory,
-        task_difficulty: task.difficulty,
-        is_special: task.is_special || task.priority_tag || task.is_highlighted,
+        task_type: task.type,
+        task_subtypes: task.subtypes,
+        is_milestone: task.is_milestone,
+        has_external_code: task.has_external_code,
+        languages: task.languages,
       });
     }
   }, [isOpen, task?.id, posthog]);
 
-  // Reset success state when task changes or modal closes
   useEffect(() => {
     if (!isOpen || !task) {
       setShowClaimSuccess(false);
     }
   }, [isOpen, task?.id]);
 
-  // Generate confetti on success
   useEffect(() => {
     if (!showClaimSuccess || !confettiContainerRef.current) return;
 
@@ -129,7 +112,6 @@ export function TaskDetailModal({
     return () => clearTimeout(timeout);
   }, [showClaimSuccess]);
 
-  // Keyboard navigation
   useEffect(() => {
     if (!isOpen || !showNavigation || showClaimSuccess) return;
 
@@ -155,10 +137,9 @@ export function TaskDetailModal({
 
     setIsSelecting(true);
     try {
-      // Pass task metadata for analytics tracking
       await selectTask(task.id, {
-        category: task.category,
-        subcategory: task.subcategory,
+        category: task.type,
+        subcategory: task.subtypes?.join(', '),
       });
       setShowClaimSuccess(true);
       onTaskUpdate?.();
@@ -204,7 +185,6 @@ export function TaskDetailModal({
     }
   };
 
-  // Navigation state
   const currentIndex = task && contextTasks.length > 0
     ? contextTasks.findIndex(t => t.id === task.id)
     : -1;
@@ -221,7 +201,6 @@ export function TaskDetailModal({
       className="task-detail-modal"
     >
       {showClaimSuccess ? (
-        // Success state after claiming
         <div className="task-claim-success" ref={confettiContainerRef}>
           <div className="success-icon-wrapper">
             <div className="success-icon">✓</div>
@@ -247,27 +226,31 @@ export function TaskDetailModal({
           </div>
         </div>
       ) : (
-        // Task detail view
         <>
           <div className="task-detail-modal-header">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
                 <div className="modal-badges" style={{ alignItems: 'center' }}>
                   <div className="task-breadcrumb">
-                    <span className="breadcrumb-segment parent">{task.category}</span>
-                    <span className="breadcrumb-separator">/</span>
-                    <span className="breadcrumb-segment current">
-                      {task.subcategory || task.subsubcategory}
-                    </span>
+                    <span className="breadcrumb-segment parent">{task.type}</span>
+                    {task.subtypes?.length > 0 && (
+                      <>
+                        <span className="breadcrumb-separator">/</span>
+                        <span className="breadcrumb-segment current">
+                          {task.subtypes.join(', ')}
+                        </span>
+                      </>
+                    )}
                   </div>
-
-                  {task.difficulty && (
-                    <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
-                      <DifficultyRating difficulty={task.difficulty} />
-                    </div>
-                  )}
                 </div>
                 <h2>{task.title || 'Your challenge'}</h2>
+
+                {/* Language badges */}
+                <div className="task-detail-badges">
+                  {(task.languages || []).map(lang => (
+                    <Badge key={lang} variant="default" size="sm">{lang}</Badge>
+                  ))}
+                </div>
               </div>
 
               {showNavigation && contextTasks.length > 1 && (
@@ -303,14 +286,30 @@ export function TaskDetailModal({
             ) : (
               <p>{description || 'No description available.'}</p>
             )}
+
+            {/* Milestone breakdown */}
+            {task.is_milestone && task.milestone_titles?.length > 0 && (
+              <div className="task-milestones">
+                <h4>Milestones</h4>
+                <ol className="milestone-list">
+                  {task.milestone_titles.map((title, i) => (
+                    <li key={i}>{title}</li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            {/* External code info */}
+            {task.has_external_code && task.external_code_description && (
+              <div className="task-external-code">
+                <h4>Starter Code provided</h4>
+                <p>{task.external_code_description}</p>
+              </div>
+            )}
           </div>
 
           <div className="task-detail-modal-footer">
-            {/* Info row: badges and claim limit */}
             <div className="modal-footer-info">
-              {(task.is_special || task.priority_tag || task.is_highlighted) && (
-                <Badge variant="accent">Double Pay</Badge>
-              )}
               <span className="active-task-count">
                 Your Active Tasks: <strong style={{ color: canClaimMore ? 'var(--text-primary)' : 'var(--color-warning)' }}>
                   {activeTaskCount}/{MAX_ACTIVE_TASKS}
@@ -318,7 +317,6 @@ export function TaskDetailModal({
               </span>
             </div>
             
-            {/* Button row */}
             <div className="footer-buttons">
               <Button 
                 variant="ghost" 
@@ -356,4 +354,3 @@ export function TaskDetailModal({
 }
 
 export default TaskDetailModal;
-

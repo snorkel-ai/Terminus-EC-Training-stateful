@@ -2,14 +2,12 @@ import { useMemo, useState, useEffect, useRef } from 'react';
 import { Button, Checkbox, Modal, SearchInput } from '../ui';
 import './TaskFiltersModal.css';
 
-// Animated counting component
 function AnimatedCount({ value, duration = 300 }) {
   const [displayValue, setDisplayValue] = useState(value);
   const animationRef = useRef(null);
   const startValueRef = useRef(value);
 
   useEffect(() => {
-    // Cancel any existing animation
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
@@ -19,16 +17,12 @@ function AnimatedCount({ value, duration = 300 }) {
     const startTime = performance.now();
     const difference = endValue - startValue;
 
-    // If no change, skip animation
     if (difference === 0) return;
 
     const animate = (currentTime) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing function (ease-out)
       const easeOut = 1 - Math.pow(1 - progress, 3);
-      
       const currentValue = Math.round(startValue + difference * easeOut);
       setDisplayValue(currentValue);
 
@@ -63,95 +57,90 @@ function TaskFiltersModal({
   onFilterChange,
 }) {
   const [categorySearch, setCategorySearch] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState({});
+  const [expandedTypes, setExpandedTypes] = useState({});
 
-  // 1. Build Category Tree
-  const categoryTree = useMemo(() => {
+  // Build type → subtypes tree from tasks
+  // Since subtypes is an array, a single task can contribute to multiple subtypes
+  const typeTree = useMemo(() => {
     const tree = {};
     tasks.forEach(task => {
-      if (task.is_selected) return;
-      const cat = task.category || 'Uncategorized';
-      const sub = task.subcategory || 'General';
+      const type = task.type || 'Uncategorized';
       
-      if (!tree[cat]) {
-        tree[cat] = { count: 0, subcategories: {} };
+      if (!tree[type]) {
+        tree[type] = { count: 0, subtypes: {} };
       }
-      tree[cat].count++;
+      tree[type].count++;
       
-      if (!tree[cat].subcategories[sub]) {
-        tree[cat].subcategories[sub] = 0;
-      }
-      tree[cat].subcategories[sub]++;
+      const subtypes = task.subtypes || [];
+      subtypes.forEach(sub => {
+        if (!tree[type].subtypes[sub]) {
+          tree[type].subtypes[sub] = 0;
+        }
+        tree[type].subtypes[sub]++;
+      });
     });
-    // Sort categories alphabetically
     return Object.keys(tree).sort().reduce((acc, key) => {
       acc[key] = tree[key];
       return acc;
     }, {});
   }, [tasks]);
 
-  // 2. Filter Tree for Search
+  // Collect all unique languages from tasks
+  const allLanguages = useMemo(() => {
+    const langSet = new Set();
+    tasks.forEach(task => {
+      (task.languages || []).forEach(l => langSet.add(l));
+    });
+    return [...langSet].sort();
+  }, [tasks]);
+
+  // Filter tree for search
   const displayTree = useMemo(() => {
-    if (!categorySearch) return categoryTree;
+    if (!categorySearch) return typeTree;
     const lower = categorySearch.toLowerCase();
     const result = {};
     
-    Object.entries(categoryTree).forEach(([cat, data]) => {
-      const catMatch = cat.toLowerCase().includes(lower);
+    Object.entries(typeTree).forEach(([type, data]) => {
+      const typeMatch = type.toLowerCase().includes(lower);
       const matchingSubs = {};
       let hasMatchingSub = false;
       
-      Object.entries(data.subcategories).forEach(([sub, count]) => {
-        if (sub.toLowerCase().includes(lower) || catMatch) {
+      Object.entries(data.subtypes).forEach(([sub, count]) => {
+        if (sub.toLowerCase().includes(lower) || typeMatch) {
           matchingSubs[sub] = count;
           hasMatchingSub = true;
         }
       });
       
-      if (catMatch || hasMatchingSub) {
-        result[cat] = {
+      if (typeMatch || hasMatchingSub) {
+        result[type] = {
           count: data.count,
-          subcategories: matchingSubs
+          subtypes: matchingSubs
         };
       }
     });
     return result;
-  }, [categoryTree, categorySearch]);
+  }, [typeTree, categorySearch]);
 
-  // Handlers
-  const handlePriorityToggle = () => {
-    onFilterChange({
-      ...filters,
-      priorityOnly: !filters.priorityOnly
-    });
-  };
-
-  const handleCategoryToggle = (cat) => {
-    // Toggle selection of the category
-    const currentCats = filters.categories || [];
-    const isSelected = currentCats.includes(cat);
+  const handleTypeToggle = (type) => {
+    const currentTypes = filters.types || [];
+    const isSelected = currentTypes.includes(type);
     
-    let nextCats;
-    let nextSubs = [...(filters.subcategories || [])];
+    let nextTypes;
+    let nextSubs = [...(filters.subtypes || [])];
     
     if (isSelected) {
-      // Deselect category and all its subcategories
-      nextCats = currentCats.filter(c => c !== cat);
-      
-      const catData = categoryTree[cat];
-      if (catData && catData.subcategories) {
-        const subCats = Object.keys(catData.subcategories);
-        nextSubs = nextSubs.filter(s => !subCats.includes(s));
+      nextTypes = currentTypes.filter(t => t !== type);
+      const typeData = typeTree[type];
+      if (typeData?.subtypes) {
+        const subNames = Object.keys(typeData.subtypes);
+        nextSubs = nextSubs.filter(s => !subNames.includes(s));
       }
     } else {
-      // Select category and ALL its subcategories
-      nextCats = [...currentCats, cat];
-      
-      const catData = categoryTree[cat];
-      if (catData && catData.subcategories) {
-        const subCats = Object.keys(catData.subcategories);
-        // Add all subcategories that aren't already selected
-        subCats.forEach(sub => {
+      nextTypes = [...currentTypes, type];
+      const typeData = typeTree[type];
+      if (typeData?.subtypes) {
+        Object.keys(typeData.subtypes).forEach(sub => {
           if (!nextSubs.includes(sub)) {
             nextSubs.push(sub);
           }
@@ -161,91 +150,91 @@ function TaskFiltersModal({
     
     onFilterChange({ 
       ...filters, 
-      categories: nextCats,
-      subcategories: nextSubs
+      types: nextTypes,
+      subtypes: nextSubs
     });
   };
 
-  const handleSubcategoryToggle = (sub, parentCat) => {
-    const currentSubs = filters.subcategories || [];
+  const handleSubtypeToggle = (sub, parentType) => {
+    const currentSubs = filters.subtypes || [];
     const isSubSelected = currentSubs.includes(sub);
     
-    let nextSubs;
-    if (isSubSelected) {
-      nextSubs = currentSubs.filter(s => s !== sub);
-    } else {
-      nextSubs = [...currentSubs, sub];
-    }
+    let nextSubs = isSubSelected
+      ? currentSubs.filter(s => s !== sub)
+      : [...currentSubs, sub];
     
-    // Determine parent category state
-    const currentCats = filters.categories || [];
-    let nextCats = [...currentCats];
+    const currentTypes = filters.types || [];
+    let nextTypes = [...currentTypes];
     
-    const catData = categoryTree[parentCat];
-    if (catData && catData.subcategories) {
-      const allSubs = Object.keys(catData.subcategories);
+    const typeData = typeTree[parentType];
+    if (typeData?.subtypes) {
+      const allSubs = Object.keys(typeData.subtypes);
       const selectedSubsCount = allSubs.filter(s => nextSubs.includes(s)).length;
       
       if (selectedSubsCount === allSubs.length && allSubs.length > 0) {
-        // All selected -> Select parent
-        if (!nextCats.includes(parentCat)) {
-          nextCats.push(parentCat);
-        }
+        if (!nextTypes.includes(parentType)) nextTypes.push(parentType);
       } else if (selectedSubsCount === 0) {
-        // None selected -> Deselect parent
-        nextCats = nextCats.filter(c => c !== parentCat);
+        nextTypes = nextTypes.filter(t => t !== parentType);
       } else {
-        // Some selected -> Parent must be selected for filtering to work
-        // Visual indeterminate state is handled by the Checkbox component props
-        if (!nextCats.includes(parentCat)) {
-          nextCats.push(parentCat);
-        }
+        if (!nextTypes.includes(parentType)) nextTypes.push(parentType);
       }
     }
       
     onFilterChange({ 
       ...filters, 
-      categories: nextCats,
-      subcategories: nextSubs 
+      types: nextTypes,
+      subtypes: nextSubs 
     });
   };
 
-  const toggleExpand = (cat) => {
-    setExpandedCategories(prev => ({
+  const handleLanguageToggle = (lang) => {
+    const current = filters.languages || [];
+    const next = current.includes(lang)
+      ? current.filter(l => l !== lang)
+      : [...current, lang];
+    onFilterChange({ ...filters, languages: next });
+  };
+
+  const toggleExpand = (type) => {
+    setExpandedTypes(prev => ({
       ...prev,
-      [cat]: !prev[cat]
+      [type]: !prev[type]
     }));
   };
 
   const clearAllFilters = () => {
     onFilterChange({
-      categories: [],
-      subcategories: [],
-      priorityOnly: false,
+      types: [],
+      subtypes: [],
+      languages: [],
+      milestoneOnly: false,
+      externalCodeOnly: false,
       search: ''
     });
     setCategorySearch('');
   };
 
   const activeFilterCount = 
-    (filters.categories?.length || 0) + 
-    (filters.subcategories?.length || 0) + 
-    (filters.priorityOnly ? 1 : 0);
+    (filters.types?.length || 0) + 
+    (filters.subtypes?.length || 0) + 
+    (filters.languages?.length || 0) +
+    (filters.milestoneOnly ? 1 : 0) +
+    (filters.externalCodeOnly ? 1 : 0);
 
-  // Calculate filtered results count
   const filteredCount = useMemo(() => {
     return tasks.filter(task => {
-      // Exclude already selected tasks
-      if (task.is_selected) return false;
-      
-      // Priority filter (is_highlighted comes from joining with task_priorities table)
-      if (filters.priorityOnly && !task.is_highlighted) return false;
-      
-      // Category/Subcategory filter
-      if (filters.subcategories?.length > 0) {
-        const taskSub = task.subcategory || 'General';
-        if (!filters.subcategories.includes(taskSub)) return false;
+      if (filters.subtypes?.length > 0) {
+        const taskSubs = task.subtypes || [];
+        if (!taskSubs.some(s => filters.subtypes.includes(s))) return false;
       }
+      
+      if (filters.languages?.length > 0) {
+        const taskLangs = task.languages || [];
+        if (!taskLangs.some(l => filters.languages.includes(l))) return false;
+      }
+      
+      if (filters.milestoneOnly && !task.is_milestone) return false;
+      if (filters.externalCodeOnly && !task.has_external_code) return false;
       
       return true;
     }).length;
@@ -260,29 +249,51 @@ function TaskFiltersModal({
     >
       <div className="task-filters-modal">
         
-        {/* Priority Section */}
+        {/* Task Type Toggles */}
         <div className="filter-section">
-          <h4>Priority</h4>
-          <div 
-            className={`priority-toggle-row ${filters.priorityOnly ? 'active' : ''}`}
-            onClick={handlePriorityToggle}
-          >
-            <div className="priority-info">
-              <span className="priority-label">
-                Only show Priority tasks
-                <span className="tooltip-wrapper" onClick={(e) => e.stopPropagation()}>
-                  <svg className="help-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                    <path d="M12 17h.01" />
-                  </svg>
-                  <span className="tooltip">Tasks prioritized by Snorkel with increased payout</span>
-                </span>
-              </span>
+          <h4>Task Properties</h4>
+          <div className="toggle-group">
+            <div 
+              className={`priority-toggle-row ${filters.milestoneOnly ? 'active' : ''}`}
+              onClick={() => onFilterChange({ ...filters, milestoneOnly: !filters.milestoneOnly })}
+            >
+              <div className="priority-info">
+                <span className="priority-label">Milestone tasks only</span>
+              </div>
+              <div className="toggle-switch" />
             </div>
-            <div className="toggle-switch" />
+            <div 
+              className={`priority-toggle-row ${filters.externalCodeOnly ? 'active' : ''}`}
+              onClick={() => onFilterChange({ ...filters, externalCodeOnly: !filters.externalCodeOnly })}
+            >
+              <div className="priority-info">
+                <span className="priority-label">Has starter code</span>
+              </div>
+              <div className="toggle-switch" />
+            </div>
           </div>
         </div>
+
+        {/* Languages */}
+        {allLanguages.length > 0 && (
+          <div className="filter-section">
+            <h4>Languages</h4>
+            <div className="language-chips">
+              {allLanguages.map(lang => {
+                const isActive = (filters.languages || []).includes(lang);
+                return (
+                  <button
+                    key={lang}
+                    className={`language-chip ${isActive ? 'active' : ''}`}
+                    onClick={() => handleLanguageToggle(lang)}
+                  >
+                    {lang}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Categories Tree Section */}
         <div className="filter-section" style={{ flex: 1, minHeight: 0 }}>
@@ -304,31 +315,27 @@ function TaskFiltersModal({
                   <p>No categories found</p>
                 </div>
               ) : (
-                Object.entries(displayTree).map(([cat, data]) => {
-                const isExpanded = expandedCategories[cat] || categorySearch.length > 0;
+                Object.entries(displayTree).map(([type, data]) => {
+                const isExpanded = expandedTypes[type] || categorySearch.length > 0;
                 
-                // Calculate checkbox state based on subcategory selection
-                const allSubs = Object.keys(data.subcategories);
-                const selectedSubs = allSubs.filter(s => filters.subcategories?.includes(s));
+                const allSubs = Object.keys(data.subtypes);
+                const selectedSubs = allSubs.filter(s => filters.subtypes?.includes(s));
                 const subCount = allSubs.length;
                 
-                // Determine visual checkbox state:
-                // - checked: all children selected (or no children and category selected)
-                // - indeterminate: some (but not all) children selected
                 const allChildrenSelected = subCount > 0 && selectedSubs.length === subCount;
                 const someChildrenSelected = selectedSubs.length > 0 && selectedSubs.length < subCount;
                 const isChecked = subCount === 0 
-                  ? filters.categories?.includes(cat) 
+                  ? filters.types?.includes(type) 
                   : allChildrenSelected;
                 const isIndeterminate = someChildrenSelected;
 
                 return (
-                  <div key={cat} className="tree-node">
+                  <div key={type} className="tree-node">
                     <div className="tree-header">
                       <div className="tree-label-group">
                         <div 
                           className={`expand-icon ${isExpanded ? 'expanded' : ''}`}
-                          onClick={(e) => { e.stopPropagation(); toggleExpand(cat); }}
+                          onClick={(e) => { e.stopPropagation(); toggleExpand(type); }}
                         >
                           {subCount > 0 && (
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -338,11 +345,11 @@ function TaskFiltersModal({
                         </div>
                         <div 
                           className="checkbox-label-group" 
-                          onClick={() => handleCategoryToggle(cat)}
+                          onClick={() => handleTypeToggle(type)}
                           style={{ flex: 1 }}
                         >
                           <Checkbox checked={isChecked} indeterminate={isIndeterminate} />
-                          <span className="node-label">{cat}</span>
+                          <span className="node-label">{type}</span>
                         </div>
                       </div>
                       <span className="filter-count">{data.count}</span>
@@ -350,13 +357,13 @@ function TaskFiltersModal({
 
                     {isExpanded && subCount > 0 && (
                       <div className="tree-children">
-                        {Object.entries(data.subcategories).map(([sub, count]) => {
-                          const isSubSelected = filters.subcategories?.includes(sub);
+                        {Object.entries(data.subtypes).map(([sub, count]) => {
+                          const isSubSelected = filters.subtypes?.includes(sub);
                           return (
                             <div 
                               key={sub} 
                               className={`child-node ${isSubSelected ? 'active' : ''}`}
-                              onClick={() => handleSubcategoryToggle(sub, cat)}
+                              onClick={() => handleSubtypeToggle(sub, type)}
                             >
                               <div className="checkbox-label-group">
                                 <Checkbox checked={isSubSelected} />
