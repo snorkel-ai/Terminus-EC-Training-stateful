@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAuthTracking } from '../../hooks/useAuthTracking';
+import { useSupabaseHealth } from '../../hooks/useSupabaseHealth';
+import { Alert } from '../ui';
 import './Login.css';
 
 function Login() {
@@ -23,6 +25,9 @@ function Login() {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+
+  const { isHealthy } = useSupabaseHealth();
 
   // Track login page view for redirect loop detection (on mount)
   useEffect(() => {
@@ -99,6 +104,17 @@ function Login() {
   return (
     <div className="login-page">
       <div className="login-container">
+        {isHealthy === false && !bannerDismissed && (
+          <Alert
+            variant="warning"
+            dismissible
+            onDismiss={() => setBannerDismissed(true)}
+            className="login-connectivity-banner"
+          >
+            We're currently experiencing connectivity issues with our authentication provider. 
+            Login may be temporarily unavailable. Everything will return to normal once the issue is resolved.
+          </Alert>
+        )}
         <div className="login-card">
           <div className="login-header">
             <div className="logos-container">

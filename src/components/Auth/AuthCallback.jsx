@@ -20,14 +20,19 @@ function AuthCallback() {
       // Track callback started
       trackAuthCallback('started', {
         has_hash: !!location.hash,
+        has_code: !!new URLSearchParams(location.search).get('code'),
         callback_type: 'oauth',
       });
       
-      // Parse the URL hash for errors or tokens
+      // Parse the URL hash for errors or tokens (implicit flow)
       const hashParams = new URLSearchParams(location.hash.substring(1));
       const errorCode = hashParams.get('error_code');
       const errorDescription = hashParams.get('error_description');
       const type = hashParams.get('type');
+
+      // Also check query params for PKCE flow
+      const queryParams = new URLSearchParams(location.search);
+      const pkceCode = queryParams.get('code');
 
       // Check for errors in the hash
       if (errorCode) {
@@ -50,10 +55,12 @@ function AuthCallback() {
         return;
       }
 
-      // Check for access_token (successful auth)
+      // Check for PKCE code in query params (modern flow) or access_token in hash (legacy implicit flow)
       const accessToken = hashParams.get('access_token');
-      if (accessToken) {
-        // Let Supabase handle the session
+      if (accessToken || pkceCode) {
+        // For PKCE flow, Supabase client's detectSessionInUrl will automatically
+        // exchange the code for a session. We just need to wait for it.
+        // For implicit flow, the session is already available from the hash tokens.
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -78,7 +85,7 @@ function AuthCallback() {
         });
 
         // Check if this is a password recovery flow
-        if (type === 'recovery' || session) {
+        if (type === 'recovery') {
           // Redirect to reset password page
           navigate('/reset-password', { replace: true });
           return;

@@ -1,0 +1,204 @@
+Metadata-Version: 2.3
+Name: snorkelai-stb
+Version: 1.0.0
+Summary: A CLI tool for managing Terminal-Bench task submissions
+Requires-Dist: certifi>=2023.0.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: platformdirs>=4.0.0
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# Development Guide
+
+This document contains information for developers working on the Snorkel Terminal-Bench CLI.
+
+## Development Setup
+
+### Prerequisites
+
+- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) for dependency management
+- Git
+
+### Setup
+
+1. Clone the repository and navigate to the stb-cli directory:
+   ```bash
+   cd stb-cli
+   ```
+
+2. Install dependencies:
+   ```bash
+   uv pip install -e .
+   ```
+
+3. The CLI will be available in the virtual environment.
+
+## Project Structure
+
+```
+stb-cli/
+├── src/
+│   └── snorkelai_stb/
+│       ├── __init__.py
+│       ├── __main__.py
+│       ├── submissions.py    # Main CLI commands
+│       └── utils.py          # Helper functions
+├── tests/                    # Test files
+├── README.md                 # User-facing documentation
+├── DEVELOPMENT.md           # This file
+└── pyproject.toml           # Project configuration
+```
+
+## Development Workflow
+
+### Running the CLI Locally
+
+You can run the CLI directly using uv:
+
+```bash
+export SNORKEL_API_KEY=abc123
+uv run stb submissions create --project-id proj-456 ./my-submission
+```
+
+Or activate the virtual environment:
+
+```bash
+source .venv/bin/activate
+stb submissions create --project-id proj-456 ./my-submission
+```
+
+### Running Tests
+
+Run all tests:
+
+```bash
+./dev test
+```
+
+Or run pytest directly:
+
+```bash
+pytest
+```
+
+### Code Quality
+
+This project follows the standard monorepo development workflow using the `./dev` script.
+
+Run all checks (linting, formatting, type checking, and tests):
+
+```bash
+./dev check
+```
+
+The check command will:
+- Format code with Black
+- Lint with Ruff (and auto-fix issues)
+- Run MyPy type checking
+- Run pytest tests
+- Verify working directory is clean
+
+### Code Style
+
+- Use [Black](https://black.readthedocs.io/) for code formatting
+- Use [Ruff](https://docs.astral.sh/ruff/) for linting
+- Use [MyPy](https://mypy.readthedocs.io/) for type checking
+- Follow PEP 8 style guidelines
+
+## Architecture
+
+### Command Structure
+
+The CLI uses [Click](https://click.palletsprojects.com/) for command-line interface:
+
+- `stb submissions create` - Create a new submission
+- `stb submissions update` - Update an existing submission
+- `stb submissions list` - List all submissions
+
+### Submission Flow
+
+1. **Create Submission**:
+   - Validate inputs
+   - Zip folder contents
+   - Get assignment ID from API
+   - Upload to S3 via presigned URL
+   - Run feedback checks
+   - Create submission manifest if checks pass
+   - Write `.snorkel_config` file
+
+2. **Update Submission**:
+   - Read submission ID from `.snorkel_config`
+   - Validate submission is in NEEDS_REVISION state
+   - Follow same flow as create
+
+3. **List Submissions**:
+   - Query API for submissions
+   - Display in formatted table
+
+## API Integration
+
+The CLI interacts with the Snorkel API for:
+- Fetching project task types
+- Getting assignment IDs
+- Requesting S3 presigned URLs
+- Creating feedback
+- Creating submissions
+- Listing submissions
+
+See `utils.py` for API helper functions.
+
+## Testing
+
+### Unit Tests
+
+Write unit tests for new functionality in the `tests/` directory.
+
+### Integration Tests
+
+Test the CLI end-to-end with the `--dry-run` flag:
+
+```bash
+stb submissions create --dry-run --project-id test-proj ./test-folder
+```
+
+This creates a zip file without uploading.
+
+## Dependencies
+
+Key dependencies:
+- `click` >= 8.0.0 - CLI framework
+- `requests` - HTTP client
+- Other dependencies specified in `pyproject.toml`
+
+## Release Process
+
+(Add release process documentation here)
+
+## Troubleshooting Development Issues
+
+### Virtual Environment Issues
+
+If you encounter issues with the virtual environment:
+
+```bash
+# Remove and recreate
+rm -rf .venv
+uv sync
+```
+
+### Import Errors
+
+Make sure you're running commands from the stb-cli directory and the virtual environment is activated.
+
+## Contributing
+
+1. Create a new branch for your feature/fix
+2. Make your changes
+3. Run `./dev check` to ensure all checks pass
+4. Commit your changes
+5. Create a pull request
+
+## Questions?
+
+For questions or issues, please contact the development team or create an issue in the repository.
