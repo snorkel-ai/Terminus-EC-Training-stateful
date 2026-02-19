@@ -23,7 +23,7 @@ To keep rubrics objective and focused on the **process**, avoid these common pit
 ---
 
 ## 3.  Negative Penalties
-Begative penalties should be included where appropriate (e.g., a score of -1). A mix of positive rewards and negative penalties is essential for "shaping" the score.
+Negative penalties should be included where appropriate (e.g., a score of -1). A mix of positive rewards and negative penalties is essential for "shaping" the score.
 
 
 
