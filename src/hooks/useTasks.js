@@ -357,7 +357,7 @@ export const TASK_STATUS_LABELS = {
 export const MAX_ACTIVE_TASKS = 3;
 
 // Cache for selected tasks (per user)
-const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v3'; // v3: Added title field
+const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v4';
 
 const getCachedSelectedTasks = (userId) => {
   try {

@@ -1,12 +1,42 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
+const GALLERY_CACHE_KEY = 'gallery_v2_cache_v1';
+const GALLERY_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+const getCachedGallery = () => {
+  try {
+    const cached = localStorage.getItem(GALLERY_CACHE_KEY);
+    if (!cached) return null;
+
+    const { previewTasks, typeCounts, timestamp } = JSON.parse(cached);
+    const isExpired = Date.now() - timestamp > GALLERY_CACHE_TTL;
+
+    return { previewTasks, typeCounts, isExpired };
+  } catch {
+    return null;
+  }
+};
+
+const setCachedGallery = (previewTasks, typeCounts) => {
+  try {
+    localStorage.setItem(GALLERY_CACHE_KEY, JSON.stringify({
+      previewTasks,
+      typeCounts,
+      timestamp: Date.now()
+    }));
+  } catch {
+    // localStorage might be full or disabled
+  }
+};
+
 /**
  * Hook for the TBench v2 task gallery with optimized loading.
  * 
  * Queries task_inspiration_v2 via v2 RPC functions.
  * Loads 15 tasks per type on mount, supports lazy category loading and search.
  * Subscribes to realtime updates on selected_tasks to keep claim state in sync.
+ * Uses stale-while-revalidate localStorage caching (30min TTL).
  */
 export function useTasksGallery() {
   const [previewTasks, setPreviewTasks] = useState([]);
@@ -23,12 +53,27 @@ export function useTasksGallery() {
   
   const isFetchingRef = useRef(false);
 
-  const fetchPreview = useCallback(async () => {
+  const applyFetchedData = useCallback((previewData, countsData) => {
+    setPreviewTasks(previewData);
+
+    const countsMap = {};
+    countsData.forEach(row => {
+      countsMap[row.type] = {
+        total: row.total_count,
+        available: row.available_count
+      };
+    });
+    setTypeCounts(countsMap);
+
+    setCachedGallery(previewData, countsMap);
+  }, []);
+
+  const fetchPreview = useCallback(async (showLoading = true) => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
 
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true);
       
       const [previewResult, countsResult] = await Promise.all([
         supabase.rpc('get_tasks_v2_preview_by_type', { tasks_per_type: 15 }),
@@ -38,17 +83,7 @@ export function useTasksGallery() {
       if (previewResult.error) throw previewResult.error;
       if (countsResult.error) throw countsResult.error;
 
-      setPreviewTasks(previewResult.data || []);
-      
-      const countsMap = {};
-      (countsResult.data || []).forEach(row => {
-        countsMap[row.type] = {
-          total: row.total_count,
-          available: row.available_count
-        };
-      });
-      setTypeCounts(countsMap);
-      
+      applyFetchedData(previewResult.data || [], countsResult.data || []);
       setError(null);
     } catch (err) {
       console.error('Error fetching task preview:', err);
@@ -57,7 +92,7 @@ export function useTasksGallery() {
       isFetchingRef.current = false;
       setLoading(false);
     }
-  }, []);
+  }, [applyFetchedData]);
 
   const fetchCategory = useCallback(async (type) => {
     if (categoryCache[type]) {
@@ -134,9 +169,22 @@ export function useTasksGallery() {
 
   // Update a task's selected status in local state (for realtime updates)
   const updateTaskSelection = useCallback((taskId, isSelected) => {
-    setPreviewTasks(prev => prev.map(t => 
-      t.id === taskId ? { ...t, is_selected: isSelected } : t
-    ));
+    setPreviewTasks(prev => {
+      const updated = prev.map(t => 
+        t.id === taskId ? { ...t, is_selected: isSelected } : t
+      );
+      // Also update localStorage cache
+      try {
+        const cached = getCachedGallery();
+        if (cached) {
+          const updatedCached = cached.previewTasks.map(t =>
+            t.id === taskId ? { ...t, is_selected: isSelected } : t
+          );
+          setCachedGallery(updatedCached, cached.typeCounts);
+        }
+      } catch { /* ignore */ }
+      return updated;
+    });
     
     setCategoryCache(prev => {
       const updated = {};
@@ -155,9 +203,22 @@ export function useTasksGallery() {
     }
   }, [searchResults]);
 
+  // On mount: cache-first, then background refresh
   useEffect(() => {
-    fetchPreview();
-  }, [fetchPreview]);
+    const cached = getCachedGallery();
+
+    if (cached?.previewTasks?.length > 0) {
+      setPreviewTasks(cached.previewTasks);
+      setTypeCounts(cached.typeCounts || {});
+      setLoading(false);
+
+      if (cached.isExpired) {
+        fetchPreview(false);
+      }
+    } else {
+      fetchPreview(true);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Subscribe to realtime updates for selected_tasks
   useEffect(() => {
