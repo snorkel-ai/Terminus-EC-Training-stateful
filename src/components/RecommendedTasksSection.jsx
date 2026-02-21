@@ -73,10 +73,10 @@ function getReelOffsetPx(index) {
 
 function renderReelStub(task) {
   if (!task) return null;
-  const title = task.subcategory || task.subsubcategory || task.category || 'Task';
+  const subtitle = task.subtypes?.join(', ') || task.type || 'Task';
   return (
     <div className="reel-stub">
-      <div className="reel-stub-title" title={title}>{title}</div>
+      <div className="reel-stub-title" title={subtitle}>{subtitle}</div>
       <div className="reel-stub-desc" title={task.description}>{task.description}</div>
     </div>
   );
@@ -376,8 +376,8 @@ const RecommendedTasksSection = ({ onTaskUpdate }) => {
     if (posthog) {
       posthog.capture('task_roulette_task_opened', {
         task_id: task.id,
-        task_category: task.category,
-        task_subcategory: task.subcategory,
+        task_type: task.type,
+        task_subtypes: task.subtypes,
       });
     }
     setSelectedTask(task);

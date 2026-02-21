@@ -127,6 +127,63 @@
   margin: 0;
 }
 
+/* Language + attribute badges below title */
+.task-detail-modal .task-detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+
+/* Milestones section */
+.task-detail-modal .task-milestones {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.task-detail-modal .task-milestones h4,
+.task-detail-modal .task-external-code h4 {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.task-detail-modal .milestone-list {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.task-detail-modal .milestone-list li {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.task-detail-modal .milestone-list li::marker {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* External code section */
+.task-detail-modal .task-external-code {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.task-detail-modal .task-external-code p {
+  font-size: var(--font-sm) !important;
+}
+
 /* Note inside modal */
 .task-detail-modal .modal-note {
   margin-top: var(--space-4);

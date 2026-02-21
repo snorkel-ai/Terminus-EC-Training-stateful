@@ -23,6 +23,43 @@
   margin: 0;
 }
 
+/* Toggle group - multiple toggle rows stacked */
+.toggle-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Language Chips */
+.language-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.language-chip {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.language-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.language-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
 /* Priority Toggle Switch */
 .priority-toggle-row {
   display: flex;

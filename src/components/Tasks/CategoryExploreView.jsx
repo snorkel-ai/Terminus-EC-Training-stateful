@@ -10,27 +10,26 @@ function CategoryExploreView({
   onBack,
   searchQuery = ''
 }) {
-  // Group tasks by subcategory
-  const groupedBySubcategory = useMemo(() => {
+  const availableTasks = useMemo(() => tasks.filter(t => !t.is_selected), [tasks]);
+
+  const groupedBySubtype = useMemo(() => {
     const groups = {};
     
-    tasks.forEach(task => {
-      const subcategory = task.subcategory || 'General';
-      if (!groups[subcategory]) {
-        groups[subcategory] = [];
-      }
-      groups[subcategory].push(task);
+    availableTasks.forEach(task => {
+      const subtypes = task.subtypes?.length > 0 ? task.subtypes : ['General'];
+      subtypes.forEach(subtype => {
+        if (!groups[subtype]) {
+          groups[subtype] = [];
+        }
+        groups[subtype].push(task);
+      });
     });
 
-    // Sort by number of tasks (most first)
     return Object.entries(groups).sort((a, b) => b[1].length - a[1].length);
-  }, [tasks]);
-
-  const isPrioritized = tasks.some(t => t.is_special || t.priority_tag);
+  }, [availableTasks]);
 
   return (
     <div className="category-explore-view">
-      {/* Header with back button */}
       <div className="explore-header">
         <Button 
           variant="ghost" 
@@ -49,27 +48,21 @@ function CategoryExploreView({
         <div className="explore-title-section">
           <div className="explore-title-row">
             <h2 className="explore-title">{category}</h2>
-            {isPrioritized && (
-              <Badge variant="accent" size="sm" className="double-pay-badge">
-                💰💰 Double Pay
-              </Badge>
-            )}
           </div>
         </div>
       </div>
 
-      {/* Subcategory sections - reusing TaskCategorySection pattern */}
       <div className="tasks-grouped-layout">
-        {groupedBySubcategory.map(([subcategory, subcatTasks]) => (
+        {groupedBySubtype.map(([subtype, subtypeTasks]) => (
           <TaskCategorySection
-            key={subcategory}
-            title={subcategory}
-            tasks={subcatTasks}
+            key={subtype}
+            title={subtype}
+            tasks={subtypeTasks}
             onTaskSelect={onTaskSelect}
             onTaskUnselect={() => {}}
-            onExplore={() => {}} // No further drill-down
+            onExplore={() => {}}
             searchQuery={searchQuery}
-            showAll={true} // Always show grid view in explore mode
+            showAll={true}
           />
         ))}
       </div>

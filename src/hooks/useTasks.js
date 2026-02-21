@@ -357,7 +357,7 @@ export const TASK_STATUS_LABELS = {
 export const MAX_ACTIVE_TASKS = 3;
 
 // Cache for selected tasks (per user)
-const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v3'; // v3: Added title field
+const SELECTED_TASKS_CACHE_KEY = 'selected_tasks_cache_v4';
 
 const getCachedSelectedTasks = (userId) => {
   try {
@@ -469,13 +469,37 @@ export function useMySelectedTasks() {
 
       const taskIds = selections.map(s => s.task_id);
 
-      // Fetch task details with priorities (includes title and description for My Tasks display)
-      const { data, error: fetchError } = await supabase
+      // Fetch task details from v1 view
+      const { data: v1Data, error: v1Error } = await supabase
         .from('v_tasks_with_priorities')
         .select('id, category, subcategory, subsubcategory, title, description, difficulty, is_selected, is_highlighted, priority_tag, tag_label, display_order, is_promoted, promo_multiplier, promo_title')
         .in('id', taskIds);
 
-      if (fetchError) throw fetchError;
+      if (v1Error) throw v1Error;
+
+      // Find any task IDs not in v1 and fetch from v2
+      const v1Ids = new Set((v1Data || []).map(t => t.id));
+      const missingIds = taskIds.filter(id => !v1Ids.has(id));
+
+      let v2Data = [];
+      if (missingIds.length > 0) {
+        const { data: v2Result, error: v2Error } = await supabase
+          .from('task_inspiration_v2')
+          .select('id, type, subtypes, title, languages, description, is_milestone, milestone_titles, has_external_code, external_code_description')
+          .in('id', missingIds);
+
+        if (v2Error) throw v2Error;
+
+        v2Data = (v2Result || []).map(t => ({
+          ...t,
+          category: t.type,
+          subcategory: (t.subtypes || []).join(', '),
+          is_selected: true,
+          is_v2: true,
+        }));
+      }
+
+      const data = [...(v1Data || []), ...v2Data];
 
       // Add workflow fields to each task
       const formattedData = data?.map(task => {

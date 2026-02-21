@@ -174,11 +174,15 @@ export function TaskWorkflowModal({
             <div style={{ flex: 1 }}>
               <div className="modal-badges" style={{ alignItems: 'center' }}>
                 <div className="task-breadcrumb">
-                  <span className="breadcrumb-segment parent">{displayTask.category}</span>
-                  <span className="breadcrumb-separator">/</span>
-                  <span className="breadcrumb-segment current">
-                    {displayTask.subcategory || displayTask.subsubcategory}
-                  </span>
+                  <span className="breadcrumb-segment parent">{displayTask.category || displayTask.type}</span>
+                  {(displayTask.subcategory || displayTask.subsubcategory) && (
+                    <>
+                      <span className="breadcrumb-separator">/</span>
+                      <span className="breadcrumb-segment current">
+                        {displayTask.subcategory || displayTask.subsubcategory}
+                      </span>
+                    </>
+                  )}
                 </div>
                 {displayTask.difficulty && (
                   <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
@@ -187,7 +191,7 @@ export function TaskWorkflowModal({
                 )}
               </div>
               
-              <h2>Your challenge</h2>
+              <h2>{displayTask.title || 'Your challenge'}</h2>
             </div>
             {/* Top right status badge */}
             {taskStatus === TASK_STATUS.IN_PROGRESS && (
@@ -205,7 +209,36 @@ export function TaskWorkflowModal({
         
         <div className="task-detail-modal-body">
           <p>{displayTask.description}</p>
-          
+
+          {/* v2: Language badges */}
+          {displayTask.languages?.length > 0 && (
+            <div className="task-detail-badges" style={{ marginTop: 'var(--space-3)' }}>
+              {displayTask.languages.map(lang => (
+                <Badge key={lang} variant="default" size="sm">{lang}</Badge>
+              ))}
+            </div>
+          )}
+
+          {/* v2: Milestone breakdown */}
+          {displayTask.is_milestone && displayTask.milestone_titles?.length > 0 && (
+            <div className="task-milestones-section" style={{ marginTop: 'var(--space-4)' }}>
+              <h4 style={{ fontSize: 'var(--font-sm)', fontWeight: 'var(--font-semibold)', marginBottom: 'var(--space-2)' }}>Milestones</h4>
+              <ol className="task-milestones-list">
+                {displayTask.milestone_titles.map((m, i) => (
+                  <li key={i}>{m}</li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {/* v2: Additional inspiration */}
+          {displayTask.has_external_code && displayTask.external_code_description && (
+            <div className="task-external-code" style={{ marginTop: 'var(--space-4)' }}>
+              <h4 style={{ fontSize: 'var(--font-sm)', fontWeight: 'var(--font-semibold)', marginBottom: 'var(--space-2)' }}>Additional Inspiration</h4>
+              <p>{displayTask.external_code_description}</p>
+            </div>
+          )}
+
           {/* Timeline info */}
           <div className="modal-timeline-info" style={{ marginTop: 'var(--space-4)', fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
             {displayTask.selected_at && (

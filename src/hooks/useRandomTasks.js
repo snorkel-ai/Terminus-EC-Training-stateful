@@ -23,7 +23,7 @@ export function useRandomTasks(count = 15) {
 
       // Call the database function that does random selection server-side
       const { data, error: fetchError } = await supabase
-        .rpc('get_random_available_tasks', { task_count: count });
+        .rpc('get_random_available_tasks_v2', { task_count: count });
 
       if (fetchError) throw fetchError;
 
