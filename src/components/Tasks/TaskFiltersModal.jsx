@@ -267,7 +267,7 @@ function TaskFiltersModal({
               onClick={() => onFilterChange({ ...filters, externalCodeOnly: !filters.externalCodeOnly })}
             >
               <div className="priority-info">
-                <span className="priority-label">Has starter code</span>
+                <span className="priority-label">Has extra inspiration</span>
               </div>
               <div className="toggle-switch" />
             </div>

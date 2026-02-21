@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabase';
  * 
  * Queries task_inspiration_v2 via v2 RPC functions.
  * Loads 15 tasks per type on mount, supports lazy category loading and search.
+ * Subscribes to realtime updates on selected_tasks to keep claim state in sync.
  */
 export function useTasksGallery() {
   const [previewTasks, setPreviewTasks] = useState([]);
@@ -43,7 +44,7 @@ export function useTasksGallery() {
       (countsResult.data || []).forEach(row => {
         countsMap[row.type] = {
           total: row.total_count,
-          available: row.total_count
+          available: row.available_count
         };
       });
       setTypeCounts(countsMap);
@@ -131,9 +132,54 @@ export function useTasksGallery() {
 
   const categories = [...new Set(previewTasks.map(t => t.type))].sort();
 
+  // Update a task's selected status in local state (for realtime updates)
+  const updateTaskSelection = useCallback((taskId, isSelected) => {
+    setPreviewTasks(prev => prev.map(t => 
+      t.id === taskId ? { ...t, is_selected: isSelected } : t
+    ));
+    
+    setCategoryCache(prev => {
+      const updated = {};
+      for (const [cat, tasks] of Object.entries(prev)) {
+        updated[cat] = tasks.map(t => 
+          t.id === taskId ? { ...t, is_selected: isSelected } : t
+        );
+      }
+      return updated;
+    });
+
+    if (searchResults) {
+      setSearchResults(prev => prev.map(t => 
+        t.id === taskId ? { ...t, is_selected: isSelected } : t
+      ));
+    }
+  }, [searchResults]);
+
   useEffect(() => {
     fetchPreview();
   }, [fetchPreview]);
+
+  // Subscribe to realtime updates for selected_tasks
+  useEffect(() => {
+    const channel = supabase
+      .channel('gallery_tasks_realtime_' + Date.now())
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'selected_tasks' },
+        (payload) => {
+          if (payload.eventType === 'INSERT' && payload.new?.task_id) {
+            updateTaskSelection(payload.new.task_id, true);
+          } else if (payload.eventType === 'DELETE' && payload.old?.task_id) {
+            updateTaskSelection(payload.old.task_id, false);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [updateTaskSelection]);
 
   return {
     previewTasks,
@@ -154,5 +200,6 @@ export function useTasksGallery() {
     getTasksForCategory,
     categoryHasMore,
     getCategoryCount,
+    updateTaskSelection,
   };
 }

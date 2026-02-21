@@ -10,11 +10,12 @@ function CategoryExploreView({
   onBack,
   searchQuery = ''
 }) {
-  // Group tasks by subtype (tasks can appear in multiple groups since subtypes is an array)
+  const availableTasks = useMemo(() => tasks.filter(t => !t.is_selected), [tasks]);
+
   const groupedBySubtype = useMemo(() => {
     const groups = {};
     
-    tasks.forEach(task => {
+    availableTasks.forEach(task => {
       const subtypes = task.subtypes?.length > 0 ? task.subtypes : ['General'];
       subtypes.forEach(subtype => {
         if (!groups[subtype]) {
@@ -25,7 +26,7 @@ function CategoryExploreView({
     });
 
     return Object.entries(groups).sort((a, b) => b[1].length - a[1].length);
-  }, [tasks]);
+  }, [availableTasks]);
 
   return (
     <div className="category-explore-view">

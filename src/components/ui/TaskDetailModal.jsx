@@ -302,7 +302,7 @@ export function TaskDetailModal({
             {/* External code info */}
             {task.has_external_code && task.external_code_description && (
               <div className="task-external-code">
-                <h4>Starter Code provided</h4>
+                <h4>Additional Inspiration</h4>
                 <p>{task.external_code_description}</p>
               </div>
             )}

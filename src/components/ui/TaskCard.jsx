@@ -169,12 +169,12 @@ function TaskCard({
               </div>
              )}
              {task.has_external_code && (
-              <div className="feature-item" title="Starter code is provided for this task">
+              <div className="feature-item" title="This task includes additional inspiration to help guide your work">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="16 18 22 12 16 6" />
                   <polyline points="8 6 2 12 8 18" />
                 </svg>
-                <span>Starter Code Provided</span>
+                <span>Extra Inspiration</span>
               </div>
              )}
           </div>

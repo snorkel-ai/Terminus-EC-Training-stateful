@@ -27,6 +27,7 @@ function TasksView() {
     loadingCategory,
     getCategoryCount,
     categoryCounts,
+    updateTaskSelection,
   } = useTasksGallery();
   
   useMySelectedTasks();
@@ -83,6 +84,8 @@ function TasksView() {
 
   const filteredTasks = useMemo(() => {
     return displayTasks.filter(task => {
+      if (task.is_selected) return false;
+
       if (filters.types.length > 0 && !filters.types.includes(task.type)) {
         return false;
       }
@@ -315,6 +318,11 @@ function TasksView() {
         contextTasks={modalContextTasks}
         onNavigate={handleNavigateTask}
         showNavigation={modalContextTasks.length > 1}
+        onTaskUpdate={() => {
+          if (selectedTaskForModal?.id) {
+            updateTaskSelection(selectedTaskForModal.id, true);
+          }
+        }}
       />
     </div>
   );
