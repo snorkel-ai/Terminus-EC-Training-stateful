@@ -3,13 +3,13 @@ import { tasks } from '../../../data/tasks';
 import { TaskCard } from '../../ui';
 
 const Tasks = () => {
-  // Map static tasks to TaskCard format - show 12 for perspective grid (4 columns x 3 rows)
   const mappedTasks = tasks.slice(0, 12).map((task, index) => ({
     id: index,
-    subcategory: task.title,
+    title: task.title,
     description: task.description,
-    difficulty: task.difficulty,
-    category: task.language
+    type: task.language,
+    subtypes: [],
+    languages: [task.language],
   }));
 
   return (
