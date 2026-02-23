@@ -143,6 +143,13 @@ function TaskCard({
           {displayedTitle}
         </h3>
 
+        {/* Description snippet */}
+        {task?.description && (
+          <p className="task-card__description">
+            {searchQuery ? highlightMatches(task.description, searchQuery) : task.description}
+          </p>
+        )}
+
         {/* Languages */}
         <div className="task-card__languages">
           {(task?.languages || []).slice(0, 3).map(lang => (

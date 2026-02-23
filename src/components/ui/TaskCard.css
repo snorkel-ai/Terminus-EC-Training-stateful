@@ -75,6 +75,18 @@
   letter-spacing: -0.01em;
 }
 
+/* Description snippet */
+.task-card__description {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Languages */
 .task-card__languages {
   display: flex;
