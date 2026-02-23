@@ -84,7 +84,7 @@ const Footer = () => {
           </div>
           
           <p style={{ color: '#86868b', fontSize: '0.8rem' }}>
-            &copy; {new Date().getFullYear()} Snorkel AI. All rights reserved. TerminalBench is a project of Stanford University and Laude Institute.
+            &copy; {new Date().getFullYear()} Snorkel AI. All rights reserved.
           </p>
         </div>
       </div>
