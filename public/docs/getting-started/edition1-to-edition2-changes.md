@@ -16,7 +16,7 @@ The core architecture of a submission has been refined to improve clarity and te
 ### Task Metadata (`task.toml`)
 The metadata file has been expanded to support more granular agent routing.
 * **NEW: Task Subtypes:** Specific classification within the broader taxonomy.
-* **NEW: Codebase Context Scale:** Defined as **None**, **Small**, or **Large**.
+* **NEW: Codebase Context Scale:** Defined as **minimal**, **Small**, or **Large**.
 
 > Learn more below about _Milestones_ and _Task-subtypes_
 
