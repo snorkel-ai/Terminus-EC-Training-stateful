@@ -6,24 +6,48 @@ This page lists all requirements your task must meet to pass review. Use this as
 
 ## Structural Requirements
 
-Every task submission must include:
+All task submissions must include and be organized within a single directory containing the following file structure and metadata.
 
 | File | Required | Description |
-|------|----------|-------------|
-| `instruction.md` | ✅ | Task instructions (markdown) |
-| `task.toml` | ✅ | Task configuration and metadata |
-| `environment/Dockerfile` | ✅ | Environment setup (or `environment/docker-compose.yaml`) |
-| `solution/solve.sh` | ✅ | Oracle solution script |
-| `tests/test.sh` | ✅ | Test runner script (must produce reward file) |
-| `tests/test_outputs.py` | ✅ | Pytest validation tests |
+| :--- | :---: | :--- |
+| **`task.toml`** | ✅ | **The Manifest File.** Includes the following required keys: |
+| ↳ `task_id` | ✅ |   Unique identifier for the task. |
+| ↳ `task_type` | ✅ | Primary category from the 9-type taxonomy. |
+| ↳ `task_subtypes` | ✅ | List of challenge areas (e.g., Long Context, DB Interaction). |
+| ↳ `difficulty` | ✅ | Tier based on frontier model pass rates. |
+| ↳ `codebase_scale` | ✅ | Size of environment context (None, Small, Large). |
+| ↳ `relevant_languages` | ✅ | List of programming languages used in the task. |
+| ↳ `tags` | ✅ | 3-6 free-form keywords for tools/libraries (e.g., FFmpeg, Redis). |
+| ↳ `runtime_limits` | ✅ | Defined timeouts for agent, verifier, and build. |
+| **`instruction.md`** | ✅ | Precise, human-style task instructions and requirements. |
+| **`environment/Dockerfile`** | ✅ | Environment setup (or `docker-compose.yaml` for multi-container). |
+| **`solution/solve.sh`** | ✅ | The reference Oracle solution script. |
+| **`tests/test.sh`** | ✅ | The main test runner (must produce the final reward file). |
+| **`tests/test_outputs.py`** | ✅ | Deterministic state validation (Pytest). |
+| **`rubrics.txt`** | ✅ | Process-based evaluation.
+| **`README.md`** | 💡 | *[Optional]* Additional documentation or contributor notes. |
 
-<pdf-download src="/Terminus-EC-Training/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
+
+> **Pro-Tip for Directory Hygiene:**
+> Always ensure your `tests/` directory is self-contained. If your task transitions from a Python unit test to a Playwright UI test, remember to update your `task.toml` metadata to reflect the correct verifier type and ensure the `Dockerfile` has the necessary browser dependencies.
+
+<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
 
 ---
 
 ## instruction.md Requirements
 
-Your `instruction.md` must include clear, unambiguous instructions:
+Your `instruction.md` **must strictly** adhere to the following length and structure constraints:
+
+### 1. Problem Description (1-2 Paragraphs)
+Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
+* **Do:** Use technical shorthand where appropriate.
+* **Don't:** Provide a history of the programming language or unnecessary fluff.
+
+### 2. Requirements (Max 2 Paragraphs / 20 Bullets)
+List the specific constraints, expected outputs, or milestones. 
+* **Limit:** No more than 20 bullet points total.
+* **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
 
 ```markdown
 # Task Title
@@ -46,9 +70,18 @@ Clear, unambiguous instructions for the agent.
 - **Named outputs** — Tell the agent exactly what files to create and where
 - **Markdown formatting** — Use proper markdown for readability
 
+> **Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling)**
+
+
 ## task.toml Requirements
 
-Your `task.toml` must include required metadata:
+**Task Metadata:** A task.toml file that contains required metadata such as:
+* **Difficulty:** The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
+* **Task Type:** Each task must have exactly one task type from the list of tasks defined in the Task Type section.
+* **Task Subtypes:** Each task will have a list of subtypes that apply to specific challenge areas. See the Task Subtypes section for more information.
+* **Codebase Context Scale:** The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Runtime Limits:** Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
+* **Tags:** Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
 ```toml
 version = "1.0"
@@ -201,11 +234,11 @@ Your task **must** have a pass rate below 80% against SOTA agents.
 Run your task against real agents (minimum 2-3 times each):
 
 ```bash
-# GPT-5
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
+# GPT-5.2
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
 
-# Claude Sonnet 4.5
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
+# Claude Opus 4.6
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6-20250929 -p <task-folder>
 ```
 
 ---

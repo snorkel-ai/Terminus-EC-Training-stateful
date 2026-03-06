@@ -10,7 +10,7 @@ Learn to iterate on CI and LLMaJ feedback to get your task passing all checks.
 
 Download the Jupyter notebook for hands-on practice:
 
-<pdf-download src="/Terminus-EC-Training/ci_feedback_training.ipynb" title="Download CI Feedback Training Notebook"></pdf-download>
+<pdf-download src="/Terminus-EC-Training-stateful/ci_feedback_training.ipynb" title="Download CI Feedback Training Notebook"></pdf-download>
 
 ## What You'll Learn
 

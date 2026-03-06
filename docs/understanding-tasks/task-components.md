@@ -7,25 +7,49 @@ Every Harbor task consists of several required components. This guide explains e
 ## File Structure
 
 ```
-my-task/
-├── instruction.md      # Task instructions (markdown)
-├── task.toml           # Task configuration and metadata
-├── environment/        # Environment definition folder
-│   ├── Dockerfile      # OR docker-compose.yaml
-│   └── [build files]   # Additional environment files
-├── solution/           # Oracle solution (optional)
-│   └── solve.sh        # Solution script + dependencies
-├── tests/              # Test verification
-│   ├── test.sh         # Test execution script
-│   └── [test files]    # Test dependencies
-└── [optional files]    # Data, configs, etc.
+my-task-folder/
+├── instruction.md          # Precise, human-style instructions
+├── task.toml               # REQUIRED METADATA:
+│                           # - task_id
+│                           # - task_type
+│                           # - task_subtypes
+│                           # - difficulty
+│                           # - codebase_scale
+│                           # - number_of_milestones
+│                           # - milestone_descriptions
+│                           # - relevant_languages
+│                           # - tags (3-6 keywords)
+│                           # - runtime_limits (agent/verifier/build)
+├── environment/            # Environment definition folder
+│   ├── Dockerfile          # Standard single-container setup
+│   ├── docker-compose.yaml # Optional: For multi-container tasks
+│   └── [build files]       # Any configs or scripts needed for the build phase
+├── solution/               # Reference Oracle solution
+│   └── solve.sh            # Step-by-step shell script that reliably solves task
+├── tests/                  # Test verification suite
+│   ├── test.sh             # Main entry point for verification
+│   ├── test_outputs.py     # Deterministic state validation using Pytest
+├── rubrics.txt             # Process-based evaluation
+├── [optional files]        # Data files, assets, or sample code context
+└── README.md               # Optional: Contributor notes or extra documentation
 ```
 
 ## Required Components
 
 ### 1. instruction.md
 
-The task instruction is now in a separate markdown file for better readability and formatting. This file contains the instructions shown to the AI agent.
+This file contains the instructions shown to the AI agent.
+
+Your `instruction.md` **must strictly** adhere to the following length and structure constraints:
+
+1. **Problem Description (1-2 Paragraphs)**: Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
+    * **Do:** Use technical shorthand where appropriate.
+    * **Don't:** Provide a history of the programming language or unnecessary fluff.
+
+2. **Requirements (Max 2 Paragraphs / 20 Bullets)**: List the specific constraints, expected outputs, or milestones. 
+
+    * **Limit:** No more than 20 bullet points total.
+    * **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
 
 **Basic example:**
 ```markdown
@@ -42,11 +66,21 @@ The fix should:
 3. Not modify any other behavior
 ```
 
-> **For detailed guidance:** See [Writing Task Instructions and Configuration](/portal/docs/creating-tasks/writing-task-yaml) for best practices, examples, and common mistakes.
+> **For detailed guidance:** See [Writing Task Instructions and Configuration](/portal/docs/creating-tasks/writing-task-yaml) and the [Prompt Styling Guide](/portal/docs/reference/prompt-styling)
 
 ### 2. task.toml
 
-Configuration and metadata file (replaces `task.yaml`). Uses TOML format with nested sections for task configuration, metadata, and environment settings.
+Configuration and metadata file. Uses TOML format with nested sections for task configuration, metadata, and environment settings.
+
+This is a file that contains these required metadata:
+* **Difficulty**: The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
+* **Task Type**: Each task must have exactly one task type from the list of tasks defined in the Task Type section.
+* **Task Subtypes**: Each task will have a list of subtypes that apply to specific challenge areas. See the Task Subtypes section for more information.
+* **Number of Milestones**: The number of milestones present in the task.
+* **Milestone Descriptions**: Full text descriptions of what was accomplished at each milestone.
+* **Codebase Context Scale**: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Runtime Limits**: Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
+* **Tags**: Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
 **Basic structure:**
 ```toml
@@ -67,12 +101,8 @@ timeout_sec = 600.0
 build_timeout_sec = 600.0
 ```
 
-**Key differences from Terminal-Bench:**
-- Uses TOML instead of YAML (better readability)
-- Configuration nested into sections (`[verifier]`, `[agent]`, `[environment]`)
-- Metadata is arbitrary and can contain any information
 
-> **For detailed guidance:** See [Writing Task Instructions and Configuration](/portal/docs/creating-tasks/writing-task-yaml) for all available fields and configuration options.
+> **For detailed guidance:** See [Writing Task Instructions and Configuration](/portal/docs/creating-tasks/writing-task-yaml) and [Prompt Styling Guide](/portal/docs/reference/prompt-styling)
 
 ### 3. environment/ Folder
 

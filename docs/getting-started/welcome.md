@@ -16,7 +16,7 @@ Unlike simple code completion benchmarks, TerminalBench tests:
 >
 > Every accepted task directly advances the development of AI coding agents by revealing their current limitations and pushing them to improve.
 
-> **Explore existing tasks:** [Browse our Task Gallery](https://snorkel-ai.github.io/Terminus-EC-Training/portal/tasks)
+> **Explore existing tasks:** [Browse our Task Gallery](https://snorkel-ai.github.io/Terminus-EC-Training-stateful/portal/tasks)
 >
 > *Note: While this project is NOT affiliated with the official Terminal-Bench project, we closely mimic its style.*
 
@@ -83,7 +83,7 @@ Each task undergoes a rigorous 4-step review:
 
 | Resource | Link |
 |----------|------|
-| **Slack Channel** | `#ec-terminus-submission` |
+| **Slack Channel** | `#terminus-2nd-edition-submission` |
 | **Office Hours** | Weekly sessions to answer questions |
 
 ---

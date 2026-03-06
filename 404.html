@@ -13,7 +13,7 @@
     
     // Redirect to the base URL with path, search, and hash as separate parameters
     // This prevents encoding issues where ? and # get encoded inside the redirect value
-    const basePath = '/Terminus-EC-Training';
+    const basePath = '/Terminus-EC-Training-stateful';
     const redirectPath = path.replace(basePath, '') || '/';
     
     let redirectUrl = basePath + '/?redirect=' + encodeURIComponent(redirectPath);

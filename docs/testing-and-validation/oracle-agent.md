@@ -12,7 +12,7 @@ The Oracle Agent runs your solution/solve.sh in the task environment and verifie
 
 Download the Jupyter notebook for hands-on practice:
 
-<pdf-download src="/Terminus-EC-Training/oracle_agent_training.ipynb" title="Download Oracle Training Notebook"></pdf-download>
+<pdf-download src="/Terminus-EC-Training-stateful/oracle_agent_training.ipynb" title="Download Oracle Training Notebook"></pdf-download>
 
 ### What You'll Learn
 
