@@ -10,7 +10,7 @@ To create a new task, you'll start with the task skeleton template and customize
 
 Download the task skeleton ZIP file from the training site:
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
+<pdf-download src="/Terminus-EC-Training/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
 
 ## Step 2: Extract and Rename
 

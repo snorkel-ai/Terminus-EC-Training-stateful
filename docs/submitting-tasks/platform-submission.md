@@ -33,7 +33,7 @@ Before starting, ensure you have:
 
 Download the ZIP file of the task skeleton from the training site:
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton (ZIP)"></pdf-download>
+<pdf-download src="/Terminus-EC-Training/template-task.zip" title="Download Task Skeleton (ZIP)"></pdf-download>
 
 ## Step 2: Extract and Rename
 

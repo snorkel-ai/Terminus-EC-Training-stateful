@@ -1,11 +1,14 @@
 # Office Hours & Recordings
 
+Access recordings and slides from past office hours sessions.
+
+## What Are Office Hours?
 
 Office hours are open forums scheduled regularly where you can:
 - Ask questions about your tasks
 - Get help with technical issues
 - Learn from others' questions
-- Anything else you may need help with regarding Project Terminus
+- Hear project updates
 
 **Attendance is optional** but encouraged, especially when you're stuck.
 
@@ -19,7 +22,7 @@ Check Slack (`#ec-terminus-submission`) for the current office hours schedule. S
 
 Common feedback patterns and best practices discussed.
 
-<pdf-download src="/Terminus-EC-Training-stateful/Feedback 10_31.pdf" title="Download Feedback Slides (Oct 31)"></pdf-download>
+<pdf-download src="/Terminus-EC-Training/Feedback 10_31.pdf" title="Download Feedback Slides (Oct 31)"></pdf-download>
 
 ---
 
@@ -27,7 +30,7 @@ Common feedback patterns and best practices discussed.
 
 Additional feedback patterns and Q&A from submissions.
 
-<pdf-download src="/Terminus-EC-Training-stateful/Feedback 11_3.pdf" title="Download Feedback Slides (Nov 3)"></pdf-download>
+<pdf-download src="/Terminus-EC-Training/Feedback 11_3.pdf" title="Download Feedback Slides (Nov 3)"></pdf-download>
 
 ---
 
