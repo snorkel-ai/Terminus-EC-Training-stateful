@@ -109,7 +109,7 @@ function ExpertPlatformWalkthrough() {
             <li>Download the ZIP file of the task skeleton below:
               <div style={{ marginTop: '0.75rem', marginBottom: '0.5rem', marginLeft: '1.5rem' }}>
                 <a 
-                  href="/Terminus-EC-Training-stateful/template-task.zip" 
+                  href="/Terminus-EC-Training/template-task.zip" 
                   download="template-task.zip"
                   onClick={handleSkeletonDownload}
                   style={{

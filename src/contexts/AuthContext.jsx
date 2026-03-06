@@ -144,12 +144,12 @@ export const AuthProvider = ({ children }) => {
       // If we're on localhost with the base path, include it
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         // Check if path includes the repo name
-        if (pathParts[0] === 'Terminus-EC-Training-stateful') {
-          basePath = '/Terminus-EC-Training-stateful';
+        if (pathParts[0] === 'Terminus-EC-Training') {
+          basePath = '/Terminus-EC-Training';
         }
       } else {
         // Production: always include base path
-        basePath = '/Terminus-EC-Training-stateful';
+        basePath = '/Terminus-EC-Training';
       }
       
       const redirectTo = `${window.location.origin}${basePath}/portal`;
@@ -302,11 +302,11 @@ export const AuthProvider = ({ children }) => {
       let basePath = '';
       
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        if (pathParts[0] === 'Terminus-EC-Training-stateful') {
-          basePath = '/Terminus-EC-Training-stateful';
+        if (pathParts[0] === 'Terminus-EC-Training') {
+          basePath = '/Terminus-EC-Training';
         }
       } else {
-        basePath = '/Terminus-EC-Training-stateful';
+        basePath = '/Terminus-EC-Training';
       }
       
       const redirectTo = `${window.location.origin}${basePath}/reset-password`;

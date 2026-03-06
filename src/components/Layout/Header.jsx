@@ -120,7 +120,7 @@ function Header() {
               </NavLink>
               <div className={`nav-dropdown-menu ${isQuickLinksOpen ? 'open' : ''}`}>
                 <a 
-                  href="/Terminus-EC-Training-stateful/template-task.zip"
+                  href="/Terminus-EC-Training/template-task.zip"
                   download="template-task.zip"
                   className="dropdown-item"
                   onClick={() => {
@@ -241,7 +241,7 @@ function Header() {
             <div className="mobile-nav-section">
               <span className="mobile-nav-section-title">Quick Links</span>
               <a 
-                href="/Terminus-EC-Training-stateful/template-task.zip"
+                href="/Terminus-EC-Training/template-task.zip"
                 download="template-task.zip"
                 className="mobile-nav-link"
                 onClick={() => {
