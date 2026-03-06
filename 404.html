@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    // GitHub Pages SPA redirect hack
+    // This script converts the path to a query string parameter
+    // so the SPA can handle the routing client-side
+    const path = window.location.pathname;
+    const search = window.location.search;
+    const hash = window.location.hash;
+    
+    // Redirect to the base URL with path, search, and hash as separate parameters
+    // This prevents encoding issues where ? and # get encoded inside the redirect value
+    const basePath = '/Terminus-EC-Training-stateful';
+    const redirectPath = path.replace(basePath, '') || '/';
+    
+    let redirectUrl = basePath + '/?redirect=' + encodeURIComponent(redirectPath);
+    if (search) {
+      redirectUrl += '&search=' + encodeURIComponent(search);
+    }
+    if (hash) {
+      redirectUrl += '&hash=' + encodeURIComponent(hash);
+    }
+    
+    window.location.replace(redirectUrl);
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
