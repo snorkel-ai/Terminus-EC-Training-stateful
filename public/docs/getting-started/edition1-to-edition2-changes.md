@@ -65,11 +65,11 @@ A subset of tasks should be aligned to the following subtypes that target key ch
 
 ## Introducing Rubrics
 
-Perhaps the biggest shift from Edition 1 is the introduction of **Rubrics**. In the past, we relied almost entirely on deterministic unit tests (the "final state"). In Edition 2, we evaluate the **Process Trace**.
+ In the past, we relied almost entirely on deterministic unit tests (the "final state"). In Edition 2, we evaluate the **Process Trace**.
 
 
 
-* **Trajectory Grading:** You will author a `rubrics.txt` file that awards points for "good" engineering behaviors (like inspecting a file before editing) and penalizes "bad" ones (like destructive root searches or repetitive failures).
+* **Trajectory Grading:** You will author a `rubric` via the Snorkel Platform submission UI that awards points for "good" engineering behaviors (like inspecting a file before editing) and penalizes "bad" ones (like destructive root searches or repetitive failures).
 * **Trace-Only Evaluation:** These are objective, binary checks that determine *how* an agent solved a problem based purely on the evidence left in the terminal trace.
 
 **[Learn about Rubrics](/portal/docs/understanding-tasks/rubrics)**

@@ -16,7 +16,7 @@ We're not looking for trivia or trick questions. We want genuine engineering cha
 
 ### 1. Difficulty Target
 
-**Average pass rate must be < 80%** for GPT-5 or Claude Sonnet 4.5.
+**Average pass rate must be < 80%** for GPT-5.2 or Claude Opus 4.6
 
 | Difficulty | Pass Rate |
 |------------|-----------|

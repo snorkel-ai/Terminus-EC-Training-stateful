@@ -24,7 +24,6 @@ All task submissions must include and be organized within a single directory con
 | **`solution/solve.sh`** | ✅ | The reference Oracle solution script. |
 | **`tests/test.sh`** | ✅ | The main test runner (must produce the final reward file). |
 | **`tests/test_outputs.py`** | ✅ | Deterministic state validation (Pytest). |
-| **`rubrics.txt`** | ✅ | Process-based evaluation.
 | **`README.md`** | 💡 | *[Optional]* Additional documentation or contributor notes. |
 
 
@@ -79,7 +78,7 @@ Clear, unambiguous instructions for the agent.
 * **Difficulty:** The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
 * **Task Type:** Each task must have exactly one task type from the list of tasks defined in the Task Type section.
 * **Task Subtypes:** Each task will have a list of subtypes that apply to specific challenge areas. See the Task Subtypes section for more information.
-* **Codebase Context Scale:** The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Codebase Context Scale:** The size of the environment with regards to the number of files in the project. This can only be 1 of three values: **minimal, small, or large**
 * **Runtime Limits:** Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
 * **Tags:** Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
@@ -92,6 +91,7 @@ category = "debugging"
 tags = ["category", "type", "difficulty"]
 author_name = "anonymous"
 author_email = "anonymous"
+codebase_context_scale = "minimal"
 
 [verifier]
 timeout_sec = 120.0
