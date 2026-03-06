@@ -8,25 +8,25 @@ Links to external tools, documentation, and communities.
 
 Primary communication channel for the project.
 
-**Channel:** `#ec-terminus-submission`
+**Channel:** `#terminus-2nd-edition-submission`
 
 Use Slack for:
 - Technical questions
 - Task feedback
 - Claiming task ideas
 - Project announcements
+- Technical help for platform issues
 
 ### Snorkel Expert Platform
 
 Web interface for Platform workflow submissions.
 
-**URL:** [snorkel.ai](https://snorkel.ai) (login required)
+**URL:** [Expert Platform](https://experts.snorkel-ai.com/home) *(login required)*
 
----
 
 ## Terminal-Bench
 
-The original benchmark project that TerminalBench is modeled after.
+The original benchmark project that TerminalBench is modeled after. Do not copy and submit any tasks or data from this existing benchmark. We want to build an entirely unique dataset.
 
 ### Main Site
 
@@ -105,8 +105,8 @@ For `instruction.md` (markdown) and `task.toml` (TOML) syntax.
 
 ### Project Support
 
-- **Slack:** `#ec-terminus-submission`
-- **Office Hours:** Check Slack for schedule
+- **Slack:** `#terminus-2nd-edition-submission`
+- **Office Hours:** Check Slack for schedule and Zoom link
 
 ### Payment Support
 
@@ -114,4 +114,4 @@ For `instruction.md` (markdown) and `task.toml` (TOML) syntax.
 
 ### Technical Support (non-project)
 
-- **Expert Support Form:** Available through the Expert Platform
+- **General Expert Support Form:** Available through the Expert Platform
