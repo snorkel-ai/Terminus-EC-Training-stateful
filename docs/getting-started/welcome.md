@@ -1,12 +1,12 @@
-# Welcome to TerminalBench
+# Welcome to Project Terminus
 
 You've joined a community of experts pushing the boundaries of agentic AI. This documentation will help you get started and succeed as a contributor.
 
-## What is TerminalBench?
+## What is Project Terminus?
 
-TerminalBench is a benchmark for evaluating AI coding agents on real-world engineering tasks. Your job is to create tasks that challenge today's best models—tasks that require genuine engineering reasoning, multi-step problem solving, and practical skills.
+Project Terminus is a benchmark for evaluating AI coding agents on real-world engineering tasks. Your job is to create tasks that challenge today's best models—tasks that require genuine engineering reasoning, multi-step problem solving, and practical skills.
 
-Unlike simple code completion benchmarks, TerminalBench tests:
+Unlike simple code completion benchmarks, Project Terminus tests:
 
 - **Multi-step reasoning** — Tasks require chaining multiple commands
 - **Environment interaction** — Agents work in real Docker containers
@@ -22,7 +22,7 @@ Unlike simple code completion benchmarks, TerminalBench tests:
 
 ---
 
-## How does TerminalBench Work? 
+## How does Project Terminus Work? 
 
 <img src="/images/docs/tbench_process_explained.jpg" alt="TerminalBench Process Explained" class="no-shadow" />
 
@@ -84,7 +84,7 @@ Each task undergoes a rigorous 4-step review:
 | Resource | Link |
 |----------|------|
 | **Slack Channel** | `#terminus-2nd-edition-submission` |
-| **Office Hours** | Weekly sessions to answer questions |
+| **Office Hours** | Daily sessions during the week to answer questions, or get live help from Snorkel staff |
 
 ---
 

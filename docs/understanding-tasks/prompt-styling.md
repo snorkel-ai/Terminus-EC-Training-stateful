@@ -8,7 +8,6 @@ Prompts should be **precise, concise, and authentic.** In a production environme
 
 > **Important:** Prompts should **NOT** be LLM-generated. We want to avoid the "GPT-style" of writing (verbose, repetitive, and overly polite) in favor of professional human technical communication.
 
----
 
 ## Structural Requirements
 
@@ -24,7 +23,6 @@ List the specific constraints, expected outputs, or milestones.
 * **Limit:** No more than 20 bullet points total.
 * **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
 
----
 
 ## Human-Centric vs. Synthetic Styling
 
@@ -56,7 +54,7 @@ You need to refactor the parser to support these multi-line events and ensure th
 * Ensure the parser handles files up to 500MB without exceeding 1GB of RAM.
 * Run the existing validation script `tests/verify_format.sh` to confirm the output structure.
 
----
+
 
 ## Final Checklist
 - [ ] Is the problem described in 2 paragraphs or less?

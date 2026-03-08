@@ -16,7 +16,7 @@ No, there is currently no assessment for this project. You can start familiarizi
 
 ### How do I receive my API keys?
 
-You should receive an email with your API key shortly after joining. If you haven't received it within a day or two, please reach out to Puyun Tafreshi or Alejandro Sanchez on Slack. You only need the OpenAI key—our infrastructure allows you to run Anthropic models using this key.
+You can use the Snorkel CLI tool to generate and refresh your API key. You only need the OpenAI key—our infrastructure allows you to run Anthropic models using this key.
 
 ---
 
@@ -35,7 +35,7 @@ You can either:
 
 ### How do I claim an existing task idea?
 
-Go to the "Task Gallery" tab, search for the desired task, click on the task card and click "Claim Task".
+Go to the "Task Gallery" tab, search for the desired task, click on the task card and click "Claim Task". 
 
 ### How do I make a hard task?
 
@@ -72,7 +72,7 @@ You'll receive feedback explaining why. Common reasons include:
 - Similar task exists
 - Missing components
 
-You can often revise and resubmit, or appeal if you disagree.
+You can revise your submission and resubmit, or appeal if you disagree via the clicking the "Do you disagree with the reviewer" checkbox in the revision UI.
 
 ---
 
@@ -96,10 +96,10 @@ export OPENAI_API_KEY=<your-key>
 export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 # GPT-5
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p harbor_tasks/<task>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5.2 -p harbor_tasks/<task>
 
 # Claude
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p harbor_tasks/<task>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6-20250929 -p harbor_tasks/<task>
 ```
 
 ### Portkey / API key issues — agent won't connect
@@ -118,13 +118,6 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 ```
 
 > **Note:** The same API key works for both GPT-5 and Claude models through Portkey.
-
-### Are the quality checks on the platform using different models or prompts than what is used on GitHub?
-
-No, Snorkel is not doing anything differently on the platform compared to GitHub. The system uses the following configuration:
-- Total Agents: There are 10 agents in total.
-- Claude Agents: 5 agents use Claude Sonnet 4.5 via Claude Code.
-- GPT Agents: 5 agents use GPT 4.5 via Codex.
 
 For more detailed information on running agents, please refer to the [Testing Agent Performance](/portal/docs/testing-and-validation/running-real-agents) guide.
 
@@ -151,11 +144,7 @@ sudo dseditgroup -o edit -a $USER -t user docker
 - Billing week: Friday–Thursday (UTC)
 - Payment submitted ~1 week after billing week ends
 - Deposit arrives 1-2 weeks after submission
-
-### How do I track my payment?
-
-- Platform status "Payout Submitted" = Payment on the way
-- If > 1 week after that with no deposit, reach out to Snorkel
+- Payment for submissions only occures once your task becomes Accepted. Once it reaches the Accepted state, it will be paid out on the following pay period.
 
 ### Do I get paid per submission?
 
@@ -165,6 +154,6 @@ No, you get paid per **accepted** submission. Tasks must pass all automated chec
 
 ## Still Have Questions?
 
-- **Slack:** `#ec-terminus-submission`
+- **Slack:** `#terminus-2nd-edition-submission`
 - **Office Hours:** Check Slack for schedule
 - **Documentation:** Use search (⌘K) to find topics

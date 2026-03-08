@@ -7,15 +7,15 @@ Office hours are open forums scheduled regularly where you can:
 - Learn from others' questions
 - Anything else you may need help with regarding Project Terminus
 
-**Attendance is optional** but encouraged, especially when you're stuck.
+**Attendance is always optional**
 
 ## Schedule
 
-Check Slack (`#ec-terminus-submission`) for the current office hours schedule. Sessions are typically held multiple times per week.
+Check Slack (`#terminus-2nd-edition-submission`) for the current office hours schedule. Sessions are typically held each weekday.
 
 ## Recordings & Slides
 
-### Feedback Session - October 31
+### Feedback Session - October 31 (Outdated)
 
 Common feedback patterns and best practices discussed.
 
@@ -23,38 +23,12 @@ Common feedback patterns and best practices discussed.
 
 ---
 
-### Feedback Session - November 3
+### Feedback Session - November 3 (Outdated)
 
 Additional feedback patterns and Q&A from submissions.
 
 <pdf-download src="/Terminus-EC-Training-stateful/Feedback 11_3.pdf" title="Download Feedback Slides (Nov 3)"></pdf-download>
 
----
-
-## Common Topics Covered
-
-### Task Design
-- Writing clear instructions
-- Setting appropriate difficulty
-- Avoiding common pitfalls
-
-### Technical Issues
-- Docker troubleshooting
-- CI check failures
-- Agent testing
-
-### Process Questions
-- Submission workflow
-- Review expectations
-- Payment timing
-
 ## Can't Attend?
 
-If you can't make the scheduled times:
-- Recordings are posted when available
-- Ask your question on Slack
-- Review past slides for common issues
-
-## Requesting Topics
-
-Have a topic you'd like covered? Post in Slack and we'll try to address it in an upcoming session.
+If you can't make the scheduled times, ask your question on the Slack channel!

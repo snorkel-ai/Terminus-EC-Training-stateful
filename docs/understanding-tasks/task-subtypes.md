@@ -4,7 +4,7 @@ A subset of the tasks should be aligned to subtypes that target key challenge ar
 
 
 ## 1. Long Context
-Tasks that require models to test their context windows by reading large documents. File must be at least 50k tokens and cannot simply be parsed programmatically or through keyword search by the agent.
+Tasks that require models to test their context windows by reading large documents. File must be at least **50k tokens** and cannot simply be parsed programmatically or through keyword search by the agent.
 
 ### Supported Formats & Examples
 * **Text-Heavy Formats:**

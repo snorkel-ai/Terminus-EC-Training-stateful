@@ -2,19 +2,13 @@
 
 Get started with TerminalBench using the Snorkel Expert Platform. Watch the onboarding video and download the slides to familiarize yourself with the workflow.
 
-## Onboarding Video
+## Onboarding Video (*to be updated for Edition 2 soon*)
 
 <video-embed src="/GMT20251218-190403_Recording_3440x1440.mp4" title="Platform Onboarding Video"></video-embed>
 
 ## Onboarding Slides
 
 <pdf-download src="/Terminus EC Onboarding - Platform.pdf" title="Platform Onboarding Slides"></pdf-download>
-
-## What You'll Learn
-
-- How to navigate the Expert Platform interface
-- Task submission workflow via ZIP upload
-- How to track your submissions and feedback
 
 ## Next Steps
 
