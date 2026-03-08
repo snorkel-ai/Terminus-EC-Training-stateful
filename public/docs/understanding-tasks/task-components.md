@@ -8,7 +8,7 @@ Every Harbor task consists of several required components. This guide explains e
 
 ```
 my-task-folder/
-├── instruction.md          # Precise, human-style instructions
+├── instruction.md          # Concise, human-styled instructions
 ├── task.toml               # REQUIRED METADATA:
 │                           # - task_id
 │                           # - task_type
@@ -29,7 +29,6 @@ my-task-folder/
 ├── tests/                  # Test verification suite
 │   ├── test.sh             # Main entry point for verification
 │   ├── test_outputs.py     # Deterministic state validation using Pytest
-├── rubrics.txt             # Process-based evaluation
 ├── [optional files]        # Data files, assets, or sample code context
 └── README.md               # Optional: Contributor notes or extra documentation
 ```
