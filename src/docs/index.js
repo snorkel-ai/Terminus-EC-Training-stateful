@@ -98,5 +98,9 @@ export const getDocContent = async (slug) => {
   if (!response.ok) {
     throw new Error(`Doc not found: ${slug}`);
   }
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('text/html')) {
+    throw new Error(`Doc not found: ${slug}`);
+  }
   return response.text();
 };
