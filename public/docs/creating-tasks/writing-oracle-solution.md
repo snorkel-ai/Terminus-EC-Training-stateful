@@ -199,20 +199,6 @@ The oracle agent should PASS. If it fails, either:
 - Your tests are too strict
 - The task has issues
 
-## Canary String
-
-Your solution must include the canary string at the top:
-
-```bash
-#!/bin/bash
-# CANARY_STRING_PLACEHOLDER
-
-set -e
-# ... rest of solution
-```
-
----
-
 ## Next Steps
 
 - [Write tests](/portal/docs/creating-tasks/writing-tests)

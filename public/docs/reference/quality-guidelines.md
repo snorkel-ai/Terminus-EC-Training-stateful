@@ -87,21 +87,7 @@ fi
 
 **Why:** This allows tracking and filtering of tasks with these setups.
 
-**Example:**
 
-```toml
-# ✅ Good - task.toml with proper tagging
-[metadata]
-author_name = "anonymous"
-author_email = "anonymous"
-difficulty = "hard"
-category = "system-administration"
-tags = []
-expert_time_estimate_min = 60.0
-junior_time_estimate_min = 120.0
-is_multi_container = true
-custom_docker_compose = true
-```
 
 ---
 

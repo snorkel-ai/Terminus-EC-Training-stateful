@@ -2,7 +2,7 @@
 
 Agent Review uses Claude Code to comprehensively evaluate Terminal-Bench tasks for compliance with format requirements, best practices, and quality standards. This automated review provides detailed feedback on task structure, correctness, and potential issues.
 
-> **Note:** Agent Review currently does not block task submissions. It is provided as an additional tool to help identify potential issues, warnings, and areas for improvement.
+> **Note:** Agent Review currently does not block task submission. It is provided as an additional tool to help identify potential issues, warnings, and areas for improvement.
 
 ## How It Works
 
@@ -37,11 +37,13 @@ Validates your task metadata:
 
 | Field | Requirement |
 |-------|-------------|
-| `version` | Must be "1.0" or "2.0" |
-| `author_name` | Required |
-| `author_email` | Required |
+| `version` | Must be "2.0" |
+| `author_name` | Required. Can be "anonymous". |
+| `author_email` | Required. Can be "anonymous". |
 | `difficulty` | Must be: easy, medium, hard, or unknown |
-| `category` | Must be a valid category |
+| `codebase_size` | Must be: minimal, small, or large. |
+| `number_of_milestones` | Must be: integer  _optional, only if milestones present in task._ |
+| `milestone_descriptions` | Must be: String, few words/sentences.  _optional, only if milestones present in task._ || `category` | Must be a valid category |
 | `tags` | Array of relevant tags |
 | `[verifier].timeout_sec` | Required, reasonable value |
 | `[agent].timeout_sec` | Required, reasonable value |

@@ -24,13 +24,13 @@ Unlike standard tasks with a single test script, milestone tasks use unit test v
 - **Deterministic Checks:** Each milestone verifier must trigger a pass/fail state.
 - **State Persistence:** The environment must remain stable between milestone validations.
 
-### 3. Rubrics (`rubrics_x.txt`)
-You must provide individual rubric files (e.g., `rubrics_1.txt`, `rubrics_2.txt`) for every milestone. These rubrics define the criteria for a **LLM-as-a-Judge (LLMaJ)** to evaluate the agent's "trace" or "thinking" during that specific phase.
+### 3. Rubric
+Your rubric should cover aspects of all your task's milestones.
 
 ### 4. Metadata (`task.toml`)
-You must specify the total count and provide a text description for every stage. Include these 2 fields if your task has Milestones:
+You must specify the total count and provide a text description for every milestone. Include these 2 fields **only if** your task has milestones:
 * `number_of_milestones`: Total count (integer).
-* `milestone_descriptions`: A string describing the desired outcome of each stage.
+* `milestone_descriptions`: A string describing the desired outcome of each milestone.
 
 
 

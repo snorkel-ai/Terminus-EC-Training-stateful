@@ -26,8 +26,6 @@ List the specific constraints, expected outputs, or milestones.
 
 ## Human-Centric vs. Synthetic Styling
 
-
-
 To maintain authenticity, compare these two styles:
 
 | Feature | Synthetic (Avoid) | Human-Centric (Target) |

@@ -34,26 +34,45 @@ The fix should:
 The `task.toml` file contains configuration and metadata:
 
 ```toml
-version = "1.0"
+# Task configuration schema version
+version = "2.0"
 
+# Task metadata (author, difficulty (easy, medium, hard), categorization)
 [metadata]
 author_name = "anonymous"
 author_email = "anonymous"
-difficulty = "medium"
-category = "debugging"
-tags = ["python", "memory-leak", "debugging"]
+difficulty = "unknown"
+category = "software-engineering"
 
+# Options for subcategories are: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
+subcategories = [ ]
+
+# Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
+codebase_size = "minimal"
+
+# Coding languages used in the oracle solution or required by the agent
+languages = [ "bash" ]
+
+# For tool_specific, api_integration, and db_interaction subcategories, please include specific tool, api framework, or database software
+tags = [ "file-operations"]
+
+# Estimated time to complete (minutes)
+expert_time_estimate_min = 60
+junior_time_estimate_min = 120
+
+# Verifier: runs the test script to check task completion
 [verifier]
-timeout_sec = 120.0
+timeout_sec = 450.0
 
+# Agent: limits how long the agent can run when attempting the task
 [agent]
-timeout_sec = 600.0
+timeout_sec = 900.0
 
+# Sandbox environment limits
 [environment]
 build_timeout_sec = 600.0
-docker_image = "some-org/some-name:some-tag"
-cpus = 1
-memory_mb = 2048
+cpus = 2
+memory_mb = 4096
 storage_mb = 10240
 ```
 
@@ -204,8 +223,11 @@ Edit /app/config.txt to change the port from 8080 to 3000
 | `metadata.difficulty` | Yes | `easy`, `medium`, or `hard` |
 | `metadata.category` | Yes | From task taxonomy |
 | `metadata.tags` | Yes | 3-6 descriptive tags (array) |
-| `metadata.author_name` | No | Your name |
-| `metadata.author_email` | No | Your email |
+| `metadata.codebase_size` | Yes | minimal, small, or large|
+| `metadata.author_name` | Yes | Can be 'anonymous'|
+| `metadata.author_email` | Yes | Can be 'anonymous' |
+| `metadata.number_of_milestones`  | No | Integer number of milestones in your task if it has milestones |
+| `metadata.milestone_descriptions` | No | Concise description of your milestone(s), if any present in task |
 
 ### Verifier Section
 

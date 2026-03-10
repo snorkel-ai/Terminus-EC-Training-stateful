@@ -26,6 +26,11 @@ Use this checklist before every submission to ensure your task is complete and w
 - [ ] `tests/test.sh` — Uses uv, produces reward file ([requirements](/portal/docs/understanding-tasks/task-requirements#test-requirements))
 - [ ] `tests/test_outputs.py` — Tests with docstrings, verify behavior
 
+### Rubric
+- Every submission should include a rubric that is aligned to the task. You generate a synthetic rubric via the submission UI in the Snorkel Platform, then edit it for accuracy and completeness.
+
+See the  [Rubrics page](/portal/docs/understanding-tasks/rubrics) for workflow details and quality criteria.
+
 ### Quality Standards
 
 - [ ] All requirements have corresponding tests
@@ -49,7 +54,7 @@ harbor run --agent oracle --path <task-folder>
 ### CI Checks
 
 ```bash
-harbor tasks check <task-folder> --model openai/@openai-tbench/gpt-5
+harbor tasks check <task-folder> --model openai/@openai-tbench/gpt-5-2
 ```
 
 - [ ] pinned_dependencies ✓
@@ -79,20 +84,20 @@ harbor tasks check <task-folder> --model openai/@openai-tbench/gpt-5
 
 ## Real Agent Testing
 
-### Run Against GPT-5
+### Run Against GPT-5.2
 
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
 ```
 
 - [ ] Run 1: PASS / FAIL
 - [ ] Run 2: PASS / FAIL
 - [ ] Run 3: PASS / FAIL
 
-### Run Against Claude
+### Run Against Claude Opus 4.6
 
 ```bash
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-folder>
 ```
 
 - [ ] Run 1: PASS / FAIL

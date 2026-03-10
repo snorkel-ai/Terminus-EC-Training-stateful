@@ -13,8 +13,8 @@ Tasking is performed through the **terminus-project-v2** project on the Snorkel 
 5. Create and test your solution
 6. Write and verify tests
 7. Run agents 
-8. Create ZIP file and Submit on platform
-9. Review CI feedback and iterate
+8. Create ZIP file, check rubric generation checkbox, and Submit on platform
+9. Review CI feedback and iterate + review generated rubric and edit for accuracy and completeness
 10. When CI is passing, submit on platform to a reviewer
 
 ---
@@ -29,11 +29,15 @@ Before starting, ensure you have:
 
 ---
 
-## Step 1: Download the Task Skeleton
+## Step 1: Download the Correct Task Skeleton
 
-Download the ZIP file of the task skeleton from the training site:
+Download the ZIP file of the correct task skeleton from the the [Slack channel's resources tab](https://snorkel-team.enterprise.slack.com/docs/TFHL9C8JG/F0AG6BP7WN5) located at the top of the channel.
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton (ZIP)"></pdf-download>
+There are 3 task skeletons:
+ - **_"Regular"_ Task Skeleton:** Use for all non-UI-Building and non-Milestone tasks
+ - **UI Task Skeleton:** Use for all UI-Building subtype tasks
+ - **Milestone Task Skeleton:** Use for all tasks with milestones
+
 
 ## Step 2: Extract and Rename
 
@@ -44,7 +48,7 @@ Download the ZIP file of the task skeleton from the training site:
 
 ### Edit instruction.md
 
-Write clear, unambiguous task instructions in markdown format:
+Write clear, unambiguous task instructions in markdown format. Use natural language and do not be overly lengthy in your prompt:
 
 ```markdown
 # Your Task Title
@@ -65,25 +69,45 @@ See [Writing Instructions & Config](/portal/docs/creating-tasks/writing-task-yam
 Set up metadata and configuration:
 
 ```toml
-version = "1.0"
+# Task configuration schema version
+version = "2.0"
 
+# Task metadata (author, difficulty (easy, medium, hard), categorization)
 [metadata]
 author_name = "anonymous"
 author_email = "anonymous"
-difficulty = "medium"
-category = "debugging"
-tags = ["python", "memory-leak", "debugging"]
+difficulty = "unknown"
+category = "software-engineering"
 
+# Options for subcategories are: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
+subcategories = [ ]
+
+# Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
+codebase_size = "minimal"
+
+# Coding languages used in the oracle solution or required by the agent
+languages = [ "bash" ]
+
+# For tool_specific, api_integration, and db_interaction subcategories, please include specific tool, api framework, or database software
+tags = [ "file-operations"]
+
+# Estimated time to complete (minutes)
+expert_time_estimate_min = 60
+junior_time_estimate_min = 120
+
+# Verifier: runs the test script to check task completion
 [verifier]
-timeout_sec = 120.0
+timeout_sec = 450.0
 
+# Agent: limits how long the agent can run when attempting the task
 [agent]
-timeout_sec = 600.0
+timeout_sec = 900.0
 
+# Sandbox environment limits
 [environment]
 build_timeout_sec = 600.0
-cpus = 1
-memory_mb = 2048
+cpus = 2
+memory_mb = 4096
 storage_mb = 10240
 ```
 
@@ -198,13 +222,13 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 2. Run with GPT-5:
 
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
 ```
 
 3. Run with Claude Sonnet 4.5:
 
 ```bash
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-folder>
 ```
 
 Run each agent 2-3 times to gauge pass rate. Your task should have < 80% pass rate to be accepted.
@@ -215,12 +239,12 @@ Run LLMaJ checks before submitting:
 
 **GPT-5:**
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
 ```
 
 **Claude Sonnet 4.5:**
 ```bash
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 -p <task-folder>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-folder>
 ```
 
 All checks should pass before submission.
@@ -241,7 +265,7 @@ Run final checks:
 harbor run --agent oracle --path <task-folder>
 
 # LLMaJ checks
-harbor tasks check -m openai/@openai/gpt-5  harbor_tasks/<task_name>
+harbor tasks check -m openai/@openai/gpt-5-2  harbor_tasks/<task_name>
 ```
 
 ## Step 12: Create ZIP File
@@ -274,29 +298,33 @@ harbor tasks check -m openai/@openai/gpt-5  harbor_tasks/<task_name>
 
 ## Step 13: Submit to Platform
 
-1. Go to the Snorkel Expert Platform
-2. Navigate to **terminus-project-v2**
-3. Click **New Submission**
+1. Go to the [Snorkel Expert Platform](https://experts.snorkel-ai.com/)
+2. Navigate to **Terminus-2nd-Edition**
+3. Click **Start** on the _Submission_ node
 4. Upload your ZIP file
 5. Keep "Send to reviewer" unchecked
-6. Submit
+6. Check the rubrics checkbox
+7. Submit
 
-## Step 14: Check CI results and Iterate until CI looks good  
-1. After email notification, go to Snorkel Expert platform. 
+## Step 14: Check CI results and rubric then Iterate until CI looks good  
+1. After email notification that your submission is now back in your revision queue, go to [Snorkel Expert Platform](https://experts.snorkel-ai.com/). 
 2. Find your task on homescreen
 3. Click "Revise"
 4. Check CI Results & update task as needed
+5. Check the now generated rubric and edit it within the textbox for accuracy and completeness
 5. Re-upload a new .zip file if necessary
+   - _If you make any significant changes to your task, you must update your rubric accordingly in order to align with the current version of your task._
 6. Keep "Send to Reviewer" Unchecked 
 7. Submit 
 
 ## Step 15: Submit your task to Reviewer
-1. After email notification, go to Snorkel Expert platform. 
+1. After email notification that your submission is now back in your revision queue, go to [Snorkel Expert Platform](https://experts.snorkel-ai.com/). 
 2. Find your task on homescreen
 3. Click "Revise"
-4. Check CI results 
-4. If all good, check "Send to Reviewer"
-5. Submit
+4. Check CI results
+5. Check rubric and edit for accuracy and completeness
+6. If all good, check "Send to Reviewer"
+7. Submit
 
 ## Step 16: Monitor Status
 After submission. wait for peer review (1-3 business days)

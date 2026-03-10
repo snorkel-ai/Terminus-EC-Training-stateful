@@ -4,7 +4,7 @@ Test your task against real AI agents to validate difficulty and ensure your tas
 
 ## Prerequisites
 
-**Get your API key from Snorkel via email.** If you haven't received one, DM Puyun or Alejandro on Slack.
+**Get your API key:** Use the [Snorkel CLI tool](https://snorkel-ai.github.io/Terminus-EC-Training-stateful/portal/docs/submitting-tasks/cli-user-guide) to self-generate and self-replenish your API key. If you run into limits or issues, post on the project Slack channel _(#terminus-2nd-edition-submission)_ for assistance
 
 > **Note:** You'll need Harbor CLI installed to run agents locally. See [Environment Setup](/portal/docs/getting-started/environment-setup) for installation instructions.
 
@@ -23,26 +23,26 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 | Model | Command Flag |
 |-------|--------------|
-| GPT-5 | `openai/@openai-tbench/gpt-5` |
-| Claude Sonnet 4.5 | `openai/@anthropic-tbench/claude-sonnet-4-5-20250929` |
+| GPT-5.2 | `openai/@openai-tbench/gpt-5-2` |
+| Claude Opus 4.6 | `openai/@anthropic-tbench/claude-sonnet-4-6` |
 
 ## Running Agents
 
-### GPT-5
+### GPT-5.2
 
 ```bash
 harbor run \
   -a terminus-2 \
-  -m openai/@openai-tbench/gpt-5 \
+  -m openai/@openai-tbench/gpt-5-2 \
   -p <task-folder>
 ```
 
-### Claude Sonnet 4.5
+### Claude Opus 4.6
 
 ```bash
 harbor run \
   -a terminus-2 \
-  -m openai/@anthropic-tbench/claude-sonnet-4-5-20250929 \
+  -m openai/@anthropic-tbench/claude-sonnet-4-6 \
   -p <task-folder>
 ```
 

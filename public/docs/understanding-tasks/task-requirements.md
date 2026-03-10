@@ -6,17 +6,19 @@ This page lists all requirements your task must meet to pass review. Use this as
 
 ## Structural Requirements
 
-All task submissions must include and be organized within a single directory containing the following file structure and metadata.
+All task submissions should include and be organized within a single directory containing the following file structure and metadata.
 
 | File | Required | Description |
 | :--- | :---: | :--- |
 | **`task.toml`** | ✅ | **The Manifest File.** Includes the following required keys: |
 | ↳ `task_id` | ✅ |   Unique identifier for the task. |
 | ↳ `task_type` | ✅ | Primary category from the 9-type taxonomy. |
-| ↳ `task_subtypes` | ✅ | List of challenge areas (e.g., Long Context, DB Interaction). |
+| ↳ `task_subtypes` _(optional, only if task aligns with any subtype(s))_ | ❌ | List of challenge areas (e.g., Long Context, DB Interaction). |
+| ↳ `number_of_milestones` _(optional, only if task has milestones)_| ❌ | Number of milestones in your task. |
+| ↳ `milestone_description` _(optional, only if task has milestones)_| ❌ | Short description of your milestones. |
 | ↳ `difficulty` | ✅ | Tier based on frontier model pass rates. |
-| ↳ `codebase_scale` | ✅ | Size of environment context (None, Small, Large). |
-| ↳ `relevant_languages` | ✅ | List of programming languages used in the task. |
+| ↳ `codebase_size` | ✅ | Size of environment context (Minimal, Small, Large). |
+| ↳ `languages` | ✅ | List of programming languages used in the task. |
 | ↳ `tags` | ✅ | 3-6 free-form keywords for tools/libraries (e.g., FFmpeg, Redis). |
 | ↳ `runtime_limits` | ✅ | Defined timeouts for agent, verifier, and build. |
 | **`instruction.md`** | ✅ | Precise, human-style task instructions and requirements. |
@@ -74,35 +76,56 @@ Clear, unambiguous instructions for the agent.
 
 ## task.toml Requirements
 
-**Task Metadata:** A task.toml file that contains required metadata such as:
-* **Difficulty:** The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
-* **Task Type:** Each task must have exactly one task type from the list of tasks defined in the Task Type section.
-* **Task Subtypes:** Each task will have a list of subtypes that apply to specific challenge areas. See the Task Subtypes section for more information.
-* **Codebase Context Scale:** The size of the environment with regards to the number of files in the project. This can only be 1 of three values: **minimal, small, or large**
-* **Runtime Limits:** Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
-* **Tags:** Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
+This is a file that contains these metadata:
+* **Difficulty**: The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
+* **Task Type**: Each task must have exactly one task type from the list of tasks defined in the Task Type section.
+* _(optional)_ **Task Subtype**: If your task has subtypes, then you will include each subtype it aligns to. See the Task Subtypes section for more information.
+* _(optional)_ **Number of Milestones**: The number of milestones present in the task, if any milestones are present.
+* _(optional)_ **Milestone Descriptions**: Full text descriptions of what was accomplished at each milestone, if any milestones are present.
+* **Codebase Context Scale**: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Runtime Limits**: Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
+* **Tags**: Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
 ```toml
-version = "1.0"
+# Task configuration schema version
+version = "2.0"
 
+# Task metadata (author, difficulty (easy, medium, hard), categorization)
 [metadata]
-difficulty = "medium"
-category = "debugging"
-tags = ["category", "type", "difficulty"]
 author_name = "anonymous"
 author_email = "anonymous"
-codebase_context_scale = "minimal"
+difficulty = "unknown"
+category = "software-engineering"
 
+# Options for subcategories are: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
+subcategories = [ ]
+
+# Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
+codebase_size = "minimal"
+
+# Coding languages used in the oracle solution or required by the agent
+languages = [ "bash" ]
+
+# For tool_specific, api_integration, and db_interaction subcategories, please include specific tool, api framework, or database software
+tags = [ "file-operations"]
+
+# Estimated time to complete (minutes)
+expert_time_estimate_min = 60
+junior_time_estimate_min = 120
+
+# Verifier: runs the test script to check task completion
 [verifier]
-timeout_sec = 120.0
+timeout_sec = 450.0
 
+# Agent: limits how long the agent can run when attempting the task
 [agent]
-timeout_sec = 600.
+timeout_sec = 900.0
 
+# Sandbox environment limits
 [environment]
 build_timeout_sec = 600.0
-cpus = 1
-memory_mb = 2048
+cpus = 2
+memory_mb = 4096
 storage_mb = 10240
 ```
 
@@ -167,34 +190,7 @@ def test_output_format():
 
 ### Canary Strings
 
-Include unique canary strings to detect cheating:
-
-```python
-CANARY_STRING = "TERMINUS_TASK_abc123xyz"
-
-def test_canary_present():
-    """Verify canary string is in output (anti-cheating measure)."""
-    output = Path("/app/output.txt").read_text()
-    assert CANARY_STRING in output
-```
-
----
-
-## Environment Requirements
-
-The environment definition must be in the `environment/` folder.
-
-### Dockerfile Location
-
-Your Dockerfile must be in `environment/Dockerfile`:
-
-```dockerfile
-FROM python:3.11-slim
-# or
-FROM node:20-slim
-# or
-FROM ubuntu:22.04
-```
+Canary strings are no longer required in Terminus Edition 2.
 
 ### Dependency Pinning
 
@@ -238,7 +234,7 @@ Run your task against real agents (minimum 2-3 times each):
 harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
 
 # Claude Opus 4.6
-harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6-20250929 -p <task-folder>
+harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-folder>
 ```
 
 ---
@@ -249,10 +245,9 @@ Tasks must be resistant to shortcut solutions:
 
 ### Required Measures
 
-1. **Canary strings** — Unique identifiers that must appear in output
-2. **Dynamic elements** — Use computed values, not hardcoded answers
-3. **Validation depth** — Test multiple aspects of the solution
-4. **Non-trivial verification** — Answers shouldn't be derivable from tests
+1. **Dynamic elements** — Use computed values, not hardcoded answers
+2. **Validation depth** — Test multiple aspects of the solution
+3. **Non-trivial verification** — Answers shouldn't be derivable from tests
 
 ### Red Flags
 
@@ -276,7 +271,6 @@ Your task must pass all CI and LLMaJ checks:
 | `pinned_dependencies` | All packages have version pins |
 | `typos` | No spelling errors in code |
 | `tests_or_solution_in_image` | Solution not in Docker image |
-| `check_canary` | Canary strings present |
 | `check_dockerfile_references` | All referenced files exist |
 | `check_test_sh` | Test runner uses uv and produces reward file |
 | `check_task_absolute_path` | Uses absolute paths |
@@ -308,7 +302,6 @@ Before submitting, verify:
 - [ ] solution/solve.sh is deterministic
 - [ ] All tests have docstrings
 - [ ] Dependencies are pinned
-- [ ] Canary strings included
 - [ ] Pass rate < 80%
 - [ ] CI checks pass locally
 - [ ] LLMaJ checks pass locally
@@ -317,7 +310,7 @@ Before submitting, verify:
 
 ## Next Steps
 
-- [Quality Guidelines](/portal/docs/reference/quality-guidelines) — Required quality standards for TBench 2.0
+- [Quality Guidelines](/portal/docs/reference/quality-guidelines) — Required quality standards
 - [Submission Checklist](/portal/docs/submitting-tasks/submission-checklist) — Final pre-submission verification
 - [CI Checks Reference](/portal/docs/testing-and-validation/ci-checks-reference) — Detailed check explanations
 - [Common Errors](/portal/docs/reviewing-tasks/common-errors) — Avoid these mistakes
