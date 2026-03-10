@@ -2,7 +2,7 @@
 
 Agent Review uses Claude Code to comprehensively evaluate Terminal-Bench tasks for compliance with format requirements, best practices, and quality standards. This automated review provides detailed feedback on task structure, correctness, and potential issues.
 
-> **Note:** Agent Review currently does not block task submissions. It is provided as an additional tool to help identify potential issues, warnings, and areas for improvement.
+> **Note:** Agent Review currently does not block task submission. It is provided as an additional tool to help identify potential issues, warnings, and areas for improvement.
 
 ## How It Works
 
@@ -23,6 +23,7 @@ Checks that all required files exist:
 - `solution/solve.sh`
 - `tests/test_outputs.py`
 - `tests/test.sh`
+- `milestones.md` _optional file, only if milestones present in task_
 
 For multi-container tasks, also verifies:
 - `environment/docker-compose.yaml`
@@ -37,10 +38,13 @@ Validates your task metadata:
 
 | Field | Requirement |
 |-------|-------------|
-| `version` | Must be "1.0" or "2.0" |
-| `author_name` | Required |
-| `author_email` | Required |
+| `version` | Must be "2.0" |
+| `author_name` | Required. Can be "anonymous". |
+| `author_email` | Required. Can be "anonymous". |
 | `difficulty` | Must be: easy, medium, hard, or unknown |
+| `subcategories` | Must be any of _(can be multiple)_: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building". If no subcategory aligns to your task, leave this **BLANK**. |
+| `codebase_size` | Must be: minimal, small, or large. |
+| `number_of_milestones` | Must be: integer. **Must be 0 if no milestones.**|
 | `category` | Must be a valid category |
 | `tags` | Array of relevant tags |
 | `[verifier].timeout_sec` | Required, reasonable value |

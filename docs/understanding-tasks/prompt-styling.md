@@ -13,20 +13,18 @@ Prompts should be **precise, concise, and authentic.** In a production environme
 
 Every `instruction.md` must adhere to the following length and structure constraints:
 
-### 1. Problem Description (1-2 Paragraphs)
+### 1. Problem Description (About 1-2 Paragraphs)
 Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
 * **Do:** Use technical shorthand where appropriate.
 * **Don't:** Provide a history of the programming language or unnecessary fluff.
 
-### 2. Requirements (Max 2 Paragraphs / 20 Bullets)
+### 2. Requirements (About 2 Paragraphs / 20 Bullets)
 List the specific constraints, expected outputs, or milestones. 
-* **Limit:** No more than 20 bullet points total.
+* **Length limit:** Keep things as succinct as possible. If you need to write more due to the nature of your task, that is OK! But generally, we want to avoid overly lengthy prompts.
 * **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
 
 
 ## Human-Centric vs. Synthetic Styling
-
-
 
 To maintain authenticity, compare these two styles:
 

@@ -11,7 +11,7 @@ Office hours are open forums scheduled regularly where you can:
 
 ## Schedule
 
-Check Slack (`#terminus-2nd-edition-submission`) for the current office hours schedule. Sessions are typically held each weekday.
+Check the projects Slack channel [`#terminus-2nd-edition-submission`](https://snorkel-team.enterprise.slack.com/archives/C0AEHEYFVFD) for the current office hours schedule. Sessions are typically held each weekday.
 
 ## Recordings & Slides
 

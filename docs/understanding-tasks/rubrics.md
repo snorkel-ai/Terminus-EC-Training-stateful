@@ -8,14 +8,14 @@ For further detailed guidelines on Rubrics, visit this guidelines document: **[G
 The workflow to create your rubric is done entirely on the Snorkel platform. Within the **Terminus-2nd-Edition** submission UI, you will find two new sections at the bottom of the page.
 
  * **A Checkbox**
-    * Checking this checkbox allows you to generate a rubric upon which you can then edit for completeness and accuracy
+    * Checking this checkbox will generate a rubric once you submit for CI checks _(AKA you do not select "Send to Reviewer")_ upon which you can then edit for completeness and accuracy
  * **A Textbox**
-    * This is where the generated rubric will appear once you check the checbox above it.
+    * This is where the generated rubric will appear once your submissions comes back to you in your revision queue.
 
 ### The Workflow
-1. **Generate the Rubric:** Click the checkbox. Allow up 1-3 minutes for the rubric to generate
-2. **Edit the Rubric:** Once generated, this rubric which is based on the uploaded .zip file you provided above, you can then directly edit the rubric within the textbox for completeness and accuracy
-3.  **Uncheck the Checkbox:** Once satisfied with your rubric, make sure to always uncheck the checkbox above before you submit! *Submitting with the checkbox checked might cause your rubric to be overwritten upon submission.*
+1. **Generate the Rubric:** Check the checkbox and then submit your submission (once ready) for automated checks. 
+2. **Edit the Rubric:** Once your submission comes back to you with a generated rubric in the textbox, this rubric which is based on the uploaded .zip file you provided above, you can then directly edit the rubric within the textbox for completeness and accuracy.
+3.  **Uncheck the Checkbox:** Once satisfied with your rubric, make sure to always uncheck the checkbox above before you submit (send to reviewer)! *Submitting with the checkbox checked might cause your rubric to be overwritten upon submission.*
 4.  **Submit:** Once satisfied with your submission overall, including the rubric you generated and edited, simply submit your submission.
 
 # Rubrics and You
