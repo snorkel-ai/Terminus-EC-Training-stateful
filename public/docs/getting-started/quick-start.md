@@ -6,11 +6,11 @@ Get up and running with TerminalBench in just a few minutes. This guide covers e
 
 Before you begin, make sure you have:
 
-- Access to the **[Snorkel Expert Platform](https://experts.snorkel-ai.com/)** 
+- Access to the **[Snorkel Expert Platform](https://experts.snorkel-ai.com/)**
 - Joined the **Slack channel** `#terminus-2nd-edition submission`
 - Joined the **Notification channel** `terminus-2nd-edition-announcements`
 - Set up the **Snorkel CLI** tool
-    - Read the [Snorkel CLI user guide](/portal/docs/submitting-tasks/cli-user-guide)
+    - Read the [Snorkel CLI user guide](/portal/docs/cli-user-guide)
     - Using the Snorkel CLI you can:
         - Check submission status
             - Accepted, pending review, evaluation pending, etc.

@@ -7,6 +7,7 @@ export const docsConfig = {
         { slug: 'getting-started/welcome', title: 'Welcome to TerminalBench' },
         { slug: 'getting-started/quick-start', title: 'Quick Start Guide' },
         { slug: 'onboarding/platform-onboarding', title: 'Onboarding Video and Slides' },
+        { slug: 'cli-user-guide', title: 'CLI User Guide' },
         { slug: 'getting-started/edition1-to-edition2-changes', title: 'NEW in Terminus Edition 2' },
       ]
     },
@@ -14,7 +15,6 @@ export const docsConfig = {
       title: 'Submission Process',
       items: [
         { slug: 'submitting-tasks/platform-submission', title: 'Platform Submission' },
-        { slug: 'submitting-tasks/cli-user-guide', title: 'CLI User Guide' },
         { slug: 'submitting-tasks/submission-checklist', title: 'Submission Checklist' },
         { slug: 'submitting-tasks/after-submission', title: 'After Submission' },
       ]
