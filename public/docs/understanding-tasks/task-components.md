@@ -12,12 +12,11 @@ my-task-folder/
 ├── task.toml               # REQUIRED METADATA:
 │                           # - task_id
 │                           # - task_type
-│                           # - task_subtypes
+│                           # - subcategories (if none, leave empty)
 │                           # - difficulty
-│                           # - codebase_scale
-│                           # - number_of_milestones
-│                           # - milestone_descriptions
-│                           # - relevant_languages
+│                           # - codebase_size
+│                           # - number_of_milestones (0 if no milestones)
+│                           # - languages
 │                           # - tags (3-6 keywords)
 │                           # - runtime_limits (agent/verifier/build)
 ├── environment/            # Environment definition folder
@@ -29,6 +28,7 @@ my-task-folder/
 ├── tests/                  # Test verification suite
 │   ├── test.sh             # Main entry point for verification
 │   ├── test_outputs.py     # Deterministic state validation using Pytest
+├── [optional] milestones.md # Only include if your task has milestones. 
 ├── [optional files]        # Data files, assets, or sample code context
 └── README.md               # Optional: Contributor notes or extra documentation
 ```
@@ -39,13 +39,13 @@ my-task-folder/
 
 This file contains the instructions shown to the AI agent.
 
-Your `instruction.md` **must strictly** adhere to the following length and structure constraints:
+Your `instruction.md` should generally adhere to the following length and structure constraints:
 
-1. **Problem Description (1-2 Paragraphs)**: Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
+1. **Problem Description (About 1-2 Paragraphs)**: Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
     * **Do:** Use technical shorthand where appropriate.
     * **Don't:** Provide a history of the programming language or unnecessary fluff.
 
-2. **Requirements (Max 2 Paragraphs / 20 Bullets)**: List the specific constraints, expected outputs, or milestones. 
+2. **Requirements (About 2 Paragraphs / 20 Bullets)**: List the specific constraints, expected outputs, or milestones. 
 
     * **Limit:** No more than 20 bullet points total.
     * **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
@@ -74,30 +74,51 @@ Configuration and metadata file. Uses TOML format with nested sections for task 
 This is a file that contains these required metadata:
 * **Difficulty**: The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
 * **Task Type**: Each task must have exactly one task type from the list of tasks defined in the Task Type section.
-* **Task Subtypes**: Each task will have a list of subtypes that apply to specific challenge areas. See the Task Subtypes section for more information.
-* **Number of Milestones**: The number of milestones present in the task.
-* **Milestone Descriptions**: Full text descriptions of what was accomplished at each milestone.
-* **Codebase Context Scale**: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Task Subtype/subcategories**: If your task has any subcategories it aligns with, then you will include each subtype it aligns to here. If no subcategories align with your task, leave this empty. See the Task Subtypes section for more information.
+* **Number of Milestones**: The number of milestones present in the task, if no milestones then use the value of **0**
+* **Codebase Size**: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
 * **Runtime Limits**: Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
 * **Tags**: Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
 **Basic structure:**
 ```toml
-version = "1.0"
+# Task configuration schema version
+version = "2.0"
 
+# Task metadata (author, difficulty, categorization)
 [metadata]
-difficulty = "medium"
-category = "debugging"
-tags = ["python", "error-handling", "bugfix"]
+author_name = "anonymous"
+author_email = "anonymous"
+difficulty = "unknown"
+category = "software-engineering"
+# Options for subcategories are: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
+subcategories = [ ]
+# The number of milestones in the task (can be zero if not a milestone task)
+number_of_milestones = 0
+# Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
+codebase_size = "minimal"
+# Coding languages used in the oracle solution or required by the agent
+languages = [ "bash" ]
+# For tool_specific, api_integration, and db_interaction subcategories, please include specific tool, api framework, or database software
+tags = [ "file-operations",]
+# Estimated time to complete (minutes)
+expert_time_estimate_min = 60
+junior_time_estimate_min = 120
 
+# Verifier: runs the test script to check task completion
 [verifier]
-timeout_sec = 120.0
+timeout_sec = 450.0
 
+# Agent: limits how long the agent can run when attempting the task
 [agent]
-timeout_sec = 600.0
+timeout_sec = 900.0
 
+# Sandbox environment limits
 [environment]
 build_timeout_sec = 600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
 ```
 
 
@@ -227,6 +248,7 @@ def test_normal_input_unchanged():
 
 | Component | Use Case |
 |-----------|----------|
+| milestones.md | Only include in the root of your .zip if your task has milestones. Short description, 1-2 sentences per milestone |
 | Data files | Input data, config files, sample databases |
 | Custom tools | Additional scripts or binaries |
 | Multiple containers | Complex multi-service environments |

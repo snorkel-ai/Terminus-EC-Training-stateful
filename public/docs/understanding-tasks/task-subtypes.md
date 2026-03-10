@@ -1,6 +1,10 @@
 # Understanding Task Subtypes
 
-A subset of the tasks should be aligned to subtypes that target key challenge areas. Tasks can be aligned with multiple subtypes if they span multiple challenge areas. These subtypes are defined as:
+A subset of the tasks should be aligned to subtypes that target key challenge areas. Tasks can be aligned with multiple subtypes if they span multiple challenge areas. 
+
+If your task aligns with none of these subcategories, then leave the **_subcategories_** field in your task.toml blank.
+
+These subcategories are defined as:
 
 
 ## 1. Long Context

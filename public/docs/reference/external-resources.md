@@ -8,7 +8,7 @@ Links to external tools, documentation, and communities.
 
 Primary communication channel for the project.
 
-**Channel:** `#terminus-2nd-edition-submission`
+**Channel:** [#terminus-2nd-edition-submission](https://snorkel-team.enterprise.slack.com/archives/C0AEHEYFVFD)
 
 Use Slack for:
 - Technical questions

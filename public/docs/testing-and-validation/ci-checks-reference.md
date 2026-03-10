@@ -5,8 +5,8 @@ All submissions must pass these automated Agent-checks. This reference explains 
 ## Running Agents Locally
 
 ```bash
-# Using GPT-5 (recommended - matches CI)
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5 -p <task-folder>
+# Using GPT-5.2 (recommended - matches CI)
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
 ```
 
 ## Static Checks
@@ -61,17 +61,6 @@ uv pip install pytest requests
 
 # Not in environment/Dockerfile (wrong)
 RUN pip install pytest requests
-```
-
----
-
-### check_canary
-
-**What it checks:** Canary string is present at top of required files.
-
-**How to fix:** Add to `instruction.md`, `solution/solve.sh`, `environment/Dockerfile`, `tests/test_outputs.py`:
-```
-# CANARY_STRING_PLACEHOLDER
 ```
 
 ---
@@ -165,12 +154,7 @@ ruff check --fix <task-folder>
 
 **What it checks:** All required fields present in `task.toml`.
 
-**How to fix:** Ensure `task.toml` has:
-- `[metadata].difficulty`
-- `[metadata].category`
-- `[metadata].tags`
-- `[verifier].timeout_sec` (optional)
-- `[agent].timeout_sec` (optional)
+**How to fix:** Ensure `task.toml` has all required fields for your task.
 
 ---
 
@@ -182,7 +166,6 @@ ruff check --fix <task-folder>
 | typos | Spelling | Correct typos |
 | tests_or_solution_in_image | No test/solution in Docker | Remove COPY commands |
 | test_deps_in_image | Test deps in tests/test.sh | Move pip installs |
-| check_canary | Canary string present | Add comment to files |
 | check_dockerfile_references | No forbidden references | Remove solution/test refs |
 | check_test_sh | Uses uv + produces reward | Add `uv venv` and reward file |
 | check_task_absolute_path | Absolute paths | Use `/full/path` |

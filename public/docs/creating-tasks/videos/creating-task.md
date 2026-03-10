@@ -6,11 +6,14 @@ Learn how to create a new task from scratch using the task skeleton template.
 
 To create a new task, you'll start with the task skeleton template and customize it for your specific task.
 
-## Step 1: Download the Task Skeleton
+## Step 1: Download the Correct Task Skeleton
 
-Download the task skeleton ZIP file from the training site:
+Download the ZIP file of the correct task skeleton from the the [Slack channel's resources tab](https://snorkel-team.enterprise.slack.com/docs/TFHL9C8JG/F0AG6BP7WN5) located at the top of the channel.
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
+There are 3 task skeletons:
+ - **_"Regular"_ Task Skeleton:** Use for all non-UI-Building and non-Milestone tasks
+ - **UI Task Skeleton:** Use for all UI-Building subtype tasks
+ - **Milestone Task Skeleton:** Use for all tasks with milestones
 
 ## Step 2: Extract and Rename
 
@@ -46,8 +49,9 @@ your-task-name/
 ├── solution/           # Oracle solution (optional)
 │   └── solve.sh        # Solution script + dependencies
 └── tests/              # Test verification
-    ├── test.sh         # Test execution script
-    └── [test files]    # Test dependencies
+│     ├── test.sh         # Test execution script
+│     └── [test files]    # Test dependencies
+└── milestones.md (optional) # If your task has milestones, include this file which should contain short descriptions (1-2 sentences) of each milestone.
 ```
 
 > **Note:** This structure follows the Harbor 2.0 task format. See [Task Components](/portal/docs/understanding-tasks/task-components) for details on each file.

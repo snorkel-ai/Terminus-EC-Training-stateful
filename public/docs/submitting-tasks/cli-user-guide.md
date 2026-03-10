@@ -1,6 +1,8 @@
 # Snorkel Terminal-Bench CLI - User Guide
 
-A command-line tool for submitting and managing your Snorkel Terminal-Bench assignments.
+A command-line tool for submitting and managing your Snorkel Project Terminus assignments.
+
+Go to [the Snorkel CLI tool repo page](https://snorkel-ai.github.io/Terminus-EC-Training-stateful/portal/docs/submitting-tasks/cli-user-guide) for setup.
 
 ## Installation
 
@@ -92,28 +94,47 @@ Your task description here. Be explicit about all requirements.
 Set up metadata and configuration:
 
 ```toml
-version = "1.0"
+# Task configuration schema version
+version = "2.0"
 
+# Task metadata (author, difficulty (easy, medium, hard), categorization)
 [metadata]
 author_name = "anonymous"
 author_email = "anonymous"
-difficulty = "medium"
-category = "debugging"
-tags = ["python", "memory-leak", "debugging"]
+difficulty = "unknown"
+category = "software-engineering"
 
+# Options for subcategories are: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
+subcategories = [ ]
+
+# Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
+codebase_size = "minimal"
+
+# Coding languages used in the oracle solution or required by the agent
+languages = [ "bash" ]
+
+# For tool_specific, api_integration, and db_interaction subcategories, please include specific tool, api framework, or database software
+tags = [ "file-operations"]
+
+# Estimated time to complete (minutes)
+expert_time_estimate_min = 60
+junior_time_estimate_min = 120
+
+# Verifier: runs the test script to check task completion
 [verifier]
-timeout_sec = 120.0
+timeout_sec = 450.0
 
+# Agent: limits how long the agent can run when attempting the task
 [agent]
-timeout_sec = 600.0
+timeout_sec = 900.0
 
+# Sandbox environment limits
 [environment]
 build_timeout_sec = 600.0
-cpus = 1
-memory_mb = 2048
+cpus = 2
+memory_mb = 4096
 storage_mb = 10240
 ```
-
 ### Step 4: Configure Docker Environment
 
 Edit `environment/Dockerfile` to set up your task environment:
@@ -158,16 +179,16 @@ This should **PASS**. Fix any issues before proceeding.
 
 ### Step 9: Test with Real Agents
 
-Run with GPT-5:
+Run with GPT-5.2:
 
 ```bash
-stb harbor run -m @openai/gpt-5 -p ./my-task-name
+stb harbor run -m @openai/gpt-5-2 -p ./my-task-name
 ```
 
-Run with Claude Sonnet 4.5:
+Run with Claude Opus 4.6:
 
 ```bash
-stb harbor run -m @anthropic-tbench/claude-sonnet-4-5 -p ./my-task-name
+stb harbor run -m @anthropic-tbench/claude-opus-4-6 -p ./my-task-name
 ```
 
 Run each agent 2-3 times to gauge pass rate. Tasks should be challenging enough that agents don't pass every time (< 80% pass rate).
@@ -182,6 +203,7 @@ This automatically:
 - Zips your task folder
 - Uploads to the platform
 - Runs automated checks
+- Generates a synthetic rubric for you to edit
 
 ### Step 11: Check Submission Results and Update
 
