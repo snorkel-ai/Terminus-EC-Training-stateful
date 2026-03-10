@@ -61,7 +61,6 @@ export const docsConfig = {
       title: 'Reviewing Tasks',
       items: [
         { slug: 'reviewing-tasks/review-guidelines', title: 'Review Guidelines' },
-        { slug: 'reviewing-tasks/rubrics', title: 'Rubrics' },
         { slug: 'reviewing-tasks/reviewer-training', title: 'Reviewer Training' },
         { slug: 'reviewing-tasks/common-errors', title: 'Common Errors' },
         { slug: 'reviewing-tasks/defending-your-submission', title: 'Defending Your Submission' },
@@ -97,6 +96,10 @@ export const getDocContent = async (slug) => {
   const basePath = import.meta.env.BASE_URL || '/';
   const response = await fetch(`${basePath}docs/${slug}.md`);
   if (!response.ok) {
+    throw new Error(`Doc not found: ${slug}`);
+  }
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('text/html')) {
     throw new Error(`Doc not found: ${slug}`);
   }
   return response.text();

@@ -11,7 +11,9 @@ The core architecture of a submission has been refined to improve clarity and te
 
 ### Testing & Environment
 * **Directory Hygiene:** Ensure the parent directory remains clean. Move all non-essential files to relevant subdirectories.
-* **Containerization:** Avoid over-indexing on multi-container setups. Directionally, we are funneling contributors toward **single-container cases** unless the task explicitly requires an orchestrated environment.
+* **Containerization:** Avoid over-indexing on multi-container setups. Directionally, we are funneling contributors toward **single-container cases** unless the task explicitly requires an multiple containers.
+* **Coding language diversity:** Greater focus on non-Python languages
+
 
 ### Task Metadata (`task.toml`)
 The metadata file has been expanded to support more granular agent routing.
