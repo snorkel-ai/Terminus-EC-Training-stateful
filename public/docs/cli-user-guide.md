@@ -142,6 +142,17 @@ stb submissions list
 stb submissions view SUBMISSION_ID
 ```
 
+**Download submission:**
+```bash
+stb submissions download SUBMISSION_ID
+```
+
+**Download feedback:**
+```bash
+stb submissions feedback SUBMISSION_ID
+```
+
+
 **Update when in `NEEDS_REVISION` state:**
 ```bash
 stb submissions update ./my-task-name -s SUBMISSION_ID
@@ -205,7 +216,7 @@ stb reviews accept REVIEW_ID
 
 **Request revision:**
 ```bash
-stb reviews revise REVIEW_ID
+stb reviews revise REVIEW_ID --note NOTE
 ```
 
 **Reject:**
