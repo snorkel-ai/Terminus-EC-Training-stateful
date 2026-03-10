@@ -15,8 +15,8 @@ The core architecture of a submission has been refined to improve clarity and te
 
 ### Task Metadata (`task.toml`)
 The metadata file has been expanded to support more granular agent routing.
-* **NEW: Task Subtypes:** Specific classification within the broader taxonomy.
-* **NEW: Codebase Context Scale:** Defined as **minimal**, **Small**, or **Large**.
+* **NEW: Task subtypes/subcategories:** Specific classification within the broader taxonomy.
+* **NEW: Codebase Size:** Defined as **minimal**, **small**, or **large**.
 
 > Learn more below about _Milestones_ and _Task-subtypes_
 
@@ -32,7 +32,7 @@ We have overhauled the way instructions are written. In Edition 2, the `instruct
 
 ## Expanding the Scope: Milestones & Task Subtypes
 
-In Edition 1, were were limited to purely basic task types (_domains such as Security, Games, ML_). While task types do still exist, we have the same list of available task domains, in Edition 2, you can choose (_it is optional!_) to build larger, more expansive tasks by utilizing the new Milestones and Task Subtypes frameworks.
+In Edition 1, were were limited to purely basic task types (_categories such as Security, Games, ML_). While task types do still exist, we have the same list of available task categories, in Edition 2, you can choose to build larger, more expansive tasks by utilizing the new Milestones and Task Subtypes frameworks.
 
 ### 1. Milestone-Based Tasks
 Milestones divide a complex, multi-step engineering task into standalone, sequential subtasks. Instead of the agent wandering blindly toward a final state, Milestones provide a structured path that allows the Harbor framework to assign incremental rewards and validate the agent's process.
@@ -48,8 +48,8 @@ Milestones divide a complex, multi-step engineering task into standalone, sequen
 
 **[Learn about Milestones](/portal/docs/understanding-tasks/milestones)**
 
-### 2. Task Subtypes
-A subset of tasks should be aligned to the following subtypes that target key challenge areas. Tasks can be aligned with multiple subtypes if they span multiple challenge areas. These subtypes are defined as:
+### 2. Task Subtypes/subcategories
+A subset of tasks should be aligned to the following subcategories that target key challenge areas. Tasks can be aligned with multiple subcategories if they span multiple challenge areas. These are defined as:
 
 #### Subtype Taxonomy:
 * **Long Context**: Tasks that require models to test their context windows by reading large documents.

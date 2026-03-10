@@ -29,9 +29,10 @@ Your rubric should cover aspects of all your task's milestones.
 
 ### 4. Metadata (`task.toml`)
 You must specify the total count and provide a text description for every milestone. Include these 2 fields **only if** your task has milestones:
-* `number_of_milestones`: Total count (integer).
-* `milestone_descriptions`: A string describing the desired outcome of each milestone.
+* `number_of_milestones`: Total count (integer). **0** if no milestones.
 
+### 4. Milestone Descriptions (`milestone.md`)
+If you your task has milestones, you must include a milestones.md file in the root of your .zip. This should contain relatively short descriptions, 1-2 sentences, of each milestone present within your task.
 
 
 </details>

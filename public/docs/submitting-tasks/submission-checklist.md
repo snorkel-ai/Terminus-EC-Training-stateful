@@ -25,11 +25,12 @@ Use this checklist before every submission to ensure your task is complete and w
 - [ ] `solution/solve.sh` — Deterministic, human-written solution ([requirements](/portal/docs/understanding-tasks/task-requirements#solution-requirements))
 - [ ] `tests/test.sh` — Uses uv, produces reward file ([requirements](/portal/docs/understanding-tasks/task-requirements#test-requirements))
 - [ ] `tests/test_outputs.py` — Tests with docstrings, verify behavior
+- [ ] _optional_ `milestones.md` — Only include if milestones in task. Short 1-2 sentence descriptions of each milestone
 
 ### Rubric
-- Every submission should include a rubric that is aligned to the task. You generate a synthetic rubric via the submission UI in the Snorkel Platform, then edit it for accuracy and completeness.
-
-See the  [Rubrics page](/portal/docs/understanding-tasks/rubrics) for workflow details and quality criteria.
+- Every submission should include a rubric that is aligned to the task. 
+- You generate a synthetic rubric via the submission UI in the Snorkel Platform, then edit it for accuracy and completeness.
+- See the  [Rubrics page](/portal/docs/understanding-tasks/rubrics) for workflow details and quality criteria.
 
 ### Quality Standards
 

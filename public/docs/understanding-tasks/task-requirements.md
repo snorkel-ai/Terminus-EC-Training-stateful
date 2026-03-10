@@ -13,9 +13,8 @@ All task submissions should include and be organized within a single directory c
 | **`task.toml`** | ✅ | **The Manifest File.** Includes the following required keys: |
 | ↳ `task_id` | ✅ |   Unique identifier for the task. |
 | ↳ `task_type` | ✅ | Primary category from the 9-type taxonomy. |
-| ↳ `task_subtypes` _(optional, only if task aligns with any subtype(s))_ | ❌ | List of challenge areas (e.g., Long Context, DB Interaction). |
-| ↳ `number_of_milestones` _(optional, only if task has milestones)_| ❌ | Number of milestones in your task. |
-| ↳ `milestone_description` _(optional, only if task has milestones)_| ❌ | Short description of your milestones. |
+| ↳ `subcategories` | ✅ | List of subtypes/subcategories applicable to your task. **If no subtypes align with your task, leave this empty** (e.g., Long Context, DB Interaction). |
+| ↳ `number_of_milestones` | ✅  | Number of milestones in your task. **If no milestones, set this to "0"**|
 | ↳ `difficulty` | ✅ | Tier based on frontier model pass rates. |
 | ↳ `codebase_size` | ✅ | Size of environment context (Minimal, Small, Large). |
 | ↳ `languages` | ✅ | List of programming languages used in the task. |
@@ -26,6 +25,7 @@ All task submissions should include and be organized within a single directory c
 | **`solution/solve.sh`** | ✅ | The reference Oracle solution script. |
 | **`tests/test.sh`** | ✅ | The main test runner (must produce the final reward file). |
 | **`tests/test_outputs.py`** | ✅ | Deterministic state validation (Pytest). |
+| **`milestones.md`** | ❌ | *[Optional]* Only include if your task has milestones, otherwise exclude. |
 | **`README.md`** | 💡 | *[Optional]* Additional documentation or contributor notes. |
 
 
@@ -38,14 +38,14 @@ All task submissions should include and be organized within a single directory c
 
 ## instruction.md Requirements
 
-Your `instruction.md` **must strictly** adhere to the following length and structure constraints:
+Your `instruction.md` should adhere generally to the following length and structure constraints:
 
-### 1. Problem Description (1-2 Paragraphs)
+### 1. Problem Description (About 1-2 Paragraphs)
 Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
 * **Do:** Use technical shorthand where appropriate.
 * **Don't:** Provide a history of the programming language or unnecessary fluff.
 
-### 2. Requirements (Max 2 Paragraphs / 20 Bullets)
+### 2. Requirements About 2 Paragraphs / 20 Bullets)
 List the specific constraints, expected outputs, or milestones. 
 * **Limit:** No more than 20 bullet points total.
 * **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
@@ -78,11 +78,10 @@ Clear, unambiguous instructions for the agent.
 
 This is a file that contains these metadata:
 * **Difficulty**: The accuracy (out of 5 attempts) for the frontier models described in the Difficulty section.
-* **Task Type**: Each task must have exactly one task type from the list of tasks defined in the Task Type section.
-* _(optional)_ **Task Subtype**: If your task has subtypes, then you will include each subtype it aligns to. See the Task Subtypes section for more information.
-* _(optional)_ **Number of Milestones**: The number of milestones present in the task, if any milestones are present.
-* _(optional)_ **Milestone Descriptions**: Full text descriptions of what was accomplished at each milestone, if any milestones are present.
-* **Codebase Context Scale**: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Task Type (_category_)**: Each task must have exactly one task type from the list of tasks defined in the Task Type section.
+* **Task Subtype (_subcategories_)**: If your task has subtypes, then you will include each subtype it aligns to. If no subtypes align to your task, then leave this field blank. _See the Task Subtypes section for more information._
+* **Number of Milestones**: The number of milestones present in the task, if none then set this to **0**
+* **Codebase Size**: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
 * **Runtime Limits**: Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
 * **Tags**: Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
@@ -90,25 +89,22 @@ This is a file that contains these metadata:
 # Task configuration schema version
 version = "2.0"
 
-# Task metadata (author, difficulty (easy, medium, hard), categorization)
+# Task metadata (author, difficulty, categorization)
 [metadata]
 author_name = "anonymous"
 author_email = "anonymous"
 difficulty = "unknown"
 category = "software-engineering"
-
 # Options for subcategories are: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
 subcategories = [ ]
-
+# The number of milestones in the task (can be zero if not a milestone task)
+number_of_milestones = 0
 # Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
 codebase_size = "minimal"
-
 # Coding languages used in the oracle solution or required by the agent
 languages = [ "bash" ]
-
 # For tool_specific, api_integration, and db_interaction subcategories, please include specific tool, api framework, or database software
-tags = [ "file-operations"]
-
+tags = [ "file-operations",]
 # Estimated time to complete (minutes)
 expert_time_estimate_min = 60
 junior_time_estimate_min = 120
@@ -130,6 +126,12 @@ storage_mb = 10240
 ```
 
 ---
+
+## (_optional_) milestones.md Requirements
+
+This is a file that contains short, 1-2 sentence, descriptions of each milestone in your task.
+
+**If your task has no milestones, do not include this file in your .zip.**
 
 ## Solution Requirements
 
@@ -188,7 +190,7 @@ def test_output_format():
 - [ ] **No leaked answers** — Tests shouldn't reveal the solution
 - [ ] **Anti-cheating measures** — Include canary strings, avoid predictable patterns
 
-### Canary Strings
+### No Canary Strings!
 
 Canary strings are no longer required in Terminus Edition 2.
 

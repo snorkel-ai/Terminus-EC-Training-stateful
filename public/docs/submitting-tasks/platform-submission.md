@@ -6,7 +6,7 @@ Complete step-by-step guide for creating and submitting tasks through the Snorke
 
 Tasking is performed through the **terminus-project-v2** project on the Snorkel Expert Platform. The complete workflow:
 
-1. Download the task skeleton template
+1. Download the correct task skeleton template. _There are 3!_
 2. Extract and rename the folder
 3. Write your task instructions and configure metadata
 4. Set up the Docker environment
@@ -72,25 +72,22 @@ Set up metadata and configuration:
 # Task configuration schema version
 version = "2.0"
 
-# Task metadata (author, difficulty (easy, medium, hard), categorization)
+# Task metadata (author, difficulty, categorization)
 [metadata]
 author_name = "anonymous"
 author_email = "anonymous"
 difficulty = "unknown"
 category = "software-engineering"
-
 # Options for subcategories are: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
 subcategories = [ ]
-
+# The number of milestones in the task (can be zero if not a milestone task)
+number_of_milestones = 0
 # Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
 codebase_size = "minimal"
-
 # Coding languages used in the oracle solution or required by the agent
 languages = [ "bash" ]
-
 # For tool_specific, api_integration, and db_interaction subcategories, please include specific tool, api framework, or database software
-tags = [ "file-operations"]
-
+tags = [ "file-operations",]
 # Estimated time to complete (minutes)
 expert_time_estimate_min = 60
 junior_time_estimate_min = 120
@@ -362,6 +359,8 @@ After submission. wait for peer review (1-3 business days)
 **Problem:** Forgot to include a file.
 
 **Fix:** Verify all files are in ZIP before uploading. Check that `instruction.md`, `task.toml`, `environment/`, `solution/`, and `tests/` are all included.
+
+- If milestones in task, then `milestones.md` must be included in root of .zip.
 
 ### CI Failures After Upload
 

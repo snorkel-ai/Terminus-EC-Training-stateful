@@ -49,8 +49,9 @@ your-task-name/
 ├── solution/           # Oracle solution (optional)
 │   └── solve.sh        # Solution script + dependencies
 └── tests/              # Test verification
-    ├── test.sh         # Test execution script
-    └── [test files]    # Test dependencies
+│     ├── test.sh         # Test execution script
+│     └── [test files]    # Test dependencies
+└── milestones.md (optional) # If your task has milestones, include this file which should contain short descriptions (1-2 sentences) of each milestone.
 ```
 
 > **Note:** This structure follows the Harbor 2.0 task format. See [Task Components](/portal/docs/understanding-tasks/task-components) for details on each file.
