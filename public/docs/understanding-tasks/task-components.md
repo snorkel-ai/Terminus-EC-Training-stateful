@@ -10,7 +10,6 @@ Every Harbor task consists of several required components. This guide explains e
 my-task-folder/
 ├── instruction.md          # Concise, human-styled instructions
 ├── task.toml               # REQUIRED METADATA:
-│                           # - task_id
 │                           # - task_type
 │                           # - subcategories (if none, leave empty)
 │                           # - difficulty
