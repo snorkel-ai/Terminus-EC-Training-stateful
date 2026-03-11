@@ -6,7 +6,8 @@ Get up and running with TerminalBench in just a few minutes. This guide covers e
 
 Before you begin, make sure you have:
 
-- Access to the **[Snorkel Expert Platform](https://experts.snorkel-ai.com/)** 
+- Access to the **[Snorkel Expert Platform](https://experts.snorkel-ai.com/)**
+    - You will use the **Terminus-2nd-Edition** submission node to submit your task
 - Joined the **Slack channel** `#terminus-2nd-edition submission`
 - Joined the **Notification channel** `terminus-2nd-edition-announcements`
 - Set up the **Snorkel CLI** tool

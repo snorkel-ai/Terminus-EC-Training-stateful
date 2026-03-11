@@ -4,7 +4,7 @@ Complete step-by-step guide for creating and submitting tasks through the Snorke
 
 ## High-Level Workflow
 
-Tasking is performed through the **terminus-project-v2** project on the Snorkel Expert Platform. The complete workflow:
+Tasking is performed through the **Terminus-2nd-Edition** project on the Snorkel Expert Platform. The complete workflow:
 
 1. Download the correct task skeleton template. _There are 3!_
 2. Extract and rename the folder
