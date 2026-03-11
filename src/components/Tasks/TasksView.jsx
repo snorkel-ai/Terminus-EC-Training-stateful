@@ -19,6 +19,7 @@ function TasksView() {
     previewTasks, 
     loading, 
     error,
+    isExhausted,
     searchResults,
     searchLoading,
     searchTasks,
@@ -178,12 +179,14 @@ function TasksView() {
   };
 
   const activeFilterCount = 
-    (filters.types?.length || 0) + 
+    (filters.types?.length || 0) +
+    (filters.subtypes?.length || 0) +
     (filters.languages?.length || 0) + 
     (filters.milestoneOnly ? 1 : 0) +
     (filters.externalCodeOnly ? 1 : 0);
 
   const hasActiveFilters = filters.search || activeFilterCount > 0;
+  const isGalleryExhausted = isExhausted && filteredTasks.length === 0 && !searchLoading;
 
   if (loading) {
     return (
@@ -272,11 +275,17 @@ function TasksView() {
                   <path d="m21 21-4.35-4.35" />
                 </svg>
               </div>
-              <h3>No tasks found</h3>
-              <p>Try adjusting your search or filters to find what you're looking for.</p>
-              <Button variant="secondary" onClick={clearFilters}>
-                Clear All Filters
-              </Button>
+              <h3>{isGalleryExhausted ? 'All tasks have been claimed' : 'No tasks found'}</h3>
+              <p>
+                {isGalleryExhausted
+                  ? 'The team is busy cooking up a new batch.'
+                  : "Try adjusting your search or filters to find what you're looking for."}
+              </p>
+              {hasActiveFilters && (
+                <Button variant="secondary" onClick={clearFilters}>
+                  Clear All Filters
+                </Button>
+              )}
             </div>
           ) : (
             <div className="tasks-grouped-layout">

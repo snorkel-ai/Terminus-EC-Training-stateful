@@ -42,6 +42,7 @@ export function useTasksGallery() {
   const [previewTasks, setPreviewTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isExhausted, setIsExhausted] = useState(false);
   
   const [typeCounts, setTypeCounts] = useState({});
   
@@ -64,6 +65,11 @@ export function useTasksGallery() {
       };
     });
     setTypeCounts(countsMap);
+    setIsExhausted(
+      previewData.length === 0 &&
+      countsData.length > 0 &&
+      countsData.every(row => row.available_count === 0)
+    );
 
     setCachedGallery(previewData, countsMap);
   }, []);
@@ -210,6 +216,10 @@ export function useTasksGallery() {
     if (cached?.previewTasks?.length > 0) {
       setPreviewTasks(cached.previewTasks);
       setTypeCounts(cached.typeCounts || {});
+      setIsExhausted(
+        Object.keys(cached.typeCounts || {}).length > 0 &&
+        Object.values(cached.typeCounts || {}).every(counts => counts.available === 0)
+      );
       setLoading(false);
 
       if (cached.isExpired) {
@@ -250,6 +260,7 @@ export function useTasksGallery() {
     
     loading,
     error,
+    isExhausted,
     loadingCategory,
     searchLoading,
     
