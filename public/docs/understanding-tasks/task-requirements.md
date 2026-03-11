@@ -11,7 +11,6 @@ All task submissions should include and be organized within a single directory c
 | File | Required | Description |
 | :--- | :---: | :--- |
 | **`task.toml`** | ✅ | **The Manifest File.** Includes the following required keys: |
-| ↳ `task_id` | ✅ |   Unique identifier for the task. |
 | ↳ `task_type` | ✅ | Primary category from the 9-type taxonomy. |
 | ↳ `subcategories` | ✅ | List of subtypes/subcategories applicable to your task. **If no subtypes align with your task, leave this empty** (e.g., Long Context, DB Interaction). |
 | ↳ `number_of_milestones` | ✅  | Number of milestones in your task. **If no milestones, set this to "0"**|
