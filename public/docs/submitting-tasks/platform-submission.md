@@ -38,7 +38,7 @@ There are 3 task skeletons to choose from:
  - **UI Task Skeleton:** Use for all UI-Building subtype tasks
  - **Milestone Task Skeleton:** Use for all tasks which contain milestones
 
- <pdf-download src="/Terminus-EC-Training-stateful/Terminus_Edition2_TaskSkeletons.zip" title="Download All 3 Task Skeleton Templates"></pdf-download>
+<pdf-download src="/Terminus-EC-Training-stateful/TBench_v2_Skeletons/Terminus_Edition2_TaskSkeletons.zip" title="Download All 3 Task Skeleton Templates"></pdf-download>
 
 
 ## Step 2: Extract and Rename
