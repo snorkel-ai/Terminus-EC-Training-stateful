@@ -24,11 +24,11 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 | Model | Command Flag |
 |-------|--------------|
 | GPT-5.2 | `openai/@openai-tbench/gpt-5-2` |
-| Claude Opus 4.6 | `openai/@anthropic-tbench/claude-sonnet-4-6` |
+| Claude Opus 4.6 | `openai/@anthropic-tbench/claude-opus-4-6` |
 
 ## Running Agents
 
-### GPT-5.2
+### GPT-5
 
 ```bash
 harbor run \
@@ -42,7 +42,7 @@ harbor run \
 ```bash
 harbor run \
   -a terminus-2 \
-  -m openai/@anthropic-tbench/claude-sonnet-4-6 \
+  -m openai/@anthropic-tbench/claude-opus-4-6 \
   -p <task-folder>
 ```
 
