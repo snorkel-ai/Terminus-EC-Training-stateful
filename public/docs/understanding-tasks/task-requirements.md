@@ -37,40 +37,15 @@ All task submissions should include and be organized within a single directory c
 
 ## instruction.md Requirements
 
-Your `instruction.md` should adhere generally to the following length and structure constraints:
+The instructions to should adhere to these six general principles:
+1. Task instructions **must be concise.**
+2. Task instructions **must be well specified.**
+3. Task instructions **must be interesting.**
+4. Task instruction **must not give Answers, Hints.**
+5. Task instruction **must be unique.**
+6. Task instruction **must use absolute paths.**
 
-### 1. Problem Description (About 1-2 Paragraphs)
-Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
-* **Do:** Use technical shorthand where appropriate.
-* **Don't:** Provide a history of the programming language or unnecessary fluff.
-
-### 2. Requirements About 2 Paragraphs / 20 Bullets)
-List the specific constraints, expected outputs, or milestones. 
-* **Limit:** No more than 20 bullet points total.
-* **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
-
-```markdown
-# Task Title
-
-Clear, unambiguous instructions for the agent.
-
-## Requirements
-- All requirements explicitly listed
-- Use absolute paths (/app/file.txt)
-- Specify output file names
-- Define data schemas completely
-```
-
-### Writing Quality Standards
-
-- **Human-written** — No LLM-generated task descriptions
-- **Clear and unambiguous** — A first-time reader should understand completely
-- **Explicit requirements** — Don't assume anything; state everything
-- **Absolute paths** — Always use `/app/file.txt`, never relative paths
-- **Named outputs** — Tell the agent exactly what files to create and where
-- **Markdown formatting** — Use proper markdown for readability
-
-> **Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling)**
+> **Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling) for further details on each core principle.**
 
 
 ## task.toml Requirements
@@ -81,6 +56,7 @@ This is a file that contains these metadata:
 * **Task Subtype (_subcategories_)**: If your task has subtypes, then you will include each subtype it aligns to. If no subtypes align to your task, then leave this field blank. _See the Task Subtypes section for more information._
 * **Number of Milestones**: The number of milestones present in the task, if none then set this to **0**
 * **Codebase Size**: The size of the environment with regards to the number of files in the project. See the Project Scale section for more information.
+* **Languages**: Coding language(s) used in the oracle solution or required by the agent.
 * **Runtime Limits**: Each task must specify timeouts, including maximum agent runtime (agent_timeout_sec), maximum verifier runtime (verifier_timeout_sec), and maximum environment build runtime (environment_build_timeout_sec), to ensure tasks are bounded and reproducible.
 * **Tags**: Each task must include ~3-6 descriptive tags in the manifest. Tags are free-form keywords that capture important tools, libraries, techniques, or subtopics relevant to the task.
 
