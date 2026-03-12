@@ -31,12 +31,14 @@ Before starting, ensure you have:
 
 ## Step 1: Download the Correct Task Skeleton
 
-Download the ZIP file of the correct task skeleton from the the [Slack channel's resources tab](https://snorkel-team.enterprise.slack.com/docs/TFHL9C8JG/F0AG6BP7WN5) located at the top of the channel.
+Download the ZIP file below which contains all 3 different task skeletons that you can use. Depending on the nature of your task, use the correct skeleton.
 
-There are 3 task skeletons:
+There are 3 task skeletons to choose from:
  - **_"Regular"_ Task Skeleton:** Use for all non-UI-Building and non-Milestone tasks
  - **UI Task Skeleton:** Use for all UI-Building subtype tasks
- - **Milestone Task Skeleton:** Use for all tasks with milestones
+ - **Milestone Task Skeleton:** Use for all tasks which contain milestones
+
+ <pdf-download src="/Terminus-EC-Training-stateful/Terminus_Edition2_TaskSkeletons.zip" title="Download All 3 Task Skeleton Templates"></pdf-download>
 
 
 ## Step 2: Extract and Rename

@@ -8,26 +8,10 @@ Writing clear, unambiguous instructions is critical to task quality.
 
 ## instruction.md Structure
 
-The `instruction.md` file contains the task instructions in markdown format. Keep the langauge natural, just how you or any Engineer would interact with an AI agent, and be succinct in terms of the length of the prompt:
+The `instruction.md` file contains the task instructions in markdown format. Keep the langauge natural, just how you or any Engineer would interact with an AI agent, and be succinct in terms of the length of the prompt.
 
-```markdown
-# Fix Empty Input Bug
+**Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling) for details on what we are looking for in your written instructions.**
 
-Your task is to fix the bug in /app/main.py that causes
-the application to crash when processing empty input.
-
-## Requirements
-
-The fix should:
-1. Handle empty string input gracefully
-2. Return an empty list instead of crashing
-3. Not modify any other behavior
-
-## Files
-
-- Input: `/app/main.py`
-- Output: Modified `/app/main.py`
-```
 
 ## task.toml Structure
 
@@ -73,145 +57,6 @@ memory_mb = 4096
 storage_mb = 10240
 ```
 
-## Writing Good Instructions (instruction.md)
-
-### Be Explicit
-
-State every requirement clearly. Don't assume the agent knows anything.
-
-**Good:**
-```markdown
-# Fix Server Error Handling
-
-Fix the bug in /app/server.py that causes a 500 error
-when the request body is empty.
-
-## Requirements
-
-1. Return HTTP 400 with message "Request body required"
-2. Do not modify the response format for valid requests
-3. Add a test case in /app/tests/test_server.py
-```
-
-**Bad:**
-```markdown
-# Fix Server Bug
-
-Fix the server bug.
-```
-
-### Use Absolute Paths
-
-Always use full paths starting with `/`.
-
-**Good:** `/app/config/settings.json`
-**Bad:** `config/settings.json` or `./settings.json`
-
-### Specify Output Files
-
-If tests check for specific files, mention them explicitly.
-
-```markdown
-# Process Data and Output Results
-
-Write your solution to /output/result.json
-
-## Output Format
-
-The JSON should have this structure:
-```json
-{
-  "status": "success",
-  "count": <number>,
-  "items": [...]
-}
-```
-```
-
-### Define Data Formats
-
-Be precise about expected formats:
-
-```markdown
-# Parse CSV to JSON
-
-Parse the CSV at /data/input.csv and output to /data/output.json
-
-## CSV Format
-
-- First row is headers
-- Columns: id, name, value
-- Values may contain commas (enclosed in quotes)
-
-## JSON Format
-
-- Array of objects
-- Each object has keys: id (int), name (string), value (float)
-```
-
-### List All Constraints
-
-Make implicit requirements explicit:
-
-```markdown
-# Optimize Database Query
-
-Optimize the query in /app/db/queries.py
-
-## Constraints
-
-- Must complete in under 100ms for 1M rows
-- Do not change the function signature
-- Do not use raw SQL (ORM only)
-- Result must maintain same ordering
-```
-
-## Common Mistakes
-
-### Ambiguous Language
-
-| Avoid | Use Instead |
-|-------|-------------|
-| "Make it better" | "Reduce runtime by 50%" |
-| "Fix the issues" | "Fix the 3 failing tests in test_api.py" |
-| "Handle errors properly" | "Return HTTP 400 for invalid input" |
-
-### Missing Edge Cases
-
-If tests check edge cases, mention them:
-
-```markdown
-# Implement Binary Search
-
-Implement binary search in /app/search.py
-
-## Requirements
-
-- Function: `binary_search(arr, target) -> int`
-- Return index if found, -1 if not found
-- Handle empty arrays (return -1)
-- Handle arrays with duplicate values (return any matching index)
-```
-
-### Tool Specification Without Verification
-
-Don't require specific tools unless you can verify they were used:
-
-**Bad:**
-```markdown
-# Edit Configuration
-
-Use vim to edit the file
-```
-
-**Good:**
-```markdown
-# Edit Configuration
-
-Edit /app/config.txt to change the port from 8080 to 3000
-```
-
-## task.toml Configuration Fields
 
 ### Metadata Section
 
