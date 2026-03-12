@@ -2,6 +2,12 @@
 
 Guidelines for peer reviewers evaluating submitted tasks.
 
+## Reviewer Checklist
+As a helpful tool to use while reviewing, we have a comprehensive reviewer checklist that covers all aspects that should be looked at during a review. This includes descritions of what we are looking for qualitatively, as well as assigns a severity level that establishes if an error for a given aspect of a submission should result in an Accept still, or if it always requires the submission to be sent back for revisions when encountered.
+
+**Go to [Reviewer Checklist](https://docs.google.com/document/d/1cFfpOxuciUGSH8ApNVeOtf5B2Cdopi5s6QL30tDg8AE/edit?tab=t.0)**
+
+
 ## Review Philosophy
 
 As a reviewer, you're ensuring quality for the benchmark. Your goal is to:
@@ -9,18 +15,27 @@ As a reviewer, you're ensuring quality for the benchmark. Your goal is to:
 - Help contributors improve their tasks
 - Maintain consistency across submissions
 
+> **Remember:** Each review you conduct should be comprehensive and catch ALL present errors and issues with the task. Do not simply find the first error you come across and then immediately send it back for revision. Instead, **find all issues** during your review and give feedback on all elements found.
+
+_If the EC addresses your comments, the task should be ready for acceptance, assuming no new issues appear. In other words, your feedback should be always clear, complete, and actionable._
+
 ## Review Checklist
 
 ### 1. Read the Task Description
 
-- [ ] Instructions look human-written (not LLM-generated)
-- [ ] Limit of 1-2 paragraphs for the problem description and a maximum of 2 paragraphs/20 bullet points for requirements. 
-    * Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling)
-- [ ] Requirements are clear and unambiguous
-- [ ] All constraints are explicitly stated
-- [ ] Absolute paths used throughout
+### Authentic Prompt Styling
 
-**Think like a malicious agent:** Does the description give extra information that makes cheating easier?
+We have overhauled the way instructions are written. In Edition 2, the `instruction.md` file should index on **realistic prompts** that real users and engineers would use when interacting with coding agents in their daily life, and be as succinct as possible.
+
+The instructions for every task should adhere to these six general principles:
+1. Task instructions **must be concise.**
+2. Task instructions **must be well specified.**
+3. Task instructions **must be interesting.**
+4. Task instruction **must not give answers, hints.**
+5. Task instruction **must be unique.**
+6. Task instruction **must use absolute paths.**
+
+**Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling) for further details on each core principle.**
 
 ### 2. Review Tests
 
@@ -50,6 +65,9 @@ On the task viewer:
 - If agent fails, is it failing for a **good reason**?
 - Check the analysis for identified issues
 - Read the debug pane
+
+### Comprehensive Reviewer Checklist
+ - You can also use this [Terminus 2nd Edition - Review Checklist](https://docs.google.com/document/d/1cFfpOxuciUGSH8ApNVeOtf5B2Cdopi5s6QL30tDg8AE/edit?tab=t.0#heading=h.ke4jf9muinfv) for a more comprehensive and detailed checklist
 
 ## Common Issues to Flag
 
@@ -138,6 +156,11 @@ Issues need fixing before acceptance. Be specific:
 
 **Bad feedback:**
 > Tests need work.
+
+**Extra things you can include**
+- Point the submitter where can they found how to fix the issue or a place where they can see they are mistaken
+
+> Check the New: Rubrics section in the trainig site
 
 ### Decline
 
