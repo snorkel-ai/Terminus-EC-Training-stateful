@@ -2,11 +2,11 @@
 
 These quality control guidelines define the quality bar for TBench Edition 2 formatted tasks. All tasks must comply with these standards to pass review.
 
----
+
 
 ## High Level Requirements
 
-### **All tasks must align with these 6 core tenants:**
+### **All tasks must align with these essential tenants:**
 
 **Instruction Prompt Styling**: Each task will be equipped with an instruction.md which outlines the task to be completed. These task prompts will describe the problem in 1-2 paragraphs and the requirements in no more than 2 paragraphs of 20 bullets. Prompts should not be LLM generated and should read in a way that is reflective of how users interact with coding agents.
 

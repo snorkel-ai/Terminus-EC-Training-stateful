@@ -1,28 +1,59 @@
 # Instruction Prompt Styling
 
-The `instruction.md` file is the primary interface between the task and the AI agent. To ensure Terminal Bench Edition 2 reflects real-world usage, we follow **strict** styling guidelines for how your prompt should be written. The goal is to avoid "over-explained" prompts that are typical of synthetic datasets, and instead mimic the precise but natural language human engineers use when interacting with AI agents in the real world.
+The `instruction.md` file is the primary interface between the task and the AI agent. To ensure Terminal Bench Edition 2 reflects real-world usage, we want to generally follow the core principles below for how to think about writing your prompts. The goal is to avoid 
+
+_**NOTE:** The guidelines below are purposely vague to prevent the dataset we are building from being repeptitive in how the prompts are written. Lean always on the side of injecting your own voice and personal communication style if you are ever unsure._
 
 ## The Core Philosophy
 
-Prompts should be **precise, concise, and authentic.** In a production environment, a user doesn't provide a 10-page specification; they provide a context-rich summary and a set of actionable requirements. Your instructions should reflect this.
+Prompts should be **precise, concise, and authentic.** In a production environment, a user doesn't provide a highly structured list of specification to an AI agent.
+
+Prompts should vary in their style, some more structured than others. We want to get a broad distribution of prompting styles that reflect the wide swath of prompts your average AI model receives from Engineers.
 
 > **Important:** Prompts should **NOT** be LLM-generated. We want to avoid the "GPT-style" of writing (verbose, repetitive, and overly polite) in favor of professional human technical communication.
 
 
-## Structural Requirements
+## Requirements
 
-Every `instruction.md` must adhere to the following length and structure constraints:
+Every `instruction.md` should adhere to these five general principles:
 
-### 1. Problem Description (About 1-2 Paragraphs)
-Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
-* **Do:** Use technical shorthand where appropriate.
-* **Don't:** Provide a history of the programming language or unnecessary fluff.
+### 1. Task Instructions Must be Concise
 
-### 2. Requirements (About 2 Paragraphs / 20 Bullets)
-List the specific constraints, expected outputs, or milestones. 
-* **Length limit:** Keep things as succinct as possible. If you need to write more due to the nature of your task, that is OK! But generally, we want to avoid overly lengthy prompts.
-* **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
+- Task instructions should be concise and clear. This means outlining the task in as little as one sentence, and as much as three paragraphs. 
 
+- Tasks should not be long running with many different instructions/requirements to follow.
+
+- Aim to create tasks that represent genuinely challenging coding problems, not ones that simply challenge an AI agent's ability for instruction following.
+
+- Task instructions should generally read like how a human would prompt a coding agent. This means no emojis, not a lot of markdown styling, and no longer running prompts.
+
+### 2. Task Instructions Must be Well Specified
+
+- While task instructions are now required to be concise, they still must be well specified. This means that the goal of a task is clear and obvious to the human/agent. 
+
+- The main criteria to look for here is tasks with a larger number of edge cases and requirements. If a task is primarily hard due to a large number of edge cases/requirements that are not handled well, it should be rejected.
+
+### 3. Task Instructions Must be Interesting
+
+- The task instruction should not be obscure or irrelevant to the point that no group of developers or users would find them interesting. Every task must be interesting or useful in some way.
+
+### 4. Task Instruction Must NOT Give the Answers, any Hints
+
+- Conceptually, we are going for tasks that represent one shot tasks from a user to a terminal agent. If tasks contain significant hints or rubrics in the instruction.md for how to solve the task, it is not representative of the style of task we are looking for. Requirements can be included, but hints or stepwise instructions should not be.
+
+### 5. Task Instruction Must be Unique
+- The task must be noticeably unique to any task in Terminal Bench 2, Terminal Bench 3, or Snorkel's original Project Terminus (Edition 1). 
+
+- Similarity search evaluation results are provided to help make this determination. Generally, the logic for too similar tasks is:
+
+    1. Are the initial state/instructions different in a way that is non trivial 
+
+        OR
+
+    2. Is the expected output different in a way that is non trivial
+
+### 6. Task Instruction Must use Absolute Paths
+- The task instruction.md file should not contain a canary string. This is usually an indicator that you are using an older task skeleton. The canary string gets passed as part of the prompt which we do not want represented in the data.
 
 ## Human-Centric vs. Synthetic Styling
 
@@ -33,29 +64,3 @@ To maintain authenticity, compare these two styles:
 | **Tone** | "You are an expert programmer. Your goal is to..." | "We need to migrate the existing SQLite schema to..." |
 | **Length** | 500+ words of redundant context. | 150-200 words of actionable info. |
 | **Guidance** | "First, use the `ls` command to see files, then..." | "The source data is in `/data`. Output the result to..." |
-| **Formatting** | Over-use of bolding and flowery transitions. | Standard technical Markdown. |
-
----
-
-## Example Prompt Style
-
-### `instruction.md`
-
-The legacy log-processing script in `scripts/parser.py` is failing to handle the new multi-line stack traces coming from our Java services. This is causing the ETL pipeline to drop critical error events.
-
-You need to refactor the parser to support these multi-line events and ensure they are correctly grouped by timestamp.
-
-**Requirements:**
-* Modify `parser.py` to recognize log entries starting with a `[` as a new record.
-* Any lines not starting with `[` should be appended to the previous record's `message` field.
-* The script must output a valid JSONL file to `output/cleaned_logs.jsonl`.
-* Ensure the parser handles files up to 500MB without exceeding 1GB of RAM.
-* Run the existing validation script `tests/verify_format.sh` to confirm the output structure.
-
-
-
-## Final Checklist
-- [ ] Is the problem described in 2 paragraphs or less?
-- [ ] Are there fewer than 20 bullet points?
-- [ ] Does it sound like a senior engineer speaking to a peer?
-- [ ] Have you removed all "LLM-isms" (e.g., "Certainly! I will help you...")?

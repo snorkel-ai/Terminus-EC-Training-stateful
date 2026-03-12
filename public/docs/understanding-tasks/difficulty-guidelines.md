@@ -100,7 +100,7 @@ This should PASS. If it doesn't, your task may have issues.
 
 ```bash
 # GPT-5
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
+harbor run -a terminus-2 -m "openai/@openai-tbench/gpt-5-2" -p <task-folder>
 
 # Claude Sonnet 4.5
 harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-folder>

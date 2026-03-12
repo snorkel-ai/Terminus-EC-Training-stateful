@@ -38,33 +38,16 @@ my-task-folder/
 
 This file contains the instructions shown to the AI agent.
 
-Your `instruction.md` should generally adhere to the following length and structure constraints:
+The instructions should adhere to these six general principles:
+1. Task instructions **must be concise.**
+2. Task instructions **must be well specified.**
+3. Task instructions **must be interesting.**
+4. Task instruction **must not give Answers, Hints.**
+5. Task instruction **must be unique.**
+6. Task instruction **must use absolute paths.**
 
-1. **Problem Description (About 1-2 Paragraphs)**: Provide a high-level overview of the issue or the goal. State the "why" and the current state of the environment.
-    * **Do:** Use technical shorthand where appropriate.
-    * **Don't:** Provide a history of the programming language or unnecessary fluff.
 
-2. **Requirements (About 2 Paragraphs / 20 Bullets)**: List the specific constraints, expected outputs, or milestones. 
-
-    * **Limit:** No more than 20 bullet points total.
-    * **Clarity:** Ensure that requirements are measurable but not "spoon-fed." The agent should have to reason about *how* to implement the requirement.
-
-**Basic example:**
-```markdown
-# Fix Empty Input Bug
-
-Your task is to fix the bug in /app/main.py that causes
-the application to crash when processing empty input.
-
-## Requirements
-
-The fix should:
-1. Handle empty string input gracefully
-2. Return an empty list instead of crashing
-3. Not modify any other behavior
-```
-
-> **For detailed guidance:** See [Writing Task Instructions and Configuration](/portal/docs/creating-tasks/writing-task-yaml) and the [Prompt Styling Guide](/portal/docs/reference/prompt-styling)
+> **For detailed guidance:** See the [Prompt Styling Guide](/portal/docs/reference/prompt-styling)
 
 ### 2. task.toml
 
