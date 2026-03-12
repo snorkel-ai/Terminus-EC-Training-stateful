@@ -20,11 +20,6 @@ Unlike simple code completion benchmarks, Project Terminus tests:
 >
 > *Note: While this project is NOT affiliated with the official Terminal-Bench project, we closely mimic its style.*
 
----
-
-## How does Project Terminus Work? 
-
-<img src="/images/docs/tbench_process_explained.jpg" alt="TerminalBench Process Explained" class="no-shadow" />
 
 ## Your Role as a Coding Expert
 
