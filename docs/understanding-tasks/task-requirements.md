@@ -31,7 +31,16 @@ All task submissions should include and be organized within a single directory c
 > **Pro-Tip for Directory Hygiene:**
 > Always ensure your `tests/` directory is self-contained. If your task transitions from a Python unit test to a Playwright UI test, remember to update your `task.toml` metadata to reflect the correct verifier type and ensure the `Dockerfile` has the necessary browser dependencies.
 
-<pdf-download src="/Terminus-EC-Training-stateful/template-task.zip" title="Download Task Skeleton Template"></pdf-download>
+---
+
+Download the below ZIP file which contains all 3 different task skeletons that you can use. Depending on the nature of your task, use the correct skeleton.
+
+There are 3 task skeletons to choose from:
+ - **_"Regular"_ Task Skeleton:** Use for all non-UI-Building and non-Milestone tasks
+ - **UI Task Skeleton:** Use for all UI-Building subtype tasks
+ - **Milestone Task Skeleton:** Use for all tasks which contain milestones
+
+<pdf-download src="/Terminus-EC-Training-stateful/Terminus_Edition2_TaskSkeletons.zip" title="Download All 3 Task Skeleton Templates"></pdf-download>
 
 ---
 
