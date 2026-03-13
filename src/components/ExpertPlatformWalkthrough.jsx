@@ -13,7 +13,7 @@ function ExpertPlatformWalkthrough() {
   const handleSkeletonDownload = () => {
     if (posthog) {
       posthog.capture('skeleton_downloaded', {
-        file_name: 'template-task.zip',
+        file_name: 'default-template.zip',
         file_title: 'Task Skeleton',
         source: 'walkthrough',
       });
@@ -108,9 +108,9 @@ function ExpertPlatformWalkthrough() {
           <ol>
             <li>Download the ZIP file of the task skeleton below:
               <div style={{ marginTop: '0.75rem', marginBottom: '0.5rem', marginLeft: '1.5rem' }}>
-                <a 
-                  href="/Terminus-EC-Training-stateful/template-task.zip" 
-                  download="template-task.zip"
+                <a
+                  href="/Terminus-EC-Training-stateful/Terminus-2nd-Edition/default-template.zip"
+                  download="default-template.zip"
                   onClick={handleSkeletonDownload}
                   style={{
                     display: 'inline-block',
