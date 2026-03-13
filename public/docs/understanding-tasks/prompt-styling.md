@@ -1,21 +1,21 @@
 # Instruction Prompt Styling
 
-The `instruction.md` file is the primary interface between the task and the AI agent. To ensure Terminal Bench Edition 2 reflects real-world usage, we want to generally follow the core principles below for how to think about writing your prompts. The goal is to avoid 
+The `instruction.md` file is the primary interface between the task and the AI agent. To ensure Terminus Edition 2 reflects real-world usage, we the instructions to be realistic to how users type into a terminal agent, how the everyday person communicates with a claude code and/or cursor.
 
-_**NOTE:** The guidelines below are purposely vague to prevent the dataset we are building from being repeptitive in how the prompts are written. Lean always on the side of injecting your own voice and personal communication style if you are ever unsure._
+_**NOTE:** The guidelines below are purposely vague to prevent the dataset we are building from being repeptitive in how the prompts are written. Lean always on the side of injecting your own voice and remember to change your style up from one task to another!_
 
 ## The Core Philosophy
 
-Prompts should be **precise, concise, and authentic.** In a production environment, a user doesn't provide a highly structured list of specification to an AI agent.
+Some engineers might be more structured and well formatted in how they prompt models, while others are more casual and just throw a couple sentences with vague details. The idea is to capture this wide swath of variance from one task to another.
 
-Prompts should vary in their style, some more structured than others. We want to get a broad distribution of prompting styles that reflect the wide swath of prompts your average AI model receives from Engineers.
+The primary challenge in crafting your instructions will be achieving this realistic variance in style while maintaing adherence to the six core principles below.
 
-> **Important:** Prompts should **NOT** be LLM-generated. We want to avoid the "GPT-style" of writing (verbose, repetitive, and overly polite) in favor of professional human technical communication.
+> **Important:** Prompts should **NOT** be LLM-generated. We want to avoid the "GPT-style" of writing (verbose, repetitive, and overly polite).
 
 
 ## Requirements
 
-Every `instruction.md` should adhere to these five general principles:
+Every `instruction.md` should adhere to these six general principles:
 
 ### 1. Task Instructions Must be Concise
 
