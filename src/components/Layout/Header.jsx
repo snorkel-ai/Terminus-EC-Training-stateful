@@ -119,9 +119,9 @@ function Header() {
                 </svg>
               </NavLink>
               <div className={`nav-dropdown-menu ${isQuickLinksOpen ? 'open' : ''}`}>
-                <a 
-                  href="/Terminus-EC-Training-stateful/template-task.zip"
-                  download="template-task.zip"
+                <a
+                  href="/Terminus-EC-Training-stateful/Terminus-2nd-Edition/default-template.zip"
+                  download="default-template.zip"
                   className="dropdown-item"
                   onClick={() => {
                     if (posthog) {
@@ -240,9 +240,9 @@ function Header() {
 
             <div className="mobile-nav-section">
               <span className="mobile-nav-section-title">Quick Links</span>
-              <a 
-                href="/Terminus-EC-Training-stateful/template-task.zip"
-                download="template-task.zip"
+              <a
+                href="/Terminus-EC-Training-stateful/Terminus-2nd-Edition/default-template.zip"
+                download="default-template.zip"
                 className="mobile-nav-link"
                 onClick={() => {
                   if (posthog) {

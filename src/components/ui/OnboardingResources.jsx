@@ -35,11 +35,11 @@ const OnboardingResources = () => {
       path: '/portal/docs/onboarding/platform-onboarding',
       image: `${baseUrl}images/onboarding_platform.png`,
     },
-    { 
+    {
       id: 'task-skeleton',
-      label: 'Download Task Skeleton', 
+      label: 'Download Task Skeleton',
       description: 'Get the starter files you need to build your task, including the directory structure and required configuration files.',
-      path: `${baseUrl}template-task.zip`,
+      path: `${baseUrl}Terminus-2nd-Edition/default-template.zip`,
       image: `${baseUrl}images/onboardiing_download_skeleton.png`,
       isDownload: true,
     },

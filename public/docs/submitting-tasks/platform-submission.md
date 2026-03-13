@@ -31,14 +31,18 @@ Before starting, ensure you have:
 
 ## Step 1: Download the Correct Task Skeleton
 
-Download the ZIP file below which contains all 3 different task skeletons that you can use. Depending on the nature of your task, use the correct skeleton.
+Choose and download the appropriate task skeleton template for your task type:
 
 There are 3 task skeletons to choose from:
  - **_"Regular"_ Task Skeleton:** Use for all non-UI-Building and non-Milestone tasks
  - **UI Task Skeleton:** Use for all UI-Building subtype tasks
  - **Milestone Task Skeleton:** Use for all tasks which contain milestones
 
-<pdf-download src="/Terminus-EC-Training-stateful/TBench_v2_Skeletons/Terminus_Edition2_TaskSkeletons.zip" title="Download All 3 Task Skeleton Templates"></pdf-download>
+<pdf-download src="/Terminus-EC-Training-stateful/Terminus-2nd-Edition/default-template.zip" title="Download Regular Task Skeleton"></pdf-download>
+
+<pdf-download src="/Terminus-EC-Training-stateful/Terminus-2nd-Edition/milestone-template.zip" title="Download Milestone Task Skeleton"></pdf-download>
+
+<pdf-download src="/Terminus-EC-Training-stateful/Terminus-2nd-Edition/ui-template.zip" title="Download UI Task Skeleton"></pdf-download>
 
 
 ## Step 2: Extract and Rename
