@@ -33,8 +33,8 @@ A qualified coding expert reviews:
 ### 3. Agent Evaluation
 
 Your task is run against:
-- GPT-5 with Codex agent (5 runs)
-- Claude Sonnet 4.5 with Claude Code (5 runs)
+- GPT-5.2 with Codex agent (5 runs)
+- Claude Opus 4.6 with Claude Code (5 runs)
 
 Pass rate determines final difficulty classification.
 
@@ -61,7 +61,7 @@ Reviewer identified issues that need fixing.
 ### Declined ✗
 
 Task doesn't meet criteria. Common reasons:
-- Too easy (> 80% pass rate)
+- Too easy
 - Unclear requirements
 - Similar task already exists
 - Fundamental design issues
@@ -118,6 +118,6 @@ Remember: Reviewers want to help. Most disagreements are resolved through discus
 
 ## Need Help?
 
-- Slack: `#ec-terminus-submission`
+- Slack: `#terminus-2nd-edition-submission`
 - [FAQ](/portal/docs/reference/faq)
 - [Troubleshooting](/portal/docs/reference/troubleshooting)

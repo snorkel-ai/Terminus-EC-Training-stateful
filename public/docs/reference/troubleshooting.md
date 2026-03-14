@@ -141,7 +141,7 @@ echo $OPENAI_BASE_URL
 timeout_sec = 1200.0  # Increase from default
 ```
 
-### Agent passes too often (> 80%)
+### Agent passes too often 
 
 **Your task is too easy.** Make it harder by:
 - Adding more steps

@@ -1,6 +1,10 @@
-# Task Type Taxonomy
+# Task Type Taxonomy (Category)
 
 Each task must be labeled with a category from this taxonomy. The category describes the primary theme, topic, or activity in the task.
+
+In addition, there exists another axis of categorization called subtypes, or subcategories _(in task.toml)_
+
+**[Refer to our page on subtypes/subcategories for more information](/portal/docs/understanding-tasks/task-subtypes)**
 
 ## Categories
 
