@@ -23,17 +23,17 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 
 | Model | Command Flag |
 |-------|--------------|
-| GPT-5.2 | `openai/@openai-tbench/gpt-5-2` |
+| GPT-5.2 | `openai/@openai-tbench/gpt-5.2` |
 | Claude Opus 4.6 | `openai/@anthropic-tbench/claude-opus-4-6` |
 
 ## Running Agents
 
-### GPT-5
+### GPT-5.2
 
 ```bash
 harbor run \
   -a terminus-2 \
-  -m openai/@openai-tbench/gpt-5-2 \
+  -m openai/@openai-tbench/gpt-5.2 \
   -p <task-folder>
 ```
 
@@ -76,12 +76,11 @@ This means your task needs revision.
 
 Run each agent **5 times** to get a reliable pass rate:
 
-| Pass Rate | Difficulty |
-|-----------|------------|
-| 0-40% | Hard |
-| 40-60% | Medium |
-| 60-80% | Easy |
-| > 80% | **Too Easy - Rejected** |
+| Difficulty | Pass Rate | Description |
+|------------|-----------|-------------|
+| **Hard** | <= 20% | Requires deep expertise, multi-step reasoning |
+| **Medium** | 21-80% | Moderate complexity, some domain knowledge |
+| **Easy** | > 80% | Straightforward but still challenging |
 
 ### Example Testing
 

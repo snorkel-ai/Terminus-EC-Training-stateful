@@ -29,6 +29,8 @@ The metadata file has been expanded to support more granular agent routing.
 
 We have overhauled the way instructions are written. In Edition 2, the `instruction.md` file should index on **realistic prompts** that real users and engineers would use when interacting with coding agents in their daily life, and be as succinct as possible.
 
+The idea is to give the agent the _what (requirements)_ but not the _how (this would be essentially giving the agent the answers!)_
+
 The instructions for every task should adhere to these six general principles:
 1. Task instructions **must be concise.**
 2. Task instructions **must be well specified.**

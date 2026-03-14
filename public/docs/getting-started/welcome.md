@@ -33,13 +33,13 @@ As a Coding Expert, you will:
 <details>
 <summary>Task Difficulty Targets</summary>
 
-Tasks should target **< 80% accuracy** for GPT-5 or Claude Sonnet 4.5:
+Testing your task on AI agents on ChatGPT-5.2 and Claud Opus 4.6 yields pass rates for the task you create. According to how many times it fails or succeeds, your task falls into the following difficulty tiers:
 
 | Difficulty | Pass Rate | Description |
 |------------|-----------|-------------|
-| **Hard** | < 40% | Requires deep expertise, multi-step reasoning |
-| **Medium** | < 60% | Moderate complexity, some domain knowledge |
-| **Easy** | < 80% | Straightforward but still challenging |
+| **Hard** | <= 20% | Requires deep expertise, multi-step reasoning |
+| **Medium** | 21-80% | Moderate complexity, some domain knowledge |
+| **Easy** | > 80% | Straightforward but still challenging |
 
 > **Important:** Tasks with a > 80% pass rate will **NOT** be accepted.
 
@@ -51,9 +51,9 @@ Tasks should target **< 80% accuracy** for GPT-5 or Claude Sonnet 4.5:
 Each task undergoes a rigorous 4-step review:
 
 1. **Automated CI checks** — Technical requirements (syntax, structure, etc.)
-2. **LLM-as-Judge (LLMaJ)** — Quality evaluation using GPT-5
+2. **LLM-as-Judge (LLMaJ)** — Quality evaluation using GPT-5.2
 3. **Peer review** — Human expert verification
-4. **Agent evaluation** — Run against GPT-5 and Claude Sonnet 4.5 (5 times each)
+4. **Agent evaluation** — Run against GPT-5.2 and Claude Opus 4.6 (5 times each)
 
 </details>
 

@@ -48,23 +48,8 @@ There are 3 task skeletons to choose from:
 
 ## Step 3: Write Task Instructions and Configuration
 
-### Edit instruction.md
-
-Write clear, unambiguous task instructions in markdown format. Use natural language and do not be overly lengthy in your prompt:
-
-```markdown
-# Your Task Title
-
-Your task description here. Be explicit about all requirements.
-
-## Requirements
-
-1. Requirement one
-2. Requirement two
-3. Requirement three
-```
-
-See [Writing Instructions & Config](/portal/docs/creating-tasks/writing-task-yaml) for detailed guidance.
+### Author your instruction.md
+See the [Prompt Styling Guide](/portal/docs/reference/prompt-styling) for detailed instructions and requirements about how you should style your instructions.
 
 ### Configure task.toml
 
@@ -221,7 +206,7 @@ export OPENAI_BASE_URL=https://api.portkey.ai/v1
 2. Run with GPT-5:
 
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5.2 -p <task-folder>
 ```
 
 3. Run with Claude Sonnet 4.5:
@@ -264,7 +249,7 @@ Run final checks:
 harbor run --agent oracle --path <task-folder>
 
 # LLMaJ checks
-harbor tasks check -m openai/@openai/gpt-5-2  harbor_tasks/<task_name>
+harbor tasks check -m openai/@openai/gpt-5.2  harbor_tasks/<task_name>
 ```
 
 ## Step 12: Create ZIP File

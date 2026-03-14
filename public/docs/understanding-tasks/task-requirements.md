@@ -202,14 +202,13 @@ RUN pip install pandas numpy
 
 ## Difficulty Requirements
 
-Your task **must** have a pass rate below 80% against SOTA agents.
+Your task **must** have a pass rate below 100% against SOTA agents.
 
-| Pass Rate | Difficulty | Status |
-|-----------|------------|--------|
-| < 40% | Hard | ✅ Accepted |
-| 40-60% | Medium | ✅ Accepted |
-| 60-80% | Easy | ✅ Accepted |
-| > 80% | Too Easy | ❌ Rejected |
+| Difficulty | Pass Rate | Description |
+|------------|-----------|-------------|
+| **Hard** | <= 20% | Requires deep expertise, multi-step reasoning |
+| **Medium** | 21-80% | Moderate complexity, some domain knowledge |
+| **Easy** | > 80% | Straightforward but still challenging |
 
 ### How to Verify
 
@@ -217,7 +216,7 @@ Run your task against real agents (minimum 2-3 times each):
 
 ```bash
 # GPT-5.2
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5.2 -p <task-folder>
 
 # Claude Opus 4.6
 harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-folder>

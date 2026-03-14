@@ -4,13 +4,13 @@ Task difficulty is determined by accuracy when run against frontier AI models. T
 
 ## Difficulty Levels
 
-| Level | Accuracy 
-|-------|-----------
-| **Hard** | < 40% 
-| **Medium** | < 60%
-| **Easy** | < 80%
+| Difficulty | Pass Rate | Description |
+|------------|-----------|-------------|
+| **Hard** | <= 20% | Requires deep expertise, multi-step reasoning |
+| **Medium** | 21-80% | Moderate complexity, some domain knowledge |
+| **Easy** | > 80% | Straightforward but still challenging |
 
-> **Important:** Tasks with > 80% pass rate will NOT be accepted.
+> **Important:** Tasks with 100% pass rate will NOT be accepted.
 
 ## Evaluation Process
 
@@ -23,7 +23,7 @@ The difficulty is based on whichever model performs better.
 
 ## Designing for Difficulty
 
-### For Hard Tasks (< 40%)
+### For Hard Tasks (<= 20%)
 
 Hard tasks require one or more of:
 
@@ -38,7 +38,7 @@ Hard tasks require one or more of:
 - Create debugging tasks where the root cause isn't obvious
 - Use domain-specific knowledge (blockchains, scientific computing)
 
-### For Medium Tasks (< 60%)
+### For Medium Tasks (21-80% )
 
 Medium tasks typically involve:
 
@@ -51,7 +51,7 @@ Medium tasks typically involve:
 - Add edge cases that require careful handling
 - Include configuration that's easy to miss
 
-### For Easy Tasks (< 80%)
+### For Easy Tasks (> 80% )
 
 Easy tasks should still be:
 
@@ -99,10 +99,10 @@ This should PASS. If it doesn't, your task may have issues.
 ### 2. Run Against Real Agents
 
 ```bash
-# GPT-5
-harbor run -a terminus-2 -m "openai/@openai-tbench/gpt-5-2" -p <task-folder>
+# GPT-5.2
+harbor run -a terminus-2 -m "openai/@openai-tbench/gpt-5.2" -p <task-folder>
 
-# Claude Sonnet 4.5
+# Claude Opus 4.6
 harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-folder>
 ```
 
