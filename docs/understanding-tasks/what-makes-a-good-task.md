@@ -18,13 +18,13 @@ We're not looking for trivia or trick questions. We want genuine engineering cha
 
 **Average pass rate must be < 80%** for GPT-5.2 or Claude Opus 4.6
 
-| Difficulty | Pass Rate |
-|------------|-----------|
-| Hard | < 40% |
-| Medium | < 60% |
-| Easy | < 80% |
+| Difficulty | Pass Rate | Description |
+|------------|-----------|-------------|
+| **Hard** | <= 20% | Requires deep expertise, multi-step reasoning |
+| **Medium** | 21-80% | Moderate complexity, some domain knowledge |
+| **Easy** | > 80% | Straightforward but still challenging |
 
-> Tasks with > 80% pass rate will NOT be accepted.
+> Tasks with 100% pass rate will NOT be accepted.
 
 ### 2. Multi-Step Complexity
 
@@ -84,7 +84,7 @@ Each step has a chance of failure, making overall failure rate higher.
 | Trivia questions | Tests memorization, not reasoning |
 | Ambiguous requirements | Agents can't know what's expected |
 | External dependencies | Requires API keys, network, etc. |
-| Simple one-liners | GPT-4 solves instantly |
+| Simple one-liners | Agent solves instantly |
 | Brittle tests | String matching, hardcoded values |
 
 ## Quality Checklist

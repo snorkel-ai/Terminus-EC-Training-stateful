@@ -2,7 +2,6 @@
 
 A command-line tool for submitting and managing your Snorkel Project Terminus assignments.
 
-Go to [the Snorkel CLI tool repo page](https://snorkel-ai.github.io/Terminus-EC-Training-stateful/portal/docs/submitting-tasks/cli-user-guide) for setup.
 
 ## Installation
 
@@ -75,12 +74,7 @@ my-task-name/
 
 ### Step 2: Write Task Instructions
 
-Edit `instruction.md` with clear, unambiguous task instructions:
-
-```markdown
-# Your Task Title
-
-Your task description here. Be explicit about all requirements.
+**Consult the [Prompt Styling Guide](/portal/docs/reference/prompt-styling) for further details**
 
 ## Requirements
 
@@ -182,7 +176,7 @@ This should **PASS**. Fix any issues before proceeding.
 Run with GPT-5.2:
 
 ```bash
-stb harbor run -m @openai/gpt-5-2 -p ./my-task-name
+stb harbor run -m @openai/gpt-5.2 -p ./my-task-name
 ```
 
 Run with Claude Opus 4.6:
@@ -336,7 +330,7 @@ Run `stb keys refresh` to generate new credentials.
 
 The following is a known issue that does not affect your work. If you see this warning message, please ignore it.
 ```bash
-Failed to retrieve model info for '@anthropic-tbench/claude-sonnet-4-5 (from 'openai/@anthropic-tbench/claude-sonnet-4-5')': This model isn't mapped yet.
+Failed to retrieve model info for '@anthropic-tbench/claude-opus-4-6 (from 'openai/@anthropic-tbench/claude-opus-4-6')': This model isn't mapped yet.
 ```
 
 ### "You are not assigned to review submission"

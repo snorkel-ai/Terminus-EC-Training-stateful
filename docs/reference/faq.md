@@ -67,7 +67,7 @@ Open forums for asking questions—general or task-specific. Not required, but u
 ### What if my task is declined?
 
 You'll receive feedback explaining why. Common reasons include:
-- Too easy (> 80% pass rate)
+- Too easy (too high of a pass rate, AKA trivial difficulty)
 - Unclear requirements
 - Similar task exists
 - Missing components

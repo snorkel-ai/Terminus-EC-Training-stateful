@@ -55,7 +55,7 @@ harbor run --agent oracle --path <task-folder>
 ### CI Checks
 
 ```bash
-harbor tasks check <task-folder> --model openai/@openai-tbench/gpt-5-2
+harbor tasks check <task-folder> --model openai/@openai-tbench/gpt-5.2
 ```
 
 - [ ] pinned_dependencies ✓
@@ -88,7 +88,7 @@ harbor tasks check <task-folder> --model openai/@openai-tbench/gpt-5-2
 ### Run Against GPT-5.2
 
 ```bash
-harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5-2 -p <task-folder>
+harbor run -a terminus-2 -m openai/@openai-tbench/gpt-5.2 -p <task-folder>
 ```
 
 - [ ] Run 1: PASS / FAIL
@@ -106,8 +106,13 @@ harbor run -a terminus-2 -m openai/@anthropic-tbench/claude-opus-4-6 -p <task-fo
 
 ### Difficulty Calculation
 
+| Difficulty | Pass Rate | Description |
+|------------|-----------|-------------|
+| **Hard** | <= 20% | Requires deep expertise, multi-step reasoning |
+| **Medium** | 21-80% | Moderate complexity, some domain knowledge |
+| **Easy** | > 80% | Straightforward but still challenging |
+
 - Best pass rate: ____%
-- [ ] Pass rate < 80% (REQUIRED)
 - Difficulty: Easy / Medium / Hard
 
 ---
